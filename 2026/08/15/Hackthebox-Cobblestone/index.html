@@ -18,22 +18,22 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="OverviewCobblestone is a medium-difficulty Linux machine from Hack The Box that starts with a Minecraft-themed website whose buttons hop across a handful of subdomains. Fingerprinting the template lea">
+        <meta name="description" content="OverviewCobblestone is an insane-difficulty Linux machine from Hack The Box that starts with a Minecraft-themed website whose buttons hop across a handful of subdomains. Fingerprinting the template le">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hackthebox: Cobblestone">
 <meta property="og:url" content="http://fouedsaidi.com/2026/08/15/Hackthebox-Cobblestone/index.html">
 <meta property="og:site_name" content="Foued Saidi&#39;s Blog">
-<meta property="og:description" content="OverviewCobblestone is a medium-difficulty Linux machine from Hack The Box that starts with a Minecraft-themed website whose buttons hop across a handful of subdomains. Fingerprinting the template lea">
+<meta property="og:description" content="OverviewCobblestone is an insane-difficulty Linux machine from Hack The Box that starts with a Minecraft-themed website whose buttons hop across a handful of subdomains. Fingerprinting the template le">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Cobblestone/homepage.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Cobblestone/Cobblestone.png">
 <meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Cobblestone/subdomains.png">
 <meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Cobblestone/billy-template.png">
 <meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Cobblestone/github-version.png">
 <meta property="article:published_time" content="2026-08-15T18:50:00.000Z">
-<meta property="article:modified_time" content="2026-08-15T19:15:13.209Z">
+<meta property="article:modified_time" content="2026-08-15T19:33:20.469Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Cobblestone/homepage.png">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Cobblestone/Cobblestone.png">
     
     
     <!--- Icon Part-->
@@ -369,8 +369,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2026-08-15 22:15:13</span>
-            <span class="mobile">2026-08-15 22:15:13</span>
+            <span class="desktop">2026-08-15 22:33:20</span>
+            <span class="mobile">2026-08-15 22:33:20</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -413,13 +413,13 @@
 
 
         <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-            <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>Cobblestone is a medium-difficulty Linux machine from Hack The Box that starts with a Minecraft-themed website whose buttons hop across a handful of subdomains. Fingerprinting the template leads us to its public GitHub repository, and one of those subdomains (<code>vote.cobblestone.htb</code>) exposes a POST <code>url</code> parameter that is vulnerable to SQL injection. We’ll leverage a MySQL <code>UNION SELECT ... INTO OUTFILE</code> to drop a PHP webshell, catch a reverse shell as <code>www-data</code>, loot the database credentials from <code>connection.php</code>, dump the <code>users</code> table and crack an admin bcrypt hash to SSH in as <code>cobble</code>. For privilege escalation we’ll discover a Cobbler service listening only on localhost, port-forward it back to our box, and abuse <strong>CVE-2024-47533</strong> (an unauthenticated XMLRPC login) together with a Cheetah template injection to execute code as root.</p>
+            <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>Cobblestone is an insane-difficulty Linux machine from Hack The Box that starts with a Minecraft-themed website whose buttons hop across a handful of subdomains. Fingerprinting the template leads us to its public GitHub repository, and one of those subdomains (<code>vote.cobblestone.htb</code>) exposes a POST <code>url</code> parameter that is vulnerable to SQL injection. We’ll leverage a MySQL <code>UNION SELECT ... INTO OUTFILE</code> to drop a PHP webshell, catch a reverse shell as <code>www-data</code>, loot the database credentials from <code>connection.php</code>, dump the <code>users</code> table and crack an admin bcrypt hash to SSH in as <code>cobble</code>. For privilege escalation we’ll discover a Cobbler service listening only on localhost, port-forward it back to our box, and abuse <strong>CVE-2024-47533</strong> (an unauthenticated XMLRPC login) together with a Cheetah template injection to execute code as root.</p>
 <p><figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/images/HackTheBox/Machines/Cobblestone/homepage.png"
-                      alt="Cobblestone-homepage"
-                ><figcaption>Cobblestone-homepage</figcaption></figure></p>
+                     data-src="/images/HackTheBox/Machines/Cobblestone/Cobblestone.png"
+                      alt="Cobblestone-info-card"
+                ><figcaption>Cobblestone-info-card</figcaption></figure></p>
 <h3 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h3><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">PORT    STATE    SERVICE VERSION</span><br><span class="line">22/tcp  open     ssh     OpenSSH 9.2p1 Debian 2+deb12u7 (protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   256 50:ef:5f:db:82:03:36:51:27:6c:6b:a6:fc:3f:5a:9f (ECDSA)</span><br><span class="line">|_  256 e2:1d:f3:e9:6a:ce:fb:e0:13:9b:07:91:28:38:ec:5d (ED25519)</span><br><span class="line">80/tcp  open     http    Apache httpd 2.4.62</span><br><span class="line">|_http-server-header: Apache/2.4.62 (Debian)</span><br><span class="line">|_http-title: Did not follow redirect to http://cobblestone.htb/</span><br><span class="line">514/tcp filtered shell</span><br><span class="line">Aggressive OS guesses: Actiontec MI424WR-GEN3I WAP (99%), DD-WRT v24-sp2 (Linux 2.4.37) (98%), Linux 3.2 (96%), Microsoft Windows XP SP3 or Windows 7 or Windows Server 2012 (96%), Linux 4.4 (94%), Microsoft Windows XP SP3 (94%), BlueArc Titan 2100 NAS device (90%)</span><br><span class="line">No exact OS matches for host (test conditions non-ideal).</span><br><span class="line">Network Distance: 10 hops</span><br><span class="line">Service Info: Host: 127.0.0.1; OS:</span><br></pre></td></tr></table></figure></div>
 
 <p>We have the usual SSH on port 22 and an Apache HTTP server on port 80 that redirects us to <code>http://cobblestone.htb/</code>, so let’s add an entry for that domain in our <code>/etc/hosts</code> file and browse to it.</p>
@@ -524,7 +524,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2026-08-15 22:15:13
+                    :</strong> 2026-08-15 22:33:20
             </li>
         
         <li>
