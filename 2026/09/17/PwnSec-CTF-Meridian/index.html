@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2026/09/17/pwnsec-ctf-meridian/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="PwnSec CTF 2026: Humans vs Cyborgs   OverviewLast weekend we ran the 3rd edition of PwnSec CTF , Humans vs Cyborgs, this is my second year authoring a challenge for PwnSec CTF. I made a blockchain&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PwnSec CTF 2026: Meridian">
+<meta property="og:url" content="http://fouedsaidi.com/2026/09/17/PwnSec-CTF-Meridian/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="PwnSec CTF 2026: Humans vs Cyborgs   OverviewLast weekend we ran the 3rd edition of PwnSec CTF , Humans vs Cyborgs, this is my second year authoring a challenge for PwnSec CTF. I made a blockchain&amp;">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/Blockchain/PwnSecCTF/Meridian/poster.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/Blockchain/PwnSecCTF/Meridian/team.jpg">
+<meta property="og:image" content="http://fouedsaidi.com/images/Blockchain/PwnSecCTF/Meridian/stats.png">
+<meta property="article:published_time" content="2026-09-17T15:10:44.000Z">
+<meta property="article:modified_time" content="2026-09-19T20:01:52.359Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Blockchain">
+<meta property="article:tag" content="Solidity">
+<meta property="article:tag" content="Pedersen Commitment">
+<meta property="article:tag" content="Discrete Log">
+<meta property="article:tag" content="bn254">
+<meta property="article:tag" content="Pollard Rho">
+<meta property="article:tag" content="Meet-in-the-Middle">
+<meta property="article:tag" content="CTF Author">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/Blockchain/PwnSecCTF/Meridian/poster.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            PwnSec CTF 2026: Meridian -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">PwnSec CTF 2026: Meridian</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-09-17 18:10:44</span>
+        <span class="mobile">2026-09-17 18:10:44</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-09-19 23:01:52</span>
+            <span class="mobile">2026-09-19 23:01:52</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Blockchain-Web3/">Blockchain/Web3</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        <li>
+                            | <a href="/categories/CTF/">CTF</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/Blockchain/">Blockchain</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Solidity/">Solidity</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Pedersen-Commitment/">Pedersen Commitment</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Discrete-Log/">Discrete Log</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/bn254/">bn254</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Pollard-Rho/">Pollard Rho</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Meet-in-the-Middle/">Meet-in-the-Middle</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/CTF-Author/">CTF Author</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <p align="center">
+  <figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/Blockchain/PwnSecCTF/Meridian/poster.png"
+                      alt="PwnSec CTF 2026: Humans vs Cyborgs" width="360"
+                ><figcaption>PwnSec CTF 2026: Humans vs Cyborgs</figcaption></figure>
+</p>
+
+<h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><p>Last weekend we ran the 3rd edition of <a class="link"   target="_blank" rel="noopener" href="https://ctftime.org/ctf/1150" >PwnSec CTF <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>, <em>Humans vs Cyborgs</em>, this is my second year authoring a challenge for <em>PwnSec CTF</em>. I made a blockchain&#x2F;EVM challenge called <strong>Meridian</strong>, shipped in <em>Misc</em> category, and this is its writeup.</p>
+<p>Here is the path a player should walk the challenge: read the protocol, notice the one lever that inflates borrowing power, work out why the gate on that lever is forgeable, then build the two tools that forge it. Everything you need is in this post: all the contracts, both off-chain grinders, and the on-chain solver. The only thing you don’t start with is the backdoor scalar <code>k</code>, and recovering <code>k</code> <em>is</em> the challenge.</p>
+<p>Before anything else: none of this ships without the rest of the crew. Admins, leads, the other authors, design. I only built one challenge, and these people built the whole thing around it. The event is run by <a class="link"   target="_blank" rel="noopener" href="https://ctftime.org/team/28797" >PwnSec <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>, and all three editions are on CTFtime if you want to see what else we have put out.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/Blockchain/PwnSecCTF/Meridian/team.jpg"
+                      alt="The PwnSec CTF 2026 team"
+                ><figcaption>The PwnSec CTF 2026 team</figcaption></figure></p>
+<p>Alright. Let me show you what I did to you.</p>
+<h1 id="The-Challenge"><a href="#The-Challenge" class="headerlink" title="The Challenge"></a>The Challenge</h1><p><code>Meridian</code> is a self-contained, isolated lending market, in the same family as Morpho, Euler or Jigsaw. It’s admin-less and immutable: everything is fixed at deploy, there’s no oracle, no external RPC dependency, just mock ERC20s and fixed prices. The design philosophy was to hide the bug in <em>volume</em> rather than in obfuscation. Roughly a dozen contracts (<code>Router</code>, <code>MarketCore</code>, <code>StrategyManager</code>, <code>InterestModel</code>, <code>PriceModule</code>, <code>RiskParams</code>, <code>LiquidationModule</code>, strategies, libs…), every one of them reading clean and being individually correct. No weird assembly tricks screaming “look here”. I wanted the hard part to be <em>which</em> module, not <em>what’s wrong with this line</em>.</p>
+<p>Each team gets its own dedicated instance over RPC, with a per-instance backdoor derived one-way from the team’s static flag. I’ll be honest, that part was mostly anti-cheat paranoia on my end. A <code>k</code> you recover on someone else’s instance will not open your commitment, so there’s no shortcut in passing numbers around. It matters later, so keep it in mind.</p>
+<h2 id="The-handout"><a href="#The-handout" class="headerlink" title="The handout"></a>The handout</h2><p>The <code>README.md</code> players receive is short and to the point:</p>
+<div class="highlight-container" data-rel="Markdown"><figure class="iseeu highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># Meridian</span></span><br><span class="line"></span><br><span class="line">An isolated lending market. You interact with your own dedicated instance over RPC.</span><br><span class="line"></span><br><span class="line"><span class="section">## Goal</span></span><br><span class="line"></span><br><span class="line">Make your instance&#x27;s <span class="code">`Setup.isSolved()`</span> return <span class="code">`true`</span>.</span><br></pre></td></tr></table></figure></div>
+
+<p>You’re given an RPC endpoint, the deployed <code>Setup</code> address (from which you read every module address), and a <code>player</code> account funded with <code>20,000 COL</code> to work with.</p>
+<h2 id="The-win-condition"><a href="#The-win-condition" class="headerlink" title="The win condition"></a>The win condition</h2><p>Everything is anchored on <code>Setup.isSolved()</code>:</p>
+<div class="highlight-container" data-rel="Solidity"><figure class="iseeu highlight solidity"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">uint256</span> <span class="keyword">public</span> <span class="keyword">constant</span> SOLVE_THRESHOLD_WAD = <span class="number">100e18</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title">trueCollateralWad</span>(<span class="type">address</span> who) <span class="keyword">public</span> <span class="keyword">view</span> <span class="keyword">returns</span> (<span class="type">uint256</span>) &#123;</span><br><span class="line">    <span class="comment">// only what `who` actually deposited, priced honestly</span></span><br><span class="line">    <span class="keyword">return</span> price.toWad(<span class="type">address</span>(col), strat.convertToAssets(_shares(who)));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title">isSolved</span>() <span class="keyword">external</span> <span class="keyword">view</span> <span class="keyword">returns</span> (<span class="type">bool</span>) &#123;</span><br><span class="line">    <span class="type">uint256</span> debt = market.debtValueWad(player);</span><br><span class="line">    <span class="type">uint256</span> trueColl = trueCollateralWad(player);</span><br><span class="line">    <span class="keyword">return</span> debt &gt; trueColl &amp;&amp; (debt - trueColl) &gt;= SOLVE_THRESHOLD_WAD;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>So the objective is bad debt: get the <code>player</code> position holding at least 100 units of value more debt than the collateral it actually put up. The normal deposit&#x2F;borrow loop can’t get you there. The health check gates every borrow, and I spent real effort, plus a pile of invariant tests, making sure it holds. The only way through is to make the market <em>believe</em> your collateral is worth far more than it is.</p>
+<p>Here’s the full <code>Setup</code>, so you can see exactly how the instance is wired and where the commitment constants come from:</p>
+<details>
+<summary><b>Setup.sol</b> (full source)</summary>
+
+<div class="highlight-container" data-rel="Solidity"><figure class="iseeu highlight solidity"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// SPDX-License-Identifier: MIT</span></span><br><span class="line"><span class="meta"><span class="keyword">pragma</span> <span class="keyword">solidity</span> 0.8.24</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123;MockERC20&#125; from <span class="string">&quot;./mocks/MockERC20.sol&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;PriceModule&#125; from <span class="string">&quot;./PriceModule.sol&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;RiskParams&#125; from <span class="string">&quot;./RiskParams.sol&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;InterestModel&#125; from <span class="string">&quot;./InterestModel.sol&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;StrategyManager&#125; from <span class="string">&quot;./StrategyManager.sol&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;AaveLikeStrategy&#125; from <span class="string">&quot;./strategies/Strategies.sol&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;MarketCore&#125; from <span class="string">&quot;./MarketCore.sol&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;Router&#125; from <span class="string">&quot;./Router.sol&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;LiquidationModule&#125; from <span class="string">&quot;./LiquidationModule.sol&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;RewardsController&#125; from <span class="string">&quot;./RewardsController.sol&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;EmissionsDistributor&#125; from <span class="string">&quot;./EmissionsDistributor.sol&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;FlashLender&#125; from <span class="string">&quot;./FlashLender.sol&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;FeeController&#125; from <span class="string">&quot;./FeeController.sol&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;ReserveVault&#125; from <span class="string">&quot;./ReserveVault.sol&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;IStrategy&#125; from <span class="string">&quot;./interfaces/IStrategy.sol&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">contract</span> <span class="title">Setup</span> &#123;</span><br><span class="line">    MockERC20 <span class="keyword">public</span> col;</span><br><span class="line">    MockERC20 <span class="keyword">public</span> usd;</span><br><span class="line">    PriceModule <span class="keyword">public</span> price;</span><br><span class="line">    RiskParams <span class="keyword">public</span> risk;</span><br><span class="line">    InterestModel <span class="keyword">public</span> interest;</span><br><span class="line">    StrategyManager <span class="keyword">public</span> sm;</span><br><span class="line">    AaveLikeStrategy <span class="keyword">public</span> strat;</span><br><span class="line">    MarketCore <span class="keyword">public</span> market;</span><br><span class="line">    Router <span class="keyword">public</span> router;</span><br><span class="line">    LiquidationModule <span class="keyword">public</span> liq;</span><br><span class="line">    RewardsController <span class="keyword">public</span> rewards;</span><br><span class="line">    EmissionsDistributor <span class="keyword">public</span> emissions;</span><br><span class="line">    FlashLender <span class="keyword">public</span> flash;</span><br><span class="line">    FeeController <span class="keyword">public</span> fees;</span><br><span class="line">    ReserveVault <span class="keyword">public</span> vault;</span><br><span class="line">    MockERC20 <span class="keyword">public</span> reward;</span><br><span class="line"></span><br><span class="line">    <span class="type">address</span> <span class="keyword">public</span> <span class="keyword">immutable</span> player;</span><br><span class="line">    <span class="type">uint256</span> <span class="keyword">public</span> <span class="keyword">constant</span> SOLVE_THRESHOLD_WAD = <span class="number">100e18</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">uint256</span> <span class="keyword">constant</span> COL = <span class="number">1e18</span>;</span><br><span class="line">    <span class="type">uint256</span> <span class="keyword">constant</span> USDU = <span class="number">1e6</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">constructor</span>(<span class="type">address</span> _player) &#123;</span><br><span class="line">        player = _player;</span><br><span class="line"></span><br><span class="line">        col = <span class="keyword">new</span> MockERC20(<span class="string">&quot;Collateral&quot;</span>, <span class="string">&quot;COL&quot;</span>, <span class="number">18</span>);</span><br><span class="line">        usd = <span class="keyword">new</span> MockERC20(<span class="string">&quot;USD&quot;</span>, <span class="string">&quot;USD&quot;</span>, <span class="number">6</span>);</span><br><span class="line"></span><br><span class="line">        PriceModule.Init[] <span class="keyword">memory</span> pin = <span class="keyword">new</span> PriceModule.Init[](<span class="number">2</span>);</span><br><span class="line">        pin[<span class="number">0</span>] = PriceModule.Init(<span class="type">address</span>(col), <span class="number">1e18</span>);</span><br><span class="line">        pin[<span class="number">1</span>] = PriceModule.Init(<span class="type">address</span>(usd), <span class="number">1e18</span>);</span><br><span class="line">        price = <span class="keyword">new</span> PriceModule(pin);</span><br><span class="line"></span><br><span class="line">        RiskParams.Init[] <span class="keyword">memory</span> rin = <span class="keyword">new</span> RiskParams.Init[](<span class="number">1</span>);</span><br><span class="line">        rin[<span class="number">0</span>] = RiskParams.Init(<span class="type">address</span>(col), <span class="number">8000</span>, <span class="number">9000</span>, <span class="number">500</span>, <span class="number">0</span>);</span><br><span class="line">        risk = <span class="keyword">new</span> RiskParams(rin);</span><br><span class="line"></span><br><span class="line">        interest = <span class="keyword">new</span> InterestModel(<span class="number">0</span>);</span><br><span class="line">        sm = <span class="keyword">new</span> StrategyManager();</span><br><span class="line">        strat = <span class="keyword">new</span> AaveLikeStrategy(<span class="type">address</span>(sm), <span class="type">address</span>(col));</span><br><span class="line">        market = <span class="keyword">new</span> MarketCore();</span><br><span class="line">        router = <span class="keyword">new</span> Router();</span><br><span class="line">        liq = <span class="keyword">new</span> LiquidationModule();</span><br><span class="line">        rewards = <span class="keyword">new</span> RewardsController();</span><br><span class="line">        emissions = <span class="keyword">new</span> EmissionsDistributor();</span><br><span class="line">        reward = <span class="keyword">new</span> MockERC20(<span class="string">&quot;Protocol Reward&quot;</span>, <span class="string">&quot;RWD&quot;</span>, <span class="number">18</span>);</span><br><span class="line">        flash = <span class="keyword">new</span> FlashLender(<span class="type">address</span>(usd), <span class="number">9</span>);</span><br><span class="line">        vault = <span class="keyword">new</span> ReserveVault(<span class="number">20828735128985083106809102469836454533339647188769407363916492215150528834129</span>, <span class="number">16893508830174735210096944744733716441606454720372950309160256768972409752777</span>, <span class="number">7609027849750344412992105734680007068528542162550367288897682810516822088679</span>, <span class="number">11069003885991064450329734655988969107489800184559199075750145244031508026270</span>);</span><br><span class="line">        fees = <span class="keyword">new</span> FeeController(<span class="type">address</span>(<span class="number">0xFEE</span>), <span class="number">10</span>, <span class="number">50</span>, <span class="number">9</span>);</span><br><span class="line"></span><br><span class="line">        sm.init(<span class="type">address</span>(col), <span class="type">address</span>(strat), <span class="type">address</span>(market), <span class="type">address</span>(rewards), <span class="type">address</span>(emissions), <span class="type">address</span>(router));</span><br><span class="line">        market.init(<span class="type">address</span>(price), <span class="type">address</span>(risk), <span class="type">address</span>(interest), <span class="type">address</span>(sm), <span class="type">address</span>(rewards), <span class="type">address</span>(vault), <span class="type">address</span>(router), <span class="type">address</span>(liq), <span class="type">address</span>(usd));</span><br><span class="line">        vault.init(<span class="type">address</span>(market));</span><br><span class="line">        router.init(<span class="type">address</span>(sm), <span class="type">address</span>(market), <span class="type">address</span>(col), <span class="type">address</span>(usd));</span><br><span class="line">        liq.init(<span class="type">address</span>(market), <span class="type">address</span>(usd));</span><br><span class="line">        rewards.init(<span class="type">address</span>(sm), <span class="type">address</span>(market), <span class="type">address</span>(col));</span><br><span class="line">        emissions.init(<span class="type">address</span>(sm), <span class="type">address</span>(market), <span class="type">address</span>(col), <span class="type">address</span>(reward), <span class="number">1e12</span>);</span><br><span class="line"></span><br><span class="line">        reward.mint(<span class="type">address</span>(emissions), <span class="number">1_000_000</span> * COL);</span><br><span class="line">        usd.mint(<span class="type">address</span>(flash), <span class="number">500_000</span> * USDU);</span><br><span class="line"></span><br><span class="line">        usd.mint(<span class="type">address</span>(market), <span class="number">1_000_000</span> * USDU);</span><br><span class="line"></span><br><span class="line">        col.mint(<span class="type">address</span>(<span class="built_in">this</span>), <span class="number">1_000</span> * COL);</span><br><span class="line">        col.approve(<span class="type">address</span>(router), <span class="built_in">type</span>(<span class="type">uint256</span>).max);</span><br><span class="line">        router.depositCollateral(<span class="number">1_000</span> * COL);</span><br><span class="line"></span><br><span class="line">        col.mint(<span class="type">address</span>(strat), <span class="number">2_500</span> * COL);</span><br><span class="line"></span><br><span class="line">        col.mint(player, <span class="number">20_000</span> * COL);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> _<span class="title">shares</span>(<span class="type">address</span> who) <span class="keyword">internal</span> <span class="keyword">view</span> <span class="keyword">returns</span> (<span class="type">uint256</span> s) &#123;</span><br><span class="line">        (, s, , , ) = market.positions(who);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">trueCollateralWad</span>(<span class="type">address</span> who) <span class="keyword">public</span> <span class="keyword">view</span> <span class="keyword">returns</span> (<span class="type">uint256</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> price.toWad(<span class="type">address</span>(col), strat.convertToAssets(_shares(who)));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">isSolved</span>() <span class="keyword">external</span> <span class="keyword">view</span> <span class="keyword">returns</span> (<span class="type">bool</span>) &#123;</span><br><span class="line">        <span class="type">uint256</span> debt = market.debtValueWad(player);</span><br><span class="line">        <span class="type">uint256</span> trueColl = trueCollateralWad(player);</span><br><span class="line">        <span class="keyword">return</span> debt &gt; trueColl &amp;&amp; (debt - trueColl) &gt;= SOLVE_THRESHOLD_WAD;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+</details>
+
+<p>Note the <code>vault = new ReserveVault(...)</code> line: four big numbers handed straight in as constructor arguments. Hold that thought.</p>
+<h1 id="Finding-the-Lever"><a href="#Finding-the-Lever" class="headerlink" title="Finding the Lever"></a>Finding the Lever</h1><p>The health check and the borrow both price collateral through one function in <code>MarketCore</code>:</p>
+<div class="highlight-container" data-rel="Solidity"><figure class="iseeu highlight solidity"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title">collateralValueWad</span>(<span class="type">address</span> pos) <span class="keyword">public</span> <span class="keyword">view</span> <span class="keyword">returns</span> (<span class="type">uint256</span>) &#123;</span><br><span class="line">    Pos <span class="keyword">storage</span> p = positions[pos];</span><br><span class="line">    <span class="keyword">if</span> (p.collAsset == <span class="type">address</span>(<span class="number">0</span>)) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">return</span> priceModule.toWad(p.collAsset, p.principal + rewards.boostOf(pos))</span><br><span class="line">         + vault.reserveOf(pos);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>Three inputs feed borrowing power:</p>
+<ol>
+<li>the deposited <strong>principal</strong>,</li>
+<li>a loyalty <strong>boost</strong> from <code>RewardsController</code>,</li>
+<li>and <strong><code>vault.reserveOf(pos)</code></strong>.</li>
+</ol>
+<p>Two of those three are traps I built to eat your time. The boost is capped and bound to real deposits. I know it looks juicy, and an earlier version of this challenge genuinely did have an exploitable boost bug. I fixed it and left the shape behind on purpose. The strategy price-per-share only ever moves in the depositor’s favor by fractions, so the share-donation idea that every DeFi player reaches for reflexively goes nowhere. And I’d bet good money someone burned an hour on a cross-function reentrancy in the withdraw&#x2F;borrow path before conceding the accounting there is airtight, because I hardened that path knowing how tempting it looks.</p>
+<p>The odd one out, and the one you shouldn’t trust, is the reserve. It’s a value credited to a position by a <em>separate</em> module, added at full weight, with no relationship to anything the market itself controls. If we can write a large number into <code>reserveOf(player)</code>, <code>collateralValueWad</code> inflates one-for-one and the borrow follows.</p>
+<p>So the whole challenge collapses to a single question: <strong>how do we write an arbitrary reserve for ourselves?</strong></p>
+<p>Here is the full <code>MarketCore</code> if you want to confirm the reserve really is added raw and that the withdraw&#x2F;liquidation paths are tight:</p>
+<details>
+<summary><b>MarketCore.sol</b> (full source)</summary>
+
+<div class="highlight-container" data-rel="Solidity"><figure class="iseeu highlight solidity"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// SPDX-License-Identifier: MIT</span></span><br><span class="line"><span class="meta"><span class="keyword">pragma</span> <span class="keyword">solidity</span> 0.8.24</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123;ICollateralHook, IMarketCore, IPriceModule, IRiskParams, IInterestModel, IStrategyManager&#125; from <span class="string">&quot;./interfaces/IProtocol.sol&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;IStrategy&#125; from <span class="string">&quot;./interfaces/IStrategy.sol&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;FixedPointMath&#125; from <span class="string">&quot;./libraries/FixedPointMath.sol&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title">IERC20Min2</span> &#123;</span><br><span class="line">    <span class="keyword">function</span> <span class="title">transfer</span>(<span class="type">address</span> to, <span class="type">uint256</span> v) <span class="keyword">external</span> <span class="keyword">returns</span> (<span class="type">bool</span>);</span><br><span class="line">    <span class="keyword">function</span> <span class="title">transferFrom</span>(<span class="type">address</span> f, <span class="type">address</span> t, <span class="type">uint256</span> v) <span class="keyword">external</span> <span class="keyword">returns</span> (<span class="type">bool</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title">IStrategyManagerAsset</span> &#123;</span><br><span class="line">    <span class="keyword">function</span> <span class="title">collateralAsset</span>() <span class="keyword">external</span> <span class="keyword">view</span> <span class="keyword">returns</span> (<span class="type">address</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title">IReserveSource</span> &#123;</span><br><span class="line">    <span class="keyword">function</span> <span class="title">reserveOf</span>(<span class="type">address</span> pos) <span class="keyword">external</span> <span class="keyword">view</span> <span class="keyword">returns</span> (<span class="type">uint256</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title">IRewards</span> &#123;</span><br><span class="line">    <span class="keyword">function</span> <span class="title">boostOf</span>(<span class="type">address</span> pos) <span class="keyword">external</span> <span class="keyword">view</span> <span class="keyword">returns</span> (<span class="type">uint256</span>);</span><br><span class="line">    <span class="keyword">function</span> <span class="title">rebase</span>(<span class="type">address</span> pos, <span class="type">uint256</span> pps) <span class="keyword">external</span>;</span><br><span class="line">    <span class="keyword">function</span> <span class="title">reduceForWithdraw</span>(<span class="type">address</span> pos, <span class="type">uint256</span> sharesRemoved, <span class="type">uint256</span> sharesBefore) <span class="keyword">external</span>;</span><br><span class="line">    <span class="keyword">function</span> <span class="title">reduceForSeize</span>(<span class="type">address</span> pos, <span class="type">uint256</span> sharesSeized, <span class="type">uint256</span> sharesBefore) <span class="keyword">external</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">contract</span> <span class="title">MarketCore</span> <span class="title">is</span> <span class="title">ICollateralHook</span>, <span class="title">IMarketCore</span> &#123;</span><br><span class="line">    <span class="keyword">using</span> FixedPointMath <span class="keyword">for</span> <span class="type">uint256</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">uint256</span> <span class="keyword">internal</span> <span class="keyword">constant</span> WAD = <span class="number">1e18</span>;</span><br><span class="line"></span><br><span class="line">    IPriceModule <span class="keyword">public</span> priceModule;</span><br><span class="line">    IRiskParams <span class="keyword">public</span> riskParams;</span><br><span class="line">    IInterestModel <span class="keyword">public</span> interestModel;</span><br><span class="line">    IStrategyManager <span class="keyword">public</span> strategyManager;</span><br><span class="line">    IRewards <span class="keyword">public</span> rewards;</span><br><span class="line">    IReserveSource <span class="keyword">public</span> vault;</span><br><span class="line">    <span class="type">address</span> <span class="keyword">public</span> router;</span><br><span class="line">    <span class="type">address</span> <span class="keyword">public</span> liquidation;</span><br><span class="line">    <span class="type">address</span> <span class="keyword">public</span> baseAsset;</span><br><span class="line">    <span class="type">bool</span> <span class="keyword">private</span> _init;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">struct</span> <span class="title">Pos</span> &#123;</span><br><span class="line">        <span class="type">address</span> collAsset;</span><br><span class="line">        <span class="type">uint256</span> collShares;</span><br><span class="line">        <span class="type">uint256</span> principal;</span><br><span class="line">        <span class="type">uint256</span> debtPrincipal;</span><br><span class="line">        <span class="type">uint256</span> debtSnap;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">mapping</span>(<span class="type">address</span> =&gt; Pos) <span class="keyword">public</span> positions;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">modifier</span> <span class="title">onlyManager</span>() &#123; <span class="keyword">require</span>(<span class="built_in">msg</span>.sender == <span class="type">address</span>(strategyManager), <span class="string">&quot;only-manager&quot;</span>); _; &#125;</span><br><span class="line">    <span class="keyword">modifier</span> <span class="title">onlyRouter</span>() &#123; <span class="keyword">require</span>(<span class="built_in">msg</span>.sender == router, <span class="string">&quot;only-router&quot;</span>); _; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">init</span>(</span><br><span class="line">        <span class="type">address</span> _price, <span class="type">address</span> _risk, <span class="type">address</span> _interest, <span class="type">address</span> _sm, <span class="type">address</span> _rewards,</span><br><span class="line">        <span class="type">address</span> _vault, <span class="type">address</span> _router, <span class="type">address</span> _liq, <span class="type">address</span> _base</span><br><span class="line">    ) <span class="keyword">external</span> &#123;</span><br><span class="line">        <span class="keyword">require</span>(!_init, <span class="string">&quot;init&quot;</span>); _init = <span class="literal">true</span>;</span><br><span class="line">        priceModule = IPriceModule(_price);</span><br><span class="line">        riskParams = IRiskParams(_risk);</span><br><span class="line">        interestModel = IInterestModel(_interest);</span><br><span class="line">        strategyManager = IStrategyManager(_sm);</span><br><span class="line">        rewards = IRewards(_rewards);</span><br><span class="line">        vault = IReserveSource(_vault);</span><br><span class="line">        router = _router;</span><br><span class="line">        liquidation = _liq;</span><br><span class="line">        baseAsset = _base;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">collSharesOf</span>(<span class="type">address</span> pos) <span class="keyword">external</span> <span class="keyword">view</span> <span class="keyword">returns</span> (<span class="type">uint256</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> positions[pos].collShares;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">onCollateralDeposit</span>(<span class="type">address</span> pos, <span class="type">uint256</span> assets, <span class="type">uint256</span> shares) <span class="keyword">external</span> onlyManager &#123;</span><br><span class="line">        Pos <span class="keyword">storage</span> p = positions[pos];</span><br><span class="line">        <span class="keyword">if</span> (p.collAsset == <span class="type">address</span>(<span class="number">0</span>)) p.collAsset = IStrategyManagerAsset(<span class="type">address</span>(strategyManager)).collateralAsset();</span><br><span class="line">        p.principal += assets;</span><br><span class="line">        p.collShares += shares;</span><br><span class="line">        rewards.rebase(pos, IStrategy(strategyManager.strategyFor(p.collAsset)).pricePerShare());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">onCollateralWithdraw</span>(<span class="type">address</span> pos, <span class="type">uint256</span>, <span class="type">uint256</span> shares) <span class="keyword">external</span> onlyManager &#123;</span><br><span class="line">        Pos <span class="keyword">storage</span> p = positions[pos];</span><br><span class="line">        <span class="type">uint256</span> before = p.collShares;</span><br><span class="line">        <span class="keyword">if</span> (before &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            p.principal -= p.principal.mulDivDown(shares, before);</span><br><span class="line">            rewards.reduceForWithdraw(pos, shares, before);</span><br><span class="line">            p.collShares -= shares;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">collateralValueWad</span>(<span class="type">address</span> pos) <span class="keyword">public</span> <span class="keyword">view</span> <span class="keyword">returns</span> (<span class="type">uint256</span>) &#123;</span><br><span class="line">        Pos <span class="keyword">storage</span> p = positions[pos];</span><br><span class="line">        <span class="keyword">if</span> (p.collAsset == <span class="type">address</span>(<span class="number">0</span>)) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> priceModule.toWad(p.collAsset, p.principal + rewards.boostOf(pos)) + vault.reserveOf(pos);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">debtValueWad</span>(<span class="type">address</span> pos) <span class="keyword">public</span> <span class="keyword">view</span> <span class="keyword">returns</span> (<span class="type">uint256</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> priceModule.toWad(baseAsset, _debtNow(pos));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> _<span class="title">debtNow</span>(<span class="type">address</span> pos) <span class="keyword">internal</span> <span class="keyword">view</span> <span class="keyword">returns</span> (<span class="type">uint256</span>) &#123;</span><br><span class="line">        Pos <span class="keyword">storage</span> p = positions[pos];</span><br><span class="line">        <span class="keyword">if</span> (p.debtPrincipal == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">uint256</span> idx = interestModel.borrowIndex(<span class="type">address</span>(<span class="built_in">this</span>));</span><br><span class="line">        <span class="keyword">if</span> (p.debtSnap == <span class="number">0</span>) <span class="keyword">return</span> p.debtPrincipal;</span><br><span class="line">        <span class="keyword">return</span> p.debtPrincipal.mulDivUp(idx, p.debtSnap);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">healthy</span>(<span class="type">address</span> pos) <span class="keyword">public</span> <span class="keyword">view</span> <span class="keyword">returns</span> (<span class="type">bool</span>) &#123;</span><br><span class="line">        Pos <span class="keyword">storage</span> p = positions[pos];</span><br><span class="line">        <span class="type">uint256</span> debt = debtValueWad(pos);</span><br><span class="line">        <span class="keyword">if</span> (debt == <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">return</span> collateralValueWad(pos).bps(riskParams.liqThresholdBps(p.collAsset)) &gt;= debt;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">openBorrow</span>(<span class="type">address</span> pos, <span class="type">uint256</span> amount) <span class="keyword">external</span> onlyRouter &#123;</span><br><span class="line">        Pos <span class="keyword">storage</span> p = positions[pos];</span><br><span class="line">        <span class="type">uint256</span> idx = interestModel.accrue(<span class="type">address</span>(<span class="built_in">this</span>));</span><br><span class="line">        p.debtPrincipal = _settle(p, idx);</span><br><span class="line">        p.debtSnap = idx;</span><br><span class="line">        p.debtPrincipal += amount;</span><br><span class="line">        <span class="keyword">require</span>(debtValueWad(pos) &lt;= collateralValueWad(pos).bps(riskParams.ltvBps(p.collAsset)), <span class="string">&quot;ltv&quot;</span>);</span><br><span class="line">        IERC20Min2(baseAsset).transfer(<span class="built_in">msg</span>.sender, amount);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">repay</span>(<span class="type">address</span> pos, <span class="type">uint256</span> amount) <span class="keyword">external</span> onlyRouter &#123;</span><br><span class="line">        Pos <span class="keyword">storage</span> p = positions[pos];</span><br><span class="line">        <span class="type">uint256</span> idx = interestModel.accrue(<span class="type">address</span>(<span class="built_in">this</span>));</span><br><span class="line">        <span class="type">uint256</span> debt = _settle(p, idx);</span><br><span class="line">        p.debtSnap = idx;</span><br><span class="line">        <span class="type">uint256</span> pay = amount &gt; debt ? debt : amount;</span><br><span class="line">        p.debtPrincipal = debt - pay;</span><br><span class="line">        IERC20Min2(baseAsset).transferFrom(<span class="built_in">msg</span>.sender, <span class="type">address</span>(<span class="built_in">this</span>), pay);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">applyLiquidation</span>(<span class="type">address</span> pos, <span class="type">uint256</span> repay_, <span class="type">address</span> to) <span class="keyword">external</span> <span class="keyword">returns</span> (<span class="type">uint256</span> seizedShares) &#123;</span><br><span class="line">        <span class="keyword">require</span>(<span class="built_in">msg</span>.sender == liquidation, <span class="string">&quot;only-liq&quot;</span>);</span><br><span class="line">        Pos <span class="keyword">storage</span> p = positions[pos];</span><br><span class="line">        <span class="type">uint256</span> idx = interestModel.accrue(<span class="type">address</span>(<span class="built_in">this</span>));</span><br><span class="line">        <span class="type">uint256</span> debt = _settle(p, idx);</span><br><span class="line">        p.debtSnap = idx;</span><br><span class="line">        <span class="type">uint256</span> pay = repay_ &gt; debt ? debt : repay_;</span><br><span class="line">        p.debtPrincipal = debt - pay;</span><br><span class="line"></span><br><span class="line">        <span class="type">uint256</span> bonus = riskParams.params(p.collAsset).liqBonusBps;</span><br><span class="line">        <span class="type">uint256</span> payWad = priceModule.toWad(baseAsset, pay);</span><br><span class="line">        <span class="type">uint256</span> seizeNative = priceModule.fromWad(p.collAsset, payWad + payWad.bps(bonus));</span><br><span class="line">        IStrategy strat = IStrategy(strategyManager.strategyFor(p.collAsset));</span><br><span class="line">        <span class="type">uint256</span> sharesBefore = p.collShares;</span><br><span class="line">        <span class="type">uint256</span> maxNative = strat.convertToAssets(sharesBefore);</span><br><span class="line">        <span class="keyword">if</span> (seizeNative &gt; maxNative) seizeNative = maxNative;</span><br><span class="line">        seizedShares = strat.withdraw(seizeNative, to);</span><br><span class="line">        <span class="keyword">if</span> (seizedShares &gt; sharesBefore) seizedShares = sharesBefore;</span><br><span class="line">        p.principal -= p.principal.mulDivDown(seizedShares, sharesBefore);</span><br><span class="line">        rewards.reduceForSeize(pos, seizedShares, sharesBefore);</span><br><span class="line">        p.collShares -= seizedShares;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> _<span class="title">settle</span>(Pos <span class="keyword">storage</span> p, <span class="type">uint256</span> idx) <span class="keyword">internal</span> <span class="keyword">view</span> <span class="keyword">returns</span> (<span class="type">uint256</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (p.debtPrincipal == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span> (p.debtSnap == <span class="number">0</span>) <span class="keyword">return</span> p.debtPrincipal;</span><br><span class="line">        <span class="keyword">return</span> p.debtPrincipal.mulDivUp(idx, p.debtSnap);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+</details>
+
+<p>And the <code>Router</code>, which is the only public entrypoint to deposit and borrow. Nothing exotic here, it just forwards to <code>StrategyManager</code> and <code>MarketCore</code>:</p>
+<details>
+<summary><b>Router.sol</b> (full source)</summary>
+
+<div class="highlight-container" data-rel="Solidity"><figure class="iseeu highlight solidity"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// SPDX-License-Identifier: MIT</span></span><br><span class="line"><span class="meta"><span class="keyword">pragma</span> <span class="keyword">solidity</span> 0.8.24</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123;IStrategyManager, IMarketCore&#125; from <span class="string">&quot;./interfaces/IProtocol.sol&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title">IERC20Min4</span> &#123;</span><br><span class="line">    <span class="keyword">function</span> <span class="title">transfer</span>(<span class="type">address</span> to, <span class="type">uint256</span> v) <span class="keyword">external</span> <span class="keyword">returns</span> (<span class="type">bool</span>);</span><br><span class="line">    <span class="keyword">function</span> <span class="title">transferFrom</span>(<span class="type">address</span> f, <span class="type">address</span> t, <span class="type">uint256</span> v) <span class="keyword">external</span> <span class="keyword">returns</span> (<span class="type">bool</span>);</span><br><span class="line">    <span class="keyword">function</span> <span class="title">approve</span>(<span class="type">address</span> s, <span class="type">uint256</span> v) <span class="keyword">external</span> <span class="keyword">returns</span> (<span class="type">bool</span>);</span><br><span class="line">    <span class="keyword">function</span> <span class="title">balanceOf</span>(<span class="type">address</span> w) <span class="keyword">external</span> <span class="keyword">view</span> <span class="keyword">returns</span> (<span class="type">uint256</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">contract</span> <span class="title">Router</span> &#123;</span><br><span class="line">    IStrategyManager <span class="keyword">public</span> sm;</span><br><span class="line">    IMarketCore <span class="keyword">public</span> market;</span><br><span class="line">    <span class="type">address</span> <span class="keyword">public</span> collateralAsset;</span><br><span class="line">    <span class="type">address</span> <span class="keyword">public</span> baseAsset;</span><br><span class="line">    <span class="type">bool</span> <span class="keyword">private</span> _init;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">mapping</span>(<span class="type">address</span> =&gt; <span class="keyword">mapping</span>(<span class="type">address</span> =&gt; <span class="type">bool</span>)) <span class="keyword">public</span> operatorApproved;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">init</span>(<span class="type">address</span> _sm, <span class="type">address</span> _market, <span class="type">address</span> _coll, <span class="type">address</span> _base) <span class="keyword">external</span> &#123;</span><br><span class="line">        <span class="keyword">require</span>(!_init, <span class="string">&quot;init&quot;</span>); _init = <span class="literal">true</span>;</span><br><span class="line">        sm = IStrategyManager(_sm);</span><br><span class="line">        market = IMarketCore(_market);</span><br><span class="line">        collateralAsset = _coll;</span><br><span class="line">        baseAsset = _base;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">setOperator</span>(<span class="type">address</span> operator, <span class="type">bool</span> ok) <span class="keyword">external</span> &#123;</span><br><span class="line">        operatorApproved[<span class="built_in">msg</span>.sender][operator] = ok;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> _<span class="title">auth</span>(<span class="type">address</span> pos) <span class="keyword">internal</span> <span class="keyword">view</span> &#123;</span><br><span class="line">        <span class="keyword">require</span>(pos == <span class="built_in">msg</span>.sender || operatorApproved[pos][<span class="built_in">msg</span>.sender], <span class="string">&quot;not-authorized&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">depositCollateral</span>(<span class="type">uint256</span> amount) <span class="keyword">external</span> &#123;</span><br><span class="line">        _pullAndDeposit(<span class="built_in">msg</span>.sender, amount);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> _<span class="title">pullAndDeposit</span>(<span class="type">address</span> pos, <span class="type">uint256</span> amount) <span class="keyword">internal</span> &#123;</span><br><span class="line">        IERC20Min4(collateralAsset).transferFrom(<span class="built_in">msg</span>.sender, <span class="type">address</span>(<span class="built_in">this</span>), amount);</span><br><span class="line">        IERC20Min4(collateralAsset).approve(<span class="type">address</span>(sm), amount);</span><br><span class="line">        sm.depositFor(pos, collateralAsset, amount);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">withdrawCollateral</span>(<span class="type">uint256</span> amount) <span class="keyword">external</span> &#123;</span><br><span class="line">        sm.withdrawFor(<span class="built_in">msg</span>.sender, collateralAsset, amount);</span><br><span class="line">        IERC20Min4(collateralAsset).transfer(<span class="built_in">msg</span>.sender, amount);</span><br><span class="line">        <span class="keyword">require</span>(market.healthy(<span class="built_in">msg</span>.sender), <span class="string">&quot;unhealthy&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">borrow</span>(<span class="type">uint256</span> amount) <span class="keyword">external</span> &#123;</span><br><span class="line">        market.openBorrow(<span class="built_in">msg</span>.sender, amount);</span><br><span class="line">        IERC20Min4(baseAsset).transfer(<span class="built_in">msg</span>.sender, amount);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">repay</span>(<span class="type">uint256</span> amount) <span class="keyword">external</span> &#123;</span><br><span class="line">        IERC20Min4(baseAsset).transferFrom(<span class="built_in">msg</span>.sender, <span class="type">address</span>(<span class="built_in">this</span>), amount);</span><br><span class="line">        IERC20Min4(baseAsset).approve(<span class="type">address</span>(market), amount);</span><br><span class="line">        market.repay(<span class="built_in">msg</span>.sender, amount);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">multicall</span>(<span class="type">bytes</span>[] <span class="keyword">calldata</span> calls) <span class="keyword">external</span> <span class="keyword">returns</span> (<span class="type">bytes</span>[] <span class="keyword">memory</span> results) &#123;</span><br><span class="line">        results = <span class="keyword">new</span> <span class="type">bytes</span>[](calls.length);</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">uint256</span> i; i &lt; calls.length; ++i) &#123;</span><br><span class="line">            (<span class="type">bool</span> ok, <span class="type">bytes</span> <span class="keyword">memory</span> ret) = <span class="type">address</span>(<span class="built_in">this</span>).delegatecall(calls[i]);</span><br><span class="line">            <span class="keyword">require</span>(ok, <span class="string">&quot;multicall&quot;</span>);</span><br><span class="line">            results[i] = ret;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+</details>
+
+<h1 id="The-Gate-ReserveVault"><a href="#The-Gate-ReserveVault" class="headerlink" title="The Gate: ReserveVault"></a>The Gate: ReserveVault</h1><p><code>ReserveVault</code> is small, and if I’m being honest that’s the one place my “hide it in volume” plan leaks a little. In a codebase this size, the tiny module <em>is</em> the tell. If you’ve solved a few of these you learn to be suspicious of the short file that does something cryptographic, and this is that file. It’s short enough to read in full, so here it is:</p>
+<div class="highlight-container" data-rel="Solidity"><figure class="iseeu highlight solidity"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// SPDX-License-Identifier: MIT</span></span><br><span class="line"><span class="meta"><span class="keyword">pragma</span> <span class="keyword">solidity</span> 0.8.24</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">contract</span> <span class="title">ReserveVault</span> &#123;</span><br><span class="line">    <span class="type">uint256</span> <span class="keyword">internal</span> <span class="keyword">constant</span> N = <span class="number">21888242871839275222246405745257275088548364400416034343698204186575808495617</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">uint256</span> <span class="keyword">public</span> <span class="keyword">constant</span> GENESIS_V = <span class="number">424242</span>;</span><br><span class="line">    <span class="type">uint256</span> <span class="keyword">public</span> <span class="keyword">constant</span> GENESIS_R = <span class="number">133731</span>;</span><br><span class="line">    <span class="type">bytes6</span> <span class="keyword">public</span> <span class="keyword">constant</span> AUTH_TAG = <span class="number">0x5E1F2A3B4C6D</span>;</span><br><span class="line">    <span class="type">uint256</span> <span class="keyword">public</span> <span class="keyword">immutable</span> hx;</span><br><span class="line">    <span class="type">uint256</span> <span class="keyword">public</span> <span class="keyword">immutable</span> hy;</span><br><span class="line">    <span class="type">uint256</span> <span class="keyword">public</span> <span class="keyword">immutable</span> cx;</span><br><span class="line">    <span class="type">uint256</span> <span class="keyword">public</span> <span class="keyword">immutable</span> cy;</span><br><span class="line"></span><br><span class="line">    <span class="type">address</span> <span class="keyword">public</span> market;</span><br><span class="line">    <span class="type">bool</span> <span class="keyword">private</span> _init;</span><br><span class="line">    <span class="keyword">mapping</span>(<span class="type">address</span> =&gt; <span class="type">uint256</span>) <span class="keyword">public</span> creditedReserveWad;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">constructor</span>(<span class="type">uint256</span> _hx, <span class="type">uint256</span> _hy, <span class="type">uint256</span> _cx, <span class="type">uint256</span> _cy) &#123;</span><br><span class="line">        hx = _hx; hy = _hy; cx = _cx; cy = _cy;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">init</span>(<span class="type">address</span> _market) <span class="keyword">external</span> &#123;</span><br><span class="line">        <span class="keyword">require</span>(!_init, <span class="string">&quot;init&quot;</span>); _init = <span class="literal">true</span>;</span><br><span class="line">        market = _market;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">reserveOf</span>(<span class="type">address</span> pos) <span class="keyword">external</span> <span class="keyword">view</span> <span class="keyword">returns</span> (<span class="type">uint256</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> creditedReserveWad[pos];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> _<span class="title">mul</span>(<span class="type">uint256</span> x, <span class="type">uint256</span> y, <span class="type">uint256</span> s) <span class="keyword">private</span> <span class="keyword">view</span> <span class="keyword">returns</span> (<span class="type">uint256</span>, <span class="type">uint256</span>) &#123;</span><br><span class="line">        <span class="type">uint256</span>[<span class="number">3</span>] <span class="keyword">memory</span> inp = [x, y, s];</span><br><span class="line">        <span class="type">uint256</span>[<span class="number">2</span>] <span class="keyword">memory</span> out;</span><br><span class="line">        <span class="type">bool</span> ok;</span><br><span class="line">        <span class="keyword">assembly</span> &#123; ok := staticcall(gas(), <span class="number">0x07</span>, inp, <span class="number">0x60</span>, out, <span class="number">0x40</span>) &#125;</span><br><span class="line">        <span class="keyword">require</span>(ok, <span class="string">&quot;mul&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> (out[<span class="number">0</span>], out[<span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> _<span class="title">add</span>(<span class="type">uint256</span> x1, <span class="type">uint256</span> y1, <span class="type">uint256</span> x2, <span class="type">uint256</span> y2) <span class="keyword">private</span> <span class="keyword">view</span> <span class="keyword">returns</span> (<span class="type">uint256</span>, <span class="type">uint256</span>) &#123;</span><br><span class="line">        <span class="type">uint256</span>[<span class="number">4</span>] <span class="keyword">memory</span> inp = [x1, y1, x2, y2];</span><br><span class="line">        <span class="type">uint256</span>[<span class="number">2</span>] <span class="keyword">memory</span> out;</span><br><span class="line">        <span class="type">bool</span> ok;</span><br><span class="line">        <span class="keyword">assembly</span> &#123; ok := staticcall(gas(), <span class="number">0x06</span>, inp, <span class="number">0x80</span>, out, <span class="number">0x40</span>) &#125;</span><br><span class="line">        <span class="keyword">require</span>(ok, <span class="string">&quot;add&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> (out[<span class="number">0</span>], out[<span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> _<span class="title">opens</span>(<span class="type">uint256</span> reserveWad, <span class="type">uint256</span> r) <span class="keyword">private</span> <span class="keyword">view</span> <span class="keyword">returns</span> (<span class="type">bool</span>) &#123;</span><br><span class="line">        (<span class="type">uint256</span> ax, <span class="type">uint256</span> ay) = _mul(<span class="number">1</span>, <span class="number">2</span>, reserveWad);   <span class="comment">// reserveWad * G</span></span><br><span class="line">        (<span class="type">uint256</span> bx, <span class="type">uint256</span> by) = _mul(hx, hy, r);          <span class="comment">// r * H</span></span><br><span class="line">        (<span class="type">uint256</span> lx, <span class="type">uint256</span> ly) = _add(ax, ay, bx, by);</span><br><span class="line">        <span class="keyword">return</span> lx == cx &amp;&amp; ly == cy;                         <span class="comment">// == C</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> _<span class="title">cosigned</span>(<span class="type">address</span> who, <span class="type">uint256</span> r, <span class="type">uint256</span> a, <span class="type">uint256</span> b) <span class="keyword">private</span> <span class="keyword">pure</span> <span class="keyword">returns</span> (<span class="type">bool</span>) &#123;</span><br><span class="line">        <span class="type">bytes6</span> ta = <span class="type">bytes6</span>(<span class="built_in">keccak256</span>(<span class="built_in">abi</span>.encode(who, r, a)));</span><br><span class="line">        <span class="type">bytes6</span> tb = <span class="type">bytes6</span>(<span class="built_in">keccak256</span>(<span class="built_in">abi</span>.encode(who, r, b)));</span><br><span class="line">        <span class="keyword">return</span> (ta ^ tb) == AUTH_TAG;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">claimReserve</span>(<span class="type">uint256</span> reserveWad, <span class="type">uint256</span> r, <span class="type">uint256</span> a, <span class="type">uint256</span> b) <span class="keyword">external</span> &#123;</span><br><span class="line">        <span class="keyword">require</span>(_opens(reserveWad, r), <span class="string">&quot;bad-opening&quot;</span>);</span><br><span class="line">        <span class="keyword">require</span>(a != b, <span class="string">&quot;same-cosigner&quot;</span>);</span><br><span class="line">        <span class="keyword">require</span>(_cosigned(<span class="built_in">msg</span>.sender, r, a, b), <span class="string">&quot;bad-cosign&quot;</span>);</span><br><span class="line">        creditedReserveWad[<span class="built_in">msg</span>.sender] = reserveWad;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p><code>_mul</code>&#x2F;<code>_add</code> are just wrappers around the bn254 precompiles (<code>0x07</code> scalar-mul and <code>0x06</code> point-add on the alt_bn128 curve), and <code>G = (1, 2)</code> is the standard bn254 G1 generator. So <code>_opens</code> is a textbook Pedersen commitment check:</p>
+<div class="highlight-container" data-rel="Haskell"><figure class="iseeu highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">reserveWad</span> * <span class="type">G</span> + r * <span class="type">H</span> == <span class="type">C</span></span><br></pre></td></tr></table></figure></div>
+
+<p>where <code>C = (cx, cy)</code> is a fixed commitment baked into the deployment. To credit ourselves an arbitrary reserve, <code>claimReserve</code> needs two things from us:</p>
+<ul>
+<li>an opening <code>(reserveWad, r)</code> of <code>C</code> to the value we want, and</li>
+<li>a cosign pair <code>(a, b)</code>, <code>a != b</code>, whose two truncated keccak hashes XOR to <code>AUTH_TAG</code>.</li>
+</ul>
+<p>Two gates, two completely different worlds of math bolted onto the same function call. That was very much the point. Let’s take them one at a time.</p>
+<h1 id="Insight-1-the-Pedersen-setup-is-subverted"><a href="#Insight-1-the-Pedersen-setup-is-subverted" class="headerlink" title="Insight 1: the Pedersen setup is subverted"></a>Insight 1: the Pedersen setup is subverted</h1><p>A Pedersen commitment is supposed to be binding: given <code>C</code>, you shouldn’t be able to produce two different openings, because doing so requires knowing the discrete log of <code>H</code> with respect to <code>G</code>, i.e. the <code>k</code> such that <code>H = k*G</code>. In a proper deployment, <code>H</code> comes out of a “nothing-up-my-sleeve” process, hash-to-curve from a public seed, precisely so that <em>nobody</em> knows that <code>k</code>.</p>
+<p>Here’s the crack. Look at where <code>H</code> comes from:</p>
+<div class="highlight-container" data-rel="Solidity"><figure class="iseeu highlight solidity"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">constructor</span>(<span class="type">uint256</span> _hx, <span class="type">uint256</span> _hy, <span class="type">uint256</span> _cx, <span class="type">uint256</span> _cy) &#123;</span><br><span class="line">    hx = _hx; hy = _hy; cx = _cx; cy = _cy;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p><code>H</code> is just handed to the contract as constructor data. Those first two big numbers in the <code>new ReserveVault(...)</code> line back in <code>Setup</code>, which I’d bet your eyes slid right past the first time. There is no independent derivation anywhere: no hash-to-curve, no seed, nothing. In a real audit that’s a red flag the size of a billboard, but the trick of the challenge is that it’s a billboard hidden three modules deep behind a lot of correct-looking DeFi. It means <code>H = k*G</code> for some specific <code>k</code>, and whoever ran the setup (hi, that’s me) knows it. Binding is gone.</p>
+<p>And if binding is gone, we can open <code>C</code> to whatever we want. The genesis opening is <em>public</em>, because <code>GENESIS_V</code> and <code>GENESIS_R</code> are constants and the commitment was built as <code>C = GENESIS_V*G + GENESIS_R*H</code>. For a target value <code>v&#39;</code>, we want an <code>r&#39;</code> with:</p>
+<div class="highlight-container" data-rel="Haskell"><figure class="iseeu highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">v&#x27;</span>*<span class="type">G</span> + r&#x27;*<span class="type">H</span> == <span class="type">C</span> == <span class="type">GENESIS_V</span>*<span class="type">G</span> + <span class="type">GENESIS_R</span>*<span class="type">H</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Substitute <code>H = k*G</code> and everything collapses from curve points to plain scalars mod the group order <code>N</code>:</p>
+<div class="highlight-container" data-rel="Haskell"><figure class="iseeu highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">v&#x27;</span> + r&#x27;*k  ==  <span class="type">GENESIS_V</span> + <span class="type">GENESIS_R</span>*k   (mod <span class="type">N</span>)</span><br><span class="line"></span><br><span class="line">  =&gt;  r&#x27; = (<span class="type">GENESIS_V</span> + <span class="type">GENESIS_R</span>*k - v&#x27;) * k^-<span class="number">1</span>   (mod <span class="type">N</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p>That’s the malleation: one modular inverse and we can open <code>C</code> to any value we like. The catch is that the formula needs <code>k</code>, and <code>k</code> was not shipped. Recovering it is the price of admission. I lost some sleep over whether that price was set correctly, which brings me to the next bit.</p>
+<h2 id="Why-the-“free”-opening-is-useless-the-overflow-trap"><a href="#Why-the-“free”-opening-is-useless-the-overflow-trap" class="headerlink" title="Why the “free” opening is useless: the overflow trap"></a>Why the “free” opening is useless: the overflow trap</h2><p>When I was designing this, the first thing I worried about was the cheap shortcut, because if one existed the whole challenge falls over in five minutes. Here’s the shortcut a smart player reaches for: skip <code>k</code> entirely. You already know one valid opening, <code>(GENESIS_V, GENESIS_R)</code>, so why not just call <code>claimReserve(GENESIS_V, GENESIS_R, a, b)</code>? It sails through <code>_opens</code> for free.</p>
+<p>It doesn’t work, and I had to make sure of that. <code>GENESIS_V</code> is <code>424242</code>, a reserve of 424242 <em>wei</em>, which is nothing. To cross the 100-WAD bad-debt threshold with any margin you need a reserve up in the <code>1e24</code> range.</p>
+<p>Could we open <code>C</code> to something <em>enormous</em> without <code>k</code>? There is technically another public opening if you let the value get near the group order. But a reserve that size flows straight into <code>collateralValueWad</code>, and then into the borrow, where <code>openBorrow</code> multiplies it by a threshold in basis points via <code>FixedPointMath.bps</code>:</p>
+<div class="highlight-container" data-rel="Solidity"><figure class="iseeu highlight solidity"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// in openBorrow:</span></span><br><span class="line"><span class="keyword">require</span>(debtValueWad(pos) &lt;= collateralValueWad(pos).bps(riskParams.ltvBps(p.collAsset)), <span class="string">&quot;ltv&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// FixedPointMath.bps:</span></span><br><span class="line"><span class="keyword">function</span> <span class="title">bps</span>(<span class="type">uint256</span> x, <span class="type">uint256</span> b) <span class="keyword">internal</span> <span class="keyword">pure</span> <span class="keyword">returns</span> (<span class="type">uint256</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> (x * b) / <span class="number">10_000</span>;   <span class="comment">// multiplies by up to 10,000 BEFORE dividing</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>A <code>~2^254</code> reserve overflows that <code>x * b</code> multiply and the transaction reverts. So the free opening is boxed in from both sides: either negligible (<code>GENESIS_V</code>) or unusable (overflow). Any reserve that’s <em>both</em> large enough to matter and small enough to survive <code>bps</code> has to come from the malleation formula, and the malleation needs <code>k</code>. That squeeze is the load-bearing part of the design. It’s what turns the discrete log from an optional flex into the only way in, and I wrote a test whose only job is to prove that a large genesis-<code>r</code> opening reverts, because if it didn’t the challenge was broken.</p>
+<details>
+<summary><b>FixedPointMath.sol</b> (full source)</summary>
+
+<div class="highlight-container" data-rel="Solidity"><figure class="iseeu highlight solidity"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// SPDX-License-Identifier: MIT</span></span><br><span class="line"><span class="meta"><span class="keyword">pragma</span> <span class="keyword">solidity</span> 0.8.24</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">library</span> <span class="title">FixedPointMath</span> &#123;</span><br><span class="line">    <span class="type">uint256</span> <span class="keyword">internal</span> <span class="keyword">constant</span> WAD = <span class="number">1e18</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">mulDivDown</span>(<span class="type">uint256</span> x, <span class="type">uint256</span> y, <span class="type">uint256</span> d) <span class="keyword">internal</span> <span class="keyword">pure</span> <span class="keyword">returns</span> (<span class="type">uint256</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> (x * y) / d;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">mulDivUp</span>(<span class="type">uint256</span> x, <span class="type">uint256</span> y, <span class="type">uint256</span> d) <span class="keyword">internal</span> <span class="keyword">pure</span> <span class="keyword">returns</span> (<span class="type">uint256</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> (x * y + (d - <span class="number">1</span>)) / d;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">wadMulDown</span>(<span class="type">uint256</span> x, <span class="type">uint256</span> y) <span class="keyword">internal</span> <span class="keyword">pure</span> <span class="keyword">returns</span> (<span class="type">uint256</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> (x * y) / WAD;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">wadDivDown</span>(<span class="type">uint256</span> x, <span class="type">uint256</span> y) <span class="keyword">internal</span> <span class="keyword">pure</span> <span class="keyword">returns</span> (<span class="type">uint256</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> (x * WAD) / y;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title">bps</span>(<span class="type">uint256</span> x, <span class="type">uint256</span> b) <span class="keyword">internal</span> <span class="keyword">pure</span> <span class="keyword">returns</span> (<span class="type">uint256</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> (x * b) / <span class="number">10_000</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+</details>
+
+<h1 id="Insight-2-the-cosign-is-a-meet-in-the-middle-not-a-signature"><a href="#Insight-2-the-cosign-is-a-meet-in-the-middle-not-a-signature" class="headerlink" title="Insight 2: the cosign is a meet-in-the-middle, not a signature"></a>Insight 2: the cosign is a meet-in-the-middle, not a signature</h1><p>Passing <code>_opens</code> is only half the job. <code>_cosigned</code> wants two values <code>a != b</code> with:</p>
+<div class="highlight-container" data-rel="Solidity"><figure class="iseeu highlight solidity"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">bytes6</span>(<span class="built_in">keccak256</span>(<span class="built_in">abi</span>.encode(<span class="built_in">msg</span>.sender, r, a)))</span><br><span class="line">  ^ <span class="type">bytes6</span>(<span class="built_in">keccak256</span>(<span class="built_in">abi</span>.encode(<span class="built_in">msg</span>.sender, r, b))) == AUTH_TAG</span><br></pre></td></tr></table></figure></div>
+
+<p>I named it <code>_cosigned</code> and gave it two parameters called <code>a</code> and <code>b</code> on purpose. It’s dressed up to read like a two-party signature or authorization check, the kind of thing you assume you can’t forge without a private key, so that your instinct is to go looking for the key somewhere else in the codebase. That framing is a costume. Look at what you actually control: <code>AUTH_TAG</code> is a fixed 48-bit constant, and <em>you</em> choose both <code>a</code> and <code>b</code>. This isn’t a preimage search over 48 bits (2^48, painful), it’s a meet-in-the-middle. Build a table of <code>bytes6(keccak(caller, r, a))</code> over ~2^24 values of <code>a</code>, then vary <code>b</code> and for each one look up <code>bytes6(keccak(caller, r, b)) ^ AUTH_TAG</code> in the table. Birthday math says a collision shows up around 2^24 on each side instead of the full 2^48.</p>
+<p>The part I’m happiest with, structurally, is that the table is keyed on <code>(caller, r)</code>, and <code>r</code> is the malleated scalar from Insight 1. You cannot precompute this. Grind 2 can’t even start until Grind 1 has handed you <code>r</code>, so the two grinds are welded in series. No front-running, no precomputing overnight, no borrowing a friend’s <code>r</code>. You do the discrete log, <em>then</em> the MITM, in that order, every time.</p>
+<h1 id="Exploitation"><a href="#Exploitation" class="headerlink" title="Exploitation"></a>Exploitation</h1><p>Everything above was reconnaissance. The actual solve is two off-chain grinds feeding four on-chain calls, and the grinds are where you’ll spend basically all of your time. Let’s build it.</p>
+<h2 id="Grind-1-recovering-the-60-bit-k"><a href="#Grind-1-recovering-the-60-bit-k" class="headerlink" title="Grind 1: recovering the 60-bit k"></a>Grind 1: recovering the 60-bit <code>k</code></h2><p><code>k</code> is a discrete log on bn254 G1: find <code>k</code> such that <code>k*G == H</code>, where <code>k</code> is 60 bits.</p>
+<p>The instinct is baby-step giant-step, and I picked 60 bits precisely because that’s where BSGS stops being convenient. BSGS wants a table of about <code>2^(60/2) = 2^30</code> points, each one tens of bytes, so call it tens of gigabytes. That is not fitting in your RAM. The memory wall is deliberate: it pushes you off the easy table-lookup algorithm and onto a constant-memory one, Pollard’s rho, or a kangaroo if you want to exploit the 60-bit interval. There’s also no <code>pip install bn254-dlog</code> waiting for you, so you end up writing the curve arithmetic by hand. Honestly, that’s the real barrier, more than the raw ~2^30 operation count. I wanted a challenge you couldn’t just download your way out of.</p>
+<p>The reference below implements bn254 G1 in pure Python and walks a bounded Pollard rho. The partition is on the x-coordinate mod 3, and it’s a Floyd cycle-find (tortoise one step, hare two) until the two walks collide. At the meeting point you have <code>a1*G + b1*H == a2*G + b2*H</code>, which gives you <code>k = (a2-a1)/(b1-b2) mod N</code>. Read <code>hx, hy</code> off your own deployed <code>ReserveVault</code> and drop them in as <code>HX, HY</code>:</p>
+<details>
+<summary><b>recover_k.py</b>: Grind 1, bn254 discrete log via Pollard's rho</summary>
+
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># GRIND 1: recover the 60-bit backdoor k = dlog_G(H) by Pollard&#x27;s rho (constant memory).</span></span><br><span class="line"><span class="comment"># a BSGS table at 60 bits is ~2^30 entries (tens of GB) and will not fit; rho is ~2^30 group ops, O(1) mem.</span></span><br><span class="line"><span class="comment"># requires bn254 G1 arithmetic (implemented here; the on-chain verifier does not export a library).</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">p = <span class="number">21888242871839275222246405745257275088696311157297823662689037894645226208583</span></span><br><span class="line">n = <span class="number">21888242871839275222246405745257275088548364400416034343698204186575808495617</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">inv</span>(<span class="params">a,m</span>): <span class="keyword">return</span> <span class="built_in">pow</span>(a%m,m-<span class="number">2</span>,m)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">padd</span>(<span class="params">P,Q</span>):</span><br><span class="line">    <span class="keyword">if</span> P <span class="keyword">is</span> <span class="literal">None</span>: <span class="keyword">return</span> Q</span><br><span class="line">    <span class="keyword">if</span> Q <span class="keyword">is</span> <span class="literal">None</span>: <span class="keyword">return</span> P</span><br><span class="line">    (x1,y1),(x2,y2)=P,Q</span><br><span class="line">    <span class="keyword">if</span> x1==x2 <span class="keyword">and</span> (y1+y2)%p==<span class="number">0</span>: <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    <span class="keyword">if</span> P==Q: mm=(<span class="number">3</span>*x1*x1)*inv(<span class="number">2</span>*y1,p)%p</span><br><span class="line">    <span class="keyword">else</span>: mm=(y2-y1)*inv(x2-x1,p)%p</span><br><span class="line">    x3=(mm*mm-x1-x2)%p; y3=(mm*(x1-x3)-y1)%p</span><br><span class="line">    <span class="keyword">return</span> (x3,y3)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">pmul</span>(<span class="params">k,P</span>):</span><br><span class="line">    R=<span class="literal">None</span>;k%=n</span><br><span class="line">    <span class="keyword">while</span> k:</span><br><span class="line">        <span class="keyword">if</span> k&amp;<span class="number">1</span>: R=padd(R,P)</span><br><span class="line">        P=padd(P,P);k&gt;&gt;=<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> R</span><br><span class="line">G=(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line"><span class="comment"># read hx, hy off YOUR deployed vault</span></span><br><span class="line">HX=<span class="number">20828735128985083106809102469836454533339647188769407363916492215150528834129</span></span><br><span class="line">HY=<span class="number">16893508830174735210096944744733716441606454720372950309160256768972409752777</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># bounded Pollard rho for dlog when k &lt; 2^B (uses the interval to bound the walk).</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">rho</span>(<span class="params">H, B</span>):</span><br><span class="line">    <span class="comment"># partition function on x-coord; walk P = a*G + b*H, find collision -&gt; k = (a1-a2)/(b2-b1) mod n</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">f</span>(<span class="params">P, a, b</span>):</span><br><span class="line">        <span class="keyword">if</span> P <span class="keyword">is</span> <span class="literal">None</span>: r=<span class="number">0</span></span><br><span class="line">        <span class="keyword">else</span>: r=P[<span class="number">0</span>] % <span class="number">3</span></span><br><span class="line">        <span class="keyword">if</span> r==<span class="number">0</span>: <span class="keyword">return</span> padd(P,G), (a+<span class="number">1</span>)%n, b</span><br><span class="line">        <span class="keyword">if</span> r==<span class="number">1</span>: <span class="keyword">return</span> padd(P,H), a, (b+<span class="number">1</span>)%n</span><br><span class="line">        <span class="keyword">return</span> padd(P,P), (<span class="number">2</span>*a)%n, (<span class="number">2</span>*b)%n</span><br><span class="line">    <span class="keyword">import</span> random</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        a=random.randrange(n); b=random.randrange(n)</span><br><span class="line">        T=padd(pmul(a,G),pmul(b,H)); a1,b1=a,b</span><br><span class="line">        H1=T; a2,b2=a,b; H2=T</span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>&lt;&lt;<span class="number">24</span>):</span><br><span class="line">            H1,a1,b1=f(H1,a1,b1)</span><br><span class="line">            H2,a2,b2=f(*f(H2,a2,b2))       <span class="comment"># hare: two steps</span></span><br><span class="line">            <span class="keyword">if</span> H1==H2:</span><br><span class="line">                <span class="keyword">if</span> (b1-b2)%n==<span class="number">0</span>: <span class="keyword">break</span></span><br><span class="line">                k=( (a2-a1)*inv(b1-b2,n) )%n</span><br><span class="line">                <span class="keyword">if</span> pmul(k,G)==H <span class="keyword">and</span> k &lt; (<span class="number">1</span>&lt;&lt;B): <span class="keyword">return</span> k</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># self-test on a small planted key (fast); the shipped k is 60-bit (~2^30 rho, minutes-to-tens-of-min).</span></span><br><span class="line">    kb=<span class="built_in">int</span>(sys.argv[<span class="number">1</span>]) <span class="keyword">if</span> <span class="built_in">len</span>(sys.argv)&gt;<span class="number">1</span> <span class="keyword">else</span> <span class="number">24</span></span><br><span class="line">    <span class="keyword">import</span> random</span><br><span class="line">    ks=random.randrange(<span class="number">1</span>&lt;&lt;kb); Ht=pmul(ks,G)</span><br><span class="line">    got=rho(Ht, kb+<span class="number">2</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;selftest kb=%d planted=%d recovered=%d ok=%s&quot;</span>%(kb,ks,got,got==ks))</span><br></pre></td></tr></table></figure></div>
+
+</details>
+
+<p>The script self-tests on a small planted key before you point it at the real <code>H</code>. I added that because when I was writing the walk myself I got a sign wrong in the collision formula and spent an embarrassing amount of time convinced the <em>challenge</em> was broken when it was my own arithmetic. A self-test that finishes in a second saves you from that particular flavor of madness. In pure Python at 60 bits the real run is minutes to tens of minutes of CPU. The arithmetic is embarrassingly parallel, so a batched bn254 kangaroo on a mid-range GPU clears the same interval in about 28 seconds. Either way the work is bounded and real. One warning: small mistakes in the curve arithmetic or the byte packing fail <em>silently</em>. The walk just never converges, which is exactly the kind of thing that eats both human and machine solvers alive.</p>
+<p>Once <code>k</code> is out, verify it before you build anything on top of it. <code>pmul(k, G) == H</code>, one line, do it every time. There is nothing worse than grinding the MITM against a subtly wrong <code>r</code> for twenty minutes. Then malleate for our target value <code>v&#39; = 1e24</code>:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">G  = (<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">H  = (HX, HY)</span><br><span class="line">C  = (<span class="number">7609027849750344412992105734680007068528542162550367288897682810516822088679</span>,</span><br><span class="line">      <span class="number">11069003885991064450329734655988969107489800184559199075750145244031508026270</span>)</span><br><span class="line"></span><br><span class="line">GENESIS_V, GENESIS_R = <span class="number">424242</span>, <span class="number">133731</span></span><br><span class="line">vprime = <span class="number">10</span>**<span class="number">24</span></span><br><span class="line">rprime = (GENESIS_V + GENESIS_R*k - vprime) * inv(k, n) % n</span><br><span class="line"></span><br><span class="line"><span class="comment"># sanity: reserveWad*G + rprime*H == C</span></span><br><span class="line"><span class="keyword">assert</span> padd(pmul(vprime, G), pmul(rprime, H)) == C</span><br></pre></td></tr></table></figure></div>
+
+<p><code>rprime</code> is a ~254-bit scalar. That’s the <code>r</code> we hand to <code>claimReserve</code>.</p>
+<h2 id="Grind-2-the-cosign-MITM"><a href="#Grind-2-the-cosign-MITM" class="headerlink" title="Grind 2: the cosign MITM"></a>Grind 2: the cosign MITM</h2><p>Now that we have <code>r</code>, we run the meet-in-the-middle over <code>(caller, r)</code>. The table is keyed on the malleated <code>r</code>, so, to say it once more, this cannot start until Grind 1 is done:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># GRIND 2: given (caller, r) find (a,b), a!=b, with</span></span><br><span class="line"><span class="comment">#   bytes6(keccak(caller,r,a)) ^ bytes6(keccak(caller,r,b)) == AUTH_TAG   -- 48-bit MITM (~2^24)</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> Crypto.Hash <span class="keyword">import</span> keccak</span><br><span class="line">AUTH_TAG=<span class="built_in">int</span>(<span class="string">&quot;5E1F2A3B4C6D&quot;</span>,<span class="number">16</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">k6</span>(<span class="params">x</span>): <span class="keyword">return</span> <span class="built_in">int</span>.from_bytes(keccak.new(digest_bits=<span class="number">256</span>,data=x).digest()[:<span class="number">6</span>],<span class="string">&#x27;big&#x27;</span>)</span><br><span class="line"></span><br><span class="line">caller=<span class="built_in">int</span>(sys.argv[<span class="number">1</span>],<span class="number">16</span>); r=<span class="built_in">int</span>(sys.argv[<span class="number">2</span>])</span><br><span class="line">head=caller.to_bytes(<span class="number">32</span>,<span class="string">&#x27;big&#x27;</span>)+r.to_bytes(<span class="number">32</span>,<span class="string">&#x27;big&#x27;</span>)   <span class="comment"># abi.encode(who, r, .)</span></span><br><span class="line">T=<span class="number">1</span>&lt;&lt;<span class="number">24</span>; table=&#123;&#125;</span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> <span class="built_in">range</span>(T):</span><br><span class="line">    table.setdefault(k6(head+a.to_bytes(<span class="number">32</span>,<span class="string">&#x27;big&#x27;</span>)), a)</span><br><span class="line">b=T</span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    a=table.get(k6(head+b.to_bytes(<span class="number">32</span>,<span class="string">&#x27;big&#x27;</span>)) ^ AUTH_TAG)</span><br><span class="line">    <span class="keyword">if</span> a <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">and</span> a!=b: <span class="built_in">print</span>(<span class="string">&quot;a&quot;</span>,a,<span class="string">&quot;b&quot;</span>,b); <span class="keyword">break</span></span><br><span class="line">    b+=<span class="number">1</span></span><br></pre></td></tr></table></figure></div>
+
+<p>A representative run of the pure-Python version, from my own machine while I was testing:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a 12738017 b 82613215</span><br><span class="line">found in 1035.3s</span><br></pre></td></tr></table></figure></div>
+
+<p>Seventeen minutes of watching a terminal do nothing is exactly the kind of dead air that makes you doubt your own code, so I also wrote a small C port with a self-contained keccak. Same algorithm, but with an open-addressed table and a hardcoded absorb for the fixed 96-byte input, and it finishes in a couple of minutes instead. If you’re solving this live under a clock, this is the one you want:</p>
+<details>
+<summary><b>mitm_cosign.c</b>: the C port of Grind 2 (self-contained keccak, open-addressed table)</summary>
+
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdint.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">uint64_t</span> u64; <span class="keyword">typedef</span> <span class="type">uint8_t</span> u8;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ROTL64(x,y) (((x)<span class="string">&lt;&lt;(y))|((x)&gt;</span>&gt;(64-(y))))</span></span><br><span class="line"><span class="type">static</span> <span class="type">const</span> u64 RC[<span class="number">24</span>]=&#123;<span class="number">0x0000000000000001</span>ULL,<span class="number">0x0000000000008082</span>ULL,<span class="number">0x800000000000808a</span>ULL,<span class="number">0x8000000080008000</span>ULL,</span><br><span class="line"><span class="number">0x000000000000808b</span>ULL,<span class="number">0x0000000080000001</span>ULL,<span class="number">0x8000000080008081</span>ULL,<span class="number">0x8000000000008009</span>ULL,<span class="number">0x000000000000008a</span>ULL,</span><br><span class="line"><span class="number">0x0000000000000088</span>ULL,<span class="number">0x0000000080008009</span>ULL,<span class="number">0x000000008000000a</span>ULL,<span class="number">0x000000008000808b</span>ULL,<span class="number">0x800000000000008b</span>ULL,</span><br><span class="line"><span class="number">0x8000000000008089</span>ULL,<span class="number">0x8000000000008003</span>ULL,<span class="number">0x8000000000008002</span>ULL,<span class="number">0x8000000000000080</span>ULL,<span class="number">0x000000000000800a</span>ULL,</span><br><span class="line"><span class="number">0x800000008000000a</span>ULL,<span class="number">0x8000000080008081</span>ULL,<span class="number">0x8000000000008080</span>ULL,<span class="number">0x0000000080000001</span>ULL,<span class="number">0x8000000080008008</span>ULL&#125;;</span><br><span class="line"><span class="type">static</span> <span class="type">const</span> <span class="type">int</span> rr[<span class="number">24</span>]=&#123;<span class="number">1</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">10</span>,<span class="number">15</span>,<span class="number">21</span>,<span class="number">28</span>,<span class="number">36</span>,<span class="number">45</span>,<span class="number">55</span>,<span class="number">2</span>,<span class="number">14</span>,<span class="number">27</span>,<span class="number">41</span>,<span class="number">56</span>,<span class="number">8</span>,<span class="number">25</span>,<span class="number">43</span>,<span class="number">62</span>,<span class="number">18</span>,<span class="number">39</span>,<span class="number">61</span>,<span class="number">20</span>,<span class="number">44</span>&#125;;</span><br><span class="line"><span class="type">static</span> <span class="type">const</span> <span class="type">int</span> piln[<span class="number">24</span>]=&#123;<span class="number">10</span>,<span class="number">7</span>,<span class="number">11</span>,<span class="number">17</span>,<span class="number">18</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">16</span>,<span class="number">8</span>,<span class="number">21</span>,<span class="number">24</span>,<span class="number">4</span>,<span class="number">15</span>,<span class="number">23</span>,<span class="number">19</span>,<span class="number">13</span>,<span class="number">12</span>,<span class="number">2</span>,<span class="number">20</span>,<span class="number">14</span>,<span class="number">22</span>,<span class="number">9</span>,<span class="number">6</span>,<span class="number">1</span>&#125;;</span><br><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">keccakf</span><span class="params">(u64 st[<span class="number">25</span>])</span>&#123;u64 t,bc[<span class="number">5</span>];<span class="keyword">for</span>(<span class="type">int</span> rnd=<span class="number">0</span>;rnd&lt;<span class="number">24</span>;rnd++)&#123;</span><br><span class="line"> <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)bc[i]=st[i]^st[i+<span class="number">5</span>]^st[i+<span class="number">10</span>]^st[i+<span class="number">15</span>]^st[i+<span class="number">20</span>];</span><br><span class="line"> <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)&#123;t=bc[(i+<span class="number">4</span>)%<span class="number">5</span>]^ROTL64(bc[(i+<span class="number">1</span>)%<span class="number">5</span>],<span class="number">1</span>);<span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;<span class="number">25</span>;j+=<span class="number">5</span>)st[j+i]^=t;&#125;</span><br><span class="line"> t=st[<span class="number">1</span>];<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">24</span>;i++)&#123;<span class="type">int</span> j=piln[i];bc[<span class="number">0</span>]=st[j];st[j]=ROTL64(t,rr[i]);t=bc[<span class="number">0</span>];&#125;</span><br><span class="line"> <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;<span class="number">25</span>;j+=<span class="number">5</span>)&#123;<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)bc[i]=st[j+i];<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)st[j+i]^=(~bc[(i+<span class="number">1</span>)%<span class="number">5</span>])&amp;bc[(i+<span class="number">2</span>)%<span class="number">5</span>];&#125;</span><br><span class="line"> st[<span class="number">0</span>]^=RC[rnd];&#125;&#125;</span><br><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">kec</span><span class="params">(<span class="type">const</span> u8*in,<span class="type">size_t</span> len,u8 out[<span class="number">32</span>])</span>&#123;u64 st[<span class="number">25</span>];<span class="built_in">memset</span>(st,<span class="number">0</span>,<span class="keyword">sizeof</span>(st));u8*p=(u8*)st;</span><br><span class="line"> <span class="keyword">for</span>(<span class="type">size_t</span> i=<span class="number">0</span>;i&lt;len;i++)p[i]^=in[i];p[len]^=<span class="number">0x01</span>;p[<span class="number">135</span>]^=<span class="number">0x80</span>;keccakf(st);<span class="built_in">memcpy</span>(out,st,<span class="number">32</span>);&#125;</span><br><span class="line"><span class="type">static</span> u64 <span class="title function_">t6f</span><span class="params">(<span class="type">const</span> u8*o)</span>&#123;<span class="keyword">return</span> ((u64)o[<span class="number">0</span>]&lt;&lt;<span class="number">40</span>)|((u64)o[<span class="number">1</span>]&lt;&lt;<span class="number">32</span>)|((u64)o[<span class="number">2</span>]&lt;&lt;<span class="number">24</span>)|((u64)o[<span class="number">3</span>]&lt;&lt;<span class="number">16</span>)|((u64)o[<span class="number">4</span>]&lt;&lt;<span class="number">8</span>)|o[<span class="number">5</span>];&#125;</span><br><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">rdhex</span><span class="params">(<span class="type">const</span> <span class="type">char</span>*s,u8*b,<span class="type">int</span> n)</span>&#123;<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;<span class="type">unsigned</span> v;<span class="built_in">sscanf</span>(s+<span class="number">2</span>*i,<span class="string">&quot;%2x&quot;</span>,&amp;v);b[i]=v;&#125;&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc,<span class="type">char</span>**argv)</span>&#123;</span><br><span class="line"> <span class="keyword">if</span>(!<span class="built_in">strcmp</span>(argv[<span class="number">1</span>],<span class="string">&quot;h96&quot;</span>))&#123;u8 in[<span class="number">96</span>];rdhex(argv[<span class="number">2</span>],in,<span class="number">96</span>);u8 o[<span class="number">32</span>];kec(in,<span class="number">96</span>,o);<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">32</span>;i++)<span class="built_in">printf</span>(<span class="string">&quot;%02x&quot;</span>,o[i]);<span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);<span class="keyword">return</span> <span class="number">0</span>;&#125;</span><br><span class="line"> u8 head[<span class="number">64</span>]; rdhex(argv[<span class="number">1</span>],head,<span class="number">32</span>); rdhex(argv[<span class="number">2</span>],head+<span class="number">32</span>,<span class="number">32</span>);</span><br><span class="line"> u64 tag=strtoull(argv[<span class="number">3</span>],<span class="literal">NULL</span>,<span class="number">16</span>); <span class="type">int</span> tb=atoi(argv[<span class="number">4</span>]);</span><br><span class="line"> <span class="type">size_t</span> TS=(<span class="type">size_t</span>)<span class="number">1</span>&lt;&lt;(tb+<span class="number">1</span>), mask=TS<span class="number">-1</span>, T=(<span class="type">size_t</span>)<span class="number">1</span>&lt;&lt;tb;</span><br><span class="line"> u64*key=<span class="built_in">calloc</span>(TS,<span class="number">8</span>); <span class="type">uint32_t</span>*val=<span class="built_in">calloc</span>(TS,<span class="number">4</span>); <span class="keyword">if</span>(!key||!val)&#123;<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>,<span class="string">&quot;oom\n&quot;</span>);<span class="keyword">return</span> <span class="number">1</span>;&#125;</span><br><span class="line"> u8 msg[<span class="number">96</span>]; <span class="built_in">memcpy</span>(msg,head,<span class="number">64</span>); u8 o[<span class="number">32</span>];</span><br><span class="line"> <span class="keyword">for</span>(<span class="type">size_t</span> a=<span class="number">0</span>;a&lt;T;a++)&#123; <span class="built_in">memset</span>(msg+<span class="number">64</span>,<span class="number">0</span>,<span class="number">32</span>); <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">4</span>;i++)msg[<span class="number">95</span>-i]=(a&gt;&gt;(<span class="number">8</span>*i))&amp;<span class="number">0xff</span>;</span><br><span class="line">   kec(msg,<span class="number">96</span>,o); u64 t6=t6f(o); u64 s=(t6*<span class="number">0x9E3779B97F4A7C15</span>ULL)&amp;mask;</span><br><span class="line">   <span class="keyword">while</span>(val[s])s=(s+<span class="number">1</span>)&amp;mask; key[s]=t6; val[s]=(<span class="type">uint32_t</span>)(a+<span class="number">1</span>); &#125;</span><br><span class="line"> <span class="keyword">for</span>(u64 b=T;;b++)&#123; <span class="built_in">memset</span>(msg+<span class="number">64</span>,<span class="number">0</span>,<span class="number">32</span>); <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">8</span>;i++)msg[<span class="number">95</span>-i]=(b&gt;&gt;(<span class="number">8</span>*i))&amp;<span class="number">0xff</span>;</span><br><span class="line">   kec(msg,<span class="number">96</span>,o); u64 want=t6f(o)^tag; u64 s=(want*<span class="number">0x9E3779B97F4A7C15</span>ULL)&amp;mask;</span><br><span class="line">   <span class="keyword">while</span>(val[s])&#123; <span class="keyword">if</span>(key[s]==want)&#123;u64 a=val[s]<span class="number">-1</span>; <span class="keyword">if</span>(a!=b)&#123;<span class="built_in">printf</span>(<span class="string">&quot;A %llu\nB %llu\n&quot;</span>,(<span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span>)a,(<span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span>)b);fflush(<span class="built_in">stdout</span>);<span class="keyword">return</span> <span class="number">0</span>;&#125;&#125; s=(s+<span class="number">1</span>)&amp;mask; &#125; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>Build and run it as <code>./mitm &lt;head32_hex&gt; &lt;r32_hex&gt; 5E1F2A3B4C6D 24</code>, where the two 32-byte hex blobs are <code>abi.encode(caller)</code> and <code>abi.encode(r)</code>.</p>
+</details>
+
+<h2 id="On-chain-putting-it-together"><a href="#On-chain-putting-it-together" class="headerlink" title="On-chain: putting it together"></a>On-chain: putting it together</h2><p>With <code>(vprime, rprime, a, b)</code> in hand, the on-chain half is four calls. As a Foundry solver:</p>
+<div class="highlight-container" data-rel="Solidity"><figure class="iseeu highlight solidity"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// SPDX-License-Identifier: MIT</span></span><br><span class="line"><span class="meta"><span class="keyword">pragma</span> <span class="keyword">solidity</span> 0.8.24</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;Setup&#125; from <span class="string">&quot;../src/Setup.sol&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;ReserveVault&#125; from <span class="string">&quot;../src/ReserveVault.sol&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;Router&#125; from <span class="string">&quot;../src/Router.sol&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;MarketCore&#125; from <span class="string">&quot;../src/MarketCore.sol&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;PriceModule&#125; from <span class="string">&quot;../src/PriceModule.sol&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;MockERC20&#125; from <span class="string">&quot;../src/mocks/MockERC20.sol&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">contract</span> <span class="title">Attacker</span> &#123;</span><br><span class="line">    <span class="keyword">function</span> <span class="title">solve</span>(Setup st, <span class="type">uint256</span> reserveWad, <span class="type">uint256</span> r, <span class="type">uint256</span> a, <span class="type">uint256</span> b) <span class="keyword">external</span> &#123;</span><br><span class="line">        ReserveVault v = st.vault();</span><br><span class="line">        Router router  = st.router();</span><br><span class="line">        MockERC20 col  = st.col();</span><br><span class="line">        col.approve(<span class="type">address</span>(router), <span class="built_in">type</span>(<span class="type">uint256</span>).max);</span><br><span class="line">        router.depositCollateral(<span class="number">1e18</span>);                 <span class="comment">// a real 1.0 collateral position</span></span><br><span class="line">        v.claimReserve(reserveWad, r, a, b);            <span class="comment">// forged: credits the phantom reserve</span></span><br><span class="line">        MarketCore market = st.market();</span><br><span class="line">        PriceModule price = st.price();</span><br><span class="line">        <span class="type">uint256</span> cv = market.collateralValueWad(<span class="type">address</span>(<span class="built_in">this</span>));</span><br><span class="line">        router.borrow(price.fromWad(<span class="type">address</span>(st.usd()), cv * <span class="number">79</span> / <span class="number">100</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>After all that cryptography the on-chain finish is almost anticlimactic, and I like that it is. We deposit a genuine <code>1.0</code> so the position actually exists, <code>claimReserve</code> writes the phantom reserve which lifts <code>collateralValueWad</code> to ~1,000,001, then we borrow 79% of that. The borrowed USD is real value walking out of the market against collateral that is honestly worth one dollar. The 79% is just me leaving headroom under the LTV so the borrow doesn’t clip the limit and revert on you.</p>
+<p>If you’d rather drive it straight over RPC with <code>cast</code>, read the constants off your own instance first, run the two grinders, then submit:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">VAULT=$(cast call <span class="variable">$SETUP</span> <span class="string">&quot;vault()(address)&quot;</span>)</span><br><span class="line">cast call <span class="variable">$VAULT</span> <span class="string">&quot;hx()(uint256)&quot;</span>; cast call <span class="variable">$VAULT</span> <span class="string">&quot;hy()(uint256)&quot;</span>   <span class="comment"># H  -&gt; recover_k.py</span></span><br><span class="line">cast call <span class="variable">$VAULT</span> <span class="string">&quot;cx()(uint256)&quot;</span>; cast call <span class="variable">$VAULT</span> <span class="string">&quot;cy()(uint256)&quot;</span>   <span class="comment"># C</span></span><br><span class="line">cast call <span class="variable">$VAULT</span> <span class="string">&quot;GENESIS_V()(uint256)&quot;</span>; cast call <span class="variable">$VAULT</span> <span class="string">&quot;GENESIS_R()(uint256)&quot;</span></span><br><span class="line">cast call <span class="variable">$VAULT</span> <span class="string">&quot;AUTH_TAG()(bytes6)&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ... run recover_k.py (grind 1) then mitm_cosign.py (grind 2) ...</span></span><br><span class="line"></span><br><span class="line">cast send <span class="variable">$ROUTER</span> <span class="string">&quot;depositCollateral(uint256)&quot;</span> 1000000000000000000 --private-key <span class="variable">$PK</span></span><br><span class="line">cast send <span class="variable">$VAULT</span>  <span class="string">&quot;claimReserve(uint256,uint256,uint256,uint256)&quot;</span> <span class="variable">$VPRIME</span> <span class="variable">$RPRIME</span> <span class="variable">$A</span> <span class="variable">$B</span> --private-key <span class="variable">$PK</span></span><br><span class="line">cast send <span class="variable">$ROUTER</span> <span class="string">&quot;borrow(uint256)&quot;</span> <span class="variable">$AMOUNT</span> --private-key <span class="variable">$PK</span></span><br><span class="line">cast call <span class="variable">$SETUP</span>  <span class="string">&quot;isSolved()(bool)&quot;</span>          <span class="comment"># true</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p>Running the whole thing end to end:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">forged reserve (wad):           1000000.000000000000000000</span><br><span class="line">player debt (wad):              790000.790000000000000000</span><br><span class="line">player true collateral (wad):   1.000000000000000000</span><br></pre></td></tr></table></figure></div>
+
+<p>Debt of ~790,000 against real collateral of <code>1.0</code> is bad debt of ~790,000, far past the 100-WAD threshold. <code>isSolved()</code> flips to <code>true</code> and the platform releases the flag:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pwnsec&#123;dynamic_flag&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="How-it-actually-went"><a href="#How-it-actually-went" class="headerlink" title="How it actually went"></a>How it actually went</h1><p>Because this edition was scored Humans vs Cyborgs, every challenge ended up with two solve counts and a gap between the first human solve and the first cyborg solve. That turns the scoreboard into a difficulty readout, which is a luxury you do not normally get as an author:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/Blockchain/PwnSecCTF/Meridian/stats.png"
+                      alt="PwnSec CTF 2026 solve statistics, humans versus cyborgs"
+                ><figcaption>PwnSec CTF 2026 solve statistics, humans versus cyborgs</figcaption></figure></p>
+<p>Meridian landed here:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Human solves</td>
+<td>11</td>
+</tr>
+<tr>
+<td>Cyborg solves</td>
+<td>87</td>
+</tr>
+<tr>
+<td>Human lag on first solve</td>
+<td>+23 min</td>
+</tr>
+</tbody></table>
+<p>Eleven human solves put it in the harder half of the board, which is roughly where I wanted it. The number I keep looking at, though, is that +23 minutes.</p>
+<h1 id="Closing-thoughts"><a href="#Closing-thoughts" class="headerlink" title="Closing thoughts"></a>Closing thoughts</h1><p>What I was chasing with Meridian is a challenge where recognizing <em>either</em> bug isn’t enough on its own, where you can be completely right about half of it and still be stuck. The first half is a subverted Pedersen setup that you only catch by noticing <code>H</code> has no honest origin, and it forces a <em>real</em> discrete log because I nailed the free openings shut from both sides. The second is an XOR of two attacker-controlled hashes wearing a signature-check costume, a meet-in-the-middle in disguise, bolted to the output of the first so there’s no precomputing your way around the sequencing. </p>
+<p>In blind testing it took a strong solver real time on both grinds and made them build two separate tools from scratch, which is the shape I was aiming for. Not “gotcha” hard, just two pieces of crypto in series. If you solved it, especially if you solved it the intended way rather than by finding some hole I missed, I’d love to hear how it went. I only ever get to see this challenge from the side that already knows the answer.</p>
+<p>Big thanks to everyone who played this edition, and to my teammates for stress-testing the deploy until it stopped falling over. If you want to catch the next one, <a class="link"   target="_blank" rel="noopener" href="https://ctftime.org/team/28797" >PwnSec is on CTFtime <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>. See you next time~</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> PwnSec CTF 2026: Meridian</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2026-09-17 18:10:44</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-09-19 23:01:52
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2026/09/17/PwnSec-CTF-Meridian/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/Blockchain/">#Blockchain</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Solidity/">#Solidity</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Pedersen-Commitment/">#Pedersen Commitment</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Discrete-Log/">#Discrete Log</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/bn254/">#bn254</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Pollard-Rho/">#Pollard Rho</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Meet-in-the-Middle/">#Meet-in-the-Middle</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/CTF-Author/">#CTF Author</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2026/09/17/Hackthebox-Silentium/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Silentium</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">PwnSec CTF 2026: Meridian</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-Challenge"><span class="nav-text">The Challenge</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#The-handout"><span class="nav-text">The handout</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-win-condition"><span class="nav-text">The win condition</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Finding-the-Lever"><span class="nav-text">Finding the Lever</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-Gate-ReserveVault"><span class="nav-text">The Gate: ReserveVault</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Insight-1-the-Pedersen-setup-is-subverted"><span class="nav-text">Insight 1: the Pedersen setup is subverted</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-the-%E2%80%9Cfree%E2%80%9D-opening-is-useless-the-overflow-trap"><span class="nav-text">Why the “free” opening is useless: the overflow trap</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Insight-2-the-cosign-is-a-meet-in-the-middle-not-a-signature"><span class="nav-text">Insight 2: the cosign is a meet-in-the-middle, not a signature</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Exploitation"><span class="nav-text">Exploitation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Grind-1-recovering-the-60-bit-k"><span class="nav-text">Grind 1: recovering the 60-bit k</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Grind-2-the-cosign-MITM"><span class="nav-text">Grind 2: the cosign MITM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#On-chain-putting-it-together"><span class="nav-text">On-chain: putting it together</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Result"><span class="nav-text">Result</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#How-it-actually-went"><span class="nav-text">How it actually went</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Closing-thoughts"><span class="nav-text">Closing thoughts</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
